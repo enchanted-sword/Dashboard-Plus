@@ -25,6 +25,7 @@
   "floatingAvatars",
   "hideInPosts",
   "showHiddenPosts",
+  "safeScroll",
   "showExactVotes",
   "votelessResults",
   "customPostFunction",

@@ -28,7 +28,7 @@
         padding: 0;
         overflow: hidden;
       }
-      p, h1, h2, span, a, ul, li, figure, section, button { 
+      p, h1, h2, h3, span, a, ul, li, figure, section, button { 
         font-family: "Favorit, Helvetica", sans-serif;
         line-height: 1.5;
         margin: 0;
@@ -36,6 +36,7 @@
         color: rgb(var(--navy));
       }
       h2 { font-size: 20px; }
+      h3 { font-size: 18px; }
 
       #ui-menu {
         width: 360px;
@@ -250,12 +251,25 @@
         border-bottom: 2px solid rgba(var(--navy), .2);
         border-radius: 3px;
       }
-      div.ui-multiSelectWrapper:not(:last-of-type) { margin-bottom: 8px; }
+      div.ui-multiSelectWrapper.ui-extendedSelect {
+        width: 260px;
+        margin: auto;
+        background: rgb(var(--white));
+      }
+      div.ui-multiSelectWrapper:not(:last-of-type),
+      div.ui-extendedSelectWrapper:not(:last-of-type) { margin-bottom: 8px; }
+      div.ui-extendedSelectWrapper {
+        background: rgba(var(--navy), .08);
+        padding: 4px 8px;
+        border-bottom: 2px solid rgba(var(--navy), .2);
+        border-radius: 3px;
+      }
       div.ui-multiSelectWrapper h2 {
         font-weight: 400;
         font-size: 18px;
         max-width: 236px;
       }
+      div.ui-extendedSelectWrapper h3 { margin-bottom: 8px; }
       input.ui-multiSelect + label {
         cursor: pointer;
         font-size: 18px;

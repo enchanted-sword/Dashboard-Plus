@@ -1,0 +1,52 @@
+{
+  "name": "safeScroll DX",
+  "type": "toggle",
+  "extend": true,
+  "description": "allows blurring or hiding of media and text from certain blogs or posts with certain tags",
+  "category": "posts",
+  "preferences": {
+    "blogAvatars": {
+      "title": "blur or hide avatars in filtered posts",
+      "type": "toggle"
+    },
+    "media": {
+      "title": "blur or hide media in filtered posts",
+      "type": "toggle"
+    },
+    "text" : {
+      "title": "blur or hide text in filtered posts",
+      "type": "toggle"
+    },
+    "communityLabels": {
+      "title": "filter posts with community labels",
+      "type": "toggle"
+    },
+    "matureBlogs": {
+      "title": "filter posts containing mature blogs",
+      "type": "toggle"
+    },
+    "filterBlogs": {
+      "title": "blog list filter style",
+      "type": "multiSelect",
+      "dummy": "disabled",
+      "options": {
+        "parent": { "title": "filter posts from listed blogs" },
+        "rebloggedFrom": { "title": "filter posts reblogged from listed blogs" },
+        "root": { "title": "filter posts where the original poster is a listed blog" },
+        "trail": { "title": "filter posts containing listed blogs in the reblog trail" }
+      }
+    },
+    "blogList": {
+      "title": "comma-separated list of blogs (comma-separated)",
+      "type": "text",
+      "value": ""
+    },
+    "tagList": {
+      "title": "comma-separated list of tags to filter",
+      "type": "text",
+      "value": "nsfw, nsft"
+    }
+  },
+  "js": true,
+  "css": true
+}

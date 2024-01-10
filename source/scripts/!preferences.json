@@ -168,6 +168,23 @@
     "type": "toggle",
     "enabled": true
   },
+  "safeScroll": {
+    "type": "toggle",
+    "enabled": false,
+    "preferences": {
+      "blogAvatars": false,
+      "media": true,
+      "text": false,
+      "communityLabels": true,
+      "matureBlogs": false,
+      "filterBlogs": {
+        "parent": true,
+        "rebloggedFrom": false,
+        "root": false,
+        "trail": false
+      }
+    }
+  },
   "showExactVotes": {
     "type": "toggle",
     "enabled": false

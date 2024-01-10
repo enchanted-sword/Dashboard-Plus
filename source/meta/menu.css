@@ -18,7 +18,7 @@ body {
   overflow: hidden;
 }
 
-p, h1, h2, span, a, ul, li, figure, section, button { 
+p, h1, h2, h3, span, a, ul, li, figure, section, button { 
   font-family: "Favorit, Helvetica", sans-serif;
   line-height: 1.5;
   margin: 0;
@@ -33,6 +33,7 @@ h2 {
   font-size: 20px;
   font-weight: 500;
 }
+h3 { font-size: 18px; }
 li { list-style-type: none; }
 ul {
   display: flex;
