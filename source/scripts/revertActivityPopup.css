@@ -1,0 +1,44 @@
+[role="tablist"] {
+  padding: 0 !important;
+
+  [data-css~="button"][data-css~="tab"] {
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+    padding: 8px !important;
+    border-radius: unset !important;
+    background: none !important;
+
+    &[aria-selected="true"] {
+      color: rgb(var(--accent)) !important;
+      box-shadow: inset 0px -2px 0px rgb(var(--accent));
+    }
+    &:first-of-type [tabindex] { font-size: 0; }
+    &:first-of-type [tabindex]:after { font-size: 1rem; }
+  }
+}
+
+[role="tabpanel"] {
+  [data-css~="dateSeparator"] {
+    background: rgba(var(--black),.07) !important;
+    padding: 8px 16px important;
+  }
+  [data-css~="backgroundColor"] { border-top: 1px solid rgba(var(--black),.13); }
+  [data-css~="avatarWrapper"] [data-css~="avatar"],
+  [data-css~="anonymousAvatar"], [data-css~="avatar"] img {
+    height: 25px !important;
+    width: 25px !important;
+  }
+  [data-css~="verticallyCentered"] { align-self: start !important; }
+  [data-css~="avatarWrapperInner"], [data-css~="circleAvatar"] {border-radius: 3px !important; }
+  [data-css~="badge"] [data-css~="border"],
+  [data-css~="rollupBadge"] [data-css~="border"],
+  [data-css~="rollupAvatar"] { border: none !important; }
+  [data-css~="underlined"] span { text-decoration: none !important; }
+}
+[role="tabpanel"] [data-css~="backgroundColor"] { border-top: 1px solid rgba(var(--black),.13); }
+[data-css~="linkToActivity"] {
+  padding: 0 !important;
+  height: 30px !important;
+
+  a { color: rgba(var(--black),.65) !important; }
+}

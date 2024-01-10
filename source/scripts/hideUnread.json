@@ -1,0 +1,13 @@
+{
+  "name": "hide unread counts",
+  "category": "navigation",
+  "description": "hides the specified unread count types",
+  "type": "multiSelect",
+  "preferences": {
+    "posts": { "title": "unread posts badge" },
+    "postsOnTab": { "title": "unread posts on browser tab" },
+    "activity": { "title": "activity badge" },
+    "inbox": { "title": "inbox badge" }
+  },
+  "js": true
+}

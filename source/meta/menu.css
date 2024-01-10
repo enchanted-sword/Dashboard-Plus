@@ -1,0 +1,196 @@
+@font-face {
+  font-family: "Favorit";
+  src: url("./resources/Favorit.ttf") format("truetype");
+}
+
+* { transition: 0.3s; }
+:root {
+  --white: 250, 245, 255;
+  --navy: 0, 25, 53;
+  --black: 0, 0, 12;
+  --accent: 0, 148, 255;
+  --red: 255, 56, 80;
+}
+
+body {
+  height: 600px;
+  margin: 0;
+  overflow: hidden;
+}
+
+p, h1, h2, span, a, ul, li, figure, section, button { 
+  font-family: "Favorit, Helvetica", sans-serif;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  color: rgb(var(--navy));
+}
+h1 {
+  font-size: 24px;
+  font-weight: 600;
+}
+h2 {
+  font-size: 20px;
+  font-weight: 500;
+}
+li { list-style-type: none; }
+ul {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+button { cursor: pointer; }
+
+#menu {
+  position: relative;
+  width: 360px;
+  background: rgb(var(--navy));
+  border-radius: 3px;
+  padding-bottom: 1px;
+}
+section.section { position: relative; }
+.wrapper {
+  width: 344px;
+  margin: 8px;
+  background: rgb(var(--white));
+  border-radius: 3px;
+  border-bottom: 3px solid rgba(var(--navy), .12);
+}
+.tabs {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: stretch;
+  border-radius: 3px 3px 0 0;
+}
+#mainTabs { background: rgb(var(--navy)); }
+#mainTabs > button {
+  background: rgba(var(--black), .54);
+  border-bottom: 3px solid rgba(var(--white), .12);
+  border-right: 3px solid rgba(var(--white), .12)
+}
+#mainTabs h1 { color: rgb(var(--white)); }
+#featureTabs { background: rgb(var(--white)); }
+#featureTabs > button {
+  background: rgba(var(--black), .18);
+  border-bottom: 3px solid rgba(var(--navy), .12);
+  border-right: 3px solid rgba(var(--navy), .12);
+}
+.tabs > button {
+  flex-grow: 1;
+  min-width: calc(fit-content + 8px);
+  height: fit-content;
+  padding: 0 8px;
+  border: unset;
+}
+.tabs > button[active="true"],
+  .tabs > button:hover {
+    border-radius: 3px 3px 0 0;
+    flex-grow: 1.2;
+  }
+#mainTabs > button[active="true"] {
+  background: rgb(var(--navy));
+  border-right: 3px solid rgba(var(--white), .12);
+  border-bottom: 3px solid rgb(var(--navy));
+}
+#mainTabs > button:hover {
+  background: rgba(var(--white), .06);
+}
+#featureTabs > button[active="true"] {
+  background: rgb(var(--white));
+}
+#featureTabs > button:hover {
+  background: rgba(var(--accent), .18);
+}
+
+.featuresWrapper { border-right: 3px solid rgba(var(--navy), .12); }
+.featuresWrapper h1 { margin-left: 8px; }
+.featuresWrapper > ul {
+  padding: 0 8px 8px;
+}
+.featuresWrapper > ul > li { position: relative; }
+.featuresWrapper > ul > li:not(:last-of-type) { padding-bottom: 16px; }
+.featuresWrapper > ul > li:not(:last-of-type)::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  width: 321px;
+  border-radius: 2px;
+  border: 2px solid rgba(var(--navy), .54);
+}
+
+div.listSelectWrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  margin: 8px 16px 0;
+}
+input.listSelect, input.listMultiSelect {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+  margin: 0;
+}
+label::selection { background-color: transparent; }
+input.listSelect + label {
+  width: 284px;
+  background: rgba(var(--navy), .16);
+  margin-bottom: 4px;
+  padding: 4px 8px;
+  text-align: right;
+  border-radius: 3px;
+  position: relative;
+  font-size: 18px;
+}
+input.listSelect + label:hover {
+  background: rgba(var(--accent), .12);
+  color: rgb(var(--navy));
+  text-shadow: none;
+}
+input.listSelect + label:active { color: rgb(var(--accent)); }
+input.listSelect:checked + label {
+  color: rgb(var(--white));
+  background: rgb(var(--accent));
+}
+input.listSelect:checked + label::before {
+  content: "selected!";
+  position: absolute;
+  top: 4px;
+  left: 16px;
+  font-weight: 600;
+}
+.listMultiSelectWrapper {
+  width: 298px;
+  margin: 8px 12px 0;
+  padding: 2px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  background: rgba(var(--navy), .16);
+  border-radius: 3px;
+  text-align: right;
+}
+input.listMultiSelect + label {
+  flex-basis: auto;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: rgba(var(--navy), .16);
+  margin: 2px;
+  position: relative;
+}
+input.listMultiSelect + label:hover { background: rgba(var(--red), .18); }
+input.listMultiSelect:active + label { color: rgb(var(--red)); }
+input.listMultiSelect:checked + label {
+  background: rgb(var(--red));
+  color: rgb(var(--white));
+}
+input.listMultiSelect:checked + label::before {
+  position: absolute;
+  top: 3px;
+  left: 12px;
+  content: "✖";
+  font-weight: 600;
+  color: rgb(var(--white));
+}
+

@@ -1,0 +1,20 @@
+{
+  "name": "floating avatars",
+  "type": "toggle",
+  "extend": true,
+  "description": "replaces the smaller post header avatars with the previous larger floating avatar design",
+  "category": "posts",
+  "preferences": {
+    "scroll": {
+      "title": "enable avatars scrolling with posts",
+      "type": "toggle"
+    },
+    "showOwnAvatar": {
+      "title": "also show the user avatar at the top of the timeline",
+      "type": "toggle"
+    }
+  },
+  "desktopOnly": true,
+  "js": true,
+  "css": true
+}

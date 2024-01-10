@@ -1,0 +1,82 @@
+@media (min-width: 990px) {
+  #base-container:not([data-navigation="horizontal"], [data-route*="peepr"]) {
+    [data-css~="navigationWrapper"] { margin: 0 !important; }
+    [data-css~="tabsHeader"] { margin-left: -93px !important ;}
+  }
+  #base-container:not([data-route*="peepr"]) {
+    [data-css~="mainContentWrapper"] {
+      flex-basis: 982px;
+      
+      [data-css~="main"] { margin-left: 93px !important; }
+      [data-css~="container"] { max-width: none !important }
+    }
+    
+  }
+  
+  .dbplus-userAvatarWrapper {
+    top: 0;
+    position: absolute;
+    left: -84px;
+  
+    > [data-css~="avatar"] {
+      position: absolute !important;
+      top: 0 !important;
+    }
+  }
+  
+  .dbplus-stickyContainer {
+    color: RGB(var(--white-on-dark));
+    height: 100%;
+    position: absolute;
+    left: -85px;
+    padding: 0;
+  
+    > [data-css~="avatar"] {
+      position: sticky;
+      top: 69px;
+      transition: top .25s;
+    }
+    [data-css~="blogLink"] > [data-css~="avatar"],
+    [data-css~="blogLink"] > [data-css~="avatar"] [data-css~="image"],
+    [data-css~="anonymous"] {
+    width: 64px !important;
+    height: 64px !important;
+    }
+    [data-css~="blogLink"] > [data-css~="subavatar"],
+    [data-css~="blogLink"] > [data-css~="subavatar"] [data-css~="image"] {
+    width: 32px !important;
+    height: 32px !important;
+    }
+    [data-css~="badge"] { display: none; }
+  }
+  .dbplus-avatarWrapper { position: relative; }
+  .dbplus-blogLink {
+    cursor: pointer;
+    word-break: break-word;
+    text-decoration: none;
+  }
+  .dbplus-targetWrapper {
+    width: inherit;
+    vertical-align: top;
+    display: inline-block;
+  }
+  .dbplus-avatarInner { position: relative; }
+  .dbplus-avatarWrapperInner {
+    border-radius: var(--border-radius-small);
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .dbplus-placeholder {
+    width: 100%;
+    line-height: 0;
+    position: relative;
+  }
+  .dbplus-avatarImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    visibility: visible;
+  }
+}

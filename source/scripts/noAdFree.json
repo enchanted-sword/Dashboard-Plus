@@ -1,0 +1,7 @@
+{
+  "name": "ignore tumblr ad-free",
+  "type": "toggle",
+  "description": "disables tumblr's 'go ad-free' marketing",
+  "category": "dashboard",
+  "css": "true"
+}

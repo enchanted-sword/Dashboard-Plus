@@ -1,0 +1,14 @@
+{
+  "name": "hide sidebar content",
+  "type": "multiSelect",
+  "description": "hide specified content in the sidebar",
+  "category": "sidebar",
+  "preferences": {
+    "blogRecommendations": { "title": "blog recommendations" },
+    "emptyTagView": { "title": "empty tag following section" },
+    "relatedPosts": { "title": "related posts" },
+    "radar": { "title": "tumblr radar" },
+    "ads": { "title": "sidebar ads" }
+  },
+  "js": "true"
+}

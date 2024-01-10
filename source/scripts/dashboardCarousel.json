@@ -1,0 +1,14 @@
+{
+  "name": "caught up carousel behaviour",
+  "type": "select",
+  "description": "choose how the 'changes, staff picks, trending' carousel is displayed",
+  "category": "dashboard",
+  "preferences": {
+    "show": { "title": "display as carousel"},
+    "caughtUp": { "title": "display only the text 'Caught up!'" },
+    "divider": { "title": "display only a dividing line" },
+    "hide": { "title": "hide the element entirely" }
+  },
+  "dummy": "show",
+  "js": true
+}

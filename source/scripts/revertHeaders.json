@@ -1,0 +1,8 @@
+{
+  "name": "revert post header appearance",
+  "category": "posts",
+  "description": "reverts the post header appearance to feature the reblog icon and always show which blog a post was reblogged from",
+  "type": "toggle",
+  "js": true,
+  "css": true
+}

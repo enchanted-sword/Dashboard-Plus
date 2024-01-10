@@ -1,0 +1,51 @@
+{
+  "manifest_version": 2,
+  "name": "Dashboard Plus",
+  "version": "1.0",
+
+  "description": "Take control of your Tumblr dashboard!",
+  "icons": {
+    "48": "icons/48.png",
+    "96": "icons/96.png"
+  },
+  "author": "April Lunarii",
+  "homepage_url": "https://github.com/enchanted-sword/Dashboard-Plus",
+
+  "permissions": [ "storage" ],
+  "web_accessible_resources": [ "*.js", "*.json", "*.css", "*.svg" ],
+
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.tumblr.com/*"
+      ],
+      "exclude_matches": [
+        "*://www.tumblr.com/login",
+        "*://www.tumblr.com/register",
+        "*://www.tumblr.com/register?*",
+        "*://www.tumblr.com/privacy/*"
+      ],
+      "run_at": "document_start",
+      "js": [
+        "control/contentScript.js",
+        "libraries/jquery.min.js"
+      ],
+      "css": [
+        "scripts/utility/customPopover.css"
+      ]
+    }
+  ],
+  "browser_action": {
+    "default_icon" : {
+      "48": "icons/48.png",
+      "96": "icons/96.png"
+    },
+    "default_popup": "meta/menu.html"
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "dashboardplus@girldragon.neocities.org"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+[data-css~="tabsHeader"]:not([data-css~="isMasonryView"]) { display: none; }
+[data-css~="timelineHeader"] {
+  display: flex;
+  justify-content: flex-end;
+  border: none;
+}
+[data-css~="timelineHeaderNav"] { display: none; }

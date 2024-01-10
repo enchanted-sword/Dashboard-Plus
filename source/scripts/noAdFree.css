@@ -1,0 +1,2 @@
+[data-css~="adFreeCtaBanner"], a[href*="/settings/ad-free-browsing"],
+  [data-css~="navItem"][data-title="Go Ad-Free"] { display: none !important; }

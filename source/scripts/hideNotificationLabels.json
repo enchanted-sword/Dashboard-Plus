@@ -1,0 +1,10 @@
+{
+  "name": "hide notification labels",
+  "category": "notifications",
+  "type": "multiSelect",
+  "preferences": {
+    "mutuals": { "title": "mutual labels" },
+    "following": { "title": "following labels" }
+  },
+  "js": true
+}

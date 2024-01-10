@@ -1,0 +1,11 @@
+{
+  "name": "custom notification labels",
+  "category": "notifications",
+  "type": "multiSelect",
+  "preferences": {
+    "followingYou": { "title": "label blogs that follow you" },
+    "potentialBot": { "title": "label potential bots" }
+  },
+  "js": true,
+  "css": true
+}

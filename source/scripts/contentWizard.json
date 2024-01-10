@@ -1,0 +1,41 @@
+{
+  "name": "content width",
+  "type": "slider",
+  "description": "changes the width and justification of posts and the main content column",
+  "category": "dashboard",
+  "preferences": {
+    "width": {
+      "title": "content width",
+      "display": true,
+      "min": 540,
+      "max": 1560,
+      "default": 540,
+      "step": 1,
+      "datalist": []
+    },
+    "justify" : {
+      "title": "justify content",
+      "display": false,
+      "min": 0,
+      "max": 2,
+      "default": 1,
+      "step": 1,
+      "datalist": [
+        {
+          "value": 0,
+          "label": "left"
+        },
+        {
+          "value": 1,
+          "label": "center"
+        },
+        {
+          "value": 2,
+          "label": "right"
+        }
+      ]
+    }
+  },
+  "js": true,
+  "css": true
+}

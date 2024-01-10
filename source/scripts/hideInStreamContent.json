@@ -1,0 +1,13 @@
+{
+  "name": "hide in-stream content",
+  "type": "multiSelect",
+  "description": "hide specified content in the timeline",
+  "category": "dashboard",
+  "preferences": {
+    "blogRecommendations": { "title": "blog recommendations" },
+    "tagRecommendations": { "title": "tag recommendations" },
+    "blazedContent": { "title": "blazed content" },
+    "inStreamAds": { "title": "in-stream ads" }
+  },
+  "js": "true"
+}

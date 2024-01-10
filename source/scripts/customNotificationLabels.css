@@ -1,0 +1,50 @@
+.dbplus-customLabelContainer {
+  white-space: nowrap;
+  border-radius: 4px;
+  padding: 0 4px;
+  font-size: .78125rem;
+  font-weight: 700;
+  line-height: 1.52;
+  display: inline-block;
+}
+.dbplus-customLabelContainer.dbplus-followingYou {
+  color: rgb(var(--blue));
+  background-color: rgba(var(--blue),.2);
+}
+.dbplus-customLabelContainer.dbplus-potentialBot {
+  color: rgb(var(--red));
+  background-color: rgba(var(--red),.2);
+}
+.dbplus-customLabelContainer.dbplus-potentialBot::after {
+  content: "about";
+  border-bottom: 1px solid rgb(var(--red));
+  font-size: 12px;
+  margin-left: 5px;
+}
+.dbplus-customLabelIcon {
+  vertical-align: middle;
+  margin-left: 4px;
+  position: relative;
+  bottom: 1px;
+}
+.dbplus-customLabelInfo {
+  visibility: hidden;
+  opacity: 0;
+  width: 240px;
+  background-color: rgb(var(--white));
+  box-shadow: 2px 2px rgba(var(--black),.07);
+  color: inherit;
+  text-align: center;
+  padding: 2px;
+  border-radius: 3px;
+  position: absolute;
+  z-index: 2;
+  top: -22px;
+  left: 0;
+  transition: opacity 0.5s;
+  white-space: initial;
+}
+.dbplus-customLabelContainer:hover .dbplus-customLabelInfo {
+  visibility: visible;
+  opacity: 1;
+}

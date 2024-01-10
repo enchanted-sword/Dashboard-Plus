@@ -1,0 +1,6 @@
+{
+  "name": "hide dashboard tabs",
+  "category": "dashboard",
+  "type": "toggle",
+  "css": "true"
+}

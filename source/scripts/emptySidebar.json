@@ -1,0 +1,14 @@
+{
+  "name": "empty blog view sidebar behaviour",
+  "type": "select",
+  "description": "choose if or how the blog view sidebar is collapsed when empty",
+  "category": "sidebar",
+  "preferences": {
+    "never": { "title": "never collapse"},
+    "whenEmpty": { "title": "collapse when empty" },
+    "force": { "title": "force collapse" }
+  },
+  "dummy": "never",
+  "js": true,
+  "css": true
+}

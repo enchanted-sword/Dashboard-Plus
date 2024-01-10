@@ -1,0 +1,27 @@
+{
+  "name": "corner radii",
+  "type": "slider",
+  "description": "changes the corner radii of posts and other dashboard elements",
+  "category": "dashboard",
+  "preferences": {
+    "value": {
+      "title": "value",
+      "display": true,
+      "min": 0,
+      "max": 12,
+      "default": 8,
+      "step": 1,
+      "datalist": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 12,
+          "label": "12"
+        }
+      ]
+    }
+  },
+  "js": true
+}

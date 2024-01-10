@@ -1,0 +1,204 @@
+{
+  "hideDashboardTabs": {
+    "type": "toggle",
+    "enabled": false
+  },
+  "hideInStreamContent": {
+    "type": "multiSelect",
+    "enabled": true,
+    "preferences": {
+      "blogRecommendations": false,
+      "tagRecommendations": false,
+      "blazedContent": false,
+      "inStreamAds": true
+    }
+  },
+  "dashboardCarousel": {
+    "type": "select",
+    "enabled": false,
+    "preferences": {
+      "selected": "show"
+    }
+  },
+  "disableLive": {
+    "type": "toggle",
+    "enabled": true
+  },
+  "timelineSearch": {
+    "type": "toggle",
+    "enabled": false
+  },
+  "customColors": {
+    "type": "dummy",
+    "enabled": false
+  },
+  "contentWizard": {
+    "type": "slider",
+    "enabled": false,
+    "preferences": {
+      "width": {
+        "value": "540",
+        "enabled": false
+      },
+      "justify": {
+        "value": "1",
+        "enabled": false
+      }
+    }
+  },
+  "contentColumns": {
+    "type": "toggleSlider",
+    "enabled": false,
+    "value": 1
+  },
+  "cornerRadii": {
+    "type": "slider",
+    "enabled": false,
+    "preferences": {
+      "value": {
+        "value": "8",
+        "enabled": "false"
+      }
+    }
+  },
+  "customTabs": {
+    "type": "dummy",
+    "enabled": false
+  },
+  "noAdFree": {
+    "type": "toggle",
+    "enabled": true
+  },
+  "hideNotificationLabels": {
+    "type": "multiSelect",
+    "enabled": false,
+    "preferences": {
+      "mutuals": false,
+      "following": false
+    }
+  },
+  "customNotificationLabels": {
+    "type": "multiSelect",
+    "enabled": false,
+    "preferences": {
+      "followingYou": false,
+      "potentialBot": false
+    }
+  },
+  "revertActivityPopup": {
+    "type": "toggle",
+    "enabled": false
+  },
+  "horizontalNavigation": {
+    "type": "toggle",
+    "enabled": true
+  },
+  "hideUnread": {
+    "type": "multiSelect",
+    "enabled": false,
+    "preferences": {
+      "posts": false,
+      "postsOnTab": false,
+      "activity": false,
+      "inbox": false
+    }
+  },
+  "hideIcons": {
+    "type": "multiSelect",
+    "enabled": false,
+    "preferences": {
+      "shop": false,
+      "explore": false,
+      "domains": false
+    }
+  },
+  "customNavIcon": {
+    "type": "toggle",
+    "enabled": false
+  },
+  "showNavBlogMenus": {
+    "type": "toggle",
+    "enabled": false
+  },
+  "hideSidebarContent": {
+    "type": "multiSelect",
+    "enabled": false,
+    "preferences": {
+      "blogRecommendations": false,
+      "emptyTagView": false,
+      "relatedPosts": false,
+      "radar": false,
+      "ads": true
+    }
+  },
+  "emptySidebar": {
+    "type": "select",
+    "enabled": false,
+    "preferences": {
+      "selected": "never"
+    }
+  },
+  "customSidebarMenu": {
+    "type": "toggle",
+    "enabled": false
+  },
+  "revertHeaders": {
+    "type": "toggle",
+    "enabled": true
+  },
+  "floatingAvatars": {
+    "type": "toggle",
+    "enabled": true,
+    "preferences": {
+      "scroll": true,
+      "showOwnAvatar": true
+    }
+  },
+  "hideInPosts": {
+    "type": "multiSelect",
+    "enabled": false,
+    "preferences": {
+      "badges": false,
+      "tips": false,
+      "blaze": false,
+      "follow": false
+    }
+  },
+  "showHiddenPosts": {
+    "type": "toggle",
+    "enabled": true
+  },
+  "showExactVotes": {
+    "type": "toggle",
+    "enabled": false
+  },
+  "votelessResults": {
+    "type": "toggle",
+    "enabled": false
+  },
+  "customPostFunction": {
+    "type": "text",
+    "enabled": false,
+    "value": ""
+  },
+  "reblogFinder": {
+    "type": "toggle",
+    "enabled": false
+  },
+  "hideFiltered": {
+    "type": "toggle",
+    "enabled": false
+  },
+  "noTrackingData": {
+    "type": "toggle",
+    "enabled": true
+  },
+  "no404Redirect": {
+    "type": "toggle",
+    "enabled": true
+  },
+  "postDebugInfo": {
+    "type": "toggle",
+    "enabled": false
+  }
+}
