@@ -172,17 +172,19 @@
     "type": "toggle",
     "enabled": false,
     "preferences": {
-      "blogAvatars": false,
+      "blogAvatars": { "selected": "disable" },
       "media": true,
       "text": false,
-      "communityLabels": true,
-      "matureBlogs": false,
+      "inheritCommunityLabels": true,
       "filterBlogs": {
         "parent": true,
         "rebloggedFrom": false,
         "root": false,
         "trail": false
-      }
+      },
+      "hideStyle": { "selected": "blur" },
+      "blogList": { "value": "" },
+      "tagList": { "value": "nsfw, nsft" }
     }
   },
   "showExactVotes": {

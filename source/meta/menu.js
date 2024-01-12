@@ -41,6 +41,22 @@
     return button;
   }
 
+  const debounce = func => {
+    let timeoutID;
+    return (...args) => {
+      clearTimeout(timeoutID);
+      timeoutID = setTimeout(() => func(...args), 500);
+    };
+  };
+  const onTextInput = async ({ target }) => {
+    const value = target.value;
+    const [ name, key ] = target.name.split('-');
+    let { preferences } = await browser.storage.local.get('preferences');
+    preferences[name].preferences[key].value = value;
+
+    browser.storage.local.set({ preferences });
+  }
+
   const newFeatureItem = (name, feature = {}, preference = {}, allPreferences) => {
     const wrapper = $('<li>');
 
@@ -206,7 +222,7 @@
       }
 
       if (feature.extend) {
-        const extendInputWrapper = $('<div>', { class: 'ui-inputWrapper', type: 'multiSelect' });
+        const extendInputWrapper = $('<div>', { class: 'ui-inputWrapper ui-extend', type: 'multiSelect' });
 
         Object.keys(feature.preferences).forEach(key => {
           switch (feature.preferences[key].type) {
@@ -231,28 +247,55 @@
                 browser.storage.local.set({ preferences });
               });
               break;
+            case 'multiSelect':
+              const multiSelectInputWrapper = $(`<div class="ui-extendedSelectWrapper "><h3>${feature.preferences[key].title}</h3></div>`);
+              extendInputWrapper.append(multiSelectInputWrapper);
+
+              Object.keys(feature.preferences[key].options).forEach(optionsKey => {
+                const option = feature.preferences[key].options[optionsKey];
+                const multiSelectWrapper = $(`<div class="ui-multiSelectWrapper ui-extendedSelect"><h2>${option.title}</h2></div>`);
+                const input = $('<input>', { class: 'ui-multiSelect', type: 'checkbox', id: `ui-feature-${name}-${key}-${optionsKey}`, name: `${name}-${key}` });
+                const label = $(`<label for="ui-feature-${name}-${key}-${optionsKey}" name="${name}-${key}">select ${option.title}</label>`);
+    
+                multiSelectWrapper.append(input);
+                multiSelectWrapper.append(label);
+                multiSelectInputWrapper.append(multiSelectWrapper);
+    
+                if (preference.preferences[key][optionsKey]) input.attr('checked', '');
+    
+                input.on('change', async function (event) {
+                  const checked = event.target.checked ? true : false;
+                  let { preferences } = await browser.storage.local.get('preferences');
+        
+                  if (checked) preferences[name].preferences[key][optionsKey] = true;
+                  else preferences[name].preferences[key][optionsKey] = false;
+    
+                  browser.storage.local.set({ preferences });
+                });
+              });
+              break;
             case 'select':
-              const selectInputWrapper = $(`<div class="ui-extendedSelectWrapper "><h2>${feature.preferences[key].title}</h2></div>`);
+              const selectInputWrapper = $(`<div class="ui-extendedSelectWrapper "><h3>${feature.preferences[key].title}</h3></div>`);
               extendInputWrapper.append(selectInputWrapper);
 
               Object.keys(feature.preferences[key].options).forEach(optionsKey => {
                 const option = feature.preferences[key].options[optionsKey];
                 const selectWrapper = $(`<div class="ui-multiSelectWrapper ui-extendedSelect"><h2>${option.title}</h2></div>`);
-                const input = $('<input>', { class: 'ui-select', type: 'radio', id: `ui-feature-${name}-${key}-${optionsKey}`, name: `${key}` });
-                const label = $(`<label for="ui-feature-${name}-${key}-${optionsKey}" name="${key}">select ${option.title}</label>`);
+                const input = $('<input>', { class: 'ui-select', type: 'radio', id: `ui-feature-${name}-${key}-${optionsKey}`, name: `${name}-${key}` });
+                const label = $(`<label for="ui-feature-${name}-${key}-${optionsKey}" name="${name}-${key}">select ${option.title}</label>`);
       
                 selectWrapper.append(input);
                 selectWrapper.append(label);
                 selectInputWrapper.append(selectWrapper);
       
-                if (feature.preferences[key].dummy === optionsKey) input.attr('dummy', '');
+                if (feature.preferences[key]?.dummy === optionsKey) input.attr('dummy', '');
                 if (preference.preferences[key].selected === optionsKey) input.attr('checked', '');
       
                 input.on('click', async function (event) {
                   const checked = event.target.checked ? true : false;
                   let { preferences } = await browser.storage.local.get('preferences');
         
-                  if (checked) preferences[name].preferences[key].selected = key;
+                  if (checked) preferences[name].preferences[key].selected = optionsKey;
                   if (this.hasAttribute('dummy')) preferences[name].preferences[key].enabled = false;
                   else preferences[name].preferences[key].enabled = true;
       
@@ -261,6 +304,22 @@
               });
               break;
             case 'text':
+              const textInputWrapper = $(`<div class="ui-extendedSelectWrapper "><h3>${feature.preferences[key].title}</h3></div>`);
+              const textInput = $('<textarea>', {
+                class: 'ui-textInput',
+                autocomplete: 'off',
+                autofill: 'off',
+                spellcheck: 'false',
+                placeholder: feature.preferences[key].placeholder,
+                id: `ui-feature-${name}-${key}`,
+                name: `${name}-${key}`
+              });
+              textInput.text(preference.preferences[key].value);
+
+              textInputWrapper.append(textInput);
+              extendInputWrapper.append(textInputWrapper);
+
+              textInput.on('input', debounce(onTextInput));
               break;
           }
         });

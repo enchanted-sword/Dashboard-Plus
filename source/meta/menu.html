@@ -28,7 +28,7 @@
         padding: 0;
         overflow: hidden;
       }
-      p, h1, h2, h3, span, a, ul, li, figure, section, button { 
+      p, h1, h2, h3, span, a, ul, li, figure, section, button, textarea { 
         font-family: "Favorit, Helvetica", sans-serif;
         line-height: 1.5;
         margin: 0;
@@ -139,7 +139,7 @@
         border: 2px solid rgba(var(--navy), .4);
         border-radius: 3px;
       }
-      .ui-featureCategory > li:has(input:checked:not([dummy])),
+      .ui-featureCategory > li:has(input:checked:not([dummy], .ui-extend input)),
       .ui-featureCategory > li:has(input[active="true"]) {
         background: rgb(var(--white));
         border: 2px solid rgb(var(--accent));
@@ -267,7 +267,7 @@
       div.ui-multiSelectWrapper h2 {
         font-weight: 400;
         font-size: 18px;
-        max-width: 236px;
+        max-width: calc(100% - 44px);
       }
       div.ui-extendedSelectWrapper h3 { margin-bottom: 8px; }
       input.ui-multiSelect + label {
@@ -411,6 +411,19 @@
       }
       input.ui-slider:active::-webkit-slider-thumb,
       input.ui-slider:active::-moz-range-thumb { border: 2px solid rgb(var(--white)); }
+      textarea.ui-textInput {
+        resize: none;
+        width: 100%;
+        border: none;
+        border-radius: 3px;
+        height: 96px;
+        outline: none;
+        padding: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+        background: rgba(var(--white), .64);
+      }
+      textarea.ui-textInput:focus { background: rgb(var(--white)); }
     </style>
   </head>
 

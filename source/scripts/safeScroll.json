@@ -7,7 +7,13 @@
   "preferences": {
     "blogAvatars": {
       "title": "blur or hide avatars in filtered posts",
-      "type": "toggle"
+      "type": "select",
+      "dummy": "disable",
+      "options": {
+        "all": { "title": "blur or hide all avatars" },
+        "filtered": { "title": "blur or hide filtered blog avatars only" },
+        "disable": { "title": "don't blur or hide avatars" }
+      }
     },
     "media": {
       "title": "blur or hide media in filtered posts",
@@ -17,18 +23,13 @@
       "title": "blur or hide text in filtered posts",
       "type": "toggle"
     },
-    "communityLabels": {
+    "inheritCommunityLabels": {
       "title": "filter posts with community labels",
-      "type": "toggle"
-    },
-    "matureBlogs": {
-      "title": "filter posts containing mature blogs",
       "type": "toggle"
     },
     "filterBlogs": {
       "title": "blog list filter style",
       "type": "multiSelect",
-      "dummy": "disabled",
       "options": {
         "parent": { "title": "filter posts from listed blogs" },
         "rebloggedFrom": { "title": "filter posts reblogged from listed blogs" },
@@ -37,14 +38,25 @@
       }
     },
     "blogList": {
-      "title": "comma-separated list of blogs (comma-separated)",
+      "title": "filtered blogs",
       "type": "text",
-      "value": ""
+      "placeholder": "enter a list of blogs (comma-separated)"
     },
     "tagList": {
-      "title": "comma-separated list of tags to filter",
+      "title": "filtered tags",
       "type": "text",
-      "value": "nsfw, nsft"
+      "placeholder": "enter a list of tags (comma-separated)"
+    },
+    "hideStyle": {
+      "title": "content filtering style",
+      "type": "select",
+      "options": {
+        "blur": { "title": "blur" },
+        "cover": { "title": "cover" },
+        "collapse": { "title": "collapse" },
+        "remove": { "title": "remove" },
+        "hidePost": { "title": "hide entire post" }
+      }
     }
   },
   "js": true,
