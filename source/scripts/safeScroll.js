@@ -12,11 +12,16 @@ const avatarInnerSelector = s('avatarWrapperInner');
 const mediaSelector = `${s('videoBlock')},${s('imageBlock')},${s('linkCard')} ${s('header withImage')},${s('albumImage')}`;
 const textSelector = `${s('rows')}:not(${s('root')} div):has(${s('textBlock')})`;
 
-let blogAvatars, media, text, inheritCommunityLabels, filterBlogs, blogList, tagList, hideStyle, filterBlogList, filterTagList;
+let blogAvatars, media, text, inheritCommunityLabels, filterBlogs, blogList, tagList, hideStyle, dispelStyle, filterBlogList, filterTagList;
 
 const isFilteredBlog = blog => filterBlogList.includes(blog);
 const hasFilteredTag = tags => tags.some(tag => filterTagList.includes(tag));
-
+const removeOnClick = event => {
+  event.preventDefault();
+  event.stopPropagation();
+  event.target.closest(`[${hiddenAttribute}]`).removeEventListener('click', removeOnClick);
+  event.target.closest(`[${hiddenAttribute}]`).removeAttribute(hiddenAttribute);
+}
 const filterPosts = async posts => {
   for (const post of posts) {
     const { blogName, rebloggedFromName, rebloggedRootName, communityLabels, tags, trail } = await timelineObject(post);
@@ -36,8 +41,13 @@ const filterPosts = async posts => {
         if (isFilteredBlog(blog)) avatar.querySelector(avatarInnerSelector).setAttribute(hiddenAttribute, hideStyle.selected);
       });
 
-      if (media) post.querySelectorAll(mediaSelector).forEach(media => media.setAttribute(hiddenAttribute, hideStyle.selected));
-      if (text) post.querySelectorAll(textSelector).forEach(text => text.setAttribute(hiddenAttribute, hideStyle.selected));
+      if (hideStyle.selected === 'hidePost') post.querySelector(s('contentWrapper')).setAttribute(hiddenAttribute, hideStyle.selected);
+      else {
+        if (media) post.querySelectorAll(mediaSelector).forEach(media => media.setAttribute(hiddenAttribute, hideStyle.selected));
+        if (text) post.querySelectorAll(textSelector).forEach(text => text.setAttribute(hiddenAttribute, hideStyle.selected));
+      }
+
+      if (dispelStyle.selected === 'click') post.querySelectorAll(`[${hiddenAttribute}]`).forEach(content => content.addEventListener('click', removeOnClick));
     }
   }
 };
@@ -51,7 +61,8 @@ const run = async preferences => {
     filterBlogs,
     blogList,
     tagList,
-    hideStyle
+    hideStyle,
+    dispelStyle
   } = preferences);
 
   filterBlogList = blogList.value.toLowerCase().replace(normalizeRegex, '').split(',');

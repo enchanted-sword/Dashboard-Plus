@@ -9,33 +9,103 @@
 }
 
 [dbplus-safescroll-hidden="blur"] {
-  overflow: clip;
-
-  &[data-css~="avatarWrapperInner"] img,
-  &[data-css~="imageBlock"] img,
-  &[data-css~="videoBlock"] video {
-    filter: blur(8px);
-    transition: filter 0.3s;
-  }
-  &[data-css~="avatarWrapperInner"]:hover img,
-  &[data-css~="imageBlock"]:hover img,
-  &[data-css~="videoBlock"]:hover video { filter: none; }
-
-  [data-css~="textBlock"] p {
-    color: rgba(var(--black), 0);
-    text-shadow: rgb(var(--black)) 1px 0 8px;
-  }
-  &:hover [data-css~="textBlock"] p {
-    color: inherit;
-    text-shadow: none;
+  [data-css~="textBlock"] { position: relative; }
+  &[data-css~="imageBlock"],
+  &[data-css~="videoBlock"],
+  [data-css~="textBlock"] {
+    &:after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(var(--blue), .2), rgba(var(--pink),.2));
+      content: "";
+      backdrop-filter: blur(20px);
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+    &:hover:after { opacity: 0; }
   }
 }
 
 [dbplus-safescroll-hidden="cover"] {
   [data-css~="textBlock"] { position: relative; }
-  &[data-css~="imageBlock"]:after,
-  &[data-css~="videoBlock"]:after,
-  [data-css~="textBlock"]:after {
+  &[data-css~="imageBlock"],
+  &[data-css~="videoBlock"],
+  [data-css~="textBlock"] {
+    &:after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: color-mix(in srgb, rgb(var(--navy)) 20%, rgb(var(--white)));
+      line-height: 1.5;
+      font-weight: bold;
+      color: rgba(var(--black), .65);
+      content: "filtered by safeScroll";
+      text-align: center;
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+    &:hover:after { opacity: 0; }
+  }
+}
+
+[dbplus-safescroll-hidden="collapse"] {
+  [data-css~="textBlock"] { position: relative; }
+  &[data-css~="imageBlock"],
+  &[data-css~="videoBlock"],
+  [data-css~="textBlock"] {
+    & {
+      position: relative;
+      transition: height 0.3s;
+    }
+    &:not(:hover) {
+      height: 1.5rem;
+      overflow: hidden;
+    }
+    &:not(:hover) [data-css~="placeholder"] { padding-bottom: 0 !important }
+
+    &:after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: color-mix(in srgb, rgb(var(--navy)) 20%, rgb(var(--white)));
+      line-height: 1.5;
+      font-weight: bold;
+      color: rgba(var(--black), .65);
+      content: "filtered by safeScroll";
+      text-align: center;
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+    &:hover:after { opacity: 0; }
+  }
+}
+
+article > [data-css~="contentWrapper"][dbplus-safescroll-hidden="hidePost"] {
+  & {
+    position: relative;
+    transition: height 0.3s;
+  }
+  &:not(:hover) {
+    height: 1.5rem;
+    overflow: hidden;
+  }
+  &:after {
     position: absolute;
     top: 0;
     left: 0;
@@ -54,7 +124,5 @@
     opacity: 1;
     transition: opacity 0.3s;
   }
-  &[data-css~="imageBlock"]:hover:after,
-  &[data-css~="videoBlock"]:hover:after,
-  &:hover [data-css~="textBlock"]:after { opacity: 0; }
+  &:hover:after { opacity: 0; }
 }

@@ -184,7 +184,8 @@
       },
       "hideStyle": { "selected": "blur" },
       "blogList": { "value": "" },
-      "tagList": { "value": "nsfw, nsft" }
+      "tagList": { "value": "nsfw, nsft" },
+      "dispelStyle": { "selected": "hover" }
     }
   },
   "showExactVotes": {

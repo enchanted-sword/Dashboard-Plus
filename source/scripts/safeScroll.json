@@ -54,8 +54,15 @@
         "blur": { "title": "blur" },
         "cover": { "title": "cover" },
         "collapse": { "title": "collapse" },
-        "remove": { "title": "remove" },
         "hidePost": { "title": "hide entire post" }
+      }
+    },
+    "dispelStyle": {
+      "title": "show filtered content style",
+      "type": "select",
+      "options": {
+        "hover": { "title": "hover to show content" },
+        "click": { "title": "hover to show content, click to remove filter" }
       }
     }
   },
