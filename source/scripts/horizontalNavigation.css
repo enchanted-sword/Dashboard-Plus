@@ -48,7 +48,7 @@
     border-radius: var(--border-radius-small);
     box-shadow: 0 0 15px rgba(0,0,0,.5);
   }
-  [data-css~='homeMenu'] + [data-css~='arrow'] { display: none; }
+  #glass-container [data-css~='arrow'] { display: none; }
   
   [data-css~='subNav'] {
     [data-css~='childWrapper'], [data-css~='blogName'] { color: RGB(var(--black)) !important; }

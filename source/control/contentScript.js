@@ -120,8 +120,8 @@
     if (preferences) {
       const { oldValue = {}, newValue = {} } = preferences;
 
-      const newlyEnabled = Object.keys(newValue).filter(feature => !oldValue[feature].enabled && newValue[feature].enabled);
-      const newlyDisabled = Object.keys(oldValue).filter(feature => oldValue[feature].enabled && !newValue[feature].enabled);
+      const newlyEnabled = Object.keys(newValue).filter(feature => !oldValue[feature]?.enabled && newValue[feature]?.enabled);
+      const newlyDisabled = Object.keys(oldValue).filter(feature => oldValue[feature]?.enabled && !newValue[feature]?.enabled);
 
       newlyEnabled.forEach(executeFeature);
       enabledFeatures.push(newlyEnabled);

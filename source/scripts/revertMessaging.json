@@ -1,0 +1,8 @@
+{
+  "name": "revert messaging window style",
+  "category": "messaging",
+  "description": "reverts the messaging window appearance to the previous design",
+  "type": "toggle",
+  "js": true,
+  "css": true
+}

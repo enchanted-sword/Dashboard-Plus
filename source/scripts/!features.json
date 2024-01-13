@@ -32,6 +32,9 @@
   "reblogFinder",
   "hideFiltered",
   "noTrackingData",
+  "messagingScale",
+  "revertMessaging",
+  "messagingColors",
   "no404Redirect",
   "postDebugInfo"
 ]

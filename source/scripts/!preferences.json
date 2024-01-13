@@ -213,6 +213,24 @@
     "type": "toggle",
     "enabled": true
   },
+  "messagingScale": {
+    "type": "slider",
+    "enabled": false,
+    "preferences": {
+      "value": {
+        "value": "8",
+        "enabled": "false"
+      }
+    }
+  },
+  "revertMessaging": {
+    "type": "toggle",
+    "enabled": false
+  },
+  "messagingColors": {
+    "type": "toggle",
+    "enabled": false
+  },
   "no404Redirect": {
     "type": "toggle",
     "enabled": true

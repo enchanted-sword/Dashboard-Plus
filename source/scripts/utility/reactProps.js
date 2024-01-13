@@ -2,6 +2,7 @@ import { inject } from './inject.js';
 
 const timelineObjectCache = new WeakMap();
 const notificationCache = new WeakMap();
+const conversationCache = new WeakMap();
 
 const getTimelineObject = async () => {
   const elem = document.currentScript.parentElement;
@@ -31,6 +32,29 @@ const getNotificationObject = async () => {
     }
   }
 };
+const getOtherBlog = async () => {
+  const elem = document.currentScript.parentElement;
+  const fiberKey = Object.keys(elem).find(key => key.startsWith('__reactFiber'));
+  let fiber = elem[fiberKey];
+  let conversationWindowObject, headerImageFocused, backgroundColor, titleColor, linkColor;
+
+  while (fiber !== null) {
+    ({ conversationWindowObject } = fiber.memoizedProps || {});
+    if (typeof conversationWindowObject !== 'undefined') {
+      break;
+    } else {
+      fiber = fiber.return;
+    }
+  }
+
+  const { otherParticipantName, selectedBlogName } = conversationWindowObject;
+
+  await window.tumblr.apiFetch(`/v2/blog/${otherParticipantName}/info?fields[blogs]=theme`).then(response => {
+    ({ headerImageFocused, backgroundColor, titleColor, linkColor } = response.response.blog.theme);
+  });
+
+  return ({ headerImageFocused, backgroundColor, titleColor, linkColor, otherParticipantName, selectedBlogName });
+};
 
 /**
  * @param {Element} post - Post element to fetch property from
@@ -54,4 +78,12 @@ export const notificationObject = async notification => {
   }
 
   return notificationCache.get(notification);
+};
+
+export const conversationInfo = async conversation => {
+  if (!conversationCache.has(conversation)) {
+    conversationCache.set(conversation, inject(getOtherBlog, [], conversation));
+  }
+
+  return conversationCache.get(conversation);
 };

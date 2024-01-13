@@ -1,0 +1,12 @@
+{
+  "name": "hide content in posts",
+  "type": "multiSelect",
+  "category": "posts",
+  "preferences": {
+    "badges": { "title": "user badges" },
+    "tips": { "title": "tip buttons" },
+    "blaze": { "title": "blaze buttons" },
+    "follow": { "title": "follow buttons" }
+  },
+  "js": "true"
+}

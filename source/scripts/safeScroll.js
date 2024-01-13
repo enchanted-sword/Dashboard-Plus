@@ -52,7 +52,7 @@ const filterPosts = async posts => {
   }
 };
 
-const run = async preferences => {
+export const main = async () => {
   ({
     blogAvatars,
     media,
@@ -63,19 +63,12 @@ const run = async preferences => {
     tagList,
     hideStyle,
     dispelStyle
-  } = preferences);
+  } = await getPreferences('safeScroll'));
 
   filterBlogList = blogList.value.toLowerCase().replace(normalizeRegex, '').split(',');
   filterTagList = tagList.value.toLowerCase().replace(normalizeRegex, '').split(',');
 
-  console.info(filterBlogList, filterTagList);
-
   mutationManager.start(postSelector, filterPosts);
-};
-
-export const main = async () => {
-  const preferences = await getPreferences('safeScroll');
-  run(preferences);
 };
 
 export const clean = async () => {
@@ -83,3 +76,5 @@ export const clean = async () => {
   $(`[${hiddenAttribute}]`).removeAttr(hiddenAttribute);
   mutationManager.stop(filterPosts);
 };
+
+export const update = true;

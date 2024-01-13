@@ -7,10 +7,10 @@ const run = ({ value }) => {
   if (value.enabled === false) return false;
   
   styleElement.innerText = `
-  ${s('postColumn')} > ${s('bar')}, 
-  ${s('activityPopover')} ${s('selectorPopover')},
-  article${s('post')} { border-radius: ${value.value}px !important; }
-  article${s('post')} header { border-radius: ${value.value}px ${value.value}px 0 0 !important; }
+    ${s('postColumn')} > ${s('bar')}, 
+    ${s('activityPopover')} ${s('selectorPopover')},
+    article${s('post')} { border-radius: ${value.value}px !important; }
+    article${s('post')} header { border-radius: ${value.value}px ${value.value}px 0 0 !important; }
   `;
 
   return true;

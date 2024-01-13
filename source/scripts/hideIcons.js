@@ -1,7 +1,7 @@
 import { getPreferences } from './utility/jsTools.js';
 import { style, s } from './utility/style.js';
 
-const shopSelector = `${s('targetPopoverWrapper')}:has([data-title="TumblrMart"]),${s('navItem')}[data-title="Payment & Purchases"], ${s('navItem')}[data-title="Gifts"]`;
+const shopSelector = `${s('targetPopoverWrapper')}:has([data-title="TumblrMart"]),${s('targetWrapper')}:has([data-title='TumblrMart']),${s('navItem')}[data-title="Payment & Purchases"], ${s('navItem')}[data-title="Gifts"]`;
 const exploreSelector = `${s('navItem')}[data-title="Explore"]`;
 const domainsSelector = `${s('navItem')}:has([href="/domains"]),ul${s('sideBar')}>li:has([href="/settings/domains"])`;
 const styleElement = style('');
