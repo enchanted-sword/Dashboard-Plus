@@ -30,6 +30,8 @@
     a { color: rgba(var(--black),.65) !important; }
   }
 
+  [data-css~='summaryInfo'][data-css~='sticky'] { top: 75px; }
+
   [data-css~='popoverHolder']:has([data-css~='homeMenu']) { transform: translatex(-20px) !important; }
   [data-css~='homeMenu'], #account_subnav {
     background: RGB(var(--white));
