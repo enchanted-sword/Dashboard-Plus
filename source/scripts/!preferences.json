@@ -217,8 +217,8 @@
     "type": "slider",
     "enabled": false,
     "preferences": {
-      "value": {
-        "value": "8",
+      "scale": {
+        "value": "1",
         "enabled": "false"
       }
     }

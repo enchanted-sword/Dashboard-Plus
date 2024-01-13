@@ -3,7 +3,7 @@
   border-radius: 5px;
   width: calc(280px * var(--dbplus-messagingScale)); 
   height: calc(500px * var(--dbplus-messagingScale));
-  max-height: calc(100vh - 80px) ;
+  max-height: calc(100vh - 80px);
 
   [data-css~="headerDesktop"] {
     border-radius: 5px 5px 0 0 ;
@@ -34,7 +34,6 @@
   [data-css~="thumbnail"] { border-radius: 0 0 5px 5px; }
   [data-css~="bubble"] {
     position: relative;
-    max-width: 204px;
     padding-right: 0 !important;
     padding-left: 36px !important;
     margin-left: 0 !important;

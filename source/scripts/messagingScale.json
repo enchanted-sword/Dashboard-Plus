@@ -1,0 +1,31 @@
+{
+  "name": "messaging scale",
+  "type": "slider",
+  "description": "changes the scale of the messaging window",
+  "category": "messaging",
+  "preferences": {
+    "scale": {
+      "title": "scale",
+      "display": false,
+      "min": 1,
+      "max": 2,
+      "default": 1,
+      "step": 0.1,
+      "datalist": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 1.5,
+          "label": "1.5"
+        },
+        {
+          "value": 2,
+          "label": "2"
+        }
+      ]
+    }
+  },
+  "js": true
+}
