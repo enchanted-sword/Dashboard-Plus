@@ -1,0 +1,30 @@
+{
+  "name": "messaging colors",
+  "category": "messaging",
+  "description": "customizes the messaging window theme",
+  "type": "toggle",
+  "extend": true,
+  "preferences": {
+    "colorStyle": {
+      "title": "color style",
+      "type": "select",
+      "dummy": "theme",
+      "options": {
+        "theme": { "title": "use theme colors" },
+        "blog": { "title": "use blog colors" },
+        "custom": { "title": "use custom colors" }
+      }
+    },
+    "customColors": {
+      "title": "custom colors",
+      "type": "colors",
+      "options": {
+        "messageColor": { "title": "message color" },
+        "backgroundColor": { "title": "background color" },
+        "textColor": { "title": "text color" }
+      }
+    }
+  },
+  "js": true,
+  "css": true
+}

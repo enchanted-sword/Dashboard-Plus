@@ -39,12 +39,12 @@
     },
     "blogList": {
       "title": "filtered blogs",
-      "type": "text",
+      "type": "textarea",
       "placeholder": "enter a list of blogs (comma-separated)"
     },
     "tagList": {
       "title": "filtered tags",
-      "type": "text",
+      "type": "textarea",
       "placeholder": "enter a list of tags (comma-separated)"
     },
     "hideStyle": {

@@ -1,0 +1,14 @@
+[data-css~="conversationWindow"] {
+  [data-css~="messages"] { background: rgb(var(--dbplus-backgroundColor)); }
+  [data-css~="headerDesktop"] { background: rgb(var(--dbplus-headerBackground)); }
+  [data-css~="statusWithCaption"] { color: rgb(var(--dbplus-linkColor)) !important; }
+  [data-css~="timestamp"] { color: rgba(var(--dbplus-timestampColor), .6) }
+  [data-css~="name"], [data-css~="description"], 
+  [data-css~="descriptionContainer"] { color: rgb(var(--dbplus-timestampColor)) !important; }
+  [data-css~="messageText"], [data-css~="messagePost"] [data-css~="header"],
+  [data-css~="headerPreview"] [data-css~="action"] {
+    background: rgb(var(--dbplus-messageBackground)) !important;
+    color: rgb(var(--dbplus-titleColor)) !important;
+  }
+  [data-css~="headerPreview"] [data-css~="summary"] { color: rgba(var(--dbplus-titleColor), .6) !important; }
+}

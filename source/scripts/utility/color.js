@@ -1,18 +1,17 @@
-const hexToRgb = (hex = '') => {
-  hex = hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => {
-    return r + r + g + g + b + b;
-  });
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-      }
-    : null;
-};
-const luminance = ({ r, g, b }) => {
-  const a = [r, g, b].map(v => {
+const targetElement = document.getElementById('root');
+const white = [255,255,255];
+const black = [12,12,12];
+
+export const getThemeColor = color => getComputedStyle(targetElement).getPropertyValue(`--${color}`);
+
+const rgbToHex = (r, g, b) => '#' + [r, g, b]
+  .map(x => x.toString(16).padStart(2, '0')).join('');
+const hexToRgb = hex =>
+  hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => '#' + r + r + g + g + b + b)
+    .substring(1).match(/.{2}/g)
+    .map(x => parseInt(x, 16));
+const luminance = rgb => {
+  const a = rgb.map(v => {
     v /= 255;
     return v <= 0.03928
       ? v / 12.92
@@ -26,15 +25,17 @@ const contrast = (hex1, hex2) => {
   const lum2 = luminance(hexToRgb(hex2));
   return ratio(lum1, lum2);
 };
-const contrastBW = hex => {
+export const contrastBW = hex => {
   const lum = luminance(hexToRgb(hex));
-  const lumBlk = luminance({ r: 12, g: 12, b: 12 });
-  const lumWht = luminance({ r: 255, g: 255, b: 255 });
+  const lumBlk = luminance(black);
+  const lumWht = luminance(white);
   const ratioBlk = ratio(lum, lumBlk);
   const ratioWht = ratio(lum, lumWht);
-  if (ratioBlk < ratioWht) return '12,12,12';
-  else return '255,255,255';
+  if (ratioBlk < ratioWht) return rgbToString(black);
+  else return rgbToString(white);
 };
-const rgbToString = ({ r, g, b }) => `${r},${g},${b}`;
+const stringToRgb = str => str.replace(/\s/g, '').split(',');
+const rgbToString = rgb => rgb.join(',');
 
 export const hexToRgbString = hex => rgbToString(hexToRgb(hex));
+export const rgbStringToHex = rgb => rgbToHex(...stringToRgb(rgb));

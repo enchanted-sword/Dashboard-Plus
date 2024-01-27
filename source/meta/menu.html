@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <!-- <link rel="stylesheet" href="menu.css" /> -->
     <script src="../libraries/jquery.min.js"></script>
+    <script src="../libraries/coloris.js"></script>
+    <link rel="stylesheet" href="../libraries/coloris.css"/>
     <style>
       @font-face {
         font-family: "Favorit";
@@ -116,6 +118,7 @@
       }
 
       div.ui-featureCategory {
+        position: relative;
         padding: 8px;
         border: 2px solid rgba(var(--navy), .2);
         border-style: none inset inset inset;
@@ -424,6 +427,25 @@
         background: rgba(var(--white), .64);
       }
       textarea.ui-textInput:focus { background: rgb(var(--white)); }
+
+      input.ui-colors {
+        position: relative;
+        border: none;
+        border-radius: 3px;
+        outline: none;
+        padding: 4px;
+        background: rgba(var(--navy), .12);
+        width: 80px;
+      }
+      input.ui-colors+ label {
+        content: "";
+        position: absolute;
+        top: 0.5px;
+        right: 0;
+        width: 24px;
+        height: 24px;
+        border-radius: 0 3px 3px 0;
+      }
     </style>
   </head>
 

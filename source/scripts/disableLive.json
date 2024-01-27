@@ -1,6 +1,0 @@
-{
-  "name": "disable tumblr live",
-  "category": "dashboard",
-  "type": "toggle",
-  "css": true
-}

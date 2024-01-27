@@ -229,7 +229,15 @@
   },
   "messagingColors": {
     "type": "toggle",
-    "enabled": false
+    "enabled": false,
+    "preferences": {
+      "colorStyle": { "selected": "theme" },
+      "customColors": {
+        "messageColor": "#f0f0f0",
+        "backgroundColor": "#ffffff",
+        "textColor": "#121212"
+      }
+    }
   },
   "no404Redirect": {
     "type": "toggle",

@@ -1,2 +1,0 @@
-[data-css~="navItem"][data-title="Live"], [data-css~="navItem"]:has([href="/live/shop"]),
-  [data-cell-id*="timelineObject:live_marquee"] [data-css~="listTimelineObject"] { display: none !important; }

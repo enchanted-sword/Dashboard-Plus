@@ -25,7 +25,6 @@
   }
 }
 
-[data-css~="messages"] { background: transparent !important; }
 [data-css~="message"] {
   img { width: 100% !important; }
   [data-css~="messagePost"] [data-css~="header"] { border-radius: 5px  }

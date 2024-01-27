@@ -79,4 +79,6 @@
     object-fit: cover;
     visibility: visible;
   }
+
+  figure[data-css~="anonymous"] {background-image: url(https://assets.tumblr.com/pop/src/assets/images/avatar/anonymous_avatar_96-223fabe0.png) !important; }
 }

@@ -188,8 +188,7 @@
     > [data-css~='targetPopoverWrapper'] [data-css~="navItem"]:hover,
     > [data-css~="navItem"]:hover { background-color: transparent; }
 
-    [data-css~='navItem'][data-title='Home'] { order: -9; }
-    [data-css~='navItem'][data-title='Live'] { order: -8; }
+    [data-css~='navItem'][data-title='Home'] { order: -8; }
     [data-css~='navItem'][data-title='Explore'] { order: -7; }
     > [data-css~='targetPopoverWrapper']:has([data-title='TumblrMart']) { order: -6; }
     [data-css~='navItem'][data-title='Inbox'] { order: -5; }
@@ -215,7 +214,6 @@
     position: static;
     margin: 0 !important;
   }
-  [id*='web-live-iframe'] { width: 380px !important; }
   [data-css~='stickyContainer'] > [data-css~='avatar'] { top: calc(70px + var(--dashboard-tabs-header-height, 0px)) !important; }
   [data-css~='createPost'] {
     height: 55px;

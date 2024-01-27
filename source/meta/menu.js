@@ -56,6 +56,13 @@
 
     browser.storage.local.set({ preferences });
   }
+  const onColorChange = async (color, input) => {
+    let { preferences } = await browser.storage.local.get('preferences');
+    $(input.nextElementSibling).css('background', color);
+    const [name, key, optionsKey] = input.getAttribute('name').split('-');
+    preferences[name].preferences[key][optionsKey] = color;
+    browser.storage.local.set({ preferences });
+  }
 
   const newFeatureItem = (name, feature = {}, preference = {}, allPreferences) => {
     const wrapper = $('<li>');
@@ -303,7 +310,7 @@
                 });
               });
               break;
-            case 'text':
+            case 'textarea':
               const textInputWrapper = $(`<div class="ui-extendedSelectWrapper "><h3>${feature.preferences[key].title}</h3></div>`);
               const textInput = $('<textarea>', {
                 class: 'ui-textInput',
@@ -320,6 +327,36 @@
               extendInputWrapper.append(textInputWrapper);
 
               textInput.on('input', debounce(onTextInput));
+              break;
+            case 'colors':
+              const colorsInputWrapper = $(`<div class="ui-extendedSelectWrapper "><h3>${feature.preferences[key].title}</h3></div>`);
+              extendInputWrapper.append(colorsInputWrapper);
+
+              Object.keys(feature.preferences[key].options).forEach(optionsKey => {
+                const option = feature.preferences[key].options[optionsKey];
+                const colorWrapper = $(`<div class="ui-multiSelectWrapper ui-extendedSelect"><h2>${option.title}</h2></div>`);
+                const colorInputWrapper = $(`<div>`, { style: 'position: relative;' });
+                const input = $('<input>', {
+                  class: 'ui-colors',
+                  type: 'text',
+                  id: `ui-feature-${name}-${key}-${optionsKey}`,
+                  name: `${name}-${key}-${optionsKey}`,
+                  'data-coloris': '',
+                  value: preference.preferences[key][optionsKey]
+                });
+                const label = $('<label>', { style: `background: ${preference.preferences[key][optionsKey]};` });
+      
+                colorInputWrapper.append(input);
+                colorInputWrapper.append(label);
+                colorWrapper.append(colorInputWrapper);
+                colorsInputWrapper.append(colorWrapper);
+
+                input.on('change', async function () {
+                  let { preferences } = await browser.storage.local.get('preferences');
+                  preferences[name].preferences[key][optionsKey] = this.value;
+                  browser.storage.local.set({ preferences });
+                })
+              });
               break;
           }
         });
@@ -365,5 +402,12 @@
     setupButtons('ui-featureTab');
   };
   
+  Coloris({
+    themeMode: 'auto',
+    alpha: false,
+    theme: 'polaroid',
+    el: '.ui-colors',
+    onChange: debounce(onColorChange)
+  });
   buildMenu().then(init);
 }

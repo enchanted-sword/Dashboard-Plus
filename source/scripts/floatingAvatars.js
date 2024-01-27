@@ -19,7 +19,10 @@ const userAvatar = elem('div', { class: 'dbplus-userAvatarWrapper'}, null, `
               <div class="dbplus-placeholder" style="padding-bottom: 100%;">
                 <img
                 class="dbplus-avatarImage"
-                src="https://api.tumblr.com/v2/blog/${primaryBlogName}/avatar"
+                srcset="https://api.tumblr.com/v2/blog/${primaryBlogName}/avatar/64 64w,
+                        https://api.tumblr.com/v2/blog/${primaryBlogName}/avatar/96 96w,
+                        https://api.tumblr.com/v2/blog/${primaryBlogName}/avatar/128 128w,
+                        https://api.tumblr.com/v2/blog/${primaryBlogName}/avatar/512 512w"
                 sizes="64px" 
                 alt="${translate("Avatar")}" 
                 style="width: 64px; height: 64px;" 
@@ -46,6 +49,8 @@ const addScrollingAvatars = posts => {
 
     post.prepend(stickyContainer);
     stickyContainer.append(avatar);
+    avatar.querySelector(`${s('targetWrapper')} img`).sizes = "64px";
+    avatar.querySelectorAll(`${s('subAvatarTargetWrapper')} img`).forEach(img => img.sizes = "32px");
     post.classList.add(customClass);
   }
 };
@@ -63,6 +68,8 @@ export const main = async () => {
 export const clean = async () => {
   mutationManager.stop(addScrollingAvatars);
 
+  $(`.dbplus-stickyContainer > ${s('avatar')} ${s('targetWrapper')} img`).each(function() {this.sizes = "32px"});
+  $(`.dbplus-stickyContainer > ${s('avatar')} ${s('subAvatarTargetWrapper')} img`).each(function() {this.sizes = "16px"});
   $(`.${customClass}`).removeClass(customClass);
   $('.dbplus-userAvatarWrapper').remove()
   document.querySelectorAll(`.dbplus-stickyContainer > ${s('avatar')}`).forEach(avatar => avatar.closest('article').querySelector('header').prepend(avatar));

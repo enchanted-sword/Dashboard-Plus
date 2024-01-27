@@ -164,7 +164,6 @@ const menuModfifcations = menu => {
 
     $(`[href="/likes"] ${s('childWrapper')}`).prepend(newIcon('like-filled', 18, 20));
     $(`[href="/following"] ${s('childWrapper')}`).prepend(newIcon('following', 20, 21));
-    $(`[href="/live/shop"] ${s('childWrapper')}`).prepend(newIcon('coins', 21, 20));
   }
 };
 
