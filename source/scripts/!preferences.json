@@ -91,7 +91,8 @@
       "posts": false,
       "postsOnTab": false,
       "activity": false,
-      "inbox": false
+      "inbox": false,
+      "messaging": false
     }
   },
   "hideIcons": {

@@ -4,10 +4,11 @@
   "description": "hides the specified unread count types",
   "type": "multiSelect",
   "preferences": {
-    "posts": { "title": "unread posts badge" },
+    "posts": { "title": "unread posts" },
     "postsOnTab": { "title": "unread posts on browser tab" },
-    "activity": { "title": "activity badge" },
-    "inbox": { "title": "inbox badge" }
+    "activity": { "title": "unread activity" },
+    "inbox": { "title": "unread inbox notifications" },
+    "messaging": { "title": "unread messages" }
   },
   "js": true
 }

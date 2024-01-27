@@ -83,21 +83,19 @@
   
         main().catch(console.error);
   
-        if (update || data.recieveUpdates) {
-          preferenceListeners[name] = (changes, areaName) => {
-            if (areaName !== 'local') return;
-      
-            const { preferences } = changes;
-            const changed = Object.keys(preferences.newValue).filter(key => !deepEquals(preferences?.newValue[key], preferences?.oldValue[key]));
-            if ((changed.includes(name) && preferences?.newValue[name].enabled === true) 
-              || data.recieveUpdates?.some(key => changed.includes(key))) {
-              if (update instanceof Function) update(preferences.newValue[name]);
-              else clean().then(main);
-            }
-          };
+        preferenceListeners[name] = (changes, areaName) => {
+          if (areaName !== 'local') return;
+    
+          const { preferences } = changes;
+          const changed = Object.keys(preferences.newValue).filter(key => !deepEquals(preferences?.newValue[key], preferences?.oldValue[key]));
+          if ((changed.includes(name) && preferences?.newValue[name].enabled === true) 
+            || data.recieveUpdates?.some(key => changed.includes(key))) {
+            if (update instanceof Function) update(preferences.newValue[name]);
+            else clean().then(main);
+          }
+        };
 
-          browser.storage.onChanged.addListener(preferenceListeners[name]);
-        }
+        browser.storage.onChanged.addListener(preferenceListeners[name]);
       });
     } catch (e) { console.error(`failed to execute feature ${name}`, e); }
   };
