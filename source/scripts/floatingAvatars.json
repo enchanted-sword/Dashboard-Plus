@@ -16,5 +16,6 @@
   },
   "desktopOnly": true,
   "js": true,
-  "css": true
+  "css": true,
+  "recieveUpdates": ["horizontalNavigation"]
 }

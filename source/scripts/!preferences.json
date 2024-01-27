@@ -42,11 +42,6 @@
       }
     }
   },
-  "contentColumns": {
-    "type": "toggleSlider",
-    "enabled": false,
-    "value": 1
-  },
   "cornerRadii": {
     "type": "slider",
     "enabled": false,

@@ -225,5 +225,3 @@ export const clean = async function () {
     mutationManager.stop(menuModfifcations);
   });
 };
-
-export const update = async () => {};

@@ -37,5 +37,6 @@
     }
   },
   "js": true,
-  "css": true
+  "css": true,
+  "recieveUpdates": ["horizontalNavigation", "floatingAvatars"]
 }

@@ -17,6 +17,13 @@
     if (['interactive', 'complete'].includes(document.readyState)) waitForLoad().then(() => func(...args));
     else window.addEventListener('DOMContentLoaded', () => waitForLoad().then(() => func(...args)));
   };
+  const deepEquals = (x, y) => {
+    const tx = typeof x, ty = typeof y;
+    return x && y && tx === 'object' && tx === ty ? (
+      Object.keys(x).length === Object.keys(y).length &&
+      Object.keys(x).every(key => deepEquals(x[key], y[key]))
+    ) : (x === y);
+  }
 
   const script = document.createElement('script'); //run control script
   script.src = getURL('control/control.js');
@@ -76,18 +83,21 @@
   
         main().catch(console.error);
   
-        preferenceListeners[name] = (changes, areaName) => {
-          if (areaName !== 'local') return;
-    
-          const { preferences } = changes;
-          if (preferences && (preferences?.newValue[name] === preferences?.oldValue[name])
-            || (preferences?.newValue[name].enabled === false)) return;
-    
-          if (update instanceof Function) update(preferences.newValue[name]);
-          else clean().then(main);
-        };
-  
-        browser.storage.onChanged.addListener(preferenceListeners[name]);
+        if (update || data.recieveUpdates) {
+          preferenceListeners[name] = (changes, areaName) => {
+            if (areaName !== 'local') return;
+      
+            const { preferences } = changes;
+            const changed = Object.keys(preferences.newValue).filter(key => !deepEquals(preferences?.newValue[key], preferences?.oldValue[key]));
+            if ((changed.includes(name) && preferences?.newValue[name].enabled === true) 
+              || data.recieveUpdates?.some(key => changed.includes(key))) {
+              if (update instanceof Function) update(preferences.newValue[name]);
+              else clean().then(main);
+            }
+          };
+
+          browser.storage.onChanged.addListener(preferenceListeners[name]);
+        }
       });
     } catch (e) { console.error(`failed to execute feature ${name}`, e); }
   };
