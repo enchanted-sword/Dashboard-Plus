@@ -20,10 +20,6 @@
       "selected": "show"
     }
   },
-  "disableLive": {
-    "type": "toggle",
-    "enabled": true
-  },
   "timelineSearch": {
     "type": "toggle",
     "enabled": false
