@@ -188,11 +188,6 @@
     "type": "toggle",
     "enabled": false
   },
-  "customPostFunction": {
-    "type": "text",
-    "enabled": false,
-    "value": ""
-  },
   "reblogFinder": {
     "type": "toggle",
     "enabled": false
