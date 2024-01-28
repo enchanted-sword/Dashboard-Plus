@@ -1,4 +1,4 @@
-import { mutationManager } from './utility/mutations.js';
+import { postFunction } from './utility/mutations.js';
 import { elem, getPreferences } from './utility/jsTools.js';
 import { primaryBlogName } from './utility/user.js';
 import { translate } from './utility/tumblr.js';
@@ -59,14 +59,14 @@ export const main = async () => {
   if (window.innerWidth < 990) return;
   
   ({ scroll, showOwnAvatar } = await getPreferences('floatingAvatars'));
-  mutationManager.start(postSelector, addScrollingAvatars);
+  postFunction.start(addScrollingAvatars, postSelector);
 
   if (!scroll) document.head.append(styleElement);
   if (showOwnAvatar) addUserPortrait();
 }
 
 export const clean = async () => {
-  mutationManager.stop(addScrollingAvatars);
+  postFunction.stop(addScrollingAvatars);
 
   $(`.dbplus-stickyContainer > ${s('avatar')} ${s('targetWrapper')} img`).each(function() {this.sizes = "32px"});
   $(`.dbplus-stickyContainer > ${s('avatar')} ${s('subAvatarTargetWrapper')} img`).each(function() {this.sizes = "16px"});

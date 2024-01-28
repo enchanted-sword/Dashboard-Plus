@@ -1,5 +1,5 @@
 import { getPreferences } from './utility/jsTools.js';
-import { mutationManager } from './utility/mutations.js';
+import { postFunction } from './utility/mutations.js';
 import { timelineObject } from './utility/reactProps.js';
 import { s } from './utility/style.js';
 import { navigate } from './utility/tumblr.js';
@@ -53,7 +53,7 @@ const linkPosts = async posts => {
 export const main = async () => {
   ({ headerLinks, tagLinks } = await getPreferences('linkToPrevious'));
 
-  if (headerLinks || tagLinks) mutationManager.start(postSelector, linkPosts);
+  if (headerLinks || tagLinks) postFunction.start(linkPosts, postSelector);
 };
 
-export const clean = async () => mutationManager.stop(linkPosts);
+export const clean = async () => postFunction.stop(linkPosts);

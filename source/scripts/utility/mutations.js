@@ -1,4 +1,4 @@
-import { cellSelector } from './document.js';
+import { cellSelector, postSelector } from './document.js';
 
 const root = document.getElementById('root');
 const addedNodesPool = [];
@@ -48,6 +48,24 @@ export const mutationManager = Object.freeze({
     }
   }
 });
+
+export const postFunction = Object.freeze({
+  functions: new Map(),
+  start (func, filter = false) {
+    if (this.functions.has(func)) this.functions.delete(func);
+    this.functions.set(func, filter);
+    if (mutationManager.listeners.has(onNewPosts)) mutationManager.trigger(onNewPosts);
+    else (mutationManager.start(postSelector, onNewPosts));
+  },
+  stop (func) {
+    this.functions.delete(func)
+  }
+});
+const onNewPosts = posts => {
+  for (const [func, filter] of postFunction.functions) {
+    filter ? func(posts.filter(post => post.matches(filter))) : func(posts)
+  }
+}
 
 const onBeforeRepaint = () => {
   repaintQueued = false;

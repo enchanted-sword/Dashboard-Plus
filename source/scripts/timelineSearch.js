@@ -1,4 +1,4 @@
-import { mutationManager } from './utility/mutations.js';
+import { mutationManager, postFunction } from './utility/mutations.js';
 import { timelineObject } from './utility/reactProps.js';
 import { elem } from './utility/jsTools.js';
 
@@ -51,9 +51,9 @@ const debounce = func => {
   };
 };
 const onInput = ({ target }) => {
-  mutationManager.stop(queryFilter);
+  postFunction.stop(queryFilter);
   if($(`[${hiddenAttribute}]`).length) queryFilter(document.querySelectorAll(`[${hiddenAttribute}]`));
-  if (target.value) mutationManager.start(postSelector, queryFilter);
+  if (target.value) postFunction.start(queryFilter);
 };
 const search = elem('div', { class: 'dbplus-timelineSearchContainer' }, null, [
   elem('div', { class: 'dbplus-timelineSearchIcon' }, null,
@@ -69,5 +69,5 @@ export const clean = async () => {
   mutationManager.stop(renderSearch);
   $('.dbplus-timelineSearchContainer').remove();
   $(`[${hiddenAttribute}]`).removeAttr(hiddenAttribute);
-  mutationManager.stop(queryFilter)
+  postFunction.stop(queryFilter);
 };

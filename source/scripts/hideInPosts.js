@@ -1,6 +1,5 @@
 import { getPreferences } from './utility/jsTools.js';
 import { style, s } from './utility/style.js';
-import { mutationManager } from './utility/mutations.js';
 import { translate } from './utility/tumblr.js';
 
 const badgeSelector = `${s('badgeContainer')},${s('peeprHeaderBadgesWrapper')}`;

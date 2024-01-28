@@ -1,5 +1,5 @@
 import { elem } from './utility/jsTools.js';
-import { mutationManager } from './utility/mutations.js';
+import { postFunction } from './utility/mutations.js';
 import { timelineObject } from './utility/reactProps.js';
 import { s } from './utility/style.js';
 import { keyToClasses, translate } from './utility/tumblr.js';
@@ -49,10 +49,10 @@ const revertHeaders = async posts => {
   }
 };
 
-export const main = async () => mutationManager.start(postSelector, revertHeaders);
+export const main = async () => postFunction.start(revertHeaders, postSelector);
 
 export const clean = async () => {
-  mutationManager.stop(revertHeaders);
+  postFunction.stop(revertHeaders);
 
   $('.dbplus-rebloggedFrom').remove();
   $('.dbplus-reblogIcon').replaceWith(` ${translate('reblogged')} `);

@@ -1,4 +1,4 @@
-import { mutationManager } from './utility/mutations.js';
+import { postFunction } from './utility/mutations.js';
 import { getPreferences } from './utility/jsTools.js';
 import { timelineObject } from './utility/reactProps.js';
 import { s } from './utility/style.js';
@@ -68,13 +68,13 @@ export const main = async () => {
   filterBlogList = blogList.value.toLowerCase().replace(normalizeRegex, '').split(',');
   filterTagList = tagList.value.toLowerCase().replace(normalizeRegex, '').split(',');
 
-  mutationManager.start(postSelector, filterPosts);
+  postFunction.start(filterPosts, postSelector);
 };
 
 export const clean = async () => {
   $(`.${customClass}`).removeClass(customClass);
   $(`[${hiddenAttribute}]`).removeAttr(hiddenAttribute);
-  mutationManager.stop(filterPosts);
+  postFunction.stop(filterPosts);
 };
 
 export const update = true;
