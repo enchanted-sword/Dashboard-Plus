@@ -3,6 +3,7 @@ import { inject } from './inject.js';
 const timelineObjectCache = new WeakMap();
 const notificationCache = new WeakMap();
 const conversationCache = new WeakMap();
+const percentageCache = new WeakMap();
 
 const getTimelineObject = async () => {
   const elem = document.currentScript.parentElement;
@@ -55,6 +56,20 @@ const getOtherBlog = async () => {
 
   return ({ headerImageFocused, backgroundColor, titleColor, linkColor, otherParticipantName, selectedBlogName });
 };
+const getPercentage = async () => {
+  const elem = document.currentScript.parentElement;
+  const fiberKey = Object.keys(elem).find(key => key.startsWith('__reactFiber'));
+  let fiber = elem[fiberKey];
+
+  while (fiber !== null) {
+    const { percentage, answer } = fiber.memoizedProps || {};
+    if (typeof percentage !== 'undefined' && typeof answer !== 'undefined') {
+      return { percentage };
+    } else {
+      fiber = fiber.return;
+    }
+  }
+};
 
 /**
  * @param {Element} post - Post element to fetch property from
@@ -82,8 +97,16 @@ export const notificationObject = async notification => {
 
 export const conversationInfo = async conversation => {
   if (!conversationCache.has(conversation)) {
-    conversationCache.set(conversation, inject(getOtherBlog, [], conversation));
+    conversationCache.set(conversation, inject(getOtherBlog, ['z'], conversation));
   }
 
   return conversationCache.get(conversation);
+};
+
+export const percentageNumber = async answer => {
+  if (!percentageCache.has(answer)) {
+    percentageCache.set(answer, inject(getPercentage, [], answer));
+  }
+
+  return percentageCache.get(answer);
 };

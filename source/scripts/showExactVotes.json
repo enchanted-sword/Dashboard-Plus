@@ -1,0 +1,8 @@
+{
+  "name": "show exact poll votes",
+  "type": "toggle",
+  "category": "utility",
+  "description": "displays the exact number of votes for each poll option",
+  "js": true,
+  "css": true
+}
