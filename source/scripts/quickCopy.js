@@ -12,4 +12,4 @@ const copyLink = async event => {
 }
 
 export const main = async () => controlIcons.register('copy', translate('Copy link'), copyLink);
-export const clean = async () => controlIcons.unregister('copy');
+export const clean = async () => controlIcons.unregister(copyLink);

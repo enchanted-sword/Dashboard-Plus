@@ -198,7 +198,7 @@
   },
   "quickCopy": {
     "type": "toggle",
-    "enabled": true
+    "enabled": false
   },
   "linkToPrevious": {
     "type": "multiSelect",

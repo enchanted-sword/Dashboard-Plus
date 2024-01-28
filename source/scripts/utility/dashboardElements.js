@@ -262,16 +262,20 @@ export const controlIcons = Object.freeze({
   register (icon, tooltip, func) {
     if (this.collection.has(func)) this.collection.delete(func);
     this.collection.set(func, { icon, tooltip });
+    if (mutationManager.listeners.has(onNewControlElement)) mutationManager.trigger(onNewControlElement);
+    else mutationManager.start(controlTargetSelector, onNewControlElement)
   },
   unregister (func) {
-    if (this.collection.has(func)) this.collection.delete(func);
-  }
-});
-
-mutationManager.start(controlTargetSelector, controlElements => {
-  for (const controlElement of controlElements) {
-    for (const [func, { icon, tooltip }] of controlIcons.collection) {
-      controlElement.prepend(newControlIcon(icon, func, tooltip));
+    if (this.collection.has(func)) {
+      $(`.dbplus-controlIcon`).has(`[href="#managed-icon__${this.collection.get(func).icon}"]`).remove();
+      this.collection.delete(func);
     }
   }
 });
+const onNewControlElement = controlElements => {
+  for (const controlElement of controlElements) {
+    for (const [func, { icon, tooltip }] of controlIcons.collection) {
+      if (!controlElement.querySelector(`[href="#managed-icon__${icon}"]`)) controlElement.prepend(newControlIcon(icon, func, tooltip));
+    }
+  }
+}
