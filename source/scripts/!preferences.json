@@ -200,6 +200,14 @@
     "type": "toggle",
     "enabled": true
   },
+  "linkToPrevious": {
+    "type": "multiSelect",
+    "enabled": false,
+    "preferences": {
+      "headerLinks": false,
+      "tagLinks": false
+    }
+  },
   "messagingScale": {
     "type": "slider",
     "enabled": false,

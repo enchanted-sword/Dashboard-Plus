@@ -1,0 +1,11 @@
+{
+  "name": "link to previous",
+  "type": "multiSelect",
+  "description": "adds links to the previous reblog in the specified locations",
+  "category": "posts",
+  "preferences": {
+    "headerLinks": { "title": "post header link" },
+    "tagLinks": { "title": "tag link" }
+  },
+  "js": "true"
+}
