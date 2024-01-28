@@ -32,5 +32,6 @@
   "messagingScale",
   "revertMessaging",
   "messagingColors",
-  "postDebugInfo"
+  "postDebugInfo",
+  "skipAdultWall"
 ]

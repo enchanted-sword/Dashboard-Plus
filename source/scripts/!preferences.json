@@ -229,5 +229,9 @@
   "postDebugInfo": {
     "type": "toggle",
     "enabled": false
+  },
+  "skipAdultWall": {
+    "type": "toggle",
+    "enabled": false
   }
 }

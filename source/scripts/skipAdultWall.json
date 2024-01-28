@@ -1,0 +1,7 @@
+{
+  "name": "skip mature content warning",
+  "category": "utility",
+  "description": "automatically skips the mature content warning displayed before viewing flagged blogs",
+  "type": "toggle",
+  "js": true
+}
