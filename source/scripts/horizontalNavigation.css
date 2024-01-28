@@ -219,7 +219,7 @@
     height: 55px;
     padding: 12px 20px;
     position: absolute;
-    justify-content: flex-end;
+    justify-content: flex-end !important;
   }
   [data-css~='createPostButton'] {
     gap: 0 !important;
