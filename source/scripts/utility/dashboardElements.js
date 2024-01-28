@@ -1,7 +1,9 @@
-import { elem, elemFromString } from './jsTools.js';
-import { apiFetch, navigate, translate, replaceTranslate } from './tumblr.js';
+import { elem } from './jsTools.js';
+import { apiFetch, navigate, translate, replaceTranslate, keyToString } from './tumblr.js';
 import { hexToRgbString } from './color.js';
 import { formatTextBlock } from './npfTools.js';
+import { mutationManager } from './mutations.js';
+import { s } from './style.js';
 
 const k = str => str.split(' ').map(key => `dbplus-customPopover-${key}`).join(' ');
 const urlInfoLink = url => `/v2/url_info?url=${url}&fields[blogs]=avatar,name,title,url,blog_view_url,description_npf,theme,uuid`;
@@ -237,3 +239,39 @@ export const addUrlPopover = async anchor => {
   anchor.addEventListener('mouseenter', displayPopover);
   anchor.addEventListener('mouseleave', removePopover);
 }
+
+const controlTargetSelector = `[tabindex="-1"][data-id] article ${s('footerRow')}:has(${s('noteCount')}) ${s('controls')}`;
+const newControlIcon = (icon, func, tooltip) => elem('div', { class: 'dbplus-controlIcon' }, null, [
+  elem('span', { class: 'dbplus-controlIconWrapper' }, null, [
+    elem('button', { class: 'dbplus-controlIconButton', 'aria-label': tooltip }, { 'click': func }, `
+      <span class="dbplus-controlIconButtonInner" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" role="presentation" style="--icon-color-primary: rgba(var(--black), 0.65);">
+          <use href="#managed-icon__${icon}"></use>
+        </svg>
+      </span>
+    `),
+    elem('div', { class: 'dbplus-tooltipHolder', tabindex: 0 }, null, `
+    <div class="dbplus-tooltip">${tooltip}</div>
+    <div class="dbplus-tooltipArrow"></div>
+  `)
+  ])
+]);
+
+export const controlIcons = Object.freeze({
+  collection: new Map(),
+  register (icon, tooltip, func) {
+    if (this.collection.has(func)) this.collection.delete(func);
+    this.collection.set(func, { icon, tooltip });
+  },
+  unregister (func) {
+    if (this.collection.has(func)) this.collection.delete(func);
+  }
+});
+
+mutationManager.start(controlTargetSelector, controlElements => {
+  for (const controlElement of controlElements) {
+    for (const [func, { icon, tooltip }] of controlIcons.collection) {
+      controlElement.prepend(newControlIcon(icon, func, tooltip));
+    }
+  }
+});

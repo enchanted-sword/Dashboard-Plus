@@ -11,6 +11,12 @@ export const keyToClasses = (...keys) => keys.flatMap(key => cssMap[key]).filter
 
 /**
  * @param {...string} keys - One or more source classnames
+ * @returns {string} A space-separated string of equivalent classnames from the CSS map
+ */
+export const keyToString = (...keys) => keys.flatMap(key => cssMap[key]).filter(Boolean).join(' ');
+
+/**
+ * @param {...string} keys - One or more source classnames
  * @returns {string} - An :is() selector targeting all elements matching any of the given source classnames
  */
 export const keyToCss = (...keys) => {

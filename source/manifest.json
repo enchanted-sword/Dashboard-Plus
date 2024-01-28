@@ -31,7 +31,7 @@
         "libraries/jquery.min.js"
       ],
       "css": [
-        "scripts/utility/customPopover.css"
+        "scripts/utility/dashboardElements.css"
       ]
     }
   ],

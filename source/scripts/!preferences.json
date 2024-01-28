@@ -196,7 +196,7 @@
     "type": "toggle",
     "enabled": false
   },
-  "noTrackingData": {
+  "quickCopy": {
     "type": "toggle",
     "enabled": true
   },

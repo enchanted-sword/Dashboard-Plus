@@ -356,3 +356,83 @@
   position: absolute;
   top: 0;
 }
+
+.dbplus-controlIcon {
+  font-family: var(--font-family);
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  position: relative;
+}
+.dbplus-controlIconWrapper {
+  width: inherit;
+  vertical-align: middle;
+  display: inline-block;
+}
+.dbplus-controlIconButton {
+  display: flex;
+  color: inherit;
+  font: inherit;
+}
+.dbplus-controlIconButtonInner { display: flex; }
+.dbplus-controlIcon.copied .dbplus-controlIconButtonInner::after {
+  position: absolute;
+  bottom: -2px;
+  right: -4px;
+  display: inline-block;
+  padding: 2px;
+  border-radius: 100%;
+  background-color: rgb(var(--white));
+  content: "\2713";
+  font-family: "Favorit", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1;
+  color: rgb(var(--green));
+}
+.dbplus-controlIcon.copied use { --icon-color-primary: rgb(var(--green)); }
+.dbplus-tooltipHolder {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: calc(-100px + 50%);
+  width: 200px;
+  height: 0;
+  justify-content: center;
+}
+.dbplus-controlIconButton:hover + .dbplus-tooltipHolder { display: flex; }
+.dbplus-tooltip {
+  position: absolute;
+  bottom: 10px;
+  pointer-events: none;
+  font-family: var(--font-family);
+  color: #fff;
+  text-align: center;
+  background-color: #000;
+  border-radius: 4px;
+  min-width: 54px;
+  padding: 4px 8px;
+  font-size: .875rem;
+  font-weight: 500;
+  line-height: 20px;
+  box-shadow: 0 0 4px rgba(0,0,0,.25);
+}
+.dbplus-tooltipArrow {
+  position: absolute;
+  top: -10px;
+  pointer-events: none;
+  width: 16px;
+  height: 16px;
+}
+.dbplus-tooltipArrow::after {
+  content: "";
+  pointer-events: none;
+  border: 8px solid transparent;
+  border-top-color: #000;
+  border-bottom: none;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
