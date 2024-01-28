@@ -25,7 +25,7 @@
     "enabled": false
   },
   "customColors": {
-    "type": "dummy",
+    "type": "toggle",
     "enabled": false
   },
   "contentWizard": {
@@ -51,10 +51,6 @@
         "enabled": "false"
       }
     }
-  },
-  "customTabs": {
-    "type": "dummy",
-    "enabled": false
   },
   "noAdFree": {
     "type": "toggle",
@@ -104,10 +100,6 @@
       "domains": false
     }
   },
-  "customNavIcon": {
-    "type": "toggle",
-    "enabled": false
-  },
   "showNavBlogMenus": {
     "type": "toggle",
     "enabled": false
@@ -129,10 +121,6 @@
     "preferences": {
       "selected": "never"
     }
-  },
-  "customSidebarMenu": {
-    "type": "toggle",
-    "enabled": false
   },
   "revertHeaders": {
     "type": "toggle",
