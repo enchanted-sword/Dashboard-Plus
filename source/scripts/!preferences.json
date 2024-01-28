@@ -226,10 +226,6 @@
       }
     }
   },
-  "no404Redirect": {
-    "type": "toggle",
-    "enabled": true
-  },
   "postDebugInfo": {
     "type": "toggle",
     "enabled": false

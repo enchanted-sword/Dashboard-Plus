@@ -1,0 +1,7 @@
+{
+  "name": "post debug info",
+  "category": "utility",
+  "description": "logs npf data for posts in the browser console",
+  "type": "toggle",
+  "js": true
+}
