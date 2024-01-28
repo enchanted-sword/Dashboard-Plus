@@ -8,21 +8,20 @@ const blogViewRegex = /https:\/\/([\w\d-]+).tumblr.com\/post\/([\d]*)/;
 const prevRegex = /^(?:[<-]+|)previous$|prev(?:ious(?!ly)tag[s]*|tag[s]*|$)/i;
 const customClass = 'dbplus-linkToPrevious';
 const postSelector = `[tabindex="-1"][data-id] article:not(.${customClass})`;
-const rebloggedFromSelector = `${s('rebloggedFromName')},.dbplus-rebloggedFrom a`;
+const rebloggedFromSelector = `${s('rebloggedFromName')} a,.dbplus-rebloggedFrom a`;
 let headerLinks, tagLinks;
 
 const newChevron = () => $(`<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" role="presentation" style="--icon-color-primary: rgba(var(--accent));"><use href="#managed-icon__double-chevron-left"></use></svg>`)[0]
 
 const linkPosts = async posts => {
   for (const post of posts) {
-    const { rebloggedFromUrl, tags } = await timelineObject(post);
-    if (typeof rebloggedFromUrl === 'undefined') continue;
-    let navigateUrl = blogViewRegex.exec(rebloggedFromUrl);
-    navigateUrl = `/${navigateUrl[1]}/${navigateUrl[2]}`;
+    const { parentPostUrl, tags } = await timelineObject(post);
+    if (typeof parentPostUrl === 'undefined') continue;
+    const navigateUrl = parentPostUrl.split('https://www.tumblr.com')[1];
     if (headerLinks) {
       let headerLink = post.querySelector(rebloggedFromSelector).cloneNode(true);
       post.querySelector(rebloggedFromSelector).replaceWith(headerLink);
-      headerLink.href = rebloggedFromUrl;
+      headerLink.href = parentPostUrl;
       headerLink.title = translate('View previous reblog');
       headerLink.addEventListener('click', event => {
         event.preventDefault();
