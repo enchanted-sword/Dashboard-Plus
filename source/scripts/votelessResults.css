@@ -1,0 +1,10 @@
+button[data-css~="pollAnswer"] { overflow: clip; }
+.dbplus-percentageBar {
+  position: absolute;
+  content: "";
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(var(--accent),.2);
+  border-radius: 18px;
+}
