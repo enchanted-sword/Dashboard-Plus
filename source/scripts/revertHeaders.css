@@ -4,3 +4,5 @@
   transform: translateY(3px);
   margin: 0 5px;
 }
+
+[data-css~="attribution"] [data-css~="targetWrapperInline"] + [data-css~="badgeContainer"] { margin-left: 5px; }
