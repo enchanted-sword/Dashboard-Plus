@@ -4,6 +4,7 @@ import { mutationManager } from './utility/mutations.js';
 import { apiFetch } from './utility/tumblr.js';
 import { notificationObject } from './utility/reactProps.js';
 import { notificationSelector } from './utility/document.js';
+import { svgIconString } from './utility/dashboardElements.js';
 
 const untitledStrings = [
   'Untitled', // en
@@ -25,9 +26,7 @@ const untitledStrings = [
 const followingYouLabel = () => $(`
   <div class="dbplus-customLabelContainer dbplus-followingYou">
     Following You
-    <svg xmlns="http://www.w3.org/2000/svg" height="12" width="12" class="dbplus-customLabelIcon" role="presentation" style="--icon-color-primary: rgb(var(--blue))">
-      <use href="#managed-icon__profile-checkmark"></use>
-    </svg>
+    ${svgIconString('profile-checkmark', 12, 12, 'dbplus-customLabelIcon', 'rgb(var(--blue))')}
     <span class="dbplus-customLabelInfo dbplus-followingYou">
       This blog is following you. This feature is added by Dashboard Plus.
     </span>
@@ -36,9 +35,7 @@ const followingYouLabel = () => $(`
 const potentialBotLabel = () => $(`
   <div class="dbplus-customLabelContainer dbplus-potentialBot">
     Potential Bot
-    <svg xmlns="http://www.w3.org/2000/svg" height="12" width="12" class="dbplus-customLabelIcon" role="presentation" style="--icon-color-primary: rgb(var(--red))">
-      <use href="#managed-icon__warning-circle"></use>
-    </svg>
+    ${svgIconString('warning-circle', 12, 12, 'dbplus-customLabelIcon', 'rgb(var(--red))')}
     <span class="dbplus-customLabelInfo dbplus-potentialBot">
      This blog may be a bot; block at your own discretion. This feature is added by Dashboard Plus.
     </span>

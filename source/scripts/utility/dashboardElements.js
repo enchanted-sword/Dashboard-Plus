@@ -5,6 +5,9 @@ import { formatTextBlock } from './npfTools.js';
 import { mutationManager } from './mutations.js';
 import { s } from './style.js';
 
+export const svgIconString = (icon, h, w, className = '', primary = 'rgba(var(--black),.65)') => `<svg class='${className}' xmlns='http://www.w3.org/2000/svg' height='${h}' width='${w}' role='presentation' style='--icon-color-primary: ${primary};'><use href='#managed-icon__${icon}'></use></svg>`;
+export const svgIcon = (icon, h, w, className = '', primary = 'rgba(var(--black),.65)') => $(svgIconString(icon, h, w, className, primary))[0];
+
 const k = str => str.split(' ').map(key => `dbplus-customPopover-${key}`).join(' ');
 const urlInfoLink = url => `/v2/url_info?url=${url}&fields[blogs]=avatar,name,title,url,blog_view_url,description_npf,theme,uuid`;
 const fetchedUrlInfo = async url => await apiFetch(url).catch((error) => {
@@ -199,9 +202,7 @@ const urlPopover = async (url, xPos, yPos) => {
               sizes="80px" alt="${translate('Image')}" loading="lazy">
           </div>
           <em class="${k('playButton')}">
-            <svg xmlns="http://www.w3.org/2000/svg" height="46" width="46" role="presentation">
-              <use href="#managed-icon__play-circle"></use>
-            </svg>
+            ${svgIconString('play-circle', 46, 46)}
           </em>
         `);
         break;
@@ -213,9 +214,7 @@ const urlPopover = async (url, xPos, yPos) => {
               sizes="80px" alt="${translate('Image')}" loading="lazy">
           </div>
           <em class="${k('audioPlayButton')}">
-            <svg xmlns="http://www.w3.org/2000/svg" height="46" width="46" role="presentation">
-              <use href="#managed-icon__play"></use>
-            </svg>
+            ${svgIconString('play', 46, 46)}
           </em>
         `);
         break;

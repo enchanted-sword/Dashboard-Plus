@@ -3,6 +3,7 @@ import { userBlogs } from './utility/user.js';
 import { mutationManager } from './utility/mutations.js';
 import { elem } from './utility/jsTools.js';
 import { s } from './utility/style.js';
+import { svgIcon, svgIconString } from './utility/dashboardElements.js';
 
 const match = [
   '',
@@ -23,7 +24,6 @@ const customClass = 'dbplus-hnav';
 const menuSelector = `${s('homeMenu')},#account_subnav`;
 const tileSelector = `${s('blogTile')},${s('accountBlogItem')}`
 
-const newIcon = (name, h, w) => $(`<svg class='${customClass}' xmlns='http://www.w3.org/2000/svg' height='${h}' width='${w}' role='presentation' style='--icon-color-primary: rgba(var(--black), 0.65);'><use href='#managed-icon__${name}'></use></svg>`);
 const newCaret = i => elem('button', { class: `${keyToClass('button')} ${customClass}`, index: i, 'aria-label': translate('Show Blog Statistics')}, {
   'click': function() {
     if ($(s('accountStats')).eq(i).is(':hidden')) {
@@ -32,9 +32,7 @@ const newCaret = i => elem('button', { class: `${keyToClass('button')} ${customC
     $(s('accountStats')).eq(i).toggle();
   }}, 
   `<span class='${keyToClass('buttonInner')} ${keyToClass('menuTarget')}' tabindex='-1'>
-    <svg xmlns='http://www.w3.org/2000/svg' height='12' width='12' role='presentation'>
-        <use href='#managed-icon__caret-thin'></use>
-    </svg>
+    ${svgIconString('caret-thin', 12, 12, customClass)}
   </span>`
 );
 const newStats = blog => $(`
@@ -95,7 +93,7 @@ const newSubnavItem = (title, href, icon, h, w) => {
       </div>
     </a>`
   );
-  $(navItem).find(keyToCss('childWrapper')).prepend(newIcon(icon, h, w));
+  $(navItem).find(keyToCss('childWrapper')).prepend(svgIcon(icon, h, w, customClass));
   return navItem;
 };
 const keyToClass = key => keyToClasses(key)[0];
@@ -162,8 +160,8 @@ const menuModfifcations = menu => {
     menu.prepend(accountHeader);
     $(accountHeader).append($(s('logoutButton')));
 
-    $(`[href="/likes"] ${s('childWrapper')}`).prepend(newIcon('like-filled', 18, 20));
-    $(`[href="/following"] ${s('childWrapper')}`).prepend(newIcon('following', 20, 21));
+    $(`[href="/likes"] ${s('childWrapper')}`).prepend(svgIcon('like-filled', 18, 20, customClass));
+    $(`[href="/following"] ${s('childWrapper')}`).prepend(svgIcon('following', 20, 21, customClass));
     $(document).on('click', () => {
       if (!$('#account_subnav:hover').length && !$('#account_subnav').attr('hidden')) { document.getElementById('account_button').click(); }
     });
@@ -189,9 +187,7 @@ export const main = async function () {
               <form method='GET' action='/search' role='search' class='${keyToClass('form')}'>
                 <div class='${keyToClasses('searchbarContainer')[1]}'>
                   <div class='${keyToClasses('searchIcon')[5]}'>
-                    <svg xmlns='http://www.w3.org/2000/svg' height='18' width='18' role='presentation' >
-                      <use href='#managed-icon__search'></use>
-                    </svg>
+                    ${svgIconString('search', 18, 18, customClass)}
                   </div>
                   <input
                     name='q'

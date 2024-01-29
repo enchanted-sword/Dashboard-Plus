@@ -3,15 +3,11 @@ import { postFunction } from './utility/mutations.js';
 import { timelineObject } from './utility/reactProps.js';
 import { s, style } from './utility/style.js';
 import { keyToClasses, translate } from './utility/tumblr.js';
-import { addUrlPopover } from './utility/dashboardElements.js';
+import { addUrlPopover, svgIcon } from './utility/dashboardElements.js';
 
 const customClass = 'dbplus-revertHeaders'
 const postSelector = `[data-timeline]:not([data-route="user/inbox"]) [data-id] article:not(.${customClass})`;
-const reblogIcon = () => elem('span', { class: 'dbplus-reblogIcon' }, null, `
-  <svg xmlns="http://www.w3.org/2000/svg" height="15" width="15" role="presentation" style="--icon-color-primary: rgba(var(--black), 0.65);">
-    <use href="#managed-icon__reblog-compact"></use>
-  </svg>
-`);
+const reblogIcon = () => elem('span', { class: 'dbplus-reblogIcon' }, null, [svgIcon('reblog-compact', 15, 15)]);
 const styleElement = style(`
   ${s('attribution')} ${s('targetWrapperInline')} + ${s('badgeContainer')} { margin-left: 5px; }
   .dbplus-reblogIcon {

@@ -1,6 +1,7 @@
 import { mutationManager, postFunction } from './utility/mutations.js';
 import { timelineObject } from './utility/reactProps.js';
 import { elem } from './utility/jsTools.js';
+import { svgIcon } from './utility/dashboardElements.js';
 
 const filters = {
   name: /"name":"([\w\d]*)"/g,
@@ -56,9 +57,7 @@ const onInput = ({ target }) => {
   if (target.value) postFunction.start(queryFilter);
 };
 const search = elem('div', { class: 'dbplus-timelineSearchContainer' }, null, [
-  elem('div', { class: 'dbplus-timelineSearchIcon' }, null,
-    '<svg xmlns="http://www.w3.org/2000/svg" height="18" width="18" role="presentation"><use href="#managed-icon__search"></use></svg>'
-  ),
+  elem('div', { class: 'dbplus-timelineSearchIcon' }, null, [svgIcon('search', 18, 18, '', 'rgba(var(--white-on-dark),.65)')]),
   elem('input', { type: 'text', id: inputId, placeholder: 'Search the timeline', value: '' }, { input: debounce(onInput) }, null)
 ]);
 const renderSearch = element => element[0].prepend(search);

@@ -3,6 +3,7 @@ import { postFunction } from './utility/mutations.js';
 import { timelineObject } from './utility/reactProps.js';
 import { s } from './utility/style.js';
 import { navigate, translate } from './utility/tumblr.js';
+import { svgIcon } from './utility/dashboardElements.js';
 
 const blogViewRegex = /https:\/\/([\w\d-]+).tumblr.com\/post\/([\d]*)/;
 const prevRegex = /^(?:[<-]+|)previous$|prev(?:ious(?!ly)tag[s]*|tag[s]*|$)/i;
@@ -10,8 +11,6 @@ const customClass = 'dbplus-linkToPrevious';
 const postSelector = `[tabindex="-1"][data-id] article:not(.${customClass})`;
 const rebloggedFromSelector = `${s('rebloggedFromName')} a,.dbplus-rebloggedFrom a`;
 let headerLinks, tagLinks;
-
-const newChevron = () => $(`<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" role="presentation" style="--icon-color-primary: rgba(var(--accent));"><use href="#managed-icon__double-chevron-left"></use></svg>`)[0]
 
 const linkPosts = async posts => {
   for (const post of posts) {
@@ -34,7 +33,7 @@ const linkPosts = async posts => {
         if (prevRegex.test(tagElement.innerText.replace(/[#\s]/g, ''))) {
           const tagElementCopy = tagElement.cloneNode(true);
           tagElement.replaceWith(tagElementCopy);
-          tagElementCopy.prepend(newChevron());
+          tagElementCopy.prepend(svgIcon('double-chevron-left', 24, 24, '', 'rgba(var(--accent))'));
           tagElementCopy.style.color = 'rgb(var(--accent))';
           tagElementCopy.href = navigateUrl;
           tagElementCopy.title = translate('View previous reblog');
