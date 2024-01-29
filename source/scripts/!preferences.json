@@ -144,10 +144,6 @@
       "follow": false
     }
   },
-  "showHiddenPosts": {
-    "type": "toggle",
-    "enabled": true
-  },
   "safeScroll": {
     "type": "toggle",
     "enabled": false,
