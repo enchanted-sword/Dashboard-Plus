@@ -58,7 +58,10 @@ const revertHeaders = async posts => {
   }
 };
 
-export const main = async () => postFunction.start(revertHeaders, postSelector);
+export const main = async () => {
+  postFunction.start(revertHeaders, postSelector);
+  document.head.append(styleElement)
+}
 
 export const clean = async () => {
   postFunction.stop(revertHeaders);
@@ -66,4 +69,5 @@ export const clean = async () => {
   $('.dbplus-rebloggedFrom').remove();
   $('.dbplus-reblogIcon').replaceWith(` ${translate('reblogged')} `);
   $(`.${customClass}`).removeClass(customClass);
+  styleElement.remove();
 }
