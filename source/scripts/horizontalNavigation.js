@@ -164,6 +164,9 @@ const menuModfifcations = menu => {
 
     $(`[href="/likes"] ${s('childWrapper')}`).prepend(newIcon('like-filled', 18, 20));
     $(`[href="/following"] ${s('childWrapper')}`).prepend(newIcon('following', 20, 21));
+    $(document).on('click', () => {
+      if (!$('#account_subnav:hover').length && !$('#account_subnav').attr('hidden')) { document.getElementById('account_button').click(); }
+    });
   }
 };
 
