@@ -1,7 +1,7 @@
 import { elem } from './utility/jsTools.js';
 import { postFunction } from './utility/mutations.js';
 import { timelineObject } from './utility/reactProps.js';
-import { s } from './utility/style.js';
+import { s, style } from './utility/style.js';
 import { keyToClasses, translate } from './utility/tumblr.js';
 import { addUrlPopover } from './utility/dashboardElements.js';
 
@@ -11,6 +11,15 @@ const reblogIcon = () => elem('span', { class: 'dbplus-reblogIcon' }, null, `
   <svg xmlns="http://www.w3.org/2000/svg" height="15" width="15" role="presentation" style="--icon-color-primary: rgba(var(--black), 0.65);">
     <use href="#managed-icon__reblog-compact"></use>
   </svg>
+`);
+const styleElement = style(`
+  ${s('attribution')} ${s('targetWrapperInline')} + ${s('badgeContainer')} { margin-left: 5px; }
+  .dbplus-reblogIcon {
+    height: 14px;
+    display: inline-block;
+    transform: translateY(3px);
+    margin: 0 5px;
+  }
 `);
 
 const revertHeaders = async posts => {

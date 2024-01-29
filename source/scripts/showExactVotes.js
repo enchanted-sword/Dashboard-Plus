@@ -1,9 +1,21 @@
 import { mutationManager } from './utility/mutations.js';
 import { percentageNumber } from './utility/reactProps.js';
-import { s } from './utility/style.js';
+import { s, style } from './utility/style.js';
 
 const customClass = 'dbplus-exactVotes'; 
 const pollSelector = `${s('pollBlock')}:not(.${customClass})`;
+const styleElement = style(`
+  ${s('pollAnswerPercentage')} {
+    position: relative; bottom: 4px;
+  }
+  ${s('results')} { overflow: hidden; }
+  .dbplus-answerVoteCount {
+    position: absolute;
+    bottom: -2px;
+    right: 16px;
+    font-size: 12px;
+  }
+`);
 
 const detailPolls = async polls => {
   for (const poll of polls) {
@@ -17,10 +29,14 @@ const detailPolls = async polls => {
   }
 };
 
-export const main = async () => mutationManager.start(pollSelector, detailPolls);
+export const main = async () => {
+  document.head.append(styleElement);
+  mutationManager.start(pollSelector, detailPolls);
+}
 
 export const clean = async () => {
   mutationManager.stop(detailPolls);
   $(`.${customClass}`).removeClass(customClass);
   $('.dbplus-answerVoteCount').remove();
+  styleElement.remove();
 }
