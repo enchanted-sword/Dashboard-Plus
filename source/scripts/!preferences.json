@@ -182,7 +182,19 @@
   },
   "hideFiltered": {
     "type": "toggle",
-    "enabled": false
+    "enabled": false,
+    "preferences": {
+      "filterOptions": {
+        "content": false,
+        "blocked": false
+      },
+      "blockedStyle": {
+        "parent": true,
+        "rebloggedFrom": false,
+        "root": false,
+        "trail": false
+      }
+    }
   },
   "quickCopy": {
     "type": "toggle",

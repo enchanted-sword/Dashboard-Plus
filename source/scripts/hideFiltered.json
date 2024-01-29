@@ -1,0 +1,28 @@
+{
+  "name": "hide filtered content completely",
+  "category": "dashboard",
+  "description": "completely removes posts with filtered content and or blocked users from the dashboard",
+  "type": "toggle",
+  "extend": true,
+  "preferences": {
+    "filterOptions": {
+      "title": "hide posts containing:",
+      "type": "multiSelect",
+      "options": {
+        "content": { "title": "filtered content" },
+        "blocked": { "title": "blocked users" }
+      }
+    },
+    "blockedStyle": {
+      "title": "blocked user filtering",
+      "type": "multiSelect",
+      "options": {
+        "parent": { "title": "filter posts from blocked blogs" },
+        "rebloggedFrom": { "title": "filter posts reblogged from blocked blogs" },
+        "root": { "title": "filter posts where the original poster is a blocked blog" },
+        "trail": { "title": "filter posts containing blocked blogs in the reblog trail" }
+      }
+    }
+  },
+  "js": true
+}

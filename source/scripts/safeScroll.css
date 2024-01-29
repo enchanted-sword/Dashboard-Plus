@@ -1,4 +1,4 @@
-[dbplus-safescroll-hidden][data-css~="avatarWrapperInner"] {
+[data-safescroll-hidden][data-css~="avatarWrapperInner"] {
   overflow: clip;
 
   img {
@@ -8,7 +8,7 @@
   &:hover img { filter: none; }
 }
 
-[dbplus-safescroll-hidden="blur"] {
+[data-safescroll-hidden="blur"] {
   [data-css~="textBlock"] { position: relative; }
   &[data-css~="imageBlock"],
   &[data-css~="videoBlock"],
@@ -30,7 +30,7 @@
   }
 }
 
-[dbplus-safescroll-hidden="cover"] {
+[data-safescroll-hidden="cover"] {
   [data-css~="textBlock"] { position: relative; }
   &[data-css~="imageBlock"],
   &[data-css~="videoBlock"],
@@ -58,7 +58,7 @@
   }
 }
 
-[dbplus-safescroll-hidden="collapse"] {
+[data-safescroll-hidden="collapse"] {
   [data-css~="textBlock"] { position: relative; }
   &[data-css~="imageBlock"],
   &[data-css~="videoBlock"],
@@ -96,7 +96,7 @@
   }
 }
 
-article > [data-css~="contentWrapper"][dbplus-safescroll-hidden="hidePost"] {
+article > [data-css~="contentWrapper"][data-safescroll-hidden="hidePost"] {
   & {
     position: relative;
     transition: height 0.3s;

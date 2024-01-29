@@ -5,7 +5,7 @@ import { s } from './utility/style.js';
 
 const normalizeRegex = /[^\w-,]/g;
 const customClass = 'dbplus-safeScroll-filtered';
-const hiddenAttribute = 'dbplus-safeScroll-hidden';
+const hiddenAttribute = 'data-safeScroll-hidden';
 const postSelector = `[data-id] article:not(.${customClass})`;
 const avatarSelector = `${s('avatar')}:not([style])`;
 const avatarInnerSelector = s('avatarWrapperInner');
@@ -24,13 +24,13 @@ const removeOnClick = event => {
 }
 const filterPosts = async posts => {
   for (const post of posts) {
-    const { blogName, rebloggedFromName, rebloggedRootName, communityLabels, tags, trail } = await timelineObject(post);
+    const { blogName, rebloggedFromName, rebloggedRootName, askerName, communityLabels, tags, trail } = await timelineObject(post);
     const trailBlogs = trail.map(({ blog }) => blog.name);
 
     if ((filterBlogs.parent && isFilteredBlog(blogName)) 
       || (filterBlogs.rebloggedFrom && isFilteredBlog(rebloggedFromName))
       || (filterBlogs.root && isFilteredBlog(rebloggedRootName))
-      || (filterBlogs.trail && trailBlogs.some(blog => isFilteredBlog(blog)))
+      || (filterBlogs.trail && (trailBlogs.some(blog => isFilteredBlog(blog)) || isFilteredBlog(askerName)))
       || (inheritCommunityLabels && communityLabels.hasCommunityLabel)
       || (hasFilteredTag(tags))) {
       post.classList.add(customClass);
