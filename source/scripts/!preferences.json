@@ -100,10 +100,6 @@
       "domains": false
     }
   },
-  "showNavBlogMenus": {
-    "type": "toggle",
-    "enabled": false
-  },
   "hideSidebarContent": {
     "type": "multiSelect",
     "enabled": false,
