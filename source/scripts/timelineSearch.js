@@ -25,7 +25,7 @@ const targetSelector = '[data-timeline]:not(:has(.dbplus-timelineSearchContainer
 const inputId = 'dbplus-timelineSearchTextarea';
 
 const matchesToString = arr => arr.map(x => x[1]).join('');
-const queryFilter = (posts) => {
+const queryFilter = posts => {
   const query = document.getElementById(inputId).value.replace('"', '\'').toLowerCase();
   posts.forEach(async post => {
     let filterString = post.__timelineSearchFilter;
@@ -54,7 +54,7 @@ const debounce = func => {
 const onInput = ({ target }) => {
   postFunction.stop(queryFilter);
   if($(`[${hiddenAttribute}]`).length) queryFilter(document.querySelectorAll(`[${hiddenAttribute}]`));
-  if (target.value) postFunction.start(queryFilter);
+  if (target.value) postFunction.start(queryFilter, postSelector);
 };
 const search = elem('div', { class: 'dbplus-timelineSearchContainer' }, null, [
   elem('div', { class: 'dbplus-timelineSearchIcon' }, null, [svgIcon('search', 18, 18, '', 'rgba(var(--white-on-dark),.65)')]),
