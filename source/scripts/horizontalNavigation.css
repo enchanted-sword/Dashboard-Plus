@@ -56,7 +56,7 @@
     [data-css~='blogTitle'] { color: rgba(var(--black),.65) !important; }
     > [data-css~='navItem'], [data-css~='accountStats'] li { list-style-type: none; }
     > [data-css~='navItem']:hover,
-    [data-css~='accountStats'] li:hover { background-color: rgba(var(--black),.07); }
+    [data-css~='accountStats'] li:hover { background-color: rgb(var(--seccondary-accent)); }
     [data-css~='navItem'] { font-weight: 500; }
     [data-css~='navItem'] [data-css~='navLink'] {
       min-height: 41px;
