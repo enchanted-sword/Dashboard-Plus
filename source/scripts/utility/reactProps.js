@@ -4,6 +4,7 @@ const timelineObjectCache = new WeakMap();
 const notificationCache = new WeakMap();
 const conversationCache = new WeakMap();
 const percentageCache = new WeakMap();
+const noteCache = new WeakMap();
 
 const getTimelineObject = async () => {
   const elem = document.currentScript.parentElement;
@@ -70,6 +71,20 @@ const getPercentage = async () => {
     }
   }
 };
+const getNoteObject = async () => {
+  const elem = document.currentScript.parentElement;
+  const fiberKey = Object.keys(elem).find(key => key.startsWith('__reactFiber'));
+  let fiber = elem[fiberKey];
+
+  while (fiber !== null) {
+    const { note } = fiber.memoizedProps || {};
+    if (typeof note !== 'undefined') {
+      return note;
+    } else {
+      fiber = fiber.return;
+    }
+  }
+};
 
 /**
  * @param {Element} post - Post element to fetch property from
@@ -109,4 +124,12 @@ export const percentageNumber = async answer => {
   }
 
   return percentageCache.get(answer);
+};
+
+export const noteObject = async note => {
+  if (!noteCache.has(note)) {
+    noteCache.set(note, inject(getNoteObject, [], note));
+  }
+
+  return noteCache.get(note);
 };

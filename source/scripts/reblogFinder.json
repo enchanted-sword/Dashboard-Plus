@@ -1,0 +1,8 @@
+{
+  "name": "note finder",
+  "type": "toggle",
+  "category": "posts",
+  "description": "adds a searchbar that allows searching for specific reblogs, replies, or likes within a post's notes",
+  "js": true,
+  "css": true
+}
