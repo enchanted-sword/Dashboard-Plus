@@ -5,7 +5,7 @@ const styleElement = style('');
 const homeBadgeSelector = `[data-title="Home"] ${s('notificationBadge')}`;
 const activityBadgeSelector = `[data-title="Activity"] ${s('notificationBadge')}`;
 const inboxBadgeSelector = `[data-title="Inbox"] ${s('notificationBadge')}`;
-const messagingBadgeSelector = `[data-title="Messages"] ${s('notificationBadge')}`;
+const messagingBadgeSelector = `[data-title="Messages"] ${s('notificationBadge')}, ${s('notification')} [role="status"]${s('notificationBadge')}`;
 
 const title = document.querySelector('title');
 const modifyTitle = () => title.innerText = title.innerText.replace(/\([\d]+[+]?\)[\s]?/, '');
