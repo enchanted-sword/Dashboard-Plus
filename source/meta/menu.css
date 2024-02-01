@@ -472,18 +472,48 @@ input.ui-colors + label {
   border-radius: 3px;
   border: 3px inset rgba(var(--navy),.2);
 }
+
+.ui-preferenceIo {
+  display: flex;
+  justify-content: space-between;
+}
+.ui-preferenceIo button {
+  font-size: 20px;
+  text-align: center;
+  border: 3px solid rgba(var(--navy),.2);
+  border-radius: 3px;
+  text-decoration: none;
+  width: 156px;
+  position: relative;
+
+  &:after, &:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    height: 100%;
+    padding-top: 14px;
+    box-sizing: border-box;
+  }
+  &:after { background-color: rgb(var(--accent)); }
+  &:before { background-color: rgb(var(--red)); }
+}
+#ui-import {
+  &:after { content: "imported!"; }
+  &:before { content: "failed to import!"; }
+}
+
 .ui-aboutLink {
   display: flex;
   font-size: 24px;
   text-align: center;
   justify-content: center;
   align-items: center;
-}
-.ui-aboutLink:before, .ui-aboutLink:after {
-  content: "";
-  margin: 0 12px;
-  border-radius: 50%;
-  border: 4px solid rgb(var(--text));
-  width: 0;
-  height: 0;
+  border: 3px solid rgba(var(--navy),.2);
+  border-radius: 3px;
+  text-decoration: none;
+  
+  &:not(:last-of-type) { margin-bottom: 4px; }
+  &:hover { background-color: rgba(var(--navy),.2); }
 }

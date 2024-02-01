@@ -401,6 +401,46 @@
   const init = async () => {
     setupButtons('ui-tab');
     setupButtons('ui-featureTab');
+
+    document.getElementById('ui-export').addEventListener('click', async () => {
+      const { preferences } = await browser.storage.local.get('preferences');
+      const preferenceExport = new Blob([JSON.stringify(preferences, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(preferenceExport);
+      const exportLink = document.createElement('a');
+      const date = new Date();
+      const yy = date.getFullYear().toString();
+      const mm = (date.getMonth()).toString();
+      const dd = date.getDate().toString();
+      exportLink.href = url;
+      exportLink.download = `dashboard plus preference export ${mm}-${dd}-${yy}`;
+
+      document.documentElement.append(exportLink);
+      exportLink.click();
+      exportLink.remove();
+      URL.revokeObjectURL(url);
+    });
+    document.getElementById('ui-import').addEventListener('click', () => {
+      let preferences;
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'application/json';
+      input.addEventListener('change', async function () {
+        const [file] = this.files;
+
+        if (file) {
+          let obj = await file.text();
+          preferences = JSON.parse(obj);
+          if (typeof preferences === 'object') {
+            browser.storage.local.set({ preferences });
+            console.log('successfully imported preferences from file!');
+          } else {
+            console.error('failed to import preferences from file!');
+          }
+        }
+      });
+      input.click();
+      input.remove();
+    });
   };
   
   Coloris({
