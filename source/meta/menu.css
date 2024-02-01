@@ -9,6 +9,16 @@
   --black: 0, 0, 12;
   --accent: 0, 148, 255;
   --red: 255, 56, 80;
+  --text: 0, 25, 53;
+  --white-on-dark: 250, 245, 255;
+}
+.ui-dark * {
+  --white: 64, 64, 80;
+  --navy: 20, 20, 32;
+  --black: 0, 0, 12;
+  --accent: 120, 100, 255;
+  --red: 255, 56, 80;
+  --text: 220, 215, 240;
 }
 
 * {
@@ -26,7 +36,7 @@ p, h1, h2, h3, span, a, ul, li, figure, section, button, textarea {
   line-height: 1.5;
   margin: 0;
   padding: 0;
-  color: rgb(var(--navy));
+  color: rgb(var(--text));
 }
 h2 { font-size: 20px; }
 h3 { font-size: 18px; }
@@ -52,7 +62,7 @@ h3 { font-size: 18px; }
   height: 40px;
   font-size: 20px;
   background: rgba(var(--black), .5);
-  color: rgb(var(--white));
+  color: rgb(var(--white-on-dark));
   border: 2px solid rgba(var(--black), .6);
   border-style: solid none solid solid;
 }
@@ -93,7 +103,7 @@ h3 { font-size: 18px; }
 .ui-featureTab {
   font-size: 14px;
   flex-grow: 1;
-  background: rgba(var(--navy), .2);
+  background-color: rgba(var(--navy), .2);
   border: 2px solid rgba(var(--navy), .2);
   border-style: solid none none solid;
 }
@@ -106,6 +116,11 @@ h3 { font-size: 18px; }
 .ui-featureTab:hover {
   flex-grow: 1.1;
   background: rgba(var(--navy), .32);
+}
+.ui-featureTab[target="all"][active="true"] {
+  border-style: none none solid solid !important;
+  background-color: rgba(var(--navy), .2) !important;
+  font-size: 0;
 }
 
 div.ui-featureCategory { display: none; }
@@ -220,7 +235,7 @@ input.ui-toggle + label:after {
   z-index: 2;
   content: "◯";
   text-indent: 0;
-  color: rgba(var(--navy), .2);
+  color: rgba(var(--text), .2);
   font-size: 16px;
   font-weight: bold;
   line-height: 18px;
@@ -312,7 +327,7 @@ input.ui-multiSelect + label:after {
   position: absolute;
   top: 1px;
   right: 2px;
-  color: rgba(var(--navy), .32);
+  color: rgba(var(--text), .32);
   width: 16px;
   height: 16px;
   line-height: 16px;
@@ -432,7 +447,7 @@ input.ui-colors {
   position: relative;
   cursor: pointer;
   caret-color: transparent;
-  color: rgb(var(--navy));
+  color: rgb(var(--text));
   border: none;
   border-radius: 3px;
   outline: none;
@@ -449,4 +464,26 @@ input.ui-colors + label {
   width: 24px;
   height: 24px;
   border-radius: 0 3px 3px 0;
+}
+
+.ui-card {
+  background-color: rgb(var(--white));
+  padding: 8px;
+  border-radius: 3px;
+  border: 3px inset rgba(var(--navy),.2);
+}
+.ui-aboutLink {
+  display: flex;
+  font-size: 24px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+.ui-aboutLink:before, .ui-aboutLink:after {
+  content: "";
+  margin: 0 12px;
+  border-radius: 50%;
+  border: 4px solid rgb(var(--text));
+  width: 0;
+  height: 0;
 }
