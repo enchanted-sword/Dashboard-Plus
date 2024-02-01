@@ -12,13 +12,13 @@ styleElement.classList.add(customClass);
 
 const colorMessaging = async conversations => {
   for (const conversation of conversations) {
-    conversationInfo(conversation).then(({ headerImageFocused, backgroundColor, titleColor, linkColor, otherParticipantName, selectedBlogName }) => {
+    conversationInfo(conversation).then(({ headerImageFocused, backgroundColor, titleColor, linkColor }) => {
       const messageBackground = contrastBW(titleColor);
       const timestampColor = contrastBW(backgroundColor);
 
       const uniqueStyleElement = style(`
         ${s('conversation')} {
-          ${s('headerDesktop')} { background: no-repeat top/100% url(${headerImageFocused}) !important; }
+          ${s('headerWrapper')} { background: no-repeat top/100% url(${headerImageFocused}) !important; }
           --dbplus-backgroundColor: ${hexToRgbString(backgroundColor)};
           --dbplus-messageBackground: ${messageBackground};
           --dbplus-titleColor: ${hexToRgbString(titleColor)};
