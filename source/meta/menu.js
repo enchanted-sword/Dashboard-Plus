@@ -66,7 +66,7 @@
 
   const newFeatureItem = (name, feature = {}, preference = {}, allPreferences) => {
     const category = typeof feature.category === 'string' ? feature.category : feature.category.join(' ');
-    const wrapper = $(`<li>`, { category });
+    const wrapper = $(`<li>`, { category, name });
 
     try {
       const primaryContent = $(`<div class="ui-primaryContent"><h2>${feature.name}</h2></div>`);

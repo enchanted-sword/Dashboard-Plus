@@ -134,6 +134,7 @@ ul.ui-featureCategory {
   border-radius: 3px;
   margin-bottom: 4px;
 }
+#ui-all[active="true"] ~ ul li[category],
 #ui-dashboard[active="true"] ~ ul li[category~="dashboard"],
 #ui-navigation[active="true"] ~ ul li[category~="navigation"],
 #ui-activity[active="true"] ~ ul li[category~="activity"],
