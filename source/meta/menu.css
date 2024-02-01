@@ -499,10 +499,10 @@ input.ui-colors + label {
   &:after { background-color: rgb(var(--accent)); }
   &:before { background-color: rgb(var(--red)); }
 }
-#ui-import {
+/* #ui-import {
   &:after { content: "imported!"; }
   &:before { content: "failed to import!"; }
-}
+} */
 
 .ui-aboutLink {
   display: flex;
