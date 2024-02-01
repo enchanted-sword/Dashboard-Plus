@@ -1,6 +1,6 @@
 {
   "name": "revert activity feed popup",
-  "category": "notifications",
+  "category": "activity",
   "description": "reverts the activity feed popup appearance to the previous design",
   "type": "toggle",
   "js": true,

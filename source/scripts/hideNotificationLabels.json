@@ -1,6 +1,6 @@
 {
   "name": "hide notification labels",
-  "category": "notifications",
+  "category": "activity",
   "type": "multiSelect",
   "preferences": {
     "mutuals": { "title": "mutual labels" },

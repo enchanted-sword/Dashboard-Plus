@@ -72,7 +72,7 @@ h3 { font-size: 18px; }
   width: calc(100% - 16px);
   margin: 8px auto;
   background: rgb(var(--white));
-  border-radius: 3px 3px 0 0;
+  border-radius: 3px;
 }
 .ui-section[active="true"] { display: block; }
 
@@ -108,37 +108,45 @@ h3 { font-size: 18px; }
   background: rgba(var(--navy), .32);
 }
 
-div.ui-featureCategory {
-  position: relative;
-  padding: 8px;
+div.ui-featureCategory { display: none; }
+div.ui-featureCategory[active="true"] { display: block; }
+ul.ui-featureCategory {
+  margin: 8px 0;
+  padding: 0;
+}
+#ui-featureContainer {
+  padding: 12px 8px 8px;
   border: 2px solid rgba(var(--navy), .2);
   border-style: none inset inset inset;
-  display: none;
   max-height: 480px;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
   scrollbar-color: rgba(var(--navy), .2)rgba(var(--navy), .2);
 }
-div.ui-featureCategory[active="true"] { display: block; }
-ul.ui-featureCategory {
-  margin: 8px 0;
-  padding: 0;
-}
-.ui-featureCategory > li {
+#ui-featureContainer > li {
+  display: none;
   list-style-type: none;
   position: relative;
   padding: 8px;
   background: rgba(var(--navy), .08);
   border: 2px solid rgba(var(--navy), .4);
   border-radius: 3px;
+  margin-bottom: 4px;
 }
-.ui-featureCategory > li:has(input:checked:not([dummy], .ui-extend input)),
-.ui-featureCategory > li:has(input[active="true"]) {
+#ui-dashboard[active="true"] ~ ul li[category~="dashboard"],
+#ui-navigation[active="true"] ~ ul li[category~="navigation"],
+#ui-activity[active="true"] ~ ul li[category~="activity"],
+#ui-sidebar[active="true"] ~ ul li[category~="sidebar"],
+#ui-posts[active="true"] ~ ul li[category~="posts"],
+#ui-messaging[active="true"] ~ ul li[category~="messaging"],
+#ui-appearance[active="true"] ~ ul li[category~="appearance"],
+#ui-utility[active="true"] ~ ul li[category~="utility"] { display: block !important; }
+#ui-featureContainer > li:has(input:checked:not([dummy], .ui-extend input)),
+#ui-featureContainer > li:has(input[active="true"]) {
   background: rgb(var(--white));
   border: 2px solid rgb(var(--accent));
 }
-.ui-featureCategory > li:not(:last-of-type) { margin-bottom: 4px; }
 
 div.ui-primaryContent {
   width: 100%;

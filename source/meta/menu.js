@@ -65,7 +65,8 @@
   }
 
   const newFeatureItem = (name, feature = {}, preference = {}, allPreferences) => {
-    const wrapper = $('<li>');
+    const category = typeof feature.category === 'string' ? feature.category : feature.category.join(' ');
+    const wrapper = $(`<li>`, { category });
 
     try {
       const primaryContent = $(`<div class="ui-primaryContent"><h2>${feature.name}</h2></div>`);
@@ -380,7 +381,7 @@
 
       if (feature && preference) {
         const featureItem = newFeatureItem(key, feature, preference, preferences);
-        $(`#ui-${feature.category} ul`).append(featureItem);
+        $(`#ui-featureContainer`).append(featureItem);
       }
     });
   };

@@ -1,6 +1,6 @@
 {
   "name": "custom notification labels",
-  "category": "notifications",
+  "category": "activity",
   "type": "multiSelect",
   "preferences": {
     "followingYou": { "title": "label blogs that follow you" },
