@@ -7,7 +7,7 @@
   console.info(browser.storage.local.get());
 
   const { getURL } = browser.runtime;
-  let cssMap, languageData, windowWidth;
+  let cssMap, languageData, themeColors;
   let areHelpersLoaded = false;
   const isReactLoaded = () => document.querySelector('[data-rh]') === null;
   const waitForLoad = () => new Promise(resolve => {
@@ -46,8 +46,11 @@
 
       browser.storage.local.set({ cssMap, languageData });
 
-      window.postMessage({ text: 'db+sendCachedData', cssMap: cssMap, languageData: languageData }, 'https://www.tumblr.com'); //send helper functions back to control script for alternate load case
-    } else if (event.data?.text == 'db+resizeEvent');
+      window.postMessage({ text: 'db+sendCachedData', cssMap, languageData }, 'https://www.tumblr.com'); //send helper functions back to control script for alternate load case
+    } else if (event.data?.text === 'db+themeColorUpdateMessage') {
+      ({ themeColors } = event.data);
+      browser.storage.local.set({ themeColors });
+    }
   });
 
   const getJsonFile = async name => {
@@ -84,9 +87,9 @@
         main().catch(console.error);
   
         preferenceListeners[name] = (changes, areaName) => {
-          if (areaName !== 'local') return;
-    
           const { preferences } = changes;
+          if (areaName !== 'local' || typeof preferences === 'undefined') return;
+    
           const changed = Object.keys(preferences.newValue).filter(key => !deepEquals(preferences?.newValue[key], preferences?.oldValue[key]));
           if ((changed.includes(name) && preferences?.newValue[name].enabled === true) 
             || data.recieveUpdates?.some(key => changed.includes(key))) {
@@ -119,22 +122,19 @@
   };
 
   const onStorageChanged = async (changes, areaName) => {
-    if (areaName !== 'local') return;
-
     const { preferences } = changes;
+    if (areaName !== 'local' || typeof preferences === 'undefined') return;
 
-    if (preferences) console.info(changes);
+    console.info(changes);
 
-    if (preferences) {
-      const { oldValue = {}, newValue = {} } = preferences;
+    const { oldValue = {}, newValue = {} } = preferences;
 
-      const newlyEnabled = Object.keys(newValue).filter(feature => !oldValue[feature]?.enabled && newValue[feature]?.enabled);
-      const newlyDisabled = Object.keys(oldValue).filter(feature => oldValue[feature]?.enabled && !newValue[feature]?.enabled);
+    const newlyEnabled = Object.keys(newValue).filter(feature => !oldValue[feature]?.enabled && newValue[feature]?.enabled);
+    const newlyDisabled = Object.keys(oldValue).filter(feature => oldValue[feature]?.enabled && !newValue[feature]?.enabled);
 
-      newlyEnabled.forEach(executeFeature);
-      enabledFeatures.push(newlyEnabled);
-      newlyDisabled.forEach(destroyFeature);
-    }
+    newlyEnabled.forEach(executeFeature);
+    enabledFeatures.push(newlyEnabled);
+    newlyDisabled.forEach(destroyFeature);
   };
   const onResized = () => {
     if (window.innerWidth < 990) {

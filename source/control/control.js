@@ -1,9 +1,33 @@
 window.postMessage({ text: 'db+controlInitMessage' }, 'https://www.tumblr.com');
 
 let cssMap, languageData, init = false;
+const themeColors = {};
+
 const waitForWindow = () => new Promise(resolve => {
   window.requestAnimationFrame(() => (typeof window.tumblr === 'undefined' || typeof window.tumblr.getCssMap === 'undefined' || typeof window.tumblr.apiFetch === 'undefined') ? waitForWindow().then(resolve) : resolve());
 });
+
+const getThemeColor = color => getComputedStyle(document.getElementById('root')).getPropertyValue(`--${color}`);
+const colors = [
+  'black',
+  'white',
+  'white-on-dark',
+  'navy',
+  'red',
+  'orange',
+  'yellow',
+  'green',
+  'blue',
+  'purple',
+  'pink',
+  'accent',
+  'secondary-accent',
+  'follow'
+];
+const updateThemeColors = () => {
+  colors.forEach(color => themeColors[color] = getThemeColor(color));
+  window.postMessage({ text: 'db+themeColorUpdateMessage', themeColors }, 'https://www.tumblr.com');
+}
 
 window.addEventListener('message', (event) => {
   if (event.origin !== 'https://www.tumblr.com') return;
@@ -84,7 +108,13 @@ window.addEventListener('message', (event) => {
 });
 
 waitForWindow().then(async function () {
+  updateThemeColors();
   cssMap = await window.tumblr.getCssMap();
-  const languageData = window.tumblr.languageData;
-  window.postMessage({ text: 'db+helperLoadMessage', cssMap: cssMap, languageData: languageData }, 'https://www.tumblr.com');
+  languageData = window.tumblr.languageData;
+  window.postMessage({ text: 'db+helperLoadMessage', cssMap, languageData }, 'https://www.tumblr.com');
+
+  window.addEventListener('keydown', event => { if (['p','P'].includes(event.key) && event.shiftKey) updateThemeColors(); });
+  const colorPaletteSwitcher = document.getElementById('colorPaletteSwitcher');
+  if (colorPaletteSwitcher) colorPaletteSwitcher.addEventListener('change', () => window.setTimeout(() => updateThemeColors(), 100));
 });
+

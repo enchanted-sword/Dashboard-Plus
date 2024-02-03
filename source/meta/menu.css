@@ -9,19 +9,8 @@
   --black: 0, 0, 12;
   --accent: 0, 148, 255;
   --red: 255, 56, 80;
-  --text: 0, 25, 53;
+  --text: var(--black);
   --white-on-dark: 250, 245, 255;
-}
-
-@media screen and (prefers-color-scheme: dark) {
-  :root {
-    --white: 64, 64, 80;
-    --navy: 20, 20, 32;
-    --black: 0, 0, 12;
-    --accent: 120, 100, 255;
-    --red: 255, 56, 80;
-    --text: 250, 250, 255;
-  }
 }
 
 * {

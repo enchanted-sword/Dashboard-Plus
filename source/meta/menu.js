@@ -1,6 +1,29 @@
 'use strict';
 
 {
+  const themeStyle = colors => {
+    const styleElement = document.createElement('style');
+    styleElement.innerText = `
+      :root {
+        --black: ${colors.black};
+        --white: ${colors.white};
+        --white-on-dark: ${colors['white-on-dark']};
+        --navy: ${colors.navy};
+        --red: ${colors.red};
+        --orange: ${colors.orange};
+        --yellow: ${colors.yellow};
+        --green: ${colors.green};
+        --blue: ${colors.blue};
+        --purple: ${colors.purple};
+        --pink: ${colors.pink};
+        --accent: ${colors.accent};
+        --secondary-accent: ${colors['secondary-accent']};
+        --follow: ${colors.follow};
+      }
+    `;
+    document.documentElement.append(styleElement);
+  };
+
   const getJsonFile = async name => {
     try {
       const url = browser.runtime.getURL(`/scripts/${name}.json`);
@@ -398,6 +421,13 @@
     }));
   };
 
+  const onStorageChanged = async (changes, areaName) => {
+    const { themeColors } = changes;
+    if (areaName !== 'local' || typeof themeColors === 'undefined') return;
+
+    themeStyle(colors);
+  };
+
   const init = async () => {
     setupButtons('ui-tab');
     setupButtons('ui-featureTab');
@@ -447,6 +477,11 @@
       input.click();
       input.remove();
     });
+
+    const { themeColors } = await browser.storage.local.get('themeColors');
+    themeStyle(themeColors);
+
+    browser.storage.onChange.addListener(onStorageChanged);
   };
   
   Coloris({
@@ -457,4 +492,6 @@
     onChange: debounce(onColorChange)
   });
   buildMenu().then(init);
+
+  browser.onSt
 }
