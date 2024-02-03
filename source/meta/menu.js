@@ -428,13 +428,19 @@
         const [file] = this.files;
 
         if (file) {
-          let obj = await file.text();
+          try {
+            let obj = await file.text();
           preferences = JSON.parse(obj);
           if (typeof preferences === 'object') {
             browser.storage.local.set({ preferences });
             console.log('successfully imported preferences from file!');
-          } else {
-            console.error('failed to import preferences from file!');
+          } else throw 'invalid data type';
+          } catch (e) {
+            console.error('failed to import preferences from file!', e);
+            $('#ui-import').text('import failed!').css('background-color', 'rgb(var(--red))');
+            setTimeout(() => {
+              $('#ui-import').text('import preferences').css('background-color', 'rgb(var(--white))');
+            }, 2000);
           }
         }
       });

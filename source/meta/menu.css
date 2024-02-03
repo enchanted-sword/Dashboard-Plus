@@ -12,13 +12,16 @@
   --text: 0, 25, 53;
   --white-on-dark: 250, 245, 255;
 }
-.ui-dark * {
-  --white: 64, 64, 80;
-  --navy: 20, 20, 32;
-  --black: 0, 0, 12;
-  --accent: 120, 100, 255;
-  --red: 255, 56, 80;
-  --text: 220, 215, 240;
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --white: 64, 64, 80;
+    --navy: 20, 20, 32;
+    --black: 0, 0, 12;
+    --accent: 120, 100, 255;
+    --red: 255, 56, 80;
+    --text: 250, 250, 255;
+  }
 }
 
 * {
@@ -485,24 +488,10 @@ input.ui-colors + label {
   text-decoration: none;
   width: 156px;
   position: relative;
+  background-color: rgb(var(--accent));
 
-  &:after, &:before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    height: 100%;
-    padding-top: 14px;
-    box-sizing: border-box;
-  }
-  &:after { background-color: rgb(var(--accent)); }
-  &:before { background-color: rgb(var(--red)); }
+  &:hover { background-color: color-mix(in srgb, rgb(var(--accent)), rgb(var(--navy)) 10%); }
 }
-/* #ui-import {
-  &:after { content: "imported!"; }
-  &:before { content: "failed to import!"; }
-} */
 
 .ui-aboutLink {
   display: flex;
