@@ -1,0 +1,17 @@
+[
+  {
+    "id": 6,
+    "priority": 3,
+    "condition": {
+      "regexFilter": "^https?://www\\.tumblr\\.com/api/v2/blog/[\\w\\d-]*/notifications",
+      "requestDomains": ["tumblr.com"],
+      "resourceTypes": ["xmlhttprequest"]
+    },
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/scripts/notifTest.js"
+      }
+    }
+  }
+]
