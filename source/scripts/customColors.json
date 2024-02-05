@@ -1,0 +1,30 @@
+{
+  "name": "customize site colors",
+  "category": "appearance",
+  "description": "customizes the site's color palette",
+  "type": "toggle",
+  "extend": true,
+  "preferences": {
+    "colors": {
+      "title": "colors",
+      "type": "colors",
+      "options": {
+        "black": { "title": "black" },
+        "white": { "title": "white" },
+        "whiteOnDark": { "title": "white on dark" },
+        "navy": { "title": "navy" },
+        "red": { "title": "red" },
+        "orange": { "title": "orange" },
+        "yellow": { "title": "yellow" },
+        "green": { "title": "green" },
+        "blue": { "title": "blue" },
+        "purple": { "title": "purple" },
+        "pink": { "title": "pink" },
+        "accent": { "title": "accent" },
+        "secondaryAccent": { "title": "secondary accent" },
+        "follow": { "title": "follow" }
+      }
+    }
+  },
+  "js": true
+}

@@ -24,10 +24,6 @@
     "type": "toggle",
     "enabled": false
   },
-  "customColors": {
-    "type": "toggle",
-    "enabled": false
-  },
   "contentWizard": {
     "type": "slider",
     "enabled": false,
@@ -283,5 +279,27 @@
   "skipAdultWall": {
     "type": "toggle",
     "enabled": false
+  },
+  "customColors": {
+    "type": "toggle",
+    "enabled": false,
+    "preferences": {
+      "colors": {
+        "black": "#000000",
+        "white": "#ffffff",
+        "whiteOnDark": "#ffffff",
+        "navy": "#001935",
+        "red": "#ff4930",
+        "orange": "#ff8700",
+        "yellow": "#e8d738",
+        "green": "#00cf35",
+        "blue": "#00b8ff",
+        "purple": "#7c5cff",
+        "pink": "#ff62ce",
+        "accent": "#00b8ff",
+        "secondaryAccent": "#e5e7ea",
+        "follow": "#f3f8fb"
+      }
+    }
   }
 }
