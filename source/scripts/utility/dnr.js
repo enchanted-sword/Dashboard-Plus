@@ -1,14 +1,21 @@
-const connectionPort = browser.runtime.connect({ name: "port-from-cs" });
+let connectionPort;
+let connected = false
+
+const postData = data => {
+  if (!connected) {
+    connectionPort = browser.runtime.connect({ name: "dnrPort" });
+    connected = true;
+    
+    connectionPort.onDisconnect.addListener(() => connected = false)
+  }
+  connectionPort.postMessage({ action: 'dynamicDnr', data });
+};
 
 const encodeId = str => {
   let num = 0
   for (const char of str) num += char.charCodeAt(0);
   return num;
 }
-
-/* connectionPort.onMessage.addListener((m) => {
-  console.info(m);
-}); */
 
 export const declarativeNetRequest = Object.freeze({
   /**
@@ -36,7 +43,7 @@ export const declarativeNetRequest = Object.freeze({
    * @param {Array} newRules - Array of declarativeNetRequest rules created with the declarativeNetRequest.registerRule() method
    */
   updateDynamicRules: (newRules = []) => {
-    connectionPort.postMessage({ action: 'dynamicDnr', data: { removeRuleIds: newRules.map(rule => rule.id), newRules }});
+    postData({ removeRuleIds: newRules.map(rule => rule.id), newRules });
   },
 
   /**
@@ -44,7 +51,7 @@ export const declarativeNetRequest = Object.freeze({
    * @param {string[]} uniqueIdentifiers - Array of unique identifiers used to construct existing declarativeNetRequest rules
    */
   clearDynamicRules: (uniqueIdentifiers = []) => {
-    connectionPort.postMessage({ action: 'dynamicDnr', data: { removeRuleIds: uniqueIdentifiers.map(id => encodeId(id)) }});
+    postData({ removeRuleIds: uniqueIdentifiers.map(id => encodeId(id)) });
   }
 });
 

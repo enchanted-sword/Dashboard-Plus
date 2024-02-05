@@ -12,13 +12,15 @@ const dynamicDnr = async ({ removeRuleIds, newRules }) => {
   });
 }
 
-let portFromCS;
+let connectionPort;
 
 const connected = p => {
-  portFromCS = p;
-  portFromCS.onMessage.addListener(m => {
+  connectionPort = p;
+  connectionPort.onMessage.addListener(m => {
     if (m.action = 'dynamicDnr') dynamicDnr(m.data);
   });
 }
 
 browser.runtime.onConnect.addListener(connected);
+
+browser.runtime.onSuspend.addListener(() => { console.log("Unloading."); });
