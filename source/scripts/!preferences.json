@@ -78,7 +78,7 @@
   },
   "activityPopupFilter": {
     "type": "toggle",
-    "enabled": true,
+    "enabled": false,
     "preferences": {
       "all": {
         "enabled": false,
@@ -109,8 +109,8 @@
         ]
       },
       "mentions": {
-        "enabled": true,
-        "list": [ "mentions", "asks" ]
+        "enabled": false,
+        "list": [ "mentions" ]
       },
       "reblogs": {
         "enabled": false,
