@@ -512,7 +512,7 @@
     const { themeColors } = await browser.storage.local.get('themeColors');
     themeStyle(themeColors);
 
-    browser.storage.onChange.addListener(onStorageChanged);
+    browser.storage.onChanged.addListener(onStorageChanged);
   };
   
   Coloris({
