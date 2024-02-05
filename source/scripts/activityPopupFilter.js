@@ -14,7 +14,7 @@ const map = {
     "answered_ask",
     "ask"
   ],
-  "replies": [],
+  "replies": [ 'reply' ],
   "blaze": [
     "blaze_approved",
     "blaze_completed",
