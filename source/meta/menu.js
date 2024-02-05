@@ -382,6 +382,37 @@
                 })
               });
               break;
+            case 'listSelect':
+              const listSelectInputWrapper = $(`<div class="ui-extendedSelectWrapper"><h3>${feature.preferences[key].title}</h3></div>`);
+              const listSelectWrapper = $(`<div class="ui-listSelectWrapper"></div>`);
+
+              extendInputWrapper.append(listSelectInputWrapper);
+              listSelectInputWrapper.append(listSelectWrapper);
+
+              feature.preferences[key].listOptions.forEach(listItem => {
+                const normalizedString = listItem.replace(/\s/g, '');
+                const input = $('<input>', { class: 'ui-listSelect', type: 'checkbox', id: `ui-feature-${name}-${key}-${normalizedString}`, name: `${name}-${key}` });
+                const label = $(`<label for="ui-feature-${name}-${key}-${normalizedString}" name="${name}-${key}">${listItem}</label>`);
+    
+                listSelectWrapper.append(input);
+                listSelectWrapper.append(label);
+    
+                if (preference.preferences[key].list.includes(listItem)) input.attr('checked', '');
+    
+                input.on('change', async function (event) {
+                  const checked = event.target.checked ? true : false;
+                  let { preferences } = await browser.storage.local.get('preferences');
+        
+                  if (checked) preferences[name].preferences[key].list.push(listItem);
+                  else preferences[name].preferences[key].list = preferences[name].preferences[key].list.filter(item => item !== listItem);
+
+                  if (feature.preferences[key].default.sort().join('') === preferences[name].preferences[key].list.sort().join('')) preferences[name].preferences[key].enabled = false;
+                  else preferences[name].preferences[key].enabled = true;
+
+                  browser.storage.local.set({ preferences });
+                });
+              });
+              break;
           }
         });
 

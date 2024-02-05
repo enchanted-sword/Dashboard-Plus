@@ -181,7 +181,7 @@ button.ui-descButton {
   height: fit-content;
 }
 
-input.ui-toggle, input.ui-multiSelect, input.ui-select {
+input.ui-toggle, input.ui-multiSelect, input.ui-select, input.ui-listSelect {
   position: absolute;
   width: 0;
   height: 0;
@@ -456,6 +456,36 @@ input.ui-colors + label {
   width: 24px;
   height: 24px;
   border-radius: 0 3px 3px 0;
+}
+
+.ui-listSelectWrapper {
+  max-height: 120px;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  overflow: auto;
+  scrollbar-width: thin;
+  border-radius: 3px;
+}
+input.ui-listSelect + label {
+  cursor: pointer;
+  background: rgba(var(--navy), .12);
+  border-radius: 3px;
+  font-size: 18px;
+  text-align: center;
+  width: calc(100% - 4px);
+
+  &:hover { background-color: rgba(var(--navy), .24); }
+}
+
+input.ui-listSelect:checked + label {
+  background: rgb(var(--accent));
+
+  &:hover { background-color: color-mix(in srgb, rgb(var(--accent)), rgb(var(--navy)) 10%); }
+}
+
+.ui-listSelectWrapper label:not(:last-of-type) {
+  margin-bottom: 4px;
 }
 
 .ui-card {

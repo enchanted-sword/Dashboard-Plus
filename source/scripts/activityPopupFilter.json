@@ -6,7 +6,7 @@
   "description": "allows filtering what types of notifications appear in each of the activity popup's four tabs",
   "preferences": {
     "all": {
-      "title": "'all' tab",
+      "title": "default tab",
       "type": "listSelect",
       "default": [
         "rollups",
@@ -32,16 +32,128 @@
         "what you missed",
         "back in town",
         "spam reported"
+      ],
+      "listOptions": [
+        "rollups",
+        "asks",
+        "replies",
+        "blaze",
+        "mentions",
+        "tips",
+        "community labels",
+        "conversational notes",
+        "follows",
+        "gifts",
+        "likes",
+        "milestones",
+        "new group blog members",
+        "post flagged",
+        "post attribution",
+        "posting prompts",
+        "reblogs without comments",
+        "reblogs with comments",
+        "reblogs with tags",
+        "badges",
+        "what you missed",
+        "back in town",
+        "spam reported"
       ]
     },
-    "mentions": [ "mentions" ],
-    "reblogs": [
-      "rollups",
-      "reblogs without comments",
-      "reblogs with comments",
-      "reblogs with tags"
-    ],
-    "replies": [ "replies" ]
+    "mentions": {
+      "title": "mentions tab",
+      "type": "listSelect",
+      "default": [ "mentions" ],
+      "listOptions": [
+        "rollups",
+        "asks",
+        "replies",
+        "blaze",
+        "mentions",
+        "tips",
+        "community labels",
+        "conversational notes",
+        "follows",
+        "gifts",
+        "likes",
+        "milestones",
+        "new group blog members",
+        "post flagged",
+        "post attribution",
+        "posting prompts",
+        "reblogs without comments",
+        "reblogs with comments",
+        "reblogs with tags",
+        "badges",
+        "what you missed",
+        "back in town",
+        "spam reported"
+      ]
+    },
+    "reblogs": {
+      "title": "reblogs tab",
+      "type": "listSelect",
+      "default": [
+        "rollups",
+        "reblogs without comments",
+        "reblogs with comments",
+        "reblogs with tags"
+      ],
+      "listOptions": [
+        "rollups",
+        "asks",
+        "replies",
+        "blaze",
+        "mentions",
+        "tips",
+        "community labels",
+        "conversational notes",
+        "follows",
+        "gifts",
+        "likes",
+        "milestones",
+        "new group blog members",
+        "post flagged",
+        "post attribution",
+        "posting prompts",
+        "reblogs without comments",
+        "reblogs with comments",
+        "reblogs with tags",
+        "badges",
+        "what you missed",
+        "back in town",
+        "spam reported"
+      ]
+    },
+    "replies": {
+      "title": "replies tab",
+      "type": "listSelect",
+      "default": [ "replies" ],
+      "listOptions": [
+        "rollups",
+        "asks",
+        "replies",
+        "blaze",
+        "mentions",
+        "tips",
+        "community labels",
+        "conversational notes",
+        "follows",
+        "gifts",
+        "likes",
+        "milestones",
+        "new group blog members",
+        "post flagged",
+        "post attribution",
+        "posting prompts",
+        "reblogs without comments",
+        "reblogs with comments",
+        "reblogs with tags",
+        "badges",
+        "what you missed",
+        "back in town",
+        "spam reported"
+      ]
+    }
   },
   "js": true
 }
