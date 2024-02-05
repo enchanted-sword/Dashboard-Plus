@@ -15,19 +15,19 @@
   "host_permissions": ["*://*.tumblr.com/"],
   "web_accessible_resources": [{
     "resources": [ "*.js", "*.json", "*.css", "*.svg" ],
-    "matches": ["*://www.tumblr.com/*"]
+    "matches": ["*://*.tumblr.com/*"]
   }],
 
   "content_scripts": [
     {
       "matches": [
-        "*://www.tumblr.com/*"
+        "*://*.tumblr.com/*"
       ],
       "exclude_matches": [
-        "*://www.tumblr.com/login",
-        "*://www.tumblr.com/register",
-        "*://www.tumblr.com/register?*",
-        "*://www.tumblr.com/privacy/*"
+        "*://*.tumblr.com/login",
+        "*://*.tumblr.com/register",
+        "*://*.tumblr.com/register?*",
+        "*://*.tumblr.com/privacy/*"
       ],
       "run_at": "document_start",
       "js": [

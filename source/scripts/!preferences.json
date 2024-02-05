@@ -76,6 +76,56 @@
     "type": "toggle",
     "enabled": false
   },
+  "activityPopupFilter": {
+    "type": "toggle",
+    "enabled": true,
+    "preferences": {
+      "all": {
+        "enabled": false,
+        "list": [
+          "rollups",
+          "asks",
+          "replies",
+          "blaze",
+          "mentions",
+          "tips",
+          "community labels",
+          "conversational notes",
+          "follows",
+          "gifts",
+          "likes",
+          "milestones",
+          "new group blog members",
+          "post flagged",
+          "post attribution",
+          "posting prompts",
+          "reblogs without comments",
+          "reblogs with comments",
+          "reblogs with tags",
+          "badges",
+          "what you missed",
+          "back in town",
+          "spam reported"
+        ]
+      },
+      "mentions": {
+        "enabled": true,
+        "list": [ "mentions", "asks" ]
+      },
+      "reblogs": {
+        "enabled": false,
+        "list": [
+          "reblogs without comments",
+          "reblogs with comments",
+          "reblogs with tags"
+        ]
+      },
+      "replies": {
+        "enabled": false,
+        "list": [ "replies" ]
+      }
+    }
+  },
   "horizontalNavigation": {
     "type": "toggle",
     "enabled": true

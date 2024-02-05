@@ -10,6 +10,7 @@
   "hideNotificationLabels",
   "customNotificationLabels",
   "revertActivityPopup",
+  "activityPopupFilter",
   "horizontalNavigation",
   "hideUnread",
   "hideIcons",

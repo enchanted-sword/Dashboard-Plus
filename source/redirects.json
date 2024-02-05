@@ -10,7 +10,9 @@
     "action": {
       "type": "redirect",
       "redirect": {
-        "extensionPath": "/scripts/notifTest.js"
+        "transform": {
+          "query": "?rollups=false&types[0]=reply"
+        }
       }
     }
   }
