@@ -455,15 +455,19 @@
     }));
   };
 
+  const updateThemeColors = (themeColors, preferences) => {
+    if (preferences && preferences.customColors.enabled) {
+      const rgbColors = preferences.customColors.preferences.colors;
+      Object.keys(rgbColors).forEach(function (color) { rgbColors[color] = hexToRgbString(rgbColors[color]); });
+      themeStyle(rgbColors);
+    } else if (themeColors) themeStyle(themeColors);
+  }
+
   const onStorageChanged = async (changes, areaName) => {
     const { themeColors, preferences } = changes;
     if (areaName !== 'local' || (typeof themeColors === 'undefined' && typeof preferences === 'undefined')) return;
 
-    if (preferences.newValue.customColors.enabled) {
-      const rgbColors = preferences.newValue.customColors.preferences.colors;
-      Object.keys(rgbColors).forEach(function (color) { rgbColors[color] = hexToRgbString(rgbColors[color]); });
-      themeStyle(rgbColors);
-    } else themeStyle(themeColors.newValue);
+    updateThemeColors(themeColors.newValue, preferences.newValue);
   };
 
   const init = async () => {
@@ -521,10 +525,7 @@
     document.documentElement.append(themeStyleElement);
 
     const { themeColors, preferences } = await browser.storage.local.get();
-
-    if (preferences.customColors.enabled) {
-      themeStyle(preferences.customColors.preferences.colors)
-    } else themeStyle(themeColors);
+    updateThemeColors(themeColors, preferences);
 
     browser.storage.onChanged.addListener(onStorageChanged);
   };
