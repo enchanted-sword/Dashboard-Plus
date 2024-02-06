@@ -1,28 +1,31 @@
 'use strict';
 
 {
-  const themeStyle = colors => {
-    const styleElement = document.createElement('style');
-    styleElement.innerText = `
-      :root {
-        --black: ${colors.black};
-        --white: ${colors.white};
-        --white-on-dark: ${colors['white-on-dark']};
-        --navy: ${colors.navy};
-        --red: ${colors.red};
-        --orange: ${colors.orange};
-        --yellow: ${colors.yellow};
-        --green: ${colors.green};
-        --blue: ${colors.blue};
-        --purple: ${colors.purple};
-        --pink: ${colors.pink};
-        --accent: ${colors.accent};
-        --secondary-accent: ${colors['secondary-accent']};
-        --follow: ${colors.follow};
-      }
-    `;
-    document.documentElement.append(styleElement);
-  };
+  const hexToRgbString = hex =>
+  hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => '#' + r + r + g + g + b + b)
+    .substring(1).match(/.{2}/g)
+    .map(x => parseInt(x, 16))
+    .join(',');
+
+  let themeStyleElement;
+  const themeStyle = colors => themeStyleElement.innerText = `
+    :root {
+      --black: ${colors.black};
+      --white: ${colors.white};
+      --white-on-dark: ${colors.whiteOnDark};
+      --navy: ${colors.navy};
+      --red: ${colors.red};
+      --orange: ${colors.orange};
+      --yellow: ${colors.yellow};
+      --green: ${colors.green};
+      --blue: ${colors.blue};
+      --purple: ${colors.purple};
+      --pink: ${colors.pink};
+      --accent: ${colors.accent};
+      --secondary-accent: ${colors.secondaryAccent};
+      --follow: ${colors.follow};
+    }
+  `;
 
   const getJsonFile = async name => {
     try {
@@ -453,10 +456,14 @@
   };
 
   const onStorageChanged = async (changes, areaName) => {
-    const { themeColors } = changes;
-    if (areaName !== 'local' || typeof themeColors === 'undefined') return;
+    const { themeColors, preferences } = changes;
+    if (areaName !== 'local' || (typeof themeColors === 'undefined' && typeof preferences === 'undefined')) return;
 
-    themeStyle(colors);
+    if (preferences.newValue.customColors.enabled) {
+      const rgbColors = preferences.newValue.customColors.preferences.colors;
+      Object.keys(rgbColors).forEach(function (color) { rgbColors[color] = hexToRgbString(rgbColors[color]); });
+      themeStyle(rgbColors);
+    } else themeStyle(themeColors.newValue);
   };
 
   const init = async () => {
@@ -509,8 +516,15 @@
       input.remove();
     });
 
-    const { themeColors } = await browser.storage.local.get('themeColors');
-    themeStyle(themeColors);
+    themeStyleElement = document.createElement('style');
+    themeStyleElement.id = 'ui-themeStyleElement';
+    document.documentElement.append(themeStyleElement);
+
+    const { themeColors, preferences } = await browser.storage.local.get();
+
+    if (preferences.customColors.enabled) {
+      themeStyle(preferences.customColors.preferences.colors)
+    } else themeStyle(themeColors);
 
     browser.storage.onChanged.addListener(onStorageChanged);
   };
@@ -523,6 +537,4 @@
     onChange: debounce(onColorChange)
   });
   buildMenu().then(init);
-
-  browser.onSt
 }

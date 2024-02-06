@@ -7,6 +7,7 @@ const waitForWindow = () => new Promise(resolve => {
   window.requestAnimationFrame(() => (typeof window.tumblr === 'undefined' || typeof window.tumblr.getCssMap === 'undefined' || typeof window.tumblr.apiFetch === 'undefined') ? waitForWindow().then(resolve) : resolve());
 });
 
+const camelCase = str => str.replace(/(?:-(\w))/g, (a, b) => b.toUpperCase())
 const getThemeColor = color => getComputedStyle(document.getElementById('root')).getPropertyValue(`--${color}`);
 const colors = [
   'black',
@@ -25,7 +26,9 @@ const colors = [
   'follow'
 ];
 const updateThemeColors = () => {
-  colors.forEach(color => themeColors[color] = getThemeColor(color));
+  colors.forEach(color => {
+    themeColors[camelCase(color)] = getThemeColor(color)
+  });
   window.postMessage({ text: 'db+themeColorUpdateMessage', themeColors }, 'https://www.tumblr.com');
 }
 
