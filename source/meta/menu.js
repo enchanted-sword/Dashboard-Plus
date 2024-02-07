@@ -27,6 +27,14 @@
     }
   `;
 
+  const deepEquals = (x, y) => {
+    const tx = typeof x, ty = typeof y;
+    return x && y && tx === 'object' && tx === ty ? (
+      Object.keys(x).length === Object.keys(y).length &&
+      Object.keys(x).every(key => deepEquals(x[key], y[key]))
+    ) : (x === y);
+  };
+
   const getJsonFile = async name => {
     try {
       const url = browser.runtime.getURL(`/scripts/${name}.json`);
@@ -456,6 +464,7 @@
   };
 
   const updateThemeColors = (themeColors, preferences) => {
+    console.log(themeColors,)
     if (preferences && preferences.customColors.enabled) {
       const rgbColors = preferences.customColors.preferences.colors;
       Object.keys(rgbColors).forEach(function (color) { rgbColors[color] = hexToRgbString(rgbColors[color]); });
@@ -464,10 +473,14 @@
   }
 
   const onStorageChanged = async (changes, areaName) => {
-    const { themeColors, preferences } = changes;
-    if (areaName !== 'local' || (typeof themeColors === 'undefined' && typeof preferences === 'undefined')) return;
+    let { themeColors, preferences } = changes;
+    if (areaName !== 'local' || (typeof themeColors === 'undefined' && typeof preferences === 'undefined') || deepEquals(preferences?.oldValue.customColors, preferences?.newValue.customColors)) return;
+    if (typeof themeColors === 'undefined' && !preferences?.newValue.customColors.enabled) { // case when disabling customColors
+      ({ themeColors } = await browser.storage.local.get('themeColors'));
+      themeColors = { newValue: themeColors };
+    }
 
-    updateThemeColors(themeColors.newValue, preferences.newValue);
+    updateThemeColors(themeColors?.newValue, preferences.newValue);
   };
 
   const init = async () => {
