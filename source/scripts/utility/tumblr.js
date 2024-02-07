@@ -43,45 +43,10 @@ export const replaceTranslate = (string = '', replaceValue = '') => translate(st
  * @returns {Promise<Response|Error>} Resolves or rejects with result of the API call
  */
 export const apiFetch = async (...args) => {
-  return inject(
-    async (resource, init = {}) => {
-      init.headers ??= {};
-      init.headers['DBPlus'] = '1';
-
-      if (init.body !== undefined) {
-        const objects = [init.body];
-
-        while (objects.length !== 0) {
-          const currentObjects = objects.splice(0);
-
-          currentObjects.forEach(obj => {
-            Object.keys(obj).forEach(key => {
-              const snakeCaseKey = key
-                .replace(/^[A-Z]/, match => match.toLowerCase())
-                .replace(/[A-Z]/g, match => `_${match.toLowerCase()}`);
-
-              if (snakeCaseKey !== key) {
-                obj[snakeCaseKey] = obj[key];
-                delete obj[key];
-              }
-            });
-          });
-
-          objects.push(
-            ...currentObjects
-              .flatMap(Object.values)
-              .filter(value => value instanceof Object)
-          );
-        }
-      }
-
-      return window.tumblr.apiFetch(resource, init);
-    },
-    args
-  );
+  return inject('apiFetch', args);
 };
 
 /**
  * @param {string} url - Relative URL to navigate to
  */
-export const navigate = async url => inject((path) => window.tumblr.navigate(path), [url]);
+export const navigate = async url => inject('navigate', [url]);

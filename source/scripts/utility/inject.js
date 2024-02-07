@@ -1,63 +1,24 @@
-import { elem } from './jsTools.js';
-
-const getNonce = () => {
-  const { nonce } = [...document.scripts].find(script => script.nonce) || '';
-  if (!nonce) console.error('Empty nonce attribute: injected script may not run');
-  return nonce;
-};
-const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
-
 /**
  * @param {Function} func - Function to run in the page context
  * @param {Array} [args] - Array of arguments to be run the function with
- * @param {Element} [target] - Element to append script to; accessible as
- *                             document.currentScript.parentElement in the injected function
+ * @param {Element} [target] - Element to append script to; appended as the last argument of the injected function
  * @returns {Promise<any>} The return value of the function or caught exception
  */
-export const inject = async (func, args = [], target = document.documentElement) => {
-  const name = `dbplus$${func.name || 'injected'}`;
-  const async = func instanceof AsyncFunction;
+export const inject = (name, args = [], target = document.documentElement) =>
+  new Promise((resolve, reject) => {
+    const requestId = String(Math.random());
+    const data = { name, args, id: requestId };
 
-  const script = elem('script', { nonce: getNonce() }, null, [`{
-    const { dataset } = document.currentScript;
-    const ${name} = ${func.toString()};
-    const returnValue = ${name}(...${JSON.stringify(args)});
-    ${async
-      ? `returnValue
-          .then(result => { dataset.result = JSON.stringify(result || null); })
-          .catch(exception => { dataset.exception = JSON.stringify({
-            message: exception.message,
-            name: exception.name,
-            stack: exception.stack,
-            ...exception
-          })})
-        `
-      : 'dataset.result = JSON.stringify(returnValue || null);'
-    }
-  }`]);
+    const responseHandler = ({ detail }) => {
+      const { id, result, exception } = JSON.parse(detail);
+      if (id !== requestId) return;
 
-  if (async) {
-    return new Promise((resolve, reject) => {
-      const attributeObserver = new MutationObserver((mutations, observer) => {
-        if (mutations.some(({ attributeName }) => attributeName === 'data-result')) {
-          observer.disconnect();
-          resolve(JSON.parse(script.dataset.result));
-        } else if (mutations.some(({ attributeName }) => attributeName === 'data-exception')) {
-          observer.disconnect();
-          reject(JSON.parse(script.dataset.exception));
-        }
-      });
+      target.removeEventListener('dbplus-injection-response', responseHandler);
+      exception ? reject(exception) : resolve(result);
+    };
+    target.addEventListener('dbplus-injection-response', responseHandler);
 
-      attributeObserver.observe(script, {
-        attributes: true,
-        attributeFilter: ['data-result', 'data-exception']
-      });
-      target.append(script);
-      script.remove();
-    });
-  } else {
-    target.append(script);
-    script.remove();
-    return JSON.parse(script.dataset.result);
-  }
-};
+    target.dispatchEvent(
+      new CustomEvent('dbplus-injection-request', { detail: JSON.stringify(data), bubbles: true })
+    );
+  });
