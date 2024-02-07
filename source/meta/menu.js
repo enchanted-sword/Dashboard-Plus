@@ -44,10 +44,10 @@
     const installedFeatures = await getJsonFile('!features');
     const features = {};
 
-    installedFeatures.forEach(async name => {
+    await Promise.all(installedFeatures.map(async name => {
       const featureData = await getJsonFile(name);
       if (featureData) features[name] = featureData;
-    });
+    }));
 
     return features;
   };
