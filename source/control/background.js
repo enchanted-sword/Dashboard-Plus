@@ -17,7 +17,7 @@ let connectionPort;
 const connected = p => {
   connectionPort = p;
   connectionPort.onMessage.addListener(m => {
-    if (m.action = 'dynamicDnr') dynamicDnr(m.data);
+    if (m.action === 'dynamicDnr') dynamicDnr(m.data);
   });
 }
 

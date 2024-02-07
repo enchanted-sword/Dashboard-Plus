@@ -77,7 +77,7 @@
           href: getURL(`/scripts/${name}.css`)
         });
   
-        if (data.css = 'fast') document.documentElement.appendChild(link);
+        if (data.css === 'fast') document.documentElement.appendChild(link);
         else defer(() => document.documentElement.appendChild(link));
       }
       if (data.js) defer(async () => {
