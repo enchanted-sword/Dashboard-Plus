@@ -14,7 +14,7 @@ const fetchedUrlInfo = async url => await apiFetch(url).catch((error) => {
   console.error(error);
   return { response: {} };
 });
-const blogViewRegex = /https:\/\/[\w\d\.-]+\/post\/([\d]*)/
+const blogViewRegex = /https:\/\/[\w\d.-]+\/post\/([\d]*)/;
 const blogViewNavigate = function (event) {
   event.preventDefault();
   event.stopPropagation();
