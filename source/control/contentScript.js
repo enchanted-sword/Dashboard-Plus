@@ -23,7 +23,7 @@
       Object.keys(x).length === Object.keys(y).length &&
       Object.keys(x).every(key => deepEquals(x[key], y[key]))
     ) : (x === y);
-  }
+  };
 
   const script = document.createElement('script'); //run control script
   script.src = getURL('control/control.js');
@@ -113,7 +113,7 @@
 
         clean().catch(console.error);
 
-        browser.storage.onChanged.removeListener(preferenceListeners[name]);
+        if (browser.storage.onChanged.hasListener(preferenceListeners[name])) browser.storage.onChanged.removeListener(preferenceListeners[name]);
         delete preferenceListeners[name];
       });
 
