@@ -21,10 +21,10 @@ const detailPolls = async polls => {
   for (const poll of polls) {
     const answers = poll.querySelectorAll(`:scope ${s('pollAnswer results')}`);
     const totalCount = Number(poll.querySelector(s('pollSummary')).innerText.replace(/,/, '').match(/\d+/)[0]);
-    answers.forEach(async answer => {
+    await Promise.all(answers.map(async answer => {
       const { percentage } = await percentageNumber(answer);
       $(answer).append($(`<span class="dbplus-answerVoteCount">(${Math.round(totalCount * percentage / 100)})</span>`));
-    });
+    }));
     poll.classList.add(customClass);
   }
 };

@@ -21,11 +21,11 @@ const styleElement = style(`
 const showVotes = async polls => {
   for (const poll of polls) {
     const votes = poll.querySelectorAll(`:scope button${s('vote')}`);
-    votes.forEach(async vote => {
+    await Promise.all(votes.map(async vote => {
       const { percentage } = await percentageNumber(vote);
       const percentageBar = elem('div', { class: 'dbplus-percentageBar', style: `width: ${percentage}%;` }, null, null);
       vote.prepend(percentageBar);
-    });
+    }));
     poll.classList.add(customClass);
   }
 };

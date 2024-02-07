@@ -27,7 +27,7 @@ const inputId = 'dbplus-timelineSearchTextarea';
 const matchesToString = arr => arr.map(x => x[1]).join('');
 const queryFilter = posts => {
   const query = document.getElementById(inputId).value.replace('"', '\'').toLowerCase();
-  posts.forEach(async post => {
+  posts.forEach(async post => { // async forEach is okay here because queryFilter is synchronous
     let filterString = post.__timelineSearchFilter;
 
     if (typeof post.__timelineSearchFilter === 'undefined') {

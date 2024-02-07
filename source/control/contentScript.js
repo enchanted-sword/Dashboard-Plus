@@ -156,12 +156,12 @@
 
     if (typeof preferences === 'undefined') preferences = await getJsonFile('!preferences');
 
-    installedFeatures.forEach(async feature => {
+    await Promise.all(installedFeatures.map(async feature => {
       if (!preferences[feature]) {
         const localPreferences = await getJsonFile('!preferences');
         preferences[feature] = localPreferences[feature];
       }
-    });
+    }));
     Object.keys(preferences).forEach(key => { if (!installedFeatures.includes(key)) delete preferences[key]; });
 
     enabledFeatures = Object.keys(preferences).filter(key => preferences[key].enabled);
