@@ -1,7 +1,9 @@
 module.exports = {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "jquery": true,
+    "webextensions": true
   },
   "extends": "eslint:recommended",
   "overrides": [
@@ -21,6 +23,11 @@ module.exports = {
       "ecmaVersion": "latest",
       "sourceType": "module"
   },
+  "globals": {
+    "Coloris": "readonly"
+  },
   "rules": {
+    "no-case-declarations": "off",
+    "no-unused-vars": "off"
   }
 }
