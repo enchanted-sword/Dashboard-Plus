@@ -163,7 +163,7 @@ const menuModfifcations = menu => {
     $(`[href="/likes"] ${s('childWrapper')}`).prepend(svgIcon('like-filled', 18, 20, customClass));
     $(`[href="/following"] ${s('childWrapper')}`).prepend(svgIcon('following', 20, 21, customClass));
     $(document).on('click', () => {
-      if (!$('#account_subnav:hover').length && !$('#account_subnav').attr('hidden')) { document.getElementById('account_button').click(); }
+      if (!$('#account_subnav:hover').length && !$('#account_subnav').attr('hidden') && $('#account_button').length) { document.getElementById('account_button').click(); }
     });
   }
 };
