@@ -98,7 +98,7 @@
     browser.storage.local.set({ preferences });
   }
 
-  const newFeatureItem = (name, feature = {}, preference = {}, allPreferences) => {
+  const newFeatureItem = (name, feature = {}, preference = {}) => {
     const category = typeof feature.category === 'string' ? feature.category : feature.category.join(' ');
     const wrapper = $(`<li>`, { category, name });
 
