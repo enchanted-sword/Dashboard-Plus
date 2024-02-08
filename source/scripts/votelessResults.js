@@ -20,7 +20,7 @@ const styleElement = style(`
 
 const showVotes = async polls => {
   for (const poll of polls) {
-    const votes = poll.querySelectorAll(`:scope button${s('vote')}`);
+    const votes = Array.from(poll.querySelectorAll(`:scope button${s('vote')}`));
     await Promise.all(votes.map(async vote => {
       const { percentage } = await percentageNumber(vote);
       const percentageBar = elem('div', { class: 'dbplus-percentageBar', style: `width: ${percentage}%;` }, null, null);
