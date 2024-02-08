@@ -463,6 +463,15 @@
     }));
   };
 
+  const onSearch = ({ target }) => {
+    if (target.value) {
+      document.getElementById('ui-searchFilter').innerText = `
+        #ui-featureContainer > li:not([name*="${target.value.replace(/[^\w]/g, '')}" i]) { display: none; }
+      `;
+    }
+    else document.getElementById('ui-searchFilter').innerText = '';
+  };
+
   const updateThemeColors = (themeColors, preferences) => {
     console.log(themeColors,)
     if (preferences && preferences.customColors.enabled) {
@@ -532,6 +541,7 @@
       input.click();
       input.remove();
     });
+    document.getElementById('ui-featureSearch').addEventListener('input', debounce(onSearch));
 
     themeStyleElement = document.createElement('style');
     themeStyleElement.id = 'ui-themeStyleElement';

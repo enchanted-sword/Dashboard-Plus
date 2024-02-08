@@ -128,7 +128,7 @@ h3 { font-size: 18px; }
 
   &:not([active="true"] > input) {
     padding: 0;
-    width: 60px;
+    width: 48px;
     text-align: center;
     border-bottom: 2px solid rgba(var(--navy), .1);
 
@@ -155,7 +155,6 @@ ul.ui-featureCategory {
   scrollbar-color: rgba(var(--navy), .2)rgba(var(--navy), .2);
 }
 #ui-featureContainer > li {
-  display: none;
   list-style-type: none;
   position: relative;
   padding: 8px;
@@ -163,16 +162,19 @@ ul.ui-featureCategory {
   border: 2px solid rgba(var(--navy), .4);
   border-radius: 3px;
   margin-bottom: 4px;
+
+  &:not(#ui-all[active="true"] ~ ul li[category],
+    #ui-search[active="true"] ~ ul li[category],
+    #ui-dashboard[active="true"] ~ ul li[category~="dashboard"],
+    #ui-navigation[active="true"] ~ ul li[category~="navigation"],
+    #ui-activity[active="true"] ~ ul li[category~="activity"],
+    #ui-sidebar[active="true"] ~ ul li[category~="sidebar"],
+    #ui-posts[active="true"] ~ ul li[category~="posts"],
+    #ui-messaging[active="true"] ~ ul li[category~="messaging"],
+    #ui-appearance[active="true"] ~ ul li[category~="appearance"],
+    #ui-utility[active="true"] ~ ul li[category~="utility"]) { display: none; }
 }
-#ui-all[active="true"] ~ ul li[category],
-#ui-dashboard[active="true"] ~ ul li[category~="dashboard"],
-#ui-navigation[active="true"] ~ ul li[category~="navigation"],
-#ui-activity[active="true"] ~ ul li[category~="activity"],
-#ui-sidebar[active="true"] ~ ul li[category~="sidebar"],
-#ui-posts[active="true"] ~ ul li[category~="posts"],
-#ui-messaging[active="true"] ~ ul li[category~="messaging"],
-#ui-appearance[active="true"] ~ ul li[category~="appearance"],
-#ui-utility[active="true"] ~ ul li[category~="utility"] { display: block !important; }
+
 #ui-featureContainer > li:has(input:checked:not([dummy], .ui-extend input)),
 #ui-featureContainer > li:has(input[active="true"]) {
   background: rgb(var(--white));
