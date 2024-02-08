@@ -9,9 +9,11 @@
   button.onclick = async function () {
     const granted = await browser.permissions.request(permissions);
     if (granted) {
-      await browser.tabs.query({ url: '*://*.tumblr.com/*' }).then(async tabs => {
+      if (document.getElementById('reloadTabs').checked) {
+        await browser.tabs.query({ url: '*://*.tumblr.com/*' }).then(async tabs => {
         tabs.forEach(tab => browser.tabs.reload(tab.id));
       });
+      }
       window.close();
     }
   };

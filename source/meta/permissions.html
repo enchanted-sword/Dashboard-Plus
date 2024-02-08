@@ -61,6 +61,77 @@
 
       &:hover { background-color: color-mix(in srgb, rgb(var(--accent)), rgb(var(--navy)) 10%); }
     }
+
+    figure {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0;
+    }
+    input {
+      position: absolute;
+      width: 0;
+      height: 0;
+      visibility: hidden;
+      margin: 0;
+    }
+    input + label {
+      opacity: .8;
+      cursor: pointer;
+      font-size: 18px;
+      text-indent: -9999px;
+      width: 40px;
+      height: 20px;
+      background: rgba(var(--navy), .4);
+      transition: 0.3s;
+      display: block;
+      border-radius: 20px;
+      position: relative;
+    }
+    input + label:before {
+      z-index: 3;
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      background: rgb(var(--white));
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+    input:checked + label { background: rgb(var(--accent)); }
+    input:checked + label:before {
+      left: calc(100% - 2px);
+      transform: translateX(-100%);
+      background: rgb(var(--white));
+    }
+    input + label:active:before { width: 20px; }
+    input + label:after {
+      z-index: 2;
+      text-indent: 0;
+      text-align: center;
+      content: "";
+      position: absolute;
+      top: 1px;
+      right: 2px;
+      color: rgba(var(--text), .32);
+      width: 16px;
+      height: 16px;
+      line-height: 16px;
+      transition: 0.3s;
+    }
+    input:checked + label:after {
+      content: "";
+      right: calc(100% - 2px);
+      transform: translateX(100%);
+    }
+    input + label:active:after { right: 0; }
+    input:checked + label:active:after { right: calc(100% + 2px); }
+    h3 {
+      margin: 0 8px;
+      opacity: .8;
+    }
   </style>
 </head>
 <body>
@@ -88,6 +159,11 @@
       </ul>
     </div>
     <button id="grantPermissions">Grant permissions</button>
+    <figure>
+      <input id="reloadTabs" name="reloadTabs" type="checkbox" checked>
+      <label for="reloadTabs">Reload active Tumblr tabs</label>
+      <h3>Reload active Tumblr tabs</h3>
+    </figure>
   </dialog>
   <script src="permissions.js"></script>
 </body>
