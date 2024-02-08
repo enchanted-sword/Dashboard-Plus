@@ -3,7 +3,7 @@ import { declarativeNetRequest } from './utility/dnr.js';
 
 const removeRuleIds = ['APF:all', 'APF:mentions', 'APF:reblogs', 'APF:replies'];
 const regexFilter = {
-  all: '^https?://www\\.tumblr\\.com/api/v2/blog/[\\w\\d-]*/notifications.*earned_badge$',
+  all: '^https?://www\\.tumblr\\.com/api/v2/blog/[\\w\\d-]*/notifications.*types\[50\]=earned_badge$', 
   mentions: '^https?://www\\.tumblr\\.com/api/v2/blog/[\\w\\d-]*/notifications.*mention_in_reply$',
   reblogs: '^https?://www\\.tumblr\\.com/api/v2/blog/[\\w\\d-]*/notifications.*tags$',
   replies: '^https?://www\\.tumblr\\.com/api/v2/blog/[\\w\\d-]*/notifications.*reply$'
@@ -80,6 +80,14 @@ const urlQueryFromArray = (arr = []) => {
   arr = arr.flatMap(category => map[category]).map((type, index) => `types[${index}]=${type}`);
   return `?rollups=${rollups}&${arr.join('&')}`;
 };
+
+/* 
+  this feature doesn't interfere with the activity page itself because:
+  a) the default activity page filter fetch query is simply ?rollups=true
+  b) all other activity page fetches end with type[n]=earned_badge and can be filtered out
+  c) any notifications loaded when the page is loaded are part of the initial state and aren't fetched via XHP
+  d) any new notifications loaded in afterwards have an additional query param for the timestamp
+ */
 
 export const main = async () => {
   const preferences = await getPreferences('activityPopupFilter');
