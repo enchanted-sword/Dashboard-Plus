@@ -230,6 +230,9 @@
     align-items: center !important;
     font-size: 0px !important;
   }
+  [data-css~='navigation'] > [data-css~='patioFeedback'] {
+    display: none;
+  }
   [data-css~='container'][data-css~='mainContentIs4ColumnMasonry'] { margin: 0 auto !important; }
   @media (max-width: 1150px) {
     [data-css~='searchSidebarItem'] {
