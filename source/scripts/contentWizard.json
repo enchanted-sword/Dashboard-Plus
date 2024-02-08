@@ -2,7 +2,7 @@
   "name": "content width",
   "type": "slider",
   "description": "changes the width and justification of posts and the main content column",
-  "category": "dashboard",
+  "category": ["dashboard", "appearance"],
   "preferences": {
     "width": {
       "title": "content width",

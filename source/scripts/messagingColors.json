@@ -1,6 +1,6 @@
 {
   "name": "messaging colors",
-  "category": "messaging",
+  "category": ["messaging", "appearance"],
   "description": "customizes the messaging window theme",
   "type": "toggle",
   "extend": true,

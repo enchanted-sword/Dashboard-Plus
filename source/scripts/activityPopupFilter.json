@@ -2,7 +2,7 @@
   "name": "activity popup filter",
   "type": "toggle",
   "extend": "true",
-  "category": "activity",
+  "category": ["activity", "utility"],
   "description": "allows filtering what types of notifications appear in each of the activity popup's four tabs",
   "preferences": {
     "all": {

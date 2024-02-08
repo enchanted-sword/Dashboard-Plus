@@ -1,7 +1,7 @@
 {
   "name": "show poll results without voting",
   "type": "toggle",
-  "category": "posts",
+  "category": ["posts", "utility"],
   "description": "displays the relative vote percentages on polls without requiring the user to vote beforehand",
   "js": true,
   "css": true

@@ -3,7 +3,7 @@
   "type": "toggle",
   "extend": true,
   "description": "allows blurring or hiding of media and text from certain blogs or posts with certain tags",
-  "category": "posts",
+  "category": ["posts", "utility"],
   "preferences": {
     "blogAvatars": {
       "title": "blur or hide avatars in filtered posts",
