@@ -18,6 +18,9 @@
         <nav id="ui-featureTabs">
           <div class="ui-row">
             <button class="ui-featureTab" target="all" active="true">all features</button>
+            <button class="ui-featureTab" target="search" active="false">
+              <input id="ui-featureSearch" type="text" placeholder="search">
+            </button>
           </div>
           <div class="ui-row">
             <button class="ui-featureTab" target="dashboard">dashboard</button>
@@ -41,7 +44,9 @@
         <div class="ui-featureCategory" id="ui-messaging"></div>
         <div class="ui-featureCategory" id="ui-appearance"></div>
         <div class="ui-featureCategory" id="ui-utility"></div>
-        <ul id="ui-featureContainer"></ul>
+        <ul id="ui-featureContainer">
+          <div style="position: sticky; top: 0; z-index: 100; border-top: 12px solid rgb(var(--white));"></div>
+        </ul>
       </section>
       <section class="ui-section" id="ui-manage">
         <div class="ui-card">
@@ -50,6 +55,7 @@
             <button id="ui-export">export preferences</button>
           </div>
         </div>
+        <a style="margin: 8px;" href="menu.html">debug</a>
       </section>
       <section class="ui-section" id="ui-about">
         <div class="ui-card">
@@ -60,8 +66,6 @@
           <a href="https://www.paypal.com/paypalme/dragongirled" target="_blank" class="ui-aboutLink">support my work!</a>
         </div>
       </section>
-
-      <a style="color: white; margin: 8px;" href="menu.html">debug</a>
     </main>
     
     <script src="menu.js"></script>
