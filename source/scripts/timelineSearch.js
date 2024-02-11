@@ -44,13 +44,6 @@ const queryFilter = posts => {
     else post.removeAttribute(hiddenAttribute);
   });
 };
-const debounce = func => {
-  let timeoutID;
-  return (...args) => {
-    clearTimeout(timeoutID);
-    timeoutID = setTimeout(() => func(...args), 500);
-  };
-};
 const onInput = ({ target }) => {
   postFunction.stop(queryFilter);
   if($(`[${hiddenAttribute}]`).length) queryFilter(document.querySelectorAll(`[${hiddenAttribute}]`));

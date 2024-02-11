@@ -1,6 +1,6 @@
 import { mutationManager, postFunction } from './utility/mutations.js';
 import { noteObject } from './utility/reactProps.js';
-import { elem } from './utility/jsTools.js';
+import { elem, debounce } from './utility/jsTools.js';
 import { svgIcon } from './utility/dashboardElements.js';
 import { translate } from './utility/tumblr.js';
 import { s } from './utility/style.js';
@@ -37,13 +37,6 @@ const reblogQueryFilter = notes => {
     if (!filterString.includes(query)) note.setAttribute(hiddenAttribute, '');
     else note.removeAttribute(hiddenAttribute);
   });
-};
-const debounce = func => {
-  let timeoutID;
-  return (...args) => {
-    clearTimeout(timeoutID);
-    timeoutID = setTimeout(() => func(...args), 500);
-  };
 };
 const onInput = ({ target }) => {
   const postId = target.closest('[data-id]').getAttribute('data-id');

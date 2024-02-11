@@ -60,3 +60,44 @@ export const getPreferences = async (feature = '') => {
 
   return preferences[feature].preferences;
 };
+
+export const deepEquals = (x, y) => {
+  const tx = typeof x, ty = typeof y;
+  return x && y && tx === 'object' && tx === ty ? (
+    Object.keys(x).length === Object.keys(y).length &&
+    Object.keys(x).every(key => deepEquals(x[key], y[key]))
+  ) : (x === y);
+};
+
+export const debounce = func => {
+  let timeoutID;
+  return (...args) => {
+    clearTimeout(timeoutID);
+    timeoutID = setTimeout(() => func(...args), 500);
+  };
+};
+
+export const getJsonFile = async name => {
+  try {
+    const url = browser.runtime.getURL(`/scripts/${name}.json`);
+    const file = await fetch(url);
+    const json = await file.json();
+
+    return json;
+  } catch (e) {
+    console.error(name, e);
+    return null;
+  }
+};
+
+export const importFeatures = async () => {
+  const installedFeatures = await getJsonFile('!features');
+  const features = {};
+
+  await Promise.all(installedFeatures.map(async name => {
+    const featureData = await getJsonFile(name);
+    if (featureData) features[name] = featureData;
+  }));
+
+  return features;
+};
