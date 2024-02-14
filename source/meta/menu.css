@@ -529,23 +529,34 @@ input.ui-listSelect:checked + label {
   background-color: rgb(var(--white));
   padding: 8px;
   border-radius: 3px;
+
+  > li {
+    list-style-type: none;
+    position: relative;
+    padding: 8px;
+    background: rgba(var(--navy), .08);
+    border: 2px solid rgba(var(--navy), .4);
+    border-radius: 3px;
+    margin-bottom: 4px;
+  }
 }
 
 .ui-preferenceIo {
   display: flex;
   justify-content: space-between;
-}
-.ui-preferenceIo button {
-  font-size: 20px;
-  text-align: center;
-  border: 3px solid rgba(var(--navy),.2);
-  border-radius: 3px;
-  text-decoration: none;
-  width: 156px;
-  position: relative;
-  background-color: rgb(var(--accent));
 
-  &:hover { background-color: color-mix(in srgb, rgb(var(--accent)), rgb(var(--navy)) 10%); }
+  button {
+    font-size: 20px;
+    text-align: center;
+    border: 3px solid rgba(var(--navy),.2);
+    border-radius: 3px;
+    text-decoration: none;
+    width: 150px;
+    position: relative;
+    background-color: rgb(var(--accent));
+  
+    &:hover { background-color: color-mix(in srgb, rgb(var(--accent)), rgb(var(--navy)) 10%); }
+  }
 }
 
 .ui-aboutLink {

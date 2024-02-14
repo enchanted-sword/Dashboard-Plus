@@ -48,6 +48,7 @@
 
   import(getURL('/scripts/utility/jsTools.js')).then(({ deepEquals, getJsonFile }) => {
     let installedFeatures = [];
+    let menuFeatures = ['inheritColors'];
     let enabledFeatures = [];
     const preferenceListeners = {};
     const resizeListeners = [];
@@ -148,7 +149,7 @@
           preferences[feature] = localPreferences[feature];
         }
       }));
-      Object.keys(preferences).forEach(key => { if (!installedFeatures.includes(key)) delete preferences[key]; });
+      Object.keys(preferences).forEach(key => { if (!installedFeatures.includes(key) && !menuFeatures.includes(key)) delete preferences[key]; });
 
       enabledFeatures = Object.keys(preferences).filter(key => preferences[key].enabled);
 

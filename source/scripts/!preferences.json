@@ -301,5 +301,6 @@
         "follow": "#f3f8fb"
       }
     }
-  }
+  },
+  "inheritColors": true
 }
