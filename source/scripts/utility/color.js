@@ -25,6 +25,12 @@ const contrast = (hex1, hex2) => {
   const lum2 = luminance(hexToRgb(hex2));
   return ratio(lum1, lum2);
 };
+
+/**
+ * Compares a color's contrast against both black and white and returns whichever of the two has the higher contrast
+ * @param {string} hex - Color to contrast 
+ * @returns {string} CSS-formatted RGB string (r,g,b)
+ */
 export const contrastBW = hex => {
   const lum = luminance(hexToRgb(hex));
   const lumBlk = luminance(black);
@@ -34,8 +40,12 @@ export const contrastBW = hex => {
   if (ratioBlk < ratioWht) return rgbToString(black);
   else return rgbToString(white);
 };
-const stringToRgb = str => str.replace(/\s/g, '').split(',');
+
 const rgbToString = rgb => rgb.join(',');
 
+/**
+ * Converts a color in hex form to the equivalent RGB string
+ * @param {string} hex - Color to convert 
+ * @returns {string} CSS-formatted RGB string (r,g,b)
+ */
 export const hexToRgbString = hex => rgbToString(hexToRgb(hex));
-export const rgbStringToHex = rgb => rgbToHex(...stringToRgb(rgb));

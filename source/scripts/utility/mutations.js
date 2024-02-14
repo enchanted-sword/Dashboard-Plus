@@ -51,12 +51,23 @@ export const mutationManager = Object.freeze({
 
 export const postFunction = Object.freeze({
   functions: new Map(),
+
+  /**
+   * Start a mutation callback on new posts
+   * @param {string} selector - CSS selector for elements to target
+   * @param {Function} func - Callback function for matching elements
+   */
   start (func, filter = false) {
     if (this.functions.has(func)) this.functions.delete(func);
     this.functions.set(func, filter);
     if (mutationManager.listeners.has(onNewPosts)) mutationManager.trigger(onNewPosts);
     else (mutationManager.start(postSelector, onNewPosts));
   },
+
+  /**
+   * Stop a mutation callback
+   * @param {Function} func - Function to remove
+   */
   stop (func) {
     this.functions.delete(func)
   }

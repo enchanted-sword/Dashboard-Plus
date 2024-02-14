@@ -230,6 +230,7 @@ const urlPopover = async (url, xPos, yPos) => {
 };
 
 /**
+ * Adds blog popovers to blog links
  * @param {Element} anchor - Tumblr blog URL to attach a blog popover to 
  */
 export const addUrlPopover = async anchor => {
@@ -258,12 +259,24 @@ const newControlIcon = (icon, func, tooltip) => elem('div', { class: 'dbplus-con
 
 export const controlIcons = Object.freeze({
   collection: new Map(),
+
+  /**
+   * Register a new control icon in post footers
+   * @param {string} icon - Name of managed icon SVG to display
+   * @param {string} tooltip - Tooltip displayed on hovering over the icon
+   * @param {Function} func - Function to run when the icon is clicked
+   */
   register (icon, tooltip, func) {
     if (this.collection.has(func)) this.collection.delete(func);
     this.collection.set(func, { icon, tooltip });
     if (mutationManager.listeners.has(onNewControlElement)) mutationManager.trigger(onNewControlElement);
     else mutationManager.start(controlTargetSelector, onNewControlElement)
   },
+
+  /**
+   * Removes a custom control icon
+   * @param {Fcuntion} func - function associated with icon to be removed
+   */
   unregister (func) {
     if (this.collection.has(func)) {
       $(`.dbplus-controlIcon`).has(`[href="#managed-icon__${this.collection.get(func).icon}"]`).remove();

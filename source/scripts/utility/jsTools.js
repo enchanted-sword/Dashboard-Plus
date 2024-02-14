@@ -53,7 +53,7 @@ export const getStorage = async (keys = []) => {
 /**
  * Fetches feature preferences
  * @param {string} feature - Feature name
- * @returns {object} Preferences object
+ * @returns {object} Preferences
  */
 export const getPreferences = async (feature = '') => {
   const { preferences } = await getStorage(['preferences']);
@@ -61,6 +61,12 @@ export const getPreferences = async (feature = '') => {
   return preferences[feature].preferences;
 };
 
+/**
+ * Recursively compares two objects; returns true if they are identical and false otherwise
+ * @param {object} x
+ * @param {object} y 
+ * @returns {boolean}
+ */
 export const deepEquals = (x, y) => {
   const tx = typeof x, ty = typeof y;
   return x && y && tx === 'object' && tx === ty ? (
@@ -69,6 +75,10 @@ export const deepEquals = (x, y) => {
   ) : (x === y);
 };
 
+/**
+ * Delays inputs for a textarea or text input to reduce the amount of events processed by the event handler
+ * @param {Function} func - Event handler to debounce
+ */
 export const debounce = func => {
   let timeoutID;
   return (...args) => {
@@ -77,6 +87,10 @@ export const debounce = func => {
   };
 };
 
+/**
+ * @param {string} name - Name of file
+ * @returns {object|null} data
+ */
 export const getJsonFile = async name => {
   try {
     const url = browser.runtime.getURL(`/scripts/${name}.json`);
@@ -90,6 +104,10 @@ export const getJsonFile = async name => {
   }
 };
 
+/**
+ * Fetches the list of installed features
+ * @returns {object[]} features
+ */
 export const importFeatures = async () => {
   const installedFeatures = await getJsonFile('!features');
   const features = {};
