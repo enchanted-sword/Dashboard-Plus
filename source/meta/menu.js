@@ -29,15 +29,16 @@
     `;
 
     const descButton = () => {
-      const button = $(`<button class='ui-descButton'>+</button>`);
+      const button = $(`<button class='ui-descButton'><span class='caret'>+</span></button>`);
       button.on('click', function () {
         const secondaryContent = this.closest('li').querySelector('.ui-secondaryContent');
+        const caret = this.querySelector('.caret');
         if (secondaryContent.getAttribute('active') === 'true') {
           secondaryContent.setAttribute('active', 'false');
-          this.innerText = '+';
+          caret.innerText = '+';
         } else {
           secondaryContent.setAttribute('active', 'true');
-          this.innerText = '-';
+          caret.innerText = '-';
         }
       });
       return button;
@@ -62,22 +63,25 @@
     const newFeatureItem = (name, feature = {}, preference = {}) => {
       const category = typeof feature.category === 'string' ? feature.category : feature.category.join(' ');
       const wrapper = $(`<li>`, { category, name });
+      const featureTitle = $(`<h2>${feature.name}</h2>`);
 
       try {
-        const primaryContent = $(`<div class="ui-primaryContent"><h2>${feature.name}</h2></div>`);
+        const primaryContent = $(`<div class="ui-primaryContent"></div>`);
         let secondaryContent, input, label;
 
         wrapper.append(primaryContent);
 
         if (feature.description || feature.type !== 'toggle') {
           secondaryContent = $('<div>', { class: 'ui-secondaryContent' });
+          const button = descButton();
+          button.prepend(featureTitle);
 
           wrapper.append(secondaryContent);
-          primaryContent.append(descButton());
+          primaryContent.append(button);
           if (feature.description) {
             secondaryContent.append($(`<p>${feature.description}</p>`));
           }
-        }
+        } else primaryContent.prepend(featureTitle);
 
         const inputWrapper = $('<div>', { class: 'ui-inputWrapper', type: feature.type });
 

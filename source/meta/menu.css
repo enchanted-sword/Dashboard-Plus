@@ -100,23 +100,24 @@ h3 { font-size: 18px; }
   flex-grow: 1;
   background-color: color-mix(in srgb, rgb(var(--white)), rgb(var(--navy)) 20%);
   border: none;
+  border-radius: 3px;
   text-decoration: underline rgba(var(--navy), .1) 2px;
   text-underline-position: under;
   padding-bottom: 4px;
-}
-/* .ui-row:has(button[active="true"]) .ui-featureTab { border-bottom-color: rgba(var(--navy), .2); } */
-.ui-featureTab[active="true"] {
-  background-color: rgb(var(--white));
-  cursor: default !important;
-  border-radius: 3px 3px 0 0;
-  text-decoration-color: rgb(var(--accent));
-}
-.ui-featureTab:not([active="true"]):hover {
-  flex-grow: 1.25;
-  background-color: color-mix(in srgb, rgb(var(--white)), rgb(var(--navy)) 32%);
-}
-.ui-featureTab[target="all"] {
-  padding-bottom: 2px;
+
+  &[active="true"] {
+    background-color: rgb(var(--white));
+    cursor: default !important;
+    border-radius: 3px 3px 0 0;
+    text-decoration-color: rgb(var(--accent));
+  }
+  &:not([active="true"]):hover {
+    flex-grow: 1.25;
+    background-color: color-mix(in srgb, rgb(var(--white)), rgb(var(--navy)) 32%);
+  }
+  &[target="all"] {
+    padding-bottom: 2px;
+  }
 }
 
 #ui-featureSearch {
@@ -131,6 +132,7 @@ h3 { font-size: 18px; }
     width: 48px;
     text-align: center;
     border-bottom: 2px solid rgba(var(--navy), .1);
+    cursor: pointer;
 
     &::placeholder { opacity: 1; }
   }
@@ -186,10 +188,13 @@ div.ui-primaryContent {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-}
-div.ui-primaryContent h2 {
-  line-height: 36px;
-  flex-basis: 216px;
+
+  h2 {
+    text-align: left;
+    line-height: 36px;
+    flex-basis: 216px;
+  }
+  .ui-inputWrapper { margin-left: 8px; }
 }
 div.ui-secondaryContent { display: none; }
 div.ui-secondaryContent[active="true"] {
@@ -197,7 +202,14 @@ div.ui-secondaryContent[active="true"] {
   margin-top: 8px; 
 }
 button.ui-descButton {
-  content: "+";
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  border: none;
+  background: transparent;
+  width: 100%;
+}
+span.caret {
   font-size: 20px;
   font-weight: bold;
   flex-basis: 20px;
