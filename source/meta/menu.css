@@ -153,7 +153,7 @@ ul.ui-featureCategory {
   height: 454px;
   overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-width: thin;
+  scrollbar-width: auto;
   scrollbar-color: rgba(var(--navy), .2)rgba(var(--navy), .2);
 }
 #ui-featureContainer > li {
