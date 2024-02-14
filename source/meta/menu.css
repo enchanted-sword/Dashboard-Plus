@@ -529,7 +529,6 @@ input.ui-listSelect:checked + label {
   background-color: rgb(var(--white));
   padding: 8px;
   border-radius: 3px;
-  border: 3px inset rgba(var(--navy),.2);
 }
 
 .ui-preferenceIo {
