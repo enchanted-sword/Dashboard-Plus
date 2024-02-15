@@ -5,8 +5,8 @@
 
   "description": "Take control of your Tumblr dashboard!",
   "icons": {
-    "48": "icons/48.png",
-    "96": "icons/96.png"
+    "48": "icons/icon.svg",
+      "96": "icons/icon.svg"
   },
   "author": "April Lunarii",
   "homepage_url": "https://github.com/enchanted-sword/Dashboard-Plus",
@@ -45,8 +45,8 @@
 
   "action": {
     "default_icon" : {
-      "48": "icons/48.png",
-      "96": "icons/96.png"
+      "48": "icons/icon.svg",
+      "96": "icons/icon.svg"
     },
     "default_popup": "meta/menu.html"
   },
