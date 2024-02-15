@@ -1,6 +1,7 @@
 {
   "name": "hide dashboard tabs",
   "category": "dashboard",
+  "description": "hides the tab selector at the top of the timeline",
   "type": "toggle",
   "css": "true"
 }
