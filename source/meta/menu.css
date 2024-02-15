@@ -238,54 +238,63 @@ input.ui-toggle + label {
   height: 36px;
   background-color: rgba(var(--navy), .2);
   border-radius: 3px;
+
+  &:before {
+    z-index: 3;
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 32px;
+    background: rgb(var(--white));
+    top: 2px;
+    left: 2px;
+    border-radius: 3px;
+    transition: .3s;
+  }
+  &:after {
+    z-index: 2;
+    content: "◯";
+    text-indent: 0;
+    color: rgba(var(--text), .2);
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 18px;
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    top: 9.5px;
+    right: 6px;
+    border-radius: 3px;
+    transition: .3s;
+  }
+
+  &:active {
+    background: rgba(var(--navy), .32);
+
+    &:before { width: 16px; }
+    &:after { right: 4px; }
+  }
 }
-input.ui-toggle + label:active { background: rgba(var(--navy), .32); }
 input.ui-toggle:checked + label {
   background: rgb(var(--accent));
   transform: rotate(90deg);
   margin-right: -4px;
   width: 40px;
+
+  &:before {
+    left: calc(100% - 2px);
+    transform: translateX(-100%);
+    top: 2px;
+  }
+  &:after {
+    content: "—";
+    right: calc(100% - 4px);
+    transform: translateX(100%);
+    top: 7px;
+  }
+
+  &:active:after { right: calc(100% - 2px); }
 }
-input.ui-toggle + label:before {
-  z-index: 3;
-  content: "";
-  position: absolute;
-  width: 12px;
-  height: 32px;
-  background: rgb(var(--white));
-  top: 2px;
-  left: 2px;
-  border-radius: 3px;
-  transition: .3s;
-}
-input.ui-toggle + label:active:before { width: 16px; }
-input.ui-toggle:checked + label:before {
-  left: calc(100% - 2px);
-  transform: translateX(-100%);
-}
-input.ui-toggle + label:after {
-  z-index: 2;
-  content: "◯";
-  text-indent: 0;
-  color: rgba(var(--text), .2);
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 18px;
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  top: 9px;
-  right: 6px;
-  border-radius: 3px;
-  transition: .3s;
-}
-input.ui-toggle + label:active:after { right: 4px; }
-input.ui-toggle:checked + label:after {
-  content: "—";
-  right: calc(100% - 4px);
-  transform: translateX(100%);
-}
-input.ui-toggle:checked + label:active:after { right: calc(100% - 6px); }
 
 div.ui-inputWrapper[type="multiSelect"] {
   display: flex;
