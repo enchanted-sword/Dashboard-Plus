@@ -1,18 +1,18 @@
 'use strict';
 
 {
-  import('../scripts/utility/jsTools.js').then(({ deepEquals, debounce, getJsonFile, importFeatures }) => {
+  import('../scripts/utility/jsTools.js').then(({ deepEquals, debounce, importFeatures }) => {
     const descButton = () => {
-      const button = $(`<button class='ui-descButton'><span class='caret'>+</span></button>`);
+      const button = $(`<button class='ui-descButton'><div class="ui-caretWrapper"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="transform: rotate(180deg);"><use href="#icons-caret"></use></svg></div></button>`);
       button.on('click', function () {
         const secondaryContent = this.closest('li').querySelector('.ui-secondaryContent');
-        const caret = this.querySelector('.caret');
+        const caret = this.querySelector('svg');
         if (secondaryContent.getAttribute('active') === 'true') {
           secondaryContent.setAttribute('active', 'false');
-          caret.innerText = '+';
+          caret.style.transform = 'rotate(180deg)';
         } else {
           secondaryContent.setAttribute('active', 'true');
-          caret.innerText = '-';
+          caret.style.transform = 'rotate(360deg)';
         }
       });
       return button;

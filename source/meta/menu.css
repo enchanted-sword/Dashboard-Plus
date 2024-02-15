@@ -35,6 +35,12 @@ p, h1, h2, h3, span, a, ul, li, figure, section, button, textarea {
 h2 { font-size: 20px; }
 h3 { font-size: 18px; }
 
+#icons-container {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
 #ui-menu {
   height: 600px;
   overflow: hidden;
@@ -205,17 +211,14 @@ button.ui-descButton {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+  align-items: center;
   border: none;
   background: transparent;
   width: 100%;
 }
-span.caret {
-  font-size: 20px;
-  font-weight: bold;
-  flex-basis: 20px;
-  border: 3px solid transparent;
-  background: transparent;
-  height: fit-content;
+div.ui-caretWrapper {
+  height: calc(100% - 6px);
+  padding-top: 6px;
 }
 
 input.ui-toggle, input.ui-multiSelect, input.ui-select, input.ui-listSelect {
