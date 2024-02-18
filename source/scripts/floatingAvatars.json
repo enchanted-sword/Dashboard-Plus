@@ -12,6 +12,10 @@
     "showOwnAvatar": {
       "title": "also show the user avatar at the top of the timeline",
       "type": "toggle"
+    },
+    "editorAvatar": {
+      "title": "also convert the post editor blog avatar into a floating avatar",
+      "type": "toggle"
     }
   },
   "desktopOnly": true,

@@ -173,7 +173,8 @@
     "enabled": true,
     "preferences": {
       "scroll": true,
-      "showOwnAvatar": true
+      "showOwnAvatar": true,
+      "editorAvatar": false
     }
   },
   "hideInPosts": {

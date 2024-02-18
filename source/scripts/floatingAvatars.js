@@ -1,14 +1,33 @@
-import { postFunction } from './utility/mutations.js';
+import { mutationManager, postFunction } from './utility/mutations.js';
 import { elem, getPreferences } from './utility/jsTools.js';
 import { primaryBlogName } from './utility/user.js';
 import { translate } from './utility/tumblr.js';
 import { s, style } from './utility/style.js';
 import { addUrlPopover } from './utility/dashboardElements.js';
 
-let scroll, showOwnAvatar;
-const styleElement = style(`.dbplus-stickyContainer > ${s('avatar')} { position: static !important; }`);
+let scroll, showOwnAvatar, editorAvatar;
+const staticStyleElement = style(`.dbplus-stickyContainer > ${s('avatar')} { position: static !important; }`);
+const editorStyleElement = style(`
+  #glass-container ${s('menuContainer')} {
+    border-bottom: none !important;
+
+    ${s('avatarWrapper')} {
+      position: absolute;
+      top: -6px;
+      left: -100px;
+    }
+    ${s('avatar')} {
+      &, img {
+        width: 64px !important;
+        height: 64px !important;
+      }
+    }
+    ${s('selectedBlogName hasAvatar')} { margin-left: 0 !important; }
+  }
+`);
 const customClass = 'dbplus-floatingAvatars';
 const postSelector = `${s('main')} > :not(${s('blogTimeline')}) [data-timeline]:not([data-timeline*='posts/'],${s('masonry')}) [tabindex='-1'][data-id] article:not(.${customClass})`;
+const menuContainerSelector = `#glass-container ${s('menuContainer')}`;
 const userAvatar = elem('div', { class: 'dbplus-userAvatarWrapper'}, null, `
   <div class="dbplus-avatarWrapperOuter">
     <div class="dbplus-avatarWrapper" role="figure" aria-label="${translate("avatar")}">
@@ -49,9 +68,16 @@ const addScrollingAvatars = posts => {
 
     post.prepend(stickyContainer);
     stickyContainer.append(avatar);
-    avatar.querySelector(`${s('targetWrapper')} img`).sizes = "64px";
-    avatar.querySelectorAll(`${s('subAvatarTargetWrapper')} img`).forEach(img => img.sizes = "32px");
+    avatar.querySelector(`${s('targetWrapper')} img`).sizes = '64px';
+    avatar.querySelectorAll(`${s('subAvatarTargetWrapper')} img`).forEach(img => img.sizes = '32px');
     post.classList.add(customClass);
+  }
+};
+const addFloatingEditorPortrait = editors => {
+  for (const editor of editors) {
+    const avatar = editor.querySelector(`${s('avatarWrapper')} img`);
+    avatar.sizes = '64px';
+    console.info('64');
   }
 };
 
@@ -61,12 +87,17 @@ export const main = async () => {
   ({ scroll, showOwnAvatar } = await getPreferences('floatingAvatars'));
   postFunction.start(addScrollingAvatars, postSelector);
 
-  if (!scroll) document.head.append(styleElement);
+  if (!scroll) document.head.append(staticStyleElement);
+  if (editorAvatar) {
+    mutationManager.start(menuContainerSelector, addFloatingEditorPortrait);
+    document.head.append(editorStyleElement);
+  }
   if (showOwnAvatar) addUserPortrait();
 }
 
 export const clean = async () => {
   postFunction.stop(addScrollingAvatars);
+  mutationManager.stop(addFloatingEditorPortrait);
 
   $(`.dbplus-stickyContainer > ${s('avatar')} ${s('targetWrapper')} img`).each(function() {this.sizes = "32px"});
   $(`.dbplus-stickyContainer > ${s('avatar')} ${s('subAvatarTargetWrapper')} img`).each(function() {this.sizes = "16px"});
@@ -74,15 +105,23 @@ export const clean = async () => {
   $('.dbplus-userAvatarWrapper').remove()
   document.querySelectorAll(`.dbplus-stickyContainer > ${s('avatar')}`).forEach(avatar => avatar.closest('article').querySelector('header').prepend(avatar));
   $('.dbplus-stickyContainer').remove();
-  styleElement.remove();
+  staticStyleElement.remove();
+  editorStyleElement.remove()
 }
 
 export const update = async ({ preferences }) => {
-  ({ scroll, showOwnAvatar } = preferences);
+  ({ scroll, showOwnAvatar, editorAvatar } = preferences);
 
-  if (!scroll) document.head.append(styleElement);
-  else styleElement.remove();
+  if (!scroll) document.head.append(staticStyleElement);
+  else staticStyleElement.remove();
 
+  if (editorAvatar) {
+    mutationManager.start(menuContainerSelector, addFloatingEditorPortrait);
+    document.head.append(editorStyleElement);
+  } else {
+    mutationManager.stop(addFloatingEditorPortrait);
+    editorStyleElement.remove();
+  }
   if (showOwnAvatar) addUserPortrait();
   else $('.dbplus-userAvatarWrapper').remove();
 };
