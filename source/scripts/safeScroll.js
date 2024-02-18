@@ -25,7 +25,7 @@ const removeOnClick = event => {
 const filterPosts = async posts => {
   for (const post of posts) {
     const { blogName, rebloggedFromName, rebloggedRootName, askerName, communityLabels, tags, trail } = await timelineObject(post);
-    const trailBlogs = trail.map(({ blog }) => blog.name);
+    const trailBlogs = trail.map(({ blog, brokenBlog }) => blog ? blog.name : brokenBlog.name);
 
     if ((filterBlogs.parent && isFilteredBlog(blogName)) 
       || (filterBlogs.rebloggedFrom && isFilteredBlog(rebloggedFromName))
@@ -41,7 +41,7 @@ const filterPosts = async posts => {
         if (isFilteredBlog(blog)) avatar.querySelector(avatarInnerSelector).setAttribute(hiddenAttribute, hideStyle.selected);
       });
 
-      if (hideStyle.selected === 'hidePost') post.querySelector(s('contentWrapper')).setAttribute(hiddenAttribute, hideStyle.selected);
+      if (hideStyle.selected === 'hidePost') post.setAttribute(hiddenAttribute, hideStyle.selected);
       else {
         if (media) post.querySelectorAll(mediaSelector).forEach(media => media.setAttribute(hiddenAttribute, hideStyle.selected));
         if (text) post.querySelectorAll(textSelector).forEach(text => text.setAttribute(hiddenAttribute, hideStyle.selected));

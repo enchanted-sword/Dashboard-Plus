@@ -96,7 +96,7 @@
   }
 }
 
-article > [data-css~="contentWrapper"][data-safescroll-hidden="hidePost"] {
+article[data-safescroll-hidden="hidePost"] {
   & {
     position: relative;
     transition: height 0.3s;
