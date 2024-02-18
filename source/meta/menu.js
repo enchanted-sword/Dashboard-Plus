@@ -52,9 +52,7 @@
 
           wrapper.append(secondaryContent);
           primaryContent.append(button);
-          if (feature.description) {
-            secondaryContent.append($(`<p>${feature.description}</p>`));
-          }
+          if (feature.description) secondaryContent.prepend($(`<p>${feature.description}</p>`));
         } else primaryContent.prepend(featureTitle);
 
         const inputWrapper = $('<div>', { class: 'ui-inputWrapper', type: feature.type });
@@ -113,7 +111,7 @@
               });
             });
 
-            secondaryContent.prepend(inputWrapper);
+            secondaryContent.append(inputWrapper);
             break;
           case 'select':
             Object.keys(feature.preferences).forEach(key => {
@@ -140,7 +138,7 @@
               });
             });
 
-            secondaryContent.prepend(inputWrapper);
+            secondaryContent.append(inputWrapper);
             break;
           case 'slider':
             Object.keys(feature.preferences).forEach(key => {
@@ -198,7 +196,7 @@
               });
             });
             
-            secondaryContent.prepend(inputWrapper);
+            secondaryContent.append(inputWrapper);
             break;
         }
 
@@ -366,7 +364,7 @@
             }
           });
 
-          secondaryContent.prepend(extendInputWrapper);
+          secondaryContent.append(extendInputWrapper);
         }
       } catch (e) {
         console.error(`error creating feature item '${name}':`, e);

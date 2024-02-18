@@ -202,10 +202,19 @@ div.ui-primaryContent {
   }
   .ui-inputWrapper { margin-left: 8px; }
 }
-div.ui-secondaryContent { display: none; }
-div.ui-secondaryContent[active="true"] {
-  display: block;
-  margin-top: 8px; 
+div.ui-secondaryContent {
+  display: none;
+
+  &[active="true"] {
+    display: block;
+    margin-top: 8px; 
+  }
+  > p {
+    margin-bottom: 8px;
+    background: rgba(var(--white),.64);
+    padding: 4px;
+    border-radius: 3px;
+  }
 }
 button.ui-descButton {
   display: flex;
