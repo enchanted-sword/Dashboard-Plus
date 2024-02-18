@@ -1,6 +1,7 @@
 {
   "name": "hide content in posts",
   "type": "multiSelect",
+  "description": "hides the selected content within posts.",
   "category": "posts",
   "preferences": {
     "badges": { "title": "user badges" },
