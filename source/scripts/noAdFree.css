@@ -1,2 +1,3 @@
 [data-css~="adFreeCtaBanner"], a[href*="/settings/ad-free-browsing"],
-  [data-css~="navItem"][data-title="Go Ad-Free"] { display: none !important; }
+[data-css~="navItem"][data-title="Go Ad-Free"],
+button[data-css~="expandOnHover"]:has([data-css~="accentText"]) { display: none !important; }
