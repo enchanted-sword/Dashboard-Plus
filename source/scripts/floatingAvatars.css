@@ -7,7 +7,7 @@
     [data-css~="mainContentWrapper"] {
       flex-basis: 982px;
       
-      [data-css~="main"] { margin-left: 93px !important; }
+      [data-css~='main']:not([data-css~='sidebar'] [data-css~='main']) { margin-left: 93px !important; }
       [data-css~="container"] { max-width: none !important }
     }
     

@@ -33,7 +33,7 @@
   [data-css~='summaryInfo'][data-css~='sticky'] { top: 75px; }
 
   [data-css~='popoverHolder']:has([data-css~='homeMenu']) { transform: translatex(-20px) !important; }
-  [data-css~='homeMenu'], #account_subnav {
+  [data-css~='homeMenu'], #account_subnav, #collections_subnav {
     background: RGB(var(--white));
     color: RGB(var(--black));
     max-height: 90vh;
@@ -51,9 +51,10 @@
   #glass-container [data-css~='arrow'] { display: none; }
   
   [data-css~='subNav'] {
-    [data-css~='childWrapper'], [data-css~='blogName'] { color: RGB(var(--black)) !important; }
+    [data-css~='childWrapper'], [data-css~='blogName'],
+    [data-css~='collectionName'] { color: RGB(var(--black)) !important; }
     [data-css~='endChildWrapper'], [data-css~='reorderButton'],
-    [data-css~='blogTitle'] { color: rgba(var(--black),.65) !important; }
+    [data-css~='blogTitle'], [data-css~='collectionDescription'] { color: rgba(var(--black),.65) !important; }
     > [data-css~='navItem'], [data-css~='accountStats'] li { list-style-type: none; }
     > [data-css~='navItem']:hover,
     [data-css~='accountStats'] li:hover { background-color: rgb(var(--seccondary-accent)); }
@@ -202,9 +203,10 @@
     margin-top: 34px;
   }
   [data-css~='container']:not(#glass-container div) { margin: 0; }
-  [data-css~='main'] {
-    padding: 0 !important;
+  [data-css~='main']:not([data-css~='sidebar'] [data-css~='main']) {
     border: none !important;
+
+    &:not(:has([data-css~='miniHeading'])) { padding: 0 !important; }
   }
   [data-css~='sidebar'] {
     min-width: 320px !important;
