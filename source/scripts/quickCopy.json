@@ -2,6 +2,6 @@
   "name": "quick copy",
   "type": "toggle",
   "category": ["posts", "utility"],
-  "description": "adds a button to the post footer that allows 1-click copying of the post permalink without site tracking data",
+  "description": "adds a button to post footers that allows 1-click copying of the post's short URL without site tracking data.",
   "js": true
 }
