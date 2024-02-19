@@ -303,5 +303,9 @@
       }
     }
   },
+  "noTagPrompt": {
+    "type": "toggle",
+    "enabled": false
+  },
   "inheritColors": true
 }

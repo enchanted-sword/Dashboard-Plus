@@ -30,5 +30,6 @@
   "revertMessaging",
   "messagingColors",
   "postDebugInfo",
-  "skipAdultWall"
+  "skipAdultWall",
+  "noTagPrompt"
 ]

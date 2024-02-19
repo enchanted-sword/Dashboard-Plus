@@ -1,0 +1,7 @@
+{
+  "name": "disable 'post without tags' prompt",
+  "category": "utility",
+  "description": "disables the 'post without tags prompt' that appears once per week when attempting to create a post without tags",
+  "type": "toggle",
+  "js": true
+}
