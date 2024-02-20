@@ -2,6 +2,7 @@ import { mutationManager, postFunction } from './utility/mutations.js';
 import { timelineObject } from './utility/reactProps.js';
 import { elem } from './utility/jsTools.js';
 import { svgIcon } from './utility/dashboardElements.js';
+import { debounce } from './utility/jsTools.js';
 
 const filters = {
   name: /"name":"([\w\d]*)"/g,
