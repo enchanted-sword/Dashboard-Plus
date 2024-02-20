@@ -3,6 +3,7 @@ import { declarativeNetRequest } from './utility/dnr.js';
 
 const removeRuleIds = ['APF:all', 'APF:mentions', 'APF:reblogs', 'APF:replies'];
 const regexFilter = {
+  // eslint-disable-next-line no-useless-escape
   all: '^https?://www\\.tumblr\\.com/api/v2/blog/[\\w\\d-]*/notifications.*types\[50\]=earned_badge$', 
   mentions: '^https?://www\\.tumblr\\.com/api/v2/blog/[\\w\\d-]*/notifications.*mention_in_reply$',
   reblogs: '^https?://www\\.tumblr\\.com/api/v2/blog/[\\w\\d-]*/notifications.*tags$',
