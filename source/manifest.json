@@ -54,7 +54,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "dashboardplus@girldragon.neocities.org",
-      "strict_min_version": "122.0"
+      "strict_min_version": "121.0"
     }
   }
 }
