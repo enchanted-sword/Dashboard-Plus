@@ -110,10 +110,44 @@ window.addEventListener('message', (event) => {
   }
 });
 
+const initInjection = () =>
+  import('../scripts/utility/injectableFunctions.js').then((injectableFunctions) =>
+    document.documentElement.addEventListener('dbplus-injection-request', async (event) => {
+      const { detail, target } = event;
+      const { id, name, args } = JSON.parse(detail);
+
+      const fallback = () =>
+        new Error(`function "${name}" is not implemented in injectableFunctions.js`);
+      const func = injectableFunctions[name] ?? fallback;
+
+      try {
+        const result = await func(...args, target);
+        target.dispatchEvent(
+          new CustomEvent('dbplus-injection-response', { detail: JSON.stringify({ id, result }) }),
+        );
+      } catch (exception) {
+        target.dispatchEvent(
+          new CustomEvent('dbplus-injection-response', {
+            detail: JSON.stringify({
+              id,
+              exception: {
+                message: exception.message,
+                name: exception.name,
+                stack: exception.stack,
+                ...exception,
+              },
+            }),
+          }),
+        );
+      }
+    }),
+  );
+
 waitForWindow().then(async function () {
   updateThemeColors();
   cssMap = await window.tumblr.getCssMap();
   languageData = window.tumblr.languageData;
+  await initInjection();
   window.postMessage({ text: 'db+helperLoadMessage', cssMap, languageData }, 'https://www.tumblr.com');
 
   window.addEventListener('keydown', event => { if (['p','P'].includes(event.key) && event.shiftKey) updateThemeColors(); });
