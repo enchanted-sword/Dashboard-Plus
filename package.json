@@ -3,9 +3,22 @@
     "jquery": "^3.7.1"
   },
   "devDependencies": {
-    "eslint": "^8.55.0"
+    "eslint": "^8.55.0",
+    "web-ext": "^7.11.0"
   },
   "scripts": {
-    "test": "eslint ./"
+    "test": "web-ext lint",
+    "posttest": "eslint ./",
+    "build": "web-ext build",
+    "start": "web-ext run"
+  },
+  "webExt": {
+    "sourceDir": "source/",
+    "build": {
+      "overwriteDest": true
+    },
+    "run": {
+      "firefox": "deved"
+    }
   }
 }
