@@ -45,8 +45,7 @@ const revertHeaders = async posts => {
       }
     }
 
-    attribution.normalize();
-    [...attribution.childNodes].filter(node => node.nodeName === '#text').forEach(node => node.remove());
+    [...attribution.childNodes].filter(node => node.nodeName === '#text').forEach(function (node) {node.textContent = ''});
     if (addingNewRebloggedFrom) attribution.append(rebloggedFrom);
     if (rebloggedFrom && !header.querySelector('dbplus-reblogIcon')) rebloggedFrom.before(reblogIcon());
 
