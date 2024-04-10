@@ -145,6 +145,8 @@
     margin: auto;
     border: none;
     position: absolute !important;
+
+    > [data-css~="aboutLinks"] { display: none; }
   }
   [data-css~='primaryNavigation'] {
     height: 55px;
@@ -211,6 +213,14 @@
   [data-css~='sidebar'] {
     min-width: 320px !important;
     margin-left: 29px !important;
+  }
+  [data-css~='sidebarTopContainer'] [data-css~="about"][data-css~="withLoggedOutImprovementsCTAs"] {
+    top: calc(100vh - 39px);
+    gap: 3px 12px;
+    margin-bottom: 20px;
+    padding: 0 8px;
+    position: -webkit-sticky;
+    position: sticky;
   }
   [data-css~='tabsHeader'] {
     position: static;

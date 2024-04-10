@@ -205,6 +205,7 @@ export const main = async function () {
           </span>
         </div>`
       )));
+      $(s('about withLoggedOutImprovementsCTAs')).appendTo($(s('sidebarTopContainer')));
     }
 
     mutationManager.start(menuSelector, menuModfifcations);
