@@ -6,23 +6,25 @@
   "preferences": {
     "enabled": false,
     "options": {
-      "value": "never",
-      "type": "select",
-      "name": "collapse style",
-      "options": [
-        {
-          "value": "never",
-          "name": "never collapse"
-        },
-        {
-          "value": "whenEmpty",
-          "name": "collapse the sidebar when it's empty"
-        },
-        {
-          "value": "force",
-          "name": "always collapse the sidebar"
-        }
-      ]
+      "collapseStyle": {
+        "value": "never",
+        "type": "select",
+        "name": "collapse style",
+        "options": [
+          {
+            "value": "never",
+            "name": "never collapse"
+          },
+          {
+            "value": "whenEmpty",
+            "name": "collapse the sidebar when it's empty"
+          },
+          {
+            "value": "force",
+            "name": "always collapse the sidebar"
+          }
+        ]
+      }
     }
   },
   "js": true,

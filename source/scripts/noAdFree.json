@@ -1,5 +1,6 @@
 {
-  "name": "ignore tumblr ad-free",
+  "name": "noAdFree",
+  "title": "ignore tumblr ad-free",
   "description": "disables tumblr's 'go ad-free' marketing",
   "category": "dashboard",
   "preferences": {

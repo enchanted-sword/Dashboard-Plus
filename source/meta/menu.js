@@ -256,7 +256,7 @@
                   textInput.on('change', debounce(onTextInput));
                   break;
                 } default: {
-                  console.info(`${key} [${option.type}]`);
+                  console.warn(`${name}.${key} [missing support for ${option.type}]`);
                   break;
                 }
               }
@@ -310,7 +310,7 @@
         else document.getElementById('ui-searchFilter').innerText = '';
       };
 
-      const hexToRgbString = hex =>
+      /* const hexToRgbString = hex =>
         hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => '#' + r + r + g + g + b + b)
           .substring(1).match(/.{2}/g)
           .map(x => parseInt(x, 16))
@@ -318,22 +318,32 @@
 
       let themeStyleElement;
 
+      const onStorageChanged = async (changes, areaName) => {
+        let { themeColors, preferences } = changes;
+        if (areaName !== 'local' || (typeof themeColors === 'undefined' && typeof preferences === 'undefined') || deepEquals(preferences?.oldValue.customColors, preferences?.newValue.customColors)) return;
+        if (typeof themeColors === 'undefined' && !preferences?.newValue.customColors.enabled) { // case when disabling customColors
+          ({ themeColors } = await browser.storage.local.get('themeColors'));
+          themeColors = { newValue: themeColors };
+        }
+
+        themeHandler.updateThemeColors(themeColors?.newValue, preferences.newValue);
+      };
       const themeStyle = colors => themeStyleElement.innerText = `
       :root {
-        --black: ${colors.black};
-        --white: ${colors.white};
-        --white-on-dark: ${colors.whiteOnDark};
-        --navy: ${colors.navy};
-        --red: ${colors.red};
-        --orange: ${colors.orange};
-        --yellow: ${colors.yellow};
-        --green: ${colors.green};
-        --blue: ${colors.blue};
-        --purple: ${colors.purple};
-        --pink: ${colors.pink};
-        --accent: ${colors.accent};
-        --secondary-accent: ${colors.secondaryAccent};
-        --follow: ${colors.follow};
+        --t-black: ${colors.black};
+        --t-white: ${colors.white};
+        --t-white-on-dark: ${colors.whiteOnDark};
+        --t-navy: ${colors.navy};
+        --t-red: ${colors.red};
+        --t-orange: ${colors.orange};
+        --t-yellow: ${colors.yellow};
+        --t-green: ${colors.green};
+        --t-blue: ${colors.blue};
+        --t-purple: ${colors.purple};
+        --t-pink: ${colors.pink};
+        --t-accent: ${colors.accent};
+        --t-secondary-accent: ${colors.secondaryAccent};
+        --t-follow: ${colors.follow};
       }
     `;
       const updateThemeColors = (themeColors, preferences) => {
@@ -343,9 +353,9 @@
           themeStyle(rgbColors);
         } else if (themeColors) themeStyle(themeColors);
       };
-      const themeHandler = Object.freeze({
+      const themeHandler = {
         active: true,
-        start: async () => {
+        start: async function () {
           if (this.active) this.stop;
           const { themeColors, preferences } = await browser.storage.local.get();
           themeStyleElement = document.createElement('style');
@@ -356,21 +366,19 @@
           this.active = true;
           browser.storage.onChanged.addListener(onStorageChanged);
         },
-        stop: () => {
+        stop: function () {
           if (!this.active) return;
           $('#ui-themeStyleElement').remove();
           this.active = false;
           browser.storage.onChanged.removeListener(onStorageChanged);
         }
-      });
+      }; */
 
       const init = async () => {
         if (location.search === '?popup=true') {
           document.body.style.minHeight = '6000px';
           document.body.style.overflow = 'hidden';
         }
-
-        browser.browserAction.setBadgeText({ text: '' });
 
         const installedFeatures = await importFeatures(); // "await has no effect on this type of expression"- it does, actually!
         const { preferences } = await browser.storage.local.get('preferences');
@@ -428,7 +436,7 @@
         });
         document.getElementById('ui-featureSearch').addEventListener('input', debounce(onSearch));
 
-        const inheritColors = document.getElementById('ui-manage-inheritColors');
+        /* const inheritColors = document.getElementById('ui-manage-inheritColors');
         if (preferences.inheritColors) {
           inheritColors.checked = true;
           themeHandler.start();
@@ -445,7 +453,7 @@
             preferences.inheritColors = false;
           }
           browser.storage.local.set({ preferences });
-        });
+        }); */
 
         const version = browser.runtime.getManifest().version;
         document.getElementById('version').innerText = `version: v${version}`;

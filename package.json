@@ -11,7 +11,8 @@
     "test": "web-ext lint",
     "posttest": "eslint ./",
     "build": "web-ext build",
-    "start": "web-ext run"
+    "start:dev": "web-ext run --firefox=deved -t=firefox-desktop",
+    "start:adb": "web-ext run -t=firefox-android --adb-device=[] --firefox-apk=org.mozilla.fenix"
   },
   "webExt": {
     "sourceDir": "source/",

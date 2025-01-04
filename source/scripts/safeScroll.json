@@ -71,7 +71,7 @@
       "tagList": {
         "value": "",
         "name": "filtered tags",
-        "type": "textarea",
+        "type": "text",
         "tooltip": "filter posts containing specified tags",
         "placeholder": "comma-separated list of tags. case-insensitive, partial matches are supported."
       },

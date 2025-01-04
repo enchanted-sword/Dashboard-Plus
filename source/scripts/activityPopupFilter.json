@@ -12,7 +12,7 @@
       "all": {
         "name": "default tab",
         "tooltip": "choose which type show up in the the 'all' tab",
-        "type": "select",
+        "type": "listSelect",
         "value": [
           "rollups",
           "asks",

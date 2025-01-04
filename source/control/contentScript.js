@@ -7,14 +7,11 @@
   const { getURL } = browser.runtime;
   let cssMap, languageData, themeColors;
   let areHelpersLoaded = false;
+
   const isReactLoaded = () => document.querySelector('[data-rh]') === null;
   const waitForLoad = () => new Promise(resolve => {
     window.requestAnimationFrame(() => (isReactLoaded() && areHelpersLoaded) ? resolve() : waitForLoad().then(resolve));
   });
-  const defer = (func, args = []) => { //runs function when the DOM, react, and the helper functions are all loaded
-    if (['interactive', 'complete'].includes(document.readyState)) waitForLoad().then(() => func(...args));
-    else window.addEventListener('DOMContentLoaded', () => waitForLoad().then(() => func(...args)));
-  };
 
   const runContextScript = () => {
     const script = document.createElement('script');
@@ -48,7 +45,7 @@
     }
   });
 
-  waitForLoad.then(() => {
+  waitForLoad().then(() => {
     import(browser.runtime.getURL('/scripts/utility/jsTools.js')).then(({ deepEquals, importFeatures, featureify }) => {  // browser.runtime.getURL is only a valid escape when written in full
       let installedFeatures = {};
       let menuFeatures = ['inheritColors'];
@@ -101,14 +98,14 @@
 
         try {
           if (feature.css) document.querySelector(`link[href='${getURL(`/scripts/${name}.css`)}']`).remove();
-          if (feature.js) defer(async () => {
+          if (feature.js) {
             const { clean } = await import(browser.runtime.getURL(`/scripts/${name}.js`)); // browser.runtime.getURL is only a valid escape when written in full
 
             window.requestAnimationFrame(() => clean().catch(console.error));
 
             if (browser.storage.onChanged.hasListener(preferenceListeners[name])) browser.storage.onChanged.removeListener(preferenceListeners[name]);
             delete preferenceListeners[name];
-          });
+          }
 
           resizeListeners = resizeListeners.filter(val => val !== name);
           enabledFeatures = enabledFeatures.filter(val => val !== name);

@@ -3,7 +3,7 @@
   src: url("./resources/Favorit.ttf") format("truetype");
 }
 
-:root {
+/* :root {
   --t-white: 250, 245, 255;
   --t-navy: 0, 25, 53;
   --t-black: 0, 0, 12;
@@ -11,7 +11,7 @@
   --t-red: 255, 56, 80;
   --t-text: var(--black);
   --t-white-on-dark: 250, 245, 255;
-}
+} */
 
 * {
   transition: 0.3s;
@@ -20,76 +20,78 @@
 
 :root {
   --titanium: 255 255 255;
-  --white: 255 249 242;
-  --white-cherry-5: color-mix(
+  --white: 250, 245, 255;
+  --primary: 0, 25, 53;
+  --accent: 0, 148, 255;
+  --notBlack: 0, 0, 12;
+  --blueberry: 37 99 235;
+
+  --white-primary-5: color-mix(
     in srgb,
     rgb(var(--white)),
-    rgb(var(--cherry)) 5%
+    rgb(var(--primary)) 5%
   );
-  --white-cherry-10: color-mix(
+  --white-primary-10: color-mix(
     in srgb,
     rgb(var(--white)),
-    rgb(var(--cherry)) 10%
+    rgb(var(--primary)) 10%
   );
-  --white-cherry-20: color-mix(
+  --white-primary-20: color-mix(
     in srgb,
     rgb(var(--white)),
-    rgb(var(--cherry)) 20%
+    rgb(var(--primary)) 20%
   );
-  --white-cherry-30: color-mix(
+  --white-primary-30: color-mix(
     in srgb,
     rgb(var(--white)),
-    rgb(var(--cherry)) 30%
+    rgb(var(--primary)) 30%
   );
-  --white-cherry-40: color-mix(
+  --white-primary-40: color-mix(
     in srgb,
     rgb(var(--white)),
-    rgb(var(--cherry)) 40%
+    rgb(var(--primary)) 40%
   );
-  --white-cherry-60: color-mix(
+  --white-primary-60: color-mix(
     in srgb,
     rgb(var(--white)),
-    rgb(var(--cherry)) 60%
+    rgb(var(--primary)) 60%
   );
-  --white-cherry-80: color-mix(
+  --white-primary-80: color-mix(
     in srgb,
     rgb(var(--white)),
-    rgb(var(--cherry)) 80%
+    rgb(var(--primary)) 80%
   );
-  --white-cherry-90: color-mix(
+  --white-primary-90: color-mix(
     in srgb,
     rgb(var(--white)),
-    rgb(var(--cherry)) 90%
+    rgb(var(--primary)) 90%
   );
-  --white-mango-10: color-mix(
+  --white-accent-10: color-mix(
     in srgb,
     rgb(var(--white)),
-    rgb(var(--mango)) 10%
+    rgb(var(--accent)) 10%
   );
-  --white-mango-50: color-mix(
+  --white-accent-50: color-mix(
     in srgb,
     rgb(var(--white)),
-    rgb(var(--mango)) 50%
+    rgb(var(--accent)) 50%
   );
-  --cherry: 131 37 79;
-  --notBlack: 40 25 25;
-  --notBlack-cherry-50: color-mix(
+  --notBlack-primary-60: color-mix(
     in srgb,
     rgb(var(--notBlack)),
-    rgb(var(--cherry)) 50%
+    rgb(var(--primary)) 60%
   );
-  --mango: 255 171 92;
-  --mango-cherry-10: color-mix(
+  --accent-primary-10: color-mix(
     in srgb,
-    rgb(var(--mango)),
-    rgb(var(--cherry)) 10%
+    rgb(var(--accent)),
+    rgb(var(--primary)) 10%
   );
-  --mango-cherry-30: color-mix(
+  --accent-primary-30: color-mix(
     in srgb,
-    rgb(var(--mango)),
-    rgb(var(--cherry)) 30%
+    rgb(var(--accent)),
+    rgb(var(--primary)) 30%
   );
-  --blueberry: 37 99 235;
+
   --border-radius-sm: 3px;
   --border-thickness-sm: 2px;
   --border-thickness-lg: 3px;
@@ -99,6 +101,11 @@
   transition: 0.3s;
   scrollbar-width: none;
 }
+
+html {
+  display: flex;
+  justify-content: center;
+}
 body {
   flex: 1;
   min-width: 360px;
@@ -106,8 +113,9 @@ body {
   max-width: 720px;
   margin: 0;
   padding: 0;
-  background: rgb(var(--cherry));
+  background: rgb(var(--primary));
 }
+
 p,
 h1,
 h2,
@@ -145,7 +153,7 @@ h3 {
 
 #ui-menu {
   position: relative;
-  background: rgb(var(--cherry));
+  background: rgb(var(--primary));
   border-radius: var(--border-radius-sm);
 }
 
@@ -157,7 +165,7 @@ h3 {
   display: flex;
   flex-flow: row nowrap;
   justify-content: stretch;
-  background: rgb(var(--cherry));
+  background: rgb(var(--primary));
   border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
 }
 #ui-menu button {
@@ -168,8 +176,8 @@ h3 {
   height: 40px;
   font-size: 20px;
   font-weight: bold;
-  color: var(--white-cherry-30);
-  background: var(--notBlack-cherry-50);
+  color: var(--white-primary-30);
+  background: var(--notBlack-primary-60);
   border: none;
 
   &:first-of-type {
@@ -180,12 +188,12 @@ h3 {
   }
   &[active="true"] {
     color: rgb(var(--white));
-    background: rgb(var(--cherry));
+    background: rgb(var(--primary));
   }
   &:hover {
     flex-grow: 1.1;
     color: rgb(var(--white));
-    background: var(--white-cherry-90);
+    background: var(--white-primary-90);
   }
 }
 
@@ -207,7 +215,7 @@ h3 {
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
-  background-color: var(--white-cherry-20);
+  background-color: var(--white-primary-20);
   border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
 }
 .ui-row {
@@ -222,10 +230,10 @@ h3 {
 .ui-featureTab {
   font-size: 15px;
   flex-grow: 1;
-  background-color: var(--white-cherry-20);
+  background-color: var(--white-primary-20);
   border: none;
   border-radius: var(--border-radius-sm);
-  text-decoration: underline var(--white-cherry-10) 2px;
+  text-decoration: underline var(--white-primary-10) 2px;
   text-underline-position: under;
   padding-bottom: 4px;
 
@@ -233,11 +241,11 @@ h3 {
     background-color: rgb(var(--white));
     cursor: default !important;
     border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
-    text-decoration-color: rgb(var(--mango));
+    text-decoration-color: rgb(var(--accent));
   }
   &:not([active="true"]):hover {
     flex-grow: 1.25;
-    background-color: var(--white-cherry-30);
+    background-color: var(--white-primary-30);
   }
   &[target="all"] {
     padding-bottom: 2px;
@@ -246,7 +254,7 @@ h3 {
 
 #ui-featureSearch {
   border: none;
-  border-bottom: var(--border-thickness-sm) solid var(--white-cherry-10);
+  border-bottom: var(--border-thickness-sm) solid var(--white-primary-10);
   outline: none;
   font-size: 15px;
   background-color: transparent;
@@ -255,7 +263,7 @@ h3 {
     padding: 0;
     width: 48px;
     text-align: center;
-    border-bottom: var(--border-thickness-sm) solid var(--white-cherry-10);
+    border-bottom: var(--border-thickness-sm) solid var(--white-primary-10);
     cursor: pointer;
 
     &::placeholder {
@@ -263,7 +271,7 @@ h3 {
     }
   }
   &:is([active="true"] > input) {
-    border-bottom-color: rgb(var(--mango));
+    border-bottom-color: rgb(var(--accent));
   }
 }
 
@@ -284,23 +292,38 @@ ul.ui-featureCategory {
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
-  scrollbar-color: var(--white-cherry-40) var(--white-cherry-20);
+  scrollbar-color: var(--white-primary-40) var(--white-primary-20);
 }
 #ui-featureContainer > li {
   list-style-type: none;
   position: relative;
   padding: 8px;
-  background: var(--white-cherry-10);
-  border: var(--border-thickness-sm) solid var(--white-cherry-60);
+  background: var(--white-primary-10);
+  border: var(--border-thickness-sm) solid var(--white-primary-60);
   border-radius: var(--border-radius-sm);
+
+  &:not(
+      #ui-all[active="true"] ~ ul li[data-category],
+      #ui-search[active="true"] ~ ul li[data-category],
+      #ui-dashboard[active="true"] ~ ul li[data-category~="dashboard"],
+      #ui-navigation[active="true"] ~ ul li[data-category~="navigation"],
+      #ui-activity[active="true"] ~ ul li[data-category~="activity"],
+      #ui-sidebar[active="true"] ~ ul li[data-category~="sidebar"],
+      #ui-posts[active="true"] ~ ul li[data-category~="posts"],
+      #ui-messaging[active="true"] ~ ul li[data-category~="messaging"],
+      #ui-appearance[active="true"] ~ ul li[data-category~="appearance"],
+      #ui-utility[active="true"] ~ ul li[data-category~="utility"]
+    ) {
+    display: none;
+  }
 
   &:not(:last-of-type) {
     margin-bottom: 4px;
   }
   &:has(input:checked:not([dummy], .ui-options input)),
   &:has(input[active="true"]) {
-    background: var(--white-mango-10);
-    border: var(--border-thickness-sm) solid rgb(var(--mango));
+    background: var(--white-accent-10);
+    border: var(--border-thickness-sm) solid rgb(var(--accent));
   }
 
   &[data-new="true"] {
@@ -331,7 +354,7 @@ ul.ui-featureCategory {
     margin-bottom: 8px;
     background: rgb(var(--titanium));
     padding: 8px;
-    border-bottom: var(--border-thickness-sm) solid var(--white-cherry-20);
+    border-bottom: var(--border-thickness-sm) solid var(--white-primary-20);
     border-radius: var(--border-radius-sm);
   }
 }
@@ -365,7 +388,7 @@ ul.ui-featureCategory {
   flex-flow: column nowrap;
 
   h2 {
-    border-bottom: var(--border-thickness-sm) solid var(--white-mango-50);
+    border-bottom: var(--border-thickness-sm) solid var(--white-accent-50);
     margin-bottom: 8px;
   }
 }
@@ -377,7 +400,7 @@ input.ui-toggle + label {
   text-indent: -9999px;
   width: 48px;
   height: 36px;
-  background-color: var(--white-cherry-30);
+  background-color: var(--white-primary-30);
   border-radius: var(--border-radius-sm);
 
   &:before {
@@ -410,7 +433,7 @@ input.ui-toggle + label {
   }
 
   &:active {
-    background: var(--white-cherry-30);
+    background: var(--white-primary-30);
 
     &:before {
       width: 16px;
@@ -421,7 +444,7 @@ input.ui-toggle + label {
   }
 }
 input.ui-toggle:checked + label {
-  background: rgb(var(--mango));
+  background: rgb(var(--accent));
   transform: rotate(90deg);
   margin-right: -4px;
   width: 40px;
@@ -447,7 +470,7 @@ input.ui-toggle:checked + label {
   position: relative;
   background: rgb(var(--titanium));
   padding: 4px 8px;
-  border-bottom: var(--border-thickness-sm) solid var(--white-cherry-20);
+  border-bottom: var(--border-thickness-sm) solid var(--white-primary-20);
   border-radius: var(--border-radius-sm);
 
   &:not(:last-of-type) {
@@ -482,9 +505,9 @@ input.ui-toggle:checked + label {
   vertical-align: middle;
   background-origin: border-box;
   user-select: none;
-  border: var(--border-thickness-sm) solid rgb(var(--cherry));
+  border: var(--border-thickness-sm) solid rgb(var(--primary));
   border-radius: 8px;
-  color: rgb(var(--cherry));
+  color: rgb(var(--primary));
   height: 24px;
   width: 24px;
 
@@ -506,7 +529,7 @@ input.ui-toggle:checked + label {
   outline: none;
   padding: 4px;
   margin-top: 4px;
-  background: var(--white-cherry-5);
+  background: var(--white-primary-5);
 
   &:focus {
     border-color: rgb(var(--blueberry));
@@ -516,7 +539,7 @@ input.ui-toggle:checked + label {
 
 select {
   appearance: none;
-  border: var(--border-thickness-sm) solid var(--white-cherry-60);
+  border: var(--border-thickness-sm) solid var(--white-primary-60);
   border-radius: var(--border-radius-sm);
   padding: 8px 36px 8px 12px;
   font-size: 18px;
@@ -540,13 +563,13 @@ select {
 .ui-textInput {
   resize: none;
   width: 100%;
-  border: var(--border-thickness-sm) solid var(--white-cherry-80);
+  border: var(--border-thickness-sm) solid var(--white-primary-80);
   border-radius: var(--border-radius-sm);
   outline: none;
   padding: 4px;
   font-size: 14px;
   box-sizing: border-box;
-  background: var(--white-cherry-5);
+  background: var(--white-primary-5);
 
   &::placeholder {
     &::placeholder {
@@ -598,7 +621,7 @@ select {
   left: -8px;
   padding: 8px;
   background-color: rgb(var(--white));
-  border: var(--border-thickness-sm) solid rgb(var(--mango));
+  border: var(--border-thickness-sm) solid rgb(var(--accent));
   border-radius: var(--border-radius-sm);
   z-index: 100;
 
@@ -607,7 +630,7 @@ select {
     left: calc(50% - 16px);
     bottom: -17px;
     position: absolute;
-    border: 16px solid rgb(var(--mango));
+    border: 16px solid rgb(var(--accent));
     border-top-color: transparent;
     border-left-color: transparent;
     border-radius: var(--border-radius-sm);
@@ -631,8 +654,8 @@ select + .ui-tooltip {
     list-style-type: none;
     position: relative;
     padding: 8px;
-    background: var(--white-cherry-10);
-    border: var(--border-thickness-sm) solid var(--white-cherry-60);
+    background: var(--white-primary-10);
+    border: var(--border-thickness-sm) solid var(--white-primary-60);
     border-radius: var(--border-radius-sm);
     margin-bottom: 4px;
   }
@@ -640,7 +663,7 @@ select + .ui-tooltip {
 
 #version {
   font-weight: bold;
-  color: rgb(var(--cherry));
+  color: rgb(var(--primary));
   text-align: center;
 }
 
@@ -654,14 +677,14 @@ select + .ui-tooltip {
     flex: 1;
     font-size: 20px;
     text-align: center;
-    border: var(--border-thickness-lg) solid var(--mango-cherry-30);
+    border: var(--border-thickness-lg) solid var(--accent-primary-30);
     border-radius: var(--border-radius-sm);
     text-decoration: none;
     position: relative;
-    background-color: rgb(var(--mango));
+    background-color: rgb(var(--accent));
 
     &:hover {
-      background-color: var(--mango-cherry-10);
+      background-color: var(--accent-primary-10);
     }
   }
 }
@@ -677,8 +700,8 @@ select + .ui-tooltip {
   text-align: center;
   justify-content: center;
   align-items: center;
-  background-color: var(--white-cherry-10);
-  border: var(--border-thickness-sm) solid var(--white-cherry-60);
+  background-color: var(--white-primary-10);
+  border: var(--border-thickness-sm) solid var(--white-primary-60);
   border-radius: var(--border-radius-sm);
   text-decoration: none;
 
@@ -686,6 +709,6 @@ select + .ui-tooltip {
     margin-bottom: 4px;
   }
   &:hover {
-    background-color: var(--white-cherry-20);
+    background-color: var(--white-primary-20);
   }
 }

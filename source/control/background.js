@@ -3,9 +3,9 @@ browser.runtime.onInstalled.addListener(async details => {
     tabs.forEach(tab => browser.tabs.reload(tab.id));
   });
   if (details.reason === 'update') {
-    browser.browserAction.setBadgeText({ text: '+' });
-    browser.browserAction.setBadgeTextColor({ color: '#20163d' });
-    browser.browserAction.setBadgeBackgroundColor({ color: '#42b0ff' });
+    console.log('updated!');
+
+    browser.tabs.create({ url: '../meta/menu.html' });
   }
   if (details.reason === 'install') {
     import(browser.runtime.getURL('/scripts/utility/jsTools.js')).then(({ importFeatures, featureify }) => {
