@@ -1,10 +1,24 @@
 {
-  "name": "custom notification labels",
+  "name": "customNotificationLabels",
+  "title": "custom notification labels",
+  "description": "adds additional notification label types",
   "category": "activity",
-  "type": "multiSelect",
   "preferences": {
-    "followingYou": { "title": "label blogs that follow you" },
-    "potentialBot": { "title": "label potential bots" }
+    "enabled": false,
+    "options": {
+      "followingYou": {
+        "value": false,
+        "type": "toggle",
+        "title": "label blogs that follow you",
+        "tooltip": "adds a blue 'following' label to blogs that follow you"
+      },
+      "potentialBot": {
+        "value": false,
+        "type": "toggle",
+        "title": "label potential bots",
+        "tooltip": "adds a red 'potential bot' to blogs that may be bots"
+      }
+    }
   },
   "js": true,
   "css": true

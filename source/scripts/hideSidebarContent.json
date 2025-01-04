@@ -1,14 +1,37 @@
 {
-  "name": "hide sidebar content",
-  "type": "multiSelect",
+  "name": "hideSidebarContent",
+  "title": "hide sidebar content",
   "description": "hide specified content in the sidebar",
   "category": "sidebar",
   "preferences": {
-    "blogRecommendations": { "title": "blog recommendations" },
-    "emptyTagView": { "title": "empty tag following section" },
-    "relatedPosts": { "title": "related posts" },
-    "radar": { "title": "tumblr radar" },
-    "ads": { "title": "sidebar ads" }
+    "enabled": false,
+    "options": {
+      "blogRecommendations": {
+        "value": false,
+        "title": "hide blog recommendations",
+        "type": "toggle"
+      },
+      "emptyTagView": {
+        "value": false,
+        "title": "hide empty tag following section",
+        "type": "toggle"
+      },
+      "relatedPosts": {
+        "value": false,
+        "title": "hide related posts",
+        "type": "toggle"
+      },
+      "radar": {
+        "value": false,
+        "title": "hide tumblr radar",
+        "type": "toggle"
+      },
+      "ads": {
+        "value": false,
+        "title": "hide sidebar ads",
+        "type": "toggle"
+      }
+    }
   },
   "js": "true"
 }

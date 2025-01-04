@@ -1,8 +1,14 @@
 {
-  "name": "timeline search",
-  "type": "toggle",
-  "category": ["dashboard", "utility"],
+  "name": "timelineSearch",
+  "title": "timeline search",
+  "category": [
+    "dashboard",
+    "utility"
+  ],
   "description": "adds a searchbar that allows searching for posts within the timeline",
+  "preferences": {
+    "enabled": false
+  },
   "js": true,
   "css": true
 }

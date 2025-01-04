@@ -1,8 +1,15 @@
 {
-  "name": "horizontal navigation",
-  "type": "toggle",
+  "name": "horizontalNavigation",
+  "title": "horizontal navigation",
   "description": "moves the navigation and search bars to the top of the dashboard",
-  "category": ["dashboard", "navigation", "appearance"],
+  "category": [
+    "dashboard",
+    "navigation",
+    "appearance"
+  ],
+  "preferences": {
+    "enabled": false
+  },
   "css": "fast",
   "desktopOnly": true,
   "js": true

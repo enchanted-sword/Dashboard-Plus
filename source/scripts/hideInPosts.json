@@ -1,13 +1,33 @@
 {
-  "name": "hide content in posts",
+  "name": "hideInPosts",
+  "title": "hide content in posts",
   "type": "multiSelect",
   "description": "hides the selected content within posts.",
   "category": "posts",
   "preferences": {
-    "badges": { "title": "user badges" },
-    "tips": { "title": "tip buttons" },
-    "blaze": { "title": "blaze buttons" },
-    "follow": { "title": "follow buttons" }
+    "enabled": false,
+    "options": {
+      "badges": {
+        "value": false,
+        "name": "hide user badges",
+        "type": "toggle"
+      },
+      "tips": {
+        "value": false,
+        "name": "hide tip buttons",
+        "type": "toggle"
+      },
+      "blaze": {
+        "value": false,
+        "name": "hide blaze buttons",
+        "type": "toggle"
+      },
+      "follow": {
+        "value": false,
+        "name": "hide follow buttons",
+        "type": "toggle"
+      }
+    }
   },
   "js": "true"
 }

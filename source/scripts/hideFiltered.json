@@ -1,26 +1,40 @@
 {
-  "name": "hide filtered content completely",
+  "name": "hideFiltered",
+  "title": "hide filtered content completely",
   "category": "dashboard",
   "description": "completely removes posts with filtered content and/or blocked blogs from the dashboard",
-  "type": "toggle",
-  "extend": true,
   "preferences": {
-    "filterOptions": {
-      "title": "hide posts containing:",
-      "type": "multiSelect",
-      "options": {
-        "content": { "title": "filtered content" },
-        "blocked": { "title": "blocked blogs" }
-      }
-    },
-    "blockedStyle": {
-      "title": "blocked blog filtering",
-      "type": "multiSelect",
-      "options": {
-        "parent": { "title": "filter posts from blocked blogs" },
-        "rebloggedFrom": { "title": "filter posts reblogged from blocked blogs" },
-        "root": { "title": "filter posts where the original poster is a blocked blog" },
-        "trail": { "title": "filter posts containing blocked blogs in the reblog trail" }
+    "enabled": false,
+    "options": {
+      "filterOptions": {
+        "title": "hide posts containing:",
+        "type": "multiSelect",
+        "options": {
+          "content": {
+            "title": "filtered content"
+          },
+          "blocked": {
+            "title": "blocked blogs"
+          }
+        }
+      },
+      "blockedStyle": {
+        "title": "blocked blog filtering",
+        "type": "multiSelect",
+        "options": {
+          "parent": {
+            "title": "filter posts from blocked blogs"
+          },
+          "rebloggedFrom": {
+            "title": "filter posts reblogged from blocked blogs"
+          },
+          "root": {
+            "title": "filter posts where the original poster is a blocked blog"
+          },
+          "trail": {
+            "title": "filter posts containing blocked blogs in the reblog trail"
+          }
+        }
       }
     }
   },

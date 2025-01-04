@@ -1,8 +1,14 @@
 {
-  "name": "show exact poll votes",
-  "type": "toggle",
-  "category": ["posts", "utility"],
+  "name": "showExactVotes",
+  "title": "show exact poll votes",
+  "category": [
+    "posts",
+    "utility"
+  ],
   "description": "displays the exact number of votes for each poll option",
+  "preferences": {
+    "enabled": false
+  },
   "js": true,
   "css": true
 }

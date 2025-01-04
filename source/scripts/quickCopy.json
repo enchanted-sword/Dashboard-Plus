@@ -1,7 +1,13 @@
 {
-  "name": "quick copy",
-  "type": "toggle",
-  "category": ["posts", "utility"],
+  "name": "quickCopy",
+  "title": "quick copy",
+  "category": [
+    "posts",
+    "utility"
+  ],
   "description": "adds a button to post footers that allows 1-click copying of the post's short URL without site tracking data.",
+  "preferences": {
+    "enabled": false
+  },
   "js": true
 }

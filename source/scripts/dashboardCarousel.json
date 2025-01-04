@@ -1,14 +1,33 @@
 {
-  "name": "caught up carousel behaviour",
-  "type": "select",
+  "name": "dashboardCarousel",
+  "title": "caught up carousel behaviour",
   "description": "choose how the 'changes, staff picks, trending' carousel is displayed",
   "category": "dashboard",
   "preferences": {
-    "show": { "title": "display as carousel"},
-    "caughtUp": { "title": "display only the text 'Caught up!'" },
-    "divider": { "title": "display only a dividing line" },
-    "hide": { "title": "hide the element entirely" }
+    "enabled": false,
+    "options": {
+      "value": "show",
+      "type": "select",
+      "name": "display style",
+      "options": [
+        {
+          "value": "show",
+          "name": "display as carousel"
+        },
+        {
+          "value": "caughtUp",
+          "name": "display only the text 'Caught up!'"
+        },
+        {
+          "value": "divider",
+          "name": "display only a dividing line"
+        },
+        {
+          "value": "hide",
+          "name": "hide the element entirely"
+        }
+      ]
+    }
   },
-  "dummy": "show",
   "js": true
 }

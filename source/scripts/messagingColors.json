@@ -1,27 +1,48 @@
 {
-  "name": "messaging colors",
-  "category": ["messaging", "appearance"],
+  "name": "messagingColors",
+  "title": "messaging colors",
+  "category": [
+    "messaging",
+    "appearance"
+  ],
   "description": "customizes the messaging window theme",
-  "type": "toggle",
   "extend": true,
   "preferences": {
-    "colorStyle": {
-      "title": "color style",
-      "type": "select",
-      "dummy": "theme",
-      "options": {
-        "theme": { "title": "use theme colors" },
-        "blog": { "title": "use blog colors" },
-        "custom": { "title": "use custom colors" }
-      }
-    },
-    "customColors": {
-      "title": "custom colors",
-      "type": "colors",
-      "options": {
-        "messageColor": { "title": "message color" },
-        "backgroundColor": { "title": "background color" },
-        "textColor": { "title": "text color" }
+    "enabled": false,
+    "options": {
+      "colorStyle": {
+        "value": "theme",
+        "title": "color style",
+        "type": "select",
+        "options": [
+          {
+            "value": "theme",
+            "name": "use theme colors"
+          },
+          {
+            "value": "blog",
+            "name": "use blog colors"
+          },
+          {
+            "value": "custom",
+            "name": "use custom colors"
+          }
+        ]
+      },
+      "customColors": {
+        "title": "custom colors",
+        "type": "colors",
+        "options": {
+          "messageColor": {
+            "title": "message color"
+          },
+          "backgroundColor": {
+            "title": "background color"
+          },
+          "textColor": {
+            "title": "text color"
+          }
+        }
       }
     }
   },

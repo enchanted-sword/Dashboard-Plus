@@ -1,11 +1,24 @@
 {
-  "name": "link to previous",
-  "type": "multiSelect",
+  "name": "linkToPrevious",
+  "title": "link to previous",
   "description": "adds links to the previous reblog in the specified locations",
   "category": "posts",
   "preferences": {
-    "headerLinks": { "title": "post header link" },
-    "tagLinks": { "title": "tag link" }
+    "enabled": false,
+    "options": {
+      "headerLinks": {
+        "value": false,
+        "title": "post header link",
+        "tooltip": "links to previous reblogs in the header link",
+        "type": "toggle"
+      },
+      "tagLinks": {
+        "value": false,
+        "title": "tag link",
+        "tooltip": "links to previous reblogs in certain tags (e.g. #prev tag)",
+        "type": "toggle"
+      }
+    }
   },
   "js": "true"
 }

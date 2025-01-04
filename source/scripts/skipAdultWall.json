@@ -1,7 +1,10 @@
 {
-  "name": "skip mature content warning",
+  "name": "skipAdultWall",
+  "title": "skip mature content warning",
   "category": "utility",
   "description": "automatically skips the mature content warning displayed before viewing flagged blogs",
-  "type": "toggle",
+  "preferences": {
+    "enabled": false
+  },
   "js": true
 }

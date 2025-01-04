@@ -1,8 +1,11 @@
 {
-  "name": "messaging scale",
-  "type": "slider",
+  "name": "messagingScale",
+  "title": "messaging scale",
   "description": "changes the scale of the messaging window",
-  "category": ["messaging", "appearance"],
+  "category": [
+    "messaging",
+    "appearance"
+  ],
   "preferences": {
     "scale": {
       "title": "scale",

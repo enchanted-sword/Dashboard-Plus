@@ -1,13 +1,32 @@
 {
-  "name": "hide in-stream content",
-  "type": "multiSelect",
+  "name": "hideInStreamContent",
+  "title": "hide in-stream content",
   "description": "hide specified content in the timeline",
   "category": "dashboard",
   "preferences": {
-    "blogRecommendations": { "title": "blog recommendations" },
-    "tagRecommendations": { "title": "tag recommendations" },
-    "blazedContent": { "title": "blazed content" },
-    "inStreamAds": { "title": "in-stream ads" }
+    "enabled": false,
+    "options": {
+      "blogRecommendations": {
+        "value": false,
+        "title": "hide blog recommendations",
+        "type": "toggle"
+      },
+      "tagRecommendations": {
+        "value": false,
+        "title": "hide tag recommendations",
+        "type": "toggle"
+      },
+      "blazedContent": {
+        "value": false,
+        "title": "hide blazed content",
+        "type": "toggle"
+      },
+      "inStreamAds": {
+        "value": false,
+        "title": "hide in-stream ads",
+        "type": "toggle"
+      }
+    }
   },
   "js": "true"
 }

@@ -1,10 +1,21 @@
 {
-  "name": "hide notification labels",
+  "name": "hideNotificationLabels",
+  "title": "hide notification labels",
   "category": "activity",
-  "type": "multiSelect",
   "preferences": {
-    "mutuals": { "title": "mutual labels" },
-    "following": { "title": "following labels" }
+    "enabled": false,
+    "options": {
+      "mutuals": {
+        "value": false,
+        "title": "hide mutual labels",
+        "type": "toggle"
+      },
+      "following": {
+        "value": false,
+        "title": "hide following labels",
+        "type": "toggle"
+      }
+    }
   },
   "js": true
 }

@@ -1,9 +1,9 @@
 import { cellSelector, postSelector } from './document.js';
 
 const root = document.getElementById('root');
-const addedNodesPool = [];
+const addedNodesQueue = [];
 
-let repaintQueued = false;
+let updateQueued = false;
 let timerId;
 
 export const mutationManager = Object.freeze({
@@ -14,7 +14,7 @@ export const mutationManager = Object.freeze({
    * @param {string} selector - CSS selector for elements to target
    * @param {Function} func - Callback function for matching elements
    */
-  start (selector, func) {
+  start(selector, func) {
     if (this.listeners.has(func)) this.listeners.delete(func);
     this.listeners.set(func, selector);
     this.trigger(func);
@@ -24,7 +24,7 @@ export const mutationManager = Object.freeze({
    * Stop a mutation callback
    * @param {Function} func - Function to remove
    */
-  stop (func) {
+  stop(func) {
     if (this.listeners.has(func)) this.listeners.delete(func);
   },
 
@@ -32,7 +32,7 @@ export const mutationManager = Object.freeze({
    * Trigger a mutation callback on all matching elements
    * @param {Function} func - Function to run
    */
-  trigger (func) {
+  trigger(func) {
     const selector = this.listeners.get(func);
     if (!selector) return;
 
@@ -57,7 +57,7 @@ export const postFunction = Object.freeze({
    * @param {string} selector - CSS selector for elements to target
    * @param {Function} func - Callback function for matching elements
    */
-  start (func, filter = false) {
+  start(func, filter = false) {
     if (this.functions.has(func)) this.functions.delete(func);
     this.functions.set(func, filter);
     if (mutationManager.listeners.has(onNewPosts)) mutationManager.trigger(onNewPosts);
@@ -68,7 +68,7 @@ export const postFunction = Object.freeze({
    * Stop a mutation callback
    * @param {Function} func - Function to remove
    */
-  stop (func) {
+  stop(func) {
     this.functions.delete(func)
   }
 });
@@ -78,31 +78,44 @@ const onNewPosts = posts => {
   }
 }
 
-const onBeforeRepaint = () => {
-  repaintQueued = false;
+const funcManager = (funcMap, testNodes) => {
+  for (const [func, selector] of funcMap) {
+    if (func.length === 0) {
+      const shouldRun = testNodes.some(testNode => testNode.matches(selector) || testNode.querySelector(selector) !== null);
+      if (shouldRun) {
+        try {
+          func();
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      continue;
+    }
 
-  const addedNodes = addedNodesPool
+    const matchingElements = [
+      ...testNodes.filter(testNode => testNode.matches(selector)),
+      ...testNodes.flatMap(testNode => [...testNode.querySelectorAll(selector)])
+    ].filter((value, index, array) => index === array.indexOf(value));
+
+    if (matchingElements.length !== 0) {
+      try {
+        func(matchingElements);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }
+};
+const nodeManager = () => {
+  updateQueued = false;
+
+  const addedNodes = addedNodesQueue
     .splice(0)
     .filter(addedNode => addedNode.isConnected);
 
   if (addedNodes.length === 0) return;
 
-  for (const [func, selector] of mutationManager.listeners) {
-    if (func.length === 0) {
-      const shouldRun = addedNodes.some(addedNode => addedNode.matches(selector) || addedNode.querySelector(selector) !== null);
-      if (shouldRun) func();
-      continue;
-    }
-
-    const matchingElements = [
-      ...addedNodes.filter(addedNode => addedNode.matches(selector)),
-      ...addedNodes.flatMap(addedNode => [...addedNode.querySelectorAll(selector)])
-    ].filter((value, index, array) => index === array.indexOf(value));
-
-    if (matchingElements.length !== 0) {
-      func(matchingElements);
-    }
-  }
+  funcManager(mutationManager.listeners, addedNodes);
 };
 
 const observer = new MutationObserver(mutations => {
@@ -110,14 +123,16 @@ const observer = new MutationObserver(mutations => {
     .flatMap(({ addedNodes }) => [...addedNodes])
     .filter(addedNode => addedNode instanceof Element);
 
-  addedNodesPool.push(...addedNodes);
+  addedNodesQueue.push(...addedNodes);
+
+  requestAnimationFrame(nodeManager);
 
   if (addedNodes.some(addedNode => addedNode.parentElement?.matches(cellSelector))) {
     cancelAnimationFrame(timerId);
-    onBeforeRepaint();
-  } else if (repaintQueued === false) {
-    timerId = requestAnimationFrame(onBeforeRepaint);
-    repaintQueued = true;
+    nodeManager();
+  } else if (updateQueued === false) {
+    timerId = requestAnimationFrame(nodeManager);
+    updateQueued = true;
   }
 });
 

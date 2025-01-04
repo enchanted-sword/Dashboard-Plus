@@ -1,14 +1,37 @@
 {
-  "name": "hide unread counts",
+  "name": "hideUnread",
+  "title": "hide unread counts",
   "category": "navigation",
   "description": "hides the specified unread count types",
-  "type": "multiSelect",
   "preferences": {
-    "posts": { "title": "unread posts" },
-    "postsOnTab": { "title": "unread posts on browser tab" },
-    "activity": { "title": "unread activity" },
-    "inbox": { "title": "unread inbox notifications" },
-    "messaging": { "title": "unread messages" }
+    "enabled": false,
+    "options": {
+      "posts": {
+        "value": false,
+        "title": "hide unread posts",
+        "type": "toggle"
+      },
+      "postsOnTab": {
+        "value": false,
+        "title": "hide unread posts number on browser tab",
+        "type": "toggle"
+      },
+      "activity": {
+        "value": false,
+        "title": "hide unread activity",
+        "type": "toggle"
+      },
+      "inbox": {
+        "value": false,
+        "title": "hide unread inbox notifications",
+        "type": "toggle"
+      },
+      "messaging": {
+        "value": false,
+        "title": "hide unread messages",
+        "type": "toggle"
+      }
+    }
   },
   "js": true
 }

@@ -1,8 +1,14 @@
 {
-  "name": "show poll results without voting",
-  "type": "toggle",
-  "category": ["posts", "utility"],
-  "description": "displays the relative vote percentages on polls without requiring the user to vote beforehand",
+  "name": "votelessResults",
+  "title": "show poll results without voting",
+  "category": [
+    "posts",
+    "utility"
+  ],
+  "description": "displays current poll standings on polls without requiring the user to vote beforehand",
+  "preferences": {
+    "enabled": false
+  },
   "js": true,
   "css": true
 }

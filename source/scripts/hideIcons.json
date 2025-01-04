@@ -1,12 +1,28 @@
 {
-  "name": "hide navigation icons",
+  "name": "hideIcons",
+  "title": "hide navigation icons",
   "type": "multiSelect",
   "description": "hide specified icons in the navbar and account submenu",
   "category": "navigation",
   "preferences": {
-    "shop": { "title": "tumblr shop" },
-    "explore": { "title": "explore" },
-    "domains": { "title": "tumblr domains" }
+    "enabled": false,
+    "options": {
+      "shop": {
+        "value": false,
+        "name": "hide tumblr shop",
+        "type": "toggle"
+      },
+      "explore": {
+        "value": false,
+        "name": "hide explore",
+        "type": "toggle"
+      },
+      "domains": {
+        "value": false,
+        "name": "hide tumblr domains",
+        "type": "toggle"
+      }
+    }
   },
   "js": true
 }

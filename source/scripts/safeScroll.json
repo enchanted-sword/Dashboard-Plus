@@ -1,68 +1,117 @@
 {
-  "name": "safeScroll DX",
-  "type": "toggle",
-  "extend": true,
+  "name": "safeScroll",
+  "title": "safeScroll DX",
   "description": "allows blurring or hiding of media and text from certain blogs or posts with certain tags",
-  "category": ["posts", "utility"],
+  "category": [
+    "posts",
+    "utility"
+  ],
   "preferences": {
-    "blogAvatars": {
-      "title": "blur or hide avatars in filtered posts",
-      "type": "select",
-      "dummy": "disable",
-      "options": {
-        "all": { "title": "blur or hide all avatars" },
-        "filtered": { "title": "blur or hide filtered blog avatars only" },
-        "disable": { "title": "don't blur or hide avatars" }
-      }
-    },
-    "media": {
-      "title": "blur or hide media in filtered posts",
-      "type": "toggle"
-    },
-    "text" : {
-      "title": "blur or hide text in filtered posts",
-      "type": "toggle"
-    },
-    "inheritCommunityLabels": {
-      "title": "filter posts with community labels",
-      "type": "toggle"
-    },
-    "filterBlogs": {
-      "title": "blog list filter style",
-      "type": "multiSelect",
-      "options": {
-        "parent": { "title": "filter posts from listed blogs" },
-        "rebloggedFrom": { "title": "filter posts reblogged from listed blogs" },
-        "root": { "title": "filter posts where the original poster is a listed blog" },
-        "trail": { "title": "filter posts containing listed blogs in the reblog trail" }
-      }
-    },
-    "blogList": {
-      "title": "filtered blogs",
-      "type": "textarea",
-      "placeholder": "enter a list of blogs (comma-separated)"
-    },
-    "tagList": {
-      "title": "filtered tags",
-      "type": "textarea",
-      "placeholder": "enter a list of tags (comma-separated)"
-    },
-    "hideStyle": {
-      "title": "content filtering style",
-      "type": "select",
-      "options": {
-        "blur": { "title": "blur" },
-        "cover": { "title": "cover" },
-        "collapse": { "title": "collapse" },
-        "hidePost": { "title": "hide entire post" }
-      }
-    },
-    "dispelStyle": {
-      "title": "show filtered content style",
-      "type": "select",
-      "options": {
-        "hover": { "title": "hover to show content" },
-        "click": { "title": "hover to show content, click to remove filter" }
+    "enabled": false,
+    "options": {
+      "blogAvatars": {
+        "name": "blur or hide avatars in filtered posts",
+        "type": "select",
+        "value": "disable",
+        "options": [
+          {
+            "value": "all",
+            "name": "blur or hide all avatars"
+          },
+          {
+            "value": "filtered",
+            "name": "blur or hide filtered blog avatars only"
+          },
+          {
+            "value": "disable",
+            "name": "don't blur or hide avatars"
+          }
+        ]
+      },
+      "media": {
+        "value": false,
+        "name": "blur or hide media in filtered posts",
+        "type": "toggle"
+      },
+      "text": {
+        "value": false,
+        "name": "blur or hide text in filtered posts",
+        "type": "toggle"
+      },
+      "inheritCommunityLabels": {
+        "value": false,
+        "name": "filter posts with community labels",
+        "type": "toggle"
+      },
+      "filterBlogs": {
+        "name": "blog list filter style",
+        "type": "multiSelect",
+        "options": {
+          "parent": {
+            "name": "filter posts from listed blogs"
+          },
+          "rebloggedFrom": {
+            "name": "filter posts reblogged from listed blogs"
+          },
+          "root": {
+            "name": "filter posts where the original poster is a listed blog"
+          },
+          "trail": {
+            "name": "filter posts containing listed blogs in the reblog trail"
+          }
+        }
+      },
+      "blogList": {
+        "value": "",
+        "name": "filtered blogs",
+        "type": "text",
+        "tooltip": "filter posts containing specified blogs",
+        "placeholder": "comma-separated list of blogs"
+      },
+      "tagList": {
+        "value": "",
+        "name": "filtered tags",
+        "type": "textarea",
+        "tooltip": "filter posts containing specified tags",
+        "placeholder": "comma-separated list of tags. case-insensitive, partial matches are supported."
+      },
+      "hideStyle": {
+        "name": "content filtering style",
+        "type": "select",
+        "value": "blur",
+        "options": [
+          {
+            "value": "blur",
+            "name": "blur"
+          },
+          {
+            "value": "cover",
+            "name": "cover"
+          },
+          {
+            "value": "collapse",
+            "name": "collapse"
+          },
+          {
+            "value": "hidePost",
+            "name": "hide entire post"
+          }
+        ]
+      },
+      "dispelStyle": {
+        "name": "behaviour when showing filtered content",
+        "type": "select",
+        "value": "hover",
+        "options": [
+          {
+            "value": "hover",
+            "name": "hover to show content"
+          },
+          {
+            "value": "click",
+            "name": "hover to show content, click to remove filter"
+          }
+        ]
       }
     }
   },

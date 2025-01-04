@@ -1,8 +1,14 @@
 {
-  "name": "revert activity feed popup",
-  "category": ["activity", "appearance"],
+  "name": "revertActivityPopup",
+  "title": "revert activity feed popup",
+  "category": [
+    "activity",
+    "appearance"
+  ],
   "description": "reverts the activity feed popup appearance to the previous design",
-  "type": "toggle",
+  "preferences": {
+    "enabled": false
+  },
   "js": true,
   "css": true
 }

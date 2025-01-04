@@ -1,8 +1,12 @@
 {
-  "name": "content width",
+  "name": "contentWizard",
+  "title": "content width",
   "type": "slider",
   "description": "changes the width and justification of posts and the main content column",
-  "category": ["dashboard", "appearance"],
+  "category": [
+    "dashboard",
+    "appearance"
+  ],
   "preferences": {
     "width": {
       "title": "content width",
@@ -13,7 +17,7 @@
       "step": 1,
       "datalist": []
     },
-    "justify" : {
+    "justify": {
       "title": "justify content",
       "display": false,
       "min": 0,
@@ -38,5 +42,8 @@
   },
   "js": true,
   "css": true,
-  "recieveUpdates": ["horizontalNavigation", "floatingAvatars"]
+  "recieveUpdates": [
+    "horizontalNavigation",
+    "floatingAvatars"
+  ]
 }
