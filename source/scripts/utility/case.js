@@ -6,8 +6,7 @@ const upperFirst = string => {
  * @param {string} string
  * @returns words in the string
  */
-export const words = string => string
-  .replace(/\W/g, '_')
+export const words = string => string.replace(/\W/g, '_')
   .replace(/([a-z])([A-Z])/g, '$1_$2')
   .replace(/(\D)(\d)/g, '$1_$2')
   .replace(/(\d)(\D)/g, '$1_$2')
@@ -15,7 +14,7 @@ export const words = string => string
 
 /**
  * @param {string} string - String to convert
- * @returns The strin in camelCase
+ * @returns The string in camelCase
  */
 export const camelCase = string => words(string).reduce((result, word, index) => {
   word = word.toLowerCase();

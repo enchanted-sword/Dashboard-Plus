@@ -20,10 +20,10 @@
 
 :root {
   --titanium: 255 255 255;
-  --white: 250, 245, 255;
-  --primary: 0, 25, 53;
-  --accent: 0, 148, 255;
-  --notBlack: 0, 0, 12;
+  --white: 250 245 255;
+  --primary: 0 25 53;
+  --accent: 0 148 255;
+  --notBlack: 0 0 12;
   --blueberry: 37 99 235;
 
   --white-primary-5: color-mix(
@@ -75,6 +75,11 @@
     in srgb,
     rgb(var(--white)),
     rgb(var(--accent)) 50%
+  );
+  --white-accent-80: color-mix(
+    in srgb,
+    rgb(var(--white)),
+    rgb(var(--accent)) 80%
   );
   --notBlack-primary-60: color-mix(
     in srgb,
@@ -233,7 +238,7 @@ h3 {
   background-color: var(--white-primary-20);
   border: none;
   border-radius: var(--border-radius-sm);
-  text-decoration: underline var(--white-primary-10) 2px;
+  text-decoration: underline var(--white-primary-40) 2px;
   text-underline-position: under;
   padding-bottom: 4px;
 
@@ -254,7 +259,7 @@ h3 {
 
 #ui-featureSearch {
   border: none;
-  border-bottom: var(--border-thickness-sm) solid var(--white-primary-10);
+  border-bottom: var(--border-thickness-sm) solid var(--white-primary-40);
   outline: none;
   font-size: 15px;
   background-color: transparent;
@@ -263,7 +268,7 @@ h3 {
     padding: 0;
     width: 48px;
     text-align: center;
-    border-bottom: var(--border-thickness-sm) solid var(--white-primary-10);
+    border-bottom: var(--border-thickness-sm) solid var(--white-primary-40);
     cursor: pointer;
 
     &::placeholder {
@@ -287,7 +292,7 @@ ul.ui-featureCategory {
 }
 
 #ui-featureContainer {
-  height: calc(100vh - 96px);
+  height: calc(100vh - 146px);
   padding: 0 8px 8px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -375,7 +380,8 @@ ul.ui-featureCategory {
 .ui-toggleWrapper {
   margin-left: 8px;
 }
-.ui-toggle {
+.ui-toggle,
+.ui-listSelect {
   position: absolute;
   width: 0;
   height: 0;
@@ -557,6 +563,37 @@ select {
   &:focus {
     background-color: rgb(var(--titanium));
     border-color: rgb(var(--blueberry));
+  }
+}
+
+.ui-listSelectWrapper {
+  max-height: 10rem;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  overflow: auto;
+  scrollbar-width: thin;
+  border-radius: 3px;
+  gap: 0.25rem;
+}
+.ui-listSelect + label {
+  cursor: pointer;
+  background-color: var(--white-primary-20);
+  border-radius: 3px;
+  font-size: 18px;
+  text-align: center;
+  width: calc(100% - 4px);
+
+  &:hover {
+    background-color: var(--white-primary-10);
+  }
+}
+
+input.ui-listSelect:checked + label {
+  background-color: rgb(var(--accent));
+
+  &:hover {
+    background-color: var(--accent-primary-10);
   }
 }
 

@@ -4,6 +4,7 @@
     async function () {
       const { debounce, importFeatures, transformPreferences } = await import('../scripts/utility/jsTools.js');
       const { noact } = await import('../scripts/utility/noact.js');
+      const { camelCase } = await import('../scripts/utility/case.js');
 
       const descButton = () => {
         const button = $(`<button class='ui-descButton'><div class="ui-caretWrapper"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="transform: rotate(180deg);"><use href="#icons-caret"></use></svg></div></button>`);
@@ -202,6 +203,36 @@
 
                     browser.storage.local.set({ preferences });
                   });
+                  break;
+                } case 'multiSelect': {
+                  console.warn(`${name}.${key} [missing support for ${option.type}]`);
+                  break;
+                } case 'listSelect': {
+                  wrapper = $(`<div class="ui-inputWrapper"><label for="ui-feature-${name}-${key}">${option.name}</label></div>`);
+                  const listSelectWrapper = $(`<div class="ui-listSelectWrapper"></div>`);
+
+                  option.options.forEach(listItem => {
+                    const listItemName = camelCase(listItem);
+                    const input = $('<input>', { class: 'ui-listSelect', type: 'checkbox', id: `ui-feature-${name}-${key}-${listItemName}`, name: `${name}-${key}` });
+                    const label = $(`<label for="ui-feature-${name}-${key}-${listItemName}" name="${name}-${key}">${listItem}</label>`);
+
+                    listSelectWrapper.append(input);
+                    listSelectWrapper.append(label);
+
+                    if (preference.options[key].includes(listItem)) input.attr('checked', '');
+
+                    input.on('change', async function () {
+                      const checked = !!this.checked;
+                      let { preferences } = await browser.storage.local.get('preferences');
+
+                      if (checked) preferences[name].options[key].push(listItem);
+                      else preferences[name].options[key] = preferences[name].options[key].filter(item => item !== listItem);
+
+                      browser.storage.local.set({ preferences });
+                    });
+                  });
+
+                  wrapper.append(listSelectWrapper);
                   break;
                 } case 'number': {
                   wrapper = $(`<div class="ui-inputWrapper ui-numInputWrapper"></div>`);

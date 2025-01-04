@@ -38,7 +38,7 @@
           "back in town",
           "spam reported"
         ],
-        "listOptions": [
+        "options": [
           "rollups",
           "asks",
           "replies",
@@ -65,12 +65,12 @@
         ]
       },
       "mentions": {
-        "title": "mentions tab",
+        "name": "mentions tab",
         "type": "listSelect",
-        "default": [
+        "value": [
           "mentions"
         ],
-        "listOptions": [
+        "options": [
           "rollups",
           "asks",
           "replies",
@@ -97,15 +97,15 @@
         ]
       },
       "reblogs": {
-        "title": "reblogs tab",
+        "name": "reblogs tab",
         "type": "listSelect",
-        "default": [
+        "value": [
           "rollups",
           "reblogs without comments",
           "reblogs with comments",
           "reblogs with tags"
         ],
-        "listOptions": [
+        "options": [
           "rollups",
           "asks",
           "replies",
@@ -132,12 +132,12 @@
         ]
       },
       "replies": {
-        "title": "replies tab",
+        "name": "replies tab",
         "type": "listSelect",
-        "default": [
+        "value": [
           "replies"
         ],
-        "listOptions": [
+        "options": [
           "rollups",
           "asks",
           "replies",
