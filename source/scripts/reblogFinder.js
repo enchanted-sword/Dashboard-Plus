@@ -40,9 +40,7 @@ const reblogQueryFilter = notes => {
       note.__reblogFinderFilter = filterString;
     }
 
-    console.log(filterString, filterString.includes(query));
     if (filterString.includes(query)) {
-      console.log(note);
       note.removeAttribute(hiddenAttribute);
     }
     else note.setAttribute(hiddenAttribute, '');
