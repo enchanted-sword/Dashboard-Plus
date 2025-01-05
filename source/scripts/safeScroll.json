@@ -46,6 +46,12 @@
       "filterBlogs": {
         "name": "blog list filter style",
         "type": "multiSelect",
+        "value": {
+          "parent": false,
+          "rebloggedFrom": false,
+          "root": false,
+          "trail": false
+        },
         "options": {
           "parent": {
             "name": "filter posts from listed blogs"

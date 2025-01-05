@@ -27,7 +27,7 @@
         "type": "toggle"
       },
       "ads": {
-        "value": false,
+        "value": true,
         "title": "hide sidebar ads",
         "type": "toggle"
       }

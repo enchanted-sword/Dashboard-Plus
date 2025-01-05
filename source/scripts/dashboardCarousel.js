@@ -32,10 +32,10 @@ const styles = {
   `
 };
 
-const run = ({ selected }) => {
-  if (selected === 'show') return false;
+const run = ({ displayStyle }) => {
+  if (displayStyle === 'show') return false;
 
-  styleElement.innerText = styles[selected];
+  styleElement.innerText = styles[displayStyle];
   return true;
 };
 
@@ -45,4 +45,4 @@ export const main = async () => {
 
 export const clean = async () => styleElement.remove();
 
-export const update = ({ preferences }) => run(preferences);
+export const update = async options => run(options);

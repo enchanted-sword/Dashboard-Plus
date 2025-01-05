@@ -2,7 +2,7 @@
 {
   (
     async function () {
-      const { debounce, importFeatures, transformPreferences } = await import('../scripts/utility/jsTools.js');
+      const { debounce, importFeatures, featureify } = await import('../scripts/utility/jsTools.js');
       const { noact } = await import('../scripts/utility/noact.js');
       const { camelCase } = await import('../scripts/utility/case.js');
 
@@ -219,14 +219,14 @@
                     multiSelectItem.append(input);
                     multiSelectWrapper.append(multiSelectItem);
 
-                    if (preference.options[key] === subKey) input.attr('checked', '');
+                    if (preference.options[key][subKey]) input.attr('checked', '');
 
                     input.on('change', async function () {
                       const checked = !!this.checked;
                       let { preferences } = await browser.storage.local.get('preferences');
 
-                      if (checked) preferences[name].options[key] = subKey;
-                      else preferences[name].options[key] = preference.options[key].value;
+                      if (checked) preferences[name].options[key][subKey] = true;
+                      else preferences[name].options[key][subKey] = false;
 
                       browser.storage.local.set({ preferences });
                     });
@@ -439,7 +439,11 @@
         }
 
         const installedFeatures = await importFeatures(); // "await has no effect on this type of expression"- it does, actually!
-        const { preferences } = await browser.storage.local.get('preferences');
+        let { preferences } = await browser.storage.local.get('preferences');
+
+        if (typeof preferences === 'undefined') {
+          preferences = featureify(installedFeatures, preferences);
+        }
 
         createFeatures(installedFeatures, preferences);
 

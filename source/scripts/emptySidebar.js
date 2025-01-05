@@ -1,13 +1,13 @@
 import { style, s } from './utility/style.js';
 import { getOptions } from './utility/jsTools.js';
 
-let selected;
+let collapseStyle;
 const styleElement = style('');
 
 export const main = async () => {
-  ({ selected } = await getOptions('emptySidebar'));
+  ({ collapseStyle } = await getOptions('emptySidebar'));
 
-  if (selected === 'never') return;
+  if (collapseStyle === 'never') return;
 
   const sidebar = document.querySelector(s('sidebar'));
   let empty = true;
@@ -16,7 +16,7 @@ export const main = async () => {
     if (elem.style.display !== 'none' && elem.getBoundingClientRect().height > 0) empty = false;
   });
 
-  if (empty || selected === 'force') {
+  if (empty || collapseStyle === 'force') {
     styleElement.innerText = `${s('sidebar')} { display: none; }`;
     document.head.append(styleElement);
   }

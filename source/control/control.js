@@ -52,7 +52,7 @@ window.addEventListener('message', (event) => {
 
       const cssTargetSelector = '[class]:not([data-css])';
       const titleTargetSelector = '[title]:not([data-title])';
-      const timelineTargetSelector = '[data-timeline]:not([data-route])';
+      const timelineTargetSelector = '[data-timeline-id]:not([data-route])';
       const body = (document.body || document);
 
       const labelCss = elements => {
@@ -73,7 +73,7 @@ window.addEventListener('message', (event) => {
       }
       const labelTimelines = elements => {
         elements.forEach(element => {
-          let route = element.getAttribute('data-timeline').split('/v2/')[1];
+          let route = element.getAttribute('data-timeline-id').split('/v2/').pop();
           if (route.includes('blog/') && route.split('/')[1] === window.location.pathname.split('/')[1]) route = `peepr/${route}`;
           document.getElementById('base-container').setAttribute('data-route', route);
           element.setAttribute('data-route', route);
@@ -102,7 +102,7 @@ window.addEventListener('message', (event) => {
 
       attributeObserver.observe(body, {
         attributes: true,
-        attributeFilter: ['data-timeline'],
+        attributeFilter: ['data-timeline-id'],
         subtree: true
       })
       init = true;
@@ -116,7 +116,7 @@ waitForWindow().then(async function () {
   languageData = window.tumblr.languageData;
   window.postMessage({ text: 'db+helperLoadMessage', cssMap, languageData }, 'https://www.tumblr.com');
 
-  window.addEventListener('keydown', event => { if (['p','P'].includes(event.key) && event.shiftKey) updateThemeColors(); });
+  window.addEventListener('keydown', event => { if (['p', 'P'].includes(event.key) && event.shiftKey) updateThemeColors(); });
   const colorPaletteSwitcher = document.getElementById('colorPaletteSwitcher');
   if (colorPaletteSwitcher) colorPaletteSwitcher.addEventListener('change', () => window.setTimeout(() => updateThemeColors(), 100));
 });

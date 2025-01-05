@@ -500,12 +500,14 @@ input.ui-toggle:checked + label {
 
   label {
     max-width: calc(100% - 44px);
+    cursor: pointer;
   }
 }
 .ui-checkbox {
   appearance: none;
   margin: 0;
   padding: 0;
+  cursor: pointer;
   print-color-adjust: exact;
   display: inline-block;
   vertical-align: middle;
@@ -546,6 +548,7 @@ input.ui-toggle:checked + label {
 
 select {
   appearance: none;
+  cursor: pointer;
   border: var(--border-thickness-sm) solid var(--white-primary-60);
   border-radius: var(--border-radius-sm);
   padding: 8px 36px 8px 12px;

@@ -9,36 +9,60 @@
     background: none !important;
 
     &[aria-selected="true"] {
-      color: rgb(var(--accent)) !important;
-      box-shadow: inset 0px -2px 0px rgb(var(--accent));
+      color: var(--accent) !important;
+      box-shadow: inset 0px -2px 0px var(--accent);
     }
-    &:first-of-type [tabindex] { font-size: 0; }
-    &:first-of-type [tabindex]:after { font-size: 1rem; }
+    &:first-of-type [tabindex] {
+      font-size: 0;
+    }
+    &:first-of-type [tabindex]:after {
+      font-size: 1rem;
+    }
   }
 }
 
 [role="tabpanel"] {
   [data-css~="dateSeparator"] {
-    background: rgba(var(--black),.07) !important;
+    background: rgba(var(--black), 0.07) !important;
     padding: 8px 16px important;
   }
-  [data-css~="backgroundColor"] { border-top: 1px solid rgba(var(--black),.13); }
+  [data-css~="backgroundColor"] {
+    border-top: 1px solid rgba(var(--black), 0.13);
+  }
   [data-css~="avatarWrapper"] [data-css~="avatar"],
-  [data-css~="anonymousAvatar"], [data-css~="avatar"] img {
+  [data-css~="anonymousAvatar"],
+  [data-css~="avatar"] img {
     height: 25px !important;
     width: 25px !important;
   }
-  [data-css~="verticallyCentered"] { align-self: start !important; }
-  [data-css~="avatarWrapperInner"], [data-css~="circleAvatar"] {border-radius: 3px !important; }
+  [data-css~="verticallyCentered"] {
+    align-self: start !important;
+  }
+  [data-css~="avatarWrapperInner"],
+  [data-css~="circleAvatar"] {
+    border-radius: 3px !important;
+  }
   [data-css~="badge"] [data-css~="border"],
   [data-css~="rollupBadge"] [data-css~="border"],
-  [data-css~="rollupAvatar"] { border: none !important; }
-  [data-css~="underlined"] span { text-decoration: none !important; }
+  [data-css~="rollupAvatar"] {
+    border: none !important;
+  }
+  [data-css~="underlined"] span {
+    text-decoration: none !important;
+  }
+
+  [data-css~="tumblelogName blogLink"] {
+    font-weight: 500;
+  }
 }
-[role="tabpanel"] [data-css~="backgroundColor"] { border-top: 1px solid rgba(var(--black),.13); }
+[role="tabpanel"] [data-css~="backgroundColor"] {
+  border-top: 1px solid rgba(var(--black), 0.13);
+}
 [data-css~="linkToActivity"] {
   padding: 0 !important;
   height: 30px !important;
 
-  a { color: rgba(var(--black),.65) !important; }
+  a {
+    color: rgba(var(--black), 0.65) !important;
+  }
 }

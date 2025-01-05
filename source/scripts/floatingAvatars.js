@@ -26,7 +26,7 @@ const editorStyleElement = style(`
   }
 `);
 const customClass = 'dbplus-floatingAvatars';
-const postSelector = `${s('main')} > :not(${s('blogTimeline')}) [data-timeline]:not([data-timeline*='posts/'],${s('masonry')}) [tabindex='-1']:not([data-css*='masonryTimelineObject']) article:not(.${customClass})`;
+const postSelector = `${s('main')} > :not(${s('blogTimeline')}) [data-timeline-id]:not([data-timeline-id*='posts/'],${s('masonry')}) [tabindex='-1']:not([data-css*='masonryTimelineObject']) article:not(.${customClass})`;
 const menuContainerSelector = `#glass-container ${s('menuContainer')}`;
 const userAvatar = elem('div', { class: 'dbplus-userAvatarWrapper' }, null, `
   <div class="dbplus-avatarWrapperOuter">
@@ -109,7 +109,7 @@ export const clean = async () => {
   editorStyleElement.remove()
 }
 
-export const update = async ({ preferences }) => {
+export const update = async preferences => {
   ({ scroll, showOwnAvatar, editorAvatar } = preferences);
 
   if (!scroll) document.head.append(staticStyleElement);

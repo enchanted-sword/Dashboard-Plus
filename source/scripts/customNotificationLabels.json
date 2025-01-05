@@ -16,7 +16,7 @@
         "value": false,
         "type": "toggle",
         "title": "label potential bots",
-        "tooltip": "adds a red 'potential bot' to blogs that may be bots"
+        "tooltip": "adds a red 'potential bot' label to blogs that may be bots"
       }
     }
   },

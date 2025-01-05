@@ -50,9 +50,9 @@
       let installedFeatures = {};
       let menuFeatures = ['inheritColors'];
       let enabledFeatures = [];
+      let resizeListeners = [];
       let preferences = {};
       const preferenceListeners = {};
-      const resizeListeners = [];
 
       const executeFeature = async name => {
         const feature = installedFeatures[name];

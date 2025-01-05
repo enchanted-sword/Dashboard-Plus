@@ -6,7 +6,7 @@ import { keyToClasses, translate } from './utility/tumblr.js';
 import { addUrlPopover, svgIcon } from './utility/dashboardElements.js';
 
 const customClass = 'dbplus-revertHeaders'
-const postSelector = `[data-timeline]:not([data-route="user/inbox"]) [data-id] article:not(.${customClass})`;
+const postSelector = `[data-timeline-id]:not([data-route="user/inbox"]) [data-id] article:not(.${customClass})`;
 const reblogIcon = () => elem('span', { class: 'dbplus-reblogIcon' }, null, [svgIcon('reblog-compact', 15, 15)]);
 const styleElement = style(`
   ${s('attribution')} ${s('targetWrapperInline')} + ${s('badgeContainer')} { margin-left: 5px; }
@@ -45,7 +45,7 @@ const revertHeaders = async posts => {
       }
     }
 
-    [...attribution.childNodes].filter(node => node.nodeName === '#text').forEach(function (node) {node.textContent = ''});
+    [...attribution.childNodes].filter(node => node.nodeName === '#text').forEach(function (node) { node.textContent = '' });
     if (addingNewRebloggedFrom) attribution.append(rebloggedFrom);
     if (rebloggedFrom && !header.querySelector('dbplus-reblogIcon')) rebloggedFrom.before(reblogIcon());
 

@@ -36,7 +36,10 @@
           "badges",
           "what you missed",
           "back in town",
-          "spam reported"
+          "spam reported",
+          "boops",
+          "commuities moderation",
+          "commuities"
         ],
         "options": [
           "rollups",
@@ -61,7 +64,10 @@
           "badges",
           "what you missed",
           "back in town",
-          "spam reported"
+          "spam reported",
+          "boops",
+          "commuities moderation",
+          "commuities"
         ]
       },
       "mentions": {
@@ -93,7 +99,10 @@
           "badges",
           "what you missed",
           "back in town",
-          "spam reported"
+          "spam reported",
+          "boops",
+          "commuities moderation",
+          "commuities"
         ]
       },
       "reblogs": {
@@ -128,7 +137,10 @@
           "badges",
           "what you missed",
           "back in town",
-          "spam reported"
+          "spam reported",
+          "boops",
+          "commuities moderation",
+          "commuities"
         ]
       },
       "replies": {
@@ -160,7 +172,10 @@
           "badges",
           "what you missed",
           "back in town",
-          "spam reported"
+          "spam reported",
+          "boops",
+          "commuities moderation",
+          "commuities"
         ]
       }
     }

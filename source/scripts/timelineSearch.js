@@ -20,9 +20,9 @@ const filters = {
   description: /"description":"([^"]*)"/g
 };
 
-const hiddenAttribute = 'data-timeline-search-hidden';
+const hiddenAttribute = 'data-timeline-id-search-hidden';
 const postSelector = `[tabindex="-1"][data-id] article:not([${hiddenAttribute}])`;
-const targetSelector = '[data-timeline]:not(:has(.dbplus-timelineSearchContainer))';
+const targetSelector = '[data-timeline-id]:not(:has(.dbplus-timelineSearchContainer))';
 const inputId = 'dbplus-timelineSearchTextarea';
 
 const matchesToString = arr => arr.map(x => x[1]).join('');
@@ -47,7 +47,7 @@ const queryFilter = posts => {
 };
 const onInput = ({ target }) => {
   postFunction.stop(queryFilter);
-  if($(`[${hiddenAttribute}]`).length) queryFilter(document.querySelectorAll(`[${hiddenAttribute}]`));
+  if ($(`[${hiddenAttribute}]`).length) queryFilter(document.querySelectorAll(`[${hiddenAttribute}]`));
   if (target.value) postFunction.start(queryFilter, postSelector);
 };
 const search = elem('div', { class: 'dbplus-timelineSearchContainer' }, null, [

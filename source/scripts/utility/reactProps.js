@@ -107,6 +107,9 @@ export const notificationObject = async notification => {
     notificationCache.set(notification, inject(getNotificationObject, [], notification));
   }
 
+  if (notificationCache.get(notification) === null) {
+    console.warn('null notificationObject:', notification);
+  }
   return notificationCache.get(notification);
 };
 

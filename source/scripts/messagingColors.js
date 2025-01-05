@@ -88,4 +88,4 @@ export const clean = async () => {
   $(`.${customClass}`).remove();
 };
 
-export const update = async ({ preferences }) => run(preferences);
+export const update = async preferences => run(preferences);

@@ -1,13 +1,13 @@
-import { getOptions } from './utility/jsTools.js';
+import { getOptions, getJsonFile } from './utility/jsTools.js';
 import { declarativeNetRequest } from './utility/dnr.js';
 
 const removeRuleIds = ['APF:all', 'APF:mentions', 'APF:reblogs', 'APF:replies'];
-const regexFilter = {
+const regexFilter = { // it's simply joyous that this is possible
   // eslint-disable-next-line no-useless-escape
-  all: '^https?://www\\.tumblr\\.com/api/v2/blog/[\\w\\d-]*/notifications.*types\[50\]=earned_badge$',
-  mentions: '^https?://www\\.tumblr\\.com/api/v2/blog/[\\w\\d-]*/notifications.*mention_in_reply$',
-  reblogs: '^https?://www\\.tumblr\\.com/api/v2/blog/[\\w\\d-]*/notifications.*tags$',
-  replies: '^https?://www\\.tumblr\\.com/api/v2/blog/[\\w\\d-]*/notifications.*reply$'
+  all: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog/[\\w\\d-]*\/notifications\\?rollups=true$',
+  mentions: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog\/[\\w\\d-]*\/notifications.*mention_in_reply$',
+  reblogs: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog\/[\\w\\d-]*\/notifications.*tags$',
+  replies: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog\/[\\w\\d-]*\/notifications.*reply_to_comment$'
 };
 const map = {
   "rollups": ["rollups"],
@@ -73,7 +73,10 @@ const map = {
   "badges": ["earned_badge",],
   "what you missed": ["what_you_missed"],
   "back in town": ["back_in_town"],
-  "spam reported": ["spam_reported"]
+  "spam reported": ["spam_reported"],
+  "boops": ["boop"],
+  "communities moderation": ['community_admin_promoted', 'community_member_kicked', 'community_moderator_demoted', 'community_moderator_promoted', 'community_post_removed', 'community_reply_removed', 'community_request_approved'],
+  "communities": ['community_invitation', 'community_membership_request_accepted', 'community_membership_request_declined', 'community_reaction_count']
 };
 
 const urlQueryFromArray = (arr = []) => {
@@ -83,23 +86,24 @@ const urlQueryFromArray = (arr = []) => {
 };
 
 /* 
-  this feature doesn't interfere with the activity page itself because:
-  a) the default activity page filter fetch query is simply ?rollups=true
+  this feature amazingly doesn't interfere with the activity page itself because:
+  a) the default activity page notifications served fetched via html (possibly?)
   b) all other activity page fetches end with type[n]=earned_badge and can be filtered out
   c) any notifications loaded when the page is loaded are part of the initial state and aren't fetched via XHP
   d) any new notifications loaded in afterwards have an additional query param for the timestamp
  */
 
 export const main = async () => {
+  const feature = await getJsonFile('activityPopupFilter');
   const preferences = await getOptions('activityPopupFilter');
-  const enabled = Object.keys(preferences).filter(preference => preferences[preference].enabled);
+  const enabled = Object.keys(preferences).filter(key => feature.preferences.options[key].value.sort().join('') !== preferences[key].sort().join(''));
   if (enabled.length === 0) return;
 
-  const newRules = enabled.map(type => declarativeNetRequest.newRule(`APF:${type}`, regexFilter[type], {
+  const newRules = enabled.map(key => declarativeNetRequest.newRule(`APF:${key}`, regexFilter[key], {
     type: 'redirect',
     redirect: {
       transform: {
-        query: urlQueryFromArray(preferences[type].list)
+        query: urlQueryFromArray(preferences[key])
       }
     }
   }));

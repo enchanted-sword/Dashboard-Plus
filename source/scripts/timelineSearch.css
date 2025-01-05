@@ -1,11 +1,11 @@
 .dbplus-timelineSearchContainer {
-  color: rgba(var(--white-on-dark),.65);
-  background-color: rgba(var(--white-on-dark),.25);
+  color: rgba(var(--white-on-dark), 0.65);
+  background-color: rgba(var(--white-on-dark), 0.25);
   border-radius: 8px;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  transition: background-color .25s;
+  transition: background-color 0.25s;
   display: flex;
   overflow: hidden;
   margin-bottom: 20px;
@@ -25,8 +25,12 @@
   margin-right: 2px;
   display: flex;
 }
-.dbplus-timelineSearchIcon use { --icon-color-primary: rgba(var(--white-on-dark),.65)}
-.dbplus-timelineSearchContainer:focus-within .dbplus-timelineSearchIcon use { --icon-color-primary: rgba(var(--black),.65)}
+.dbplus-timelineSearchIcon use {
+  --icon-color-primary: rgba(var(--white-on-dark), 0.65);
+}
+.dbplus-timelineSearchContainer:focus-within .dbplus-timelineSearchIcon use {
+  --icon-color-primary: rgba(var(--black), 0.65);
+}
 #dbplus-timelineSearchTextarea {
   color: inherit;
   background-color: transparent;
@@ -37,6 +41,12 @@
   font-size: 1rem;
   line-height: 1.5;
 }
-.dbplus-timelineSearchContainer:focus-within #dbplus-timelineSearchTextarea::placeholder { opacity: 0.4; }
+.dbplus-timelineSearchContainer:focus-within
+  #dbplus-timelineSearchTextarea::placeholder {
+  opacity: 0.4;
+}
 
-[data-timeline] [data-css~="listTimelineObject"]:has([data-timeline-search-hidden]) { display: none; }
+[data-timeline-id]
+  [data-css~="listTimelineObject"]:has([data-timeline-id-search-hidden]) {
+  display: none;
+}

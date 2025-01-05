@@ -26,4 +26,4 @@ export const main = async () => {
 
 export const clean = async () => styleElement.remove();
 
-export const update = async ({ preferences }) => run(preferences);
+export const update = async preferences => run(preferences);

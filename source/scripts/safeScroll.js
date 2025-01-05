@@ -65,8 +65,8 @@ export const main = async () => {
     dispelStyle
   } = await getOptions('safeScroll'));
 
-  filterBlogList = blogList.value.toLowerCase().replace(normalizeRegex, '').split(',');
-  filterTagList = tagList.value.toLowerCase().replace(normalizeRegex, '').split(',');
+  filterBlogList = blogList.toLowerCase().replace(normalizeRegex, '').split(',');
+  filterTagList = tagList.toLowerCase().replace(normalizeRegex, '').split(',');
 
   postFunction.start(filterPosts, postSelector);
 };

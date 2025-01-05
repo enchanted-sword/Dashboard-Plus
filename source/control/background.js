@@ -1,4 +1,6 @@
 browser.runtime.onInstalled.addListener(async details => {
+  console.info(details);
+
   await browser.tabs.query({ url: '*://*.tumblr.com/*' }).then(async tabs => {
     tabs.forEach(tab => browser.tabs.reload(tab.id));
   });

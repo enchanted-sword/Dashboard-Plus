@@ -39,4 +39,4 @@ export const clean = async () => {
   titleObserver.disconnect();
 };
 
-export const update = ({ preferences }) => run(preferences);
+export const update = async preferences => run(preferences);
