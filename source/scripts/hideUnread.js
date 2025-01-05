@@ -28,8 +28,6 @@ export const main = async () => {
     styleElement.innerText = `${selectors.join(',')} { display: none !important; }`;
     document.head.append(styleElement);
   }
-
-  if (run(preferences)) 
 };
 
 export const clean = async () => {
