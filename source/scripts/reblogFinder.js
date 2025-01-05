@@ -18,9 +18,10 @@ const targetSelector = `button${s('tab likes')}[data-title="Likes"]`;
 const searchId = 'dbplus-reblogFinder-search';
 const inputId = 'dbplus-reblogFinder-input';
 
-const matchesToString = arr => arr.map(x => x[1]).join('');
+const matchesToString = arr => arr.map(x => x[1]).join(' ');
 const reblogQueryFilter = notes => {
   const query = document.getElementById(inputId).value.replace('"', '\'').toLowerCase();
+  console.log(`searching notes with query "${query}"`);
   notes.forEach(async note => {
     let filterString = note.__reblogFinderFilter;
 
@@ -28,19 +29,28 @@ const reblogQueryFilter = notes => {
       const str = JSON.stringify(await noteObject(note))
         .replace(/\\"/g, '\'').replace(/"descriptionNpf":\[({"type":"text","text":"([^"]*)"},?)*\],/g, '');
 
+      if (str === null) return;
+
+      filterString = '';
       for (const key in filters) {
-        filterString += matchesToString([...str.matchAll(filters[key])]);
+        filterString += matchesToString([...str.matchAll(filters[key])]) + ' ';
       }
-      filterString = filterString.toLowerCase();
+
+      filterString = filterString.toLowerCase().replace(/"/g, ' ').replace(/\s{2,}/g, ' ');
       note.__reblogFinderFilter = filterString;
     }
-    if (!filterString.includes(query)) note.setAttribute(hiddenAttribute, '');
-    else note.removeAttribute(hiddenAttribute);
+
+    console.log(filterString, filterString.includes(query));
+    if (filterString.includes(query)) {
+      console.log(note);
+      note.removeAttribute(hiddenAttribute);
+    }
+    else note.setAttribute(hiddenAttribute, '');
   });
 };
 const onInput = ({ target }) => {
   const postId = target.closest('[data-id]').getAttribute('data-id');
-  const noteSelector = `[data-id='${postId}'] [aria-label='${translate('Post Activity')}'] ${s('contentContainer')} ${s('root')}`;
+  const noteSelector = `[data-id='${postId}'] [aria-label='${translate('Post Activity')}'] ${s('root')} > ${s('content')} ${s('root')}`;
   mutationManager.stop(reblogQueryFilter);
   if ($(`[${hiddenAttribute}]`).length) reblogQueryFilter(document.querySelectorAll(`[${hiddenAttribute}]`));
   if (target.value) mutationManager.start(noteSelector, reblogQueryFilter);

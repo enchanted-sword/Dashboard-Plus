@@ -11,23 +11,27 @@
   line-height: 1.5;
   display: flex;
 
-  svg { pointer-events: none; }
+  svg {
+    pointer-events: none;
+  }
   &[active="true"] {
     color: RGB(var(--pink));
     border-bottom-color: rgb(var(--pink));
 
-    use { --icon-color-primary: rgb(var(--pink)); }
+    use {
+      --icon-color-primary: rgb(var(--pink));
+    }
   }
 }
 
 #dbplus-reblogFinder-search {
-  color: rgba(var(--black),.65);
+  color: rgba(var(--black), 0.65);
   height: 60px;
-  background-color: rgba(var(--black),.05);
+  background-color: rgba(var(--black), 0.05);
   border-radius: 8px;
   justify-content: space-between;
   align-items: center;
-  transition: background-color .25s;
+  transition: background-color 0.25s;
   display: flex;
   overflow: hidden;
   margin: 15px var(--post-padding) 0;
@@ -46,7 +50,9 @@
   margin-right: 2px;
   display: flex;
 }
-#dbplus-reblogFinder-search:focus-within .dbplus-reblogFinder-icon use { --icon-color-primary: rgba(var(--black),.65)}
+#dbplus-reblogFinder-search:focus-within .dbplus-reblogFinder-icon use {
+  --icon-color-primary: rgba(var(--black), 0.65);
+}
 #dbplus-reblogFinder-input {
   color: inherit;
   background-color: transparent;
@@ -57,6 +63,11 @@
   font-size: 1rem;
   line-height: 1.5;
 }
-#dbplus-reblogFinder-search:focus-within #dbplus-reblogFinder-input::placeholder { opacity: 0.4; }
+#dbplus-reblogFinder-search:focus-within
+  #dbplus-reblogFinder-input::placeholder {
+  opacity: 0.4;
+}
 
-[data-css~="root"][data-reblog-finder-hidden] { display: none; }
+[data-reblog-finder-hidden] {
+  display: none;
+}
