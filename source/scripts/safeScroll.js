@@ -14,7 +14,7 @@ const textSelector = `${s('rows')}:not(${s('root')} div):has(${s('textBlock')})`
 
 let blogAvatars, media, text, inheritCommunityLabels, filterBlogs, blogList, tagList, hideStyle, dispelStyle, filterBlogList, filterTagList;
 
-const isFilteredBlog = blog => filterBlogList ? filterBlogList.includes(blog) : false;
+const isFilteredBlog = blog => filterBlogList.length ? filterBlogList.includes(blog) : false;
 const hasFilteredTag = tags => tags.some(tag => filterTagList.includes(tag));
 const removeOnClick = event => {
   event.preventDefault();
@@ -34,6 +34,13 @@ const filterPosts = async posts => {
       || (inheritCommunityLabels && communityLabels.hasCommunityLabel)
       || (hasFilteredTag(tags))) {
       post.classList.add(customClass);
+
+      /* console.log((filterBlogs.parent && isFilteredBlog(blogName)),
+        (rebloggedFromName && filterBlogs.rebloggedFrom && isFilteredBlog(rebloggedFromName)),
+        (filterBlogs.root && isFilteredBlog(rebloggedRootName)),
+        (filterBlogs.trail && (trailBlogs.some(blog => isFilteredBlog(blog)) || isFilteredBlog(askerName))),
+        (inheritCommunityLabels && communityLabels.hasCommunityLabel),
+        (hasFilteredTag(tags))); */
 
       if (blogAvatars === 'all') post.querySelectorAll(avatarInnerSelector).forEach(avatar => avatar.setAttribute(hiddenAttribute, hideStyle));
       else if (blogAvatars === 'filtered') post.querySelectorAll(avatarSelector).forEach(avatar => {
@@ -65,8 +72,8 @@ export const main = async () => {
     dispelStyle
   } = await getOptions('safeScroll'));
 
-  filterBlogList = blogList.toLowerCase().replace(normalizeRegex, '').split(',');
-  filterTagList = tagList.toLowerCase().replace(normalizeRegex, '').split(',');
+  filterBlogList = blogList.toLowerCase().replace(normalizeRegex, '').split(',').filter(item => item);
+  filterTagList = tagList.toLowerCase().replace(normalizeRegex, '').split(',').filter(item => item);
 
   postFunction.start(filterPosts, postSelector);
 };
