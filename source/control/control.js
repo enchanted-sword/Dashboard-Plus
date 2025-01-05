@@ -73,6 +73,7 @@ window.addEventListener('message', (event) => {
       }
       const labelTimelines = elements => {
         elements.forEach(element => {
+          ;; debugger
           let route = element.getAttribute('data-timeline-id').split('/v2/').pop();
           if (route.includes('blog/') && route.split('/')[1] === window.location.pathname.split('/')[1]) route = `peepr/${route}`;
           document.getElementById('base-container').setAttribute('data-route', route);
@@ -104,7 +105,7 @@ window.addEventListener('message', (event) => {
         attributes: true,
         attributeFilter: ['data-timeline-id'],
         subtree: true
-      })
+      });
       init = true;
     } else if (!init) console.info('resources not cached, skipping first run');
   }
