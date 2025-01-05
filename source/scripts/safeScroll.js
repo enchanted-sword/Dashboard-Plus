@@ -14,7 +14,7 @@ const textSelector = `${s('rows')}:not(${s('root')} div):has(${s('textBlock')})`
 
 let blogAvatars, media, text, inheritCommunityLabels, filterBlogs, blogList, tagList, hideStyle, dispelStyle, filterBlogList, filterTagList;
 
-const isFilteredBlog = blog => filterBlogList.includes(blog);
+const isFilteredBlog = blog => filterBlogList ? filterBlogList.includes(blog) : false;
 const hasFilteredTag = tags => tags.some(tag => filterTagList.includes(tag));
 const removeOnClick = event => {
   event.preventDefault();
@@ -28,7 +28,7 @@ const filterPosts = async posts => {
     const trailBlogs = trail.map(({ blog, brokenBlog }) => blog ? blog.name : brokenBlog.name);
 
     if ((filterBlogs.parent && isFilteredBlog(blogName))
-      || (filterBlogs.rebloggedFrom && isFilteredBlog(rebloggedFromName))
+      || (rebloggedFromName && filterBlogs.rebloggedFrom && isFilteredBlog(rebloggedFromName))
       || (filterBlogs.root && isFilteredBlog(rebloggedRootName))
       || (filterBlogs.trail && (trailBlogs.some(blog => isFilteredBlog(blog)) || isFilteredBlog(askerName)))
       || (inheritCommunityLabels && communityLabels.hasCommunityLabel)
