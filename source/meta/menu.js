@@ -283,7 +283,39 @@
                   numInput.on('change', async function () {
                     const value = this.value;
                     let { preferences } = await browser.storage.local.get('preferences');
-                    preferences[name].options[key] = Number(value);
+                    preferences[name].options[key] = +value;
+                    browser.storage.local.set({ preferences });
+                  });
+                  break;
+                } case 'range': {
+                  wrapper = $(`<div class="ui-inputWrapper ui-rangeInputWrapper"></div>`);
+                  const label = $(`<label for="ui-feature-${name}-${key}" name="${name}-${key}" id="ui-feature-${name}-${key}-label">${option.name} (value: ${preference.options[key]}${option.unit || ''})</label>`);
+                  const rangeInput = $('<input>', {
+                    type: 'range',
+                    class: 'ui-rangeInput',
+                    placeholder: option.value,
+                    min: option.min,
+                    max: option.max,
+                    step: option.step,
+                    list: 'list' in option ? `${name}-${key}-list` : '',
+                    value: preference.options[key],
+                    id: `ui-feature-${name}-${key}`,
+                    name: `${name}-${key}`
+                  });
+
+                  wrapper.append(label);
+                  wrapper.append(rangeInput);
+
+                  if ('list' in option) {
+                    const list = $(`<datalist id="${name}-${key}-list">${option.list.map(({ value, label }) => `<option value="${value}" label="${label}"></option>`).join('')}</datalist>`);
+                    wrapper.append(list);
+                  }
+
+                  rangeInput.on('change', async function () {
+                    const value = this.value;
+                    let { preferences } = await browser.storage.local.get('preferences');
+                    preferences[name].options[key] = +value;
+                    document.getElementById(`ui-feature-${name}-${key}-label`).innerText = `${option.name} (value: ${value}${option.unit || ''})`;
                     browser.storage.local.set({ preferences });
                   });
                   break;

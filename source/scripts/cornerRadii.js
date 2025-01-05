@@ -3,16 +3,15 @@ import { style, s } from './utility/style.js';
 
 const styleElement = style('');
 
-const run = ({ value }) => {
-  if (value.enabled === false) return false;
-
+const run = ({ radius }) => {
   styleElement.innerText = `
     ${s('postColumn')} > ${s('bar')}, 
     ${s('activityPopover')} ${s('selectorPopover')},
     article${s('post')}, ${s('tabManagement')},
     ${s('selectorPopover')}:has(${s('blogsList')}),
-    .dbplus-timelineSearchContainer { border-radius: ${value.value}px !important; }
-    article${s('post')} header { border-radius: ${value.value}px ${value.value}px 0 0 !important; }
+    ${s('searchbarContainer')},
+    .dbplus-timelineSearchContainer { border-radius: ${radius}px !important; }
+    article${s('post')} header { border-radius: ${radius}px ${radius}px 0 0 !important; }
   `;
 
   return true;

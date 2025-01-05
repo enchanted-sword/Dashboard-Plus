@@ -4,7 +4,7 @@
   "description": "hide specified content in the timeline",
   "category": "dashboard",
   "preferences": {
-    "enabled": false,
+    "enabled": true,
     "options": {
       "blogRecommendations": {
         "value": false,
@@ -22,7 +22,7 @@
         "type": "toggle"
       },
       "inStreamAds": {
-        "value": false,
+        "value": true,
         "title": "hide in-stream ads",
         "type": "toggle"
       },

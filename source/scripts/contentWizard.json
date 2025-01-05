@@ -1,43 +1,42 @@
 {
   "name": "contentWizard",
   "title": "content width",
-  "type": "slider",
   "description": "changes the width and justification of posts and the main content column",
   "category": [
     "dashboard",
     "appearance"
   ],
   "preferences": {
-    "width": {
-      "title": "content width",
-      "display": true,
-      "min": 540,
-      "max": 1560,
-      "default": 540,
-      "step": 1,
-      "datalist": []
-    },
-    "justify": {
-      "title": "justify content",
-      "display": false,
-      "min": 0,
-      "max": 2,
-      "default": 1,
-      "step": 1,
-      "datalist": [
-        {
-          "value": 0,
-          "label": "left"
-        },
-        {
-          "value": 1,
-          "label": "center"
-        },
-        {
-          "value": 2,
-          "label": "right"
-        }
-      ]
+    "enabled": false,
+    "options": {
+      "width": {
+        "title": "content width",
+        "type": "range",
+        "min": 540,
+        "max": 1560,
+        "value": 540,
+        "step": 1,
+        "unit": "px"
+      },
+      "justify": {
+        "title": "justify content",
+        "type": "select",
+        "value": "center",
+        "options": [
+          {
+            "value": "flex-start",
+            "name": "justify left"
+          },
+          {
+            "value": "center",
+            "name": "justify center"
+          },
+          {
+            "value": "flex-end",
+            "name": "justify right"
+          }
+        ]
+      }
     }
   },
   "js": true,

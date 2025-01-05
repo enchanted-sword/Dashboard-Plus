@@ -640,6 +640,68 @@ input.ui-listSelect:checked + label {
   }
 }
 
+.ui-rangeInputWrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+
+  h2 {
+    font-size: 18px;
+  }
+  datalist {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 8px);
+    padding: 0 4px;
+  }
+  option {
+    padding: 0;
+    font-weight: bold;
+  }
+}
+.ui-rangeInput {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 20px;
+  border-radius: 20px;
+  padding: 0 4px;
+  margin: 0;
+  background-color: var(--white-primary-10);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--white-primary-10);
+  }
+  &:focus {
+    outline: none;
+  }
+}
+.ui-rangeInput::-webkit-slider-runnable-track,
+.ui-rangeInput::-moz-range-track {
+  background-color: var(--white-primary-30);
+  border-radius: 8px;
+  height: 8px;
+}
+.ui-rangeInput:hover::-webkit-slider-runnable-track,
+.ui-rangeInput:hover::-moz-range-track {
+  background-color: var(--white-primary-40);
+}
+.ui-rangeInput::-webkit-slider-thumb,
+.ui-rangeInput::-moz-range-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  background-color: rgb(var(--accent));
+  border-radius: 50%;
+  box-sizing: border-box;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+.ui-rangeInput:active::-webkit-slider-thumb,
+.ui-rangeInput:active::-moz-range-thumb {
+  border: 2px solid rgb(var(--white));
+}
+
 .ui-colors {
   position: relative;
   cursor: pointer;

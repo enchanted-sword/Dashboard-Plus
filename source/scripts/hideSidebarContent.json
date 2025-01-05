@@ -4,7 +4,7 @@
   "description": "hide specified content in the sidebar",
   "category": "sidebar",
   "preferences": {
-    "enabled": false,
+    "enabled": true,
     "options": {
       "blogRecommendations": {
         "value": false,

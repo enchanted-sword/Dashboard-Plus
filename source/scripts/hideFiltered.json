@@ -7,14 +7,14 @@
     "enabled": false,
     "options": {
       "filterOptions": {
-        "title": "hide posts containing:",
+        "name": "hide posts containing:",
         "type": "multiSelect",
         "options": {
           "content": {
-            "title": "filtered content"
+            "name": "filtered content"
           },
           "blocked": {
-            "title": "blocked blogs"
+            "name": "blocked blogs"
           }
         },
         "value": {
@@ -23,20 +23,20 @@
         }
       },
       "blockedStyle": {
-        "title": "blocked blog filtering",
+        "name": "blocked blog filtering",
         "type": "multiSelect",
         "options": {
           "parent": {
-            "title": "filter posts from blocked blogs"
+            "name": "filter posts from blocked blogs"
           },
           "rebloggedFrom": {
-            "title": "filter posts reblogged from blocked blogs"
+            "name": "filter posts reblogged from blocked blogs"
           },
           "root": {
-            "title": "filter posts where the original poster is a blocked blog"
+            "name": "filter posts where the original poster is a blocked blog"
           },
           "trail": {
-            "title": "filter posts containing blocked blogs in the reblog trail"
+            "name": "filter posts containing blocked blogs in the reblog trail"
           }
         },
         "value": {

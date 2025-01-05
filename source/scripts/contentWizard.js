@@ -2,17 +2,9 @@ import { getOptions, getStorage } from './utility/jsTools.js';
 import { style, s } from './utility/style.js';
 
 const styleElement = style('');
-const justifyArray = [
-  'flex-start',
-  'center',
-  'flex-end'
-]
 
 const run = async ({ width, justify }) => {
-  if (width.enabled === false && justify.enabled === false) return false;
-
-  width = Number(width.value);
-  justify = justifyArray[Number(justify.value)];
+  if (width === 540 && justify === 'center') return false;
 
   styleElement.innerText = `
     ${s('main')} { max-width: ${width}px !important; }
