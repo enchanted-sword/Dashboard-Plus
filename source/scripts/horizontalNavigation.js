@@ -24,13 +24,14 @@ const customClass = 'dbplus-hnav';
 const menuSelector = `${s('homeMenu')},#account_subnav`;
 const tileSelector = `${s('blogTile')},${s('accountBlogItem')}`
 
-const newCaret = i => elem('button', { class: `${keyToClass('button')} ${customClass}`, index: i, 'aria-label': translate('Show Blog Statistics')}, {
-  'click': function() {
+const newCaret = i => elem('button', { class: `${keyToClass('button')} ${customClass}`, index: i, 'aria-label': translate('Show Blog Statistics') }, {
+  'click': function () {
     if ($(s('accountStats')).eq(i).is(':hidden')) {
       $(this).css('transform', 'rotate(180deg)');
-      } else { $(this).css('transform', 'rotate(0deg)'); }
+    } else { $(this).css('transform', 'rotate(0deg)'); }
     $(s('accountStats')).eq(i).toggle();
-  }}, 
+  }
+},
   `<span class='${keyToClass('buttonInner')} ${keyToClass('menuTarget')}' tabindex='-1'>
     ${svgIconString('caret-thin', 12, 12, customClass)}
   </span>`
@@ -103,7 +104,7 @@ const fetchStats = async () => {
   for (const blog of data) {
     for (const key of ['posts', 'followers', 'drafts', 'queue']) {
       if (blog[key]) {
-        const count = $(elem('span', { class: `${customClass}-count`}, null, [blog[key]]));
+        const count = $(elem('span', { class: `${customClass}-count` }, null, [blog[key]]));
         if (key === 'posts') {
           $(`.${customClass}[href='/blog/${blog.name}']`).append(count);
         } else { $(`.${customClass}[href='/blog/${blog.name}/${key}']`).append(count); }
@@ -155,7 +156,7 @@ const menuModfifcations = menu => {
   menu = menu[0];
   shuffleIcons();
   addStats();
-  
+
   if (menu.matches('#account_subnav')) {
     menu.prepend(accountHeader);
     $(accountHeader).append($(s('logoutButton')));
@@ -171,7 +172,7 @@ const menuModfifcations = menu => {
 
 export const main = async function () {
   if (window.innerWidth < 990) return;
-  
+
   requestAnimationFrame(() => {
     if ($('#base-container').attr('data-navigation') === 'horizontal') return;
     else $('#base-container').attr('data-navigation', 'horizontal');
@@ -185,8 +186,8 @@ export const main = async function () {
           <span data-testid='controlled-popover-wrapper' class='${keyToClass('targetWrapper')}'>
             <span class='${keyToClass('targetWrapper')}'>
               <form method='GET' action='/search' role='search' class='${keyToClass('form')}'>
-                <div class='${keyToClasses('searchbarContainer')[1]}'>
-                  <div class='${keyToClasses('searchIcon')[5]}'>
+                <div class='${keyToClasses('searchbarContainer')[0]} ${keyToClass('chromeContext')}'>
+                  <div class='${keyToClasses('searchIcon')[4]} ${keyToClass('chromeContext')}'>
                     ${svgIconString('search', 18, 18, customClass)}
                   </div>
                   <input
@@ -194,7 +195,7 @@ export const main = async function () {
                     type='text'
                     autocomplete='off'
                     aria-label='${translate('Search')}'
-                    class='${keyToClasses('searchbar')[1]}'
+                    class='${keyToClass('searchInput')} ${keyToClass('chromeContext')}'
                     placeholder='${translate('Search Tumblr')}'
                     autocapitalize='sentences'
                     value=''

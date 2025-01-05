@@ -154,10 +154,6 @@
   [data-css~="searchShadow"] {
     display: none;
   }
-  .dbplus-hnav [data-css~="searchIcon"] {
-    display: flex;
-    margin: 0 2px 0 12px;
-  }
   .dbplus-hnav [data-css~="searchIcon"] svg use {
     --icon-color-primary: rgba(var(--white-on-dark), 0.65);
   }
