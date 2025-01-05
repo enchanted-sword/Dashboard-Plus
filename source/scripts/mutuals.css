@@ -1,0 +1,4 @@
+[data-css~="blogLink"]:has([data-css~="blogFollowing"]) {
+  display: inline-flex;
+  align-items: flex-start;
+}

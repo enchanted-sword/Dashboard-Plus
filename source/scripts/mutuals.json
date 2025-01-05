@@ -1,0 +1,14 @@
+{
+  "name": "mutuals",
+  "title": "show mutuals",
+  "description": "identifies your mutuals",
+  "category": [
+    "posts",
+    "dashboard"
+  ],
+  "preferences": {
+    "enabled": false
+  },
+  "js": true,
+  "css": true
+}

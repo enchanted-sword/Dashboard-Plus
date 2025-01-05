@@ -1,5 +1,5 @@
 [
-  "hideDashboardTabs", 
+  "hideDashboardTabs",
   "hideInStreamContent",
   "dashboardCarousel",
   "timelineSearch",
@@ -31,5 +31,6 @@
   "messagingColors",
   "postDebugInfo",
   "skipAdultWall",
-  "noTagPrompt"
+  "noTagPrompt",
+  "mutuals"
 ]
