@@ -25,6 +25,11 @@
         "value": false,
         "title": "hide in-stream ads",
         "type": "toggle"
+      },
+      "communities": {
+        "value": false,
+        "title": "hide suggested communities",
+        "type": "toggle"
       }
     }
   },

@@ -627,7 +627,7 @@ input.ui-listSelect:checked + label {
     height: 96px;
   }
   &:focus {
-    border-color: rgb(var(--blueberry));
+    border-color: rgb(var(--accent));
     background: rgb(var(--titanium));
   }
 }
