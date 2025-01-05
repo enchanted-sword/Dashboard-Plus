@@ -1,4 +1,4 @@
-import { getPreferences } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 import { style } from './utility/style.js';
 import { hexToRgbString } from './utility/color.js';
 
@@ -27,7 +27,7 @@ const run = ({ colors }) => {
 };
 
 export const main = async () => {
-  const preferences = await getPreferences('customColors');
+  const preferences = await getOptions('customColors');
 
   run(preferences);
   document.getElementById('root').append(styleElement);

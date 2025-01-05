@@ -1,5 +1,5 @@
 import { style, s } from './utility/style.js';
-import { getPreferences } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 import { mutationManager } from './utility/mutations.js';
 import { conversationInfo } from './utility/reactProps.js';
 import { conversationSelector } from './utility/document.js';
@@ -76,7 +76,7 @@ const run = ({ colorStyle, customColors }) => {
 };
 
 export const main = async () => {
-  const preferences = await getPreferences('messagingColors');
+  const preferences = await getOptions('messagingColors');
 
   run(preferences);
   document.head.append(styleElement);

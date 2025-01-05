@@ -1,4 +1,4 @@
-import { getPreferences } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 import { s } from './utility/style.js';
 import { mutationManager } from './utility/mutations.js';
 import { apiFetch } from './utility/tumblr.js';
@@ -56,9 +56,9 @@ const addPotentialBotLabels = async notifications => {
     if (type === 'follower') {
       apiFetch(`/v2/blog/${fromTumblelogUuid}/info`).then(response => {
         const { title, name, posts, likes } = response.response.blog;
-        if ((posts === 0 && untitledStrings.includes(title)) 
-        || (likes === 0 && untitledStrings.includes(title))
-        || (name === title && posts === 1)) {
+        if ((posts === 0 && untitledStrings.includes(title))
+          || (likes === 0 && untitledStrings.includes(title))
+          || (name === title && posts === 1)) {
           $(notification).find('.dbplus-customLabelContainer').remove();
           $(notification).css({ backgroundColor: 'rgba(255,37,47,.15)' });
           $(notification).find(s('tumblelogName')).append(potentialBotLabel());
@@ -69,7 +69,7 @@ const addPotentialBotLabels = async notifications => {
 };
 
 export const main = async () => {
-  const { followingYou, potentialBot } = await getPreferences('customNotificationLabels');
+  const { followingYou, potentialBot } = await getOptions('customNotificationLabels');
 
   if (followingYou) mutationManager.start(notificationSelector, addFollowingYouLabels);
   if (potentialBot) mutationManager.start(notificationSelector, addPotentialBotLabels);

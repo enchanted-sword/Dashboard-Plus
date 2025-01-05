@@ -1,4 +1,4 @@
-import { getPreferences, getStorage } from './utility/jsTools.js';
+import { getOptions, getStorage } from './utility/jsTools.js';
 import { style, s } from './utility/style.js';
 
 const styleElement = style('');
@@ -31,11 +31,11 @@ const run = async ({ width, justify }) => {
 };
 
 export const main = async () => {
-  const preferences = await getPreferences('contentWizard');
+  const preferences = await getOptions('contentWizard');
 
   if (await run(preferences)) document.head.append(styleElement);
 };
 
-export const clean = async() => styleElement.remove();
+export const clean = async () => styleElement.remove();
 
 export const update = async ({ preferences }) => run(preferences);

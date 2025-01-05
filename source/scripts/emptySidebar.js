@@ -1,11 +1,11 @@
 import { style, s } from './utility/style.js';
-import { getPreferences } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 
 let selected;
 const styleElement = style('');
 
 export const main = async () => {
-  ({ selected } = await getPreferences('emptySidebar'));
+  ({ selected } = await getOptions('emptySidebar'));
 
   if (selected === 'never') return;
 

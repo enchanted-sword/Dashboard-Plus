@@ -1,4 +1,4 @@
-import { getPreferences } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 import { style, s } from './utility/style.js';
 
 const mutualLabelSelector = `${s('mutualsBadgeContainer')}`;
@@ -11,7 +11,7 @@ const run = ({ mutuals, following }) => {
   if (mutuals) selectors.push(mutualLabelSelector);
   if (following) selectors.push(followingLabelSelector);
 
-  if (selectors.length) { 
+  if (selectors.length) {
     styleElement.innerText = `${selectors.join(',')} { display: none !important; }`;
     return true
   } else return false;
@@ -19,9 +19,9 @@ const run = ({ mutuals, following }) => {
 };
 
 export const main = async () => {
-  const preferences = await getPreferences('hideNotificationLabels');
-  
-  if(run(preferences)) document.head.append(styleElement);
+  const preferences = await getOptions('hideNotificationLabels');
+
+  if (run(preferences)) document.head.append(styleElement);
 };
 
 export const clean = async () => styleElement.remove();

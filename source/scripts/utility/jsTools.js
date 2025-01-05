@@ -51,14 +51,14 @@ export const getStorage = async (keys = []) => {
 };
 
 /**
- * Fetches feature preferences
+ * Fetches feature options
  * @param {string} feature - Feature name
- * @returns {object} Preferences
+ * @returns {object} options
  */
-export const getPreferences = async (feature = '') => {
+export const getOptions = async (feature = '') => {
   const { preferences } = await getStorage(['preferences']);
 
-  return preferences[feature].preferences;
+  return preferences[feature]?.options;
 };
 
 /**

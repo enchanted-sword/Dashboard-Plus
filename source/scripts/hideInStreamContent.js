@@ -1,4 +1,4 @@
-import { getPreferences } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 import { style, s } from './utility/style.js';
 import { mutationManager } from './utility/mutations.js';
 
@@ -17,8 +17,8 @@ const hideInStreamElements = elements => $(elements).addClass(hiddenClass);
 
 export const main = async () => {
   const selectors = [];
-  ({ blogRecommendations, tagRecommendations, blazedContent, inStreamAds } = await getPreferences('hideInStreamContent'));
-  
+  ({ blogRecommendations, tagRecommendations, blazedContent, inStreamAds } = await getOptions('hideInStreamContent'));
+
   if (blogRecommendations) selectors.push(blogRecSelector);
   if (tagRecommendations) selectors.push(tagRecSelector);
   if (blazedContent) selectors.push(blazedSelector);

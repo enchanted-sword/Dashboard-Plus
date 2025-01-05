@@ -1,5 +1,5 @@
 import { mutationManager, postFunction } from './utility/mutations.js';
-import { elem, getPreferences } from './utility/jsTools.js';
+import { elem, getOptions } from './utility/jsTools.js';
 import { primaryBlogName } from './utility/user.js';
 import { translate } from './utility/tumblr.js';
 import { s, style } from './utility/style.js';
@@ -28,7 +28,7 @@ const editorStyleElement = style(`
 const customClass = 'dbplus-floatingAvatars';
 const postSelector = `${s('main')} > :not(${s('blogTimeline')}) [data-timeline]:not([data-timeline*='posts/'],${s('masonry')}) [tabindex='-1']:not([data-css*='masonryTimelineObject']) article:not(.${customClass})`;
 const menuContainerSelector = `#glass-container ${s('menuContainer')}`;
-const userAvatar = elem('div', { class: 'dbplus-userAvatarWrapper'}, null, `
+const userAvatar = elem('div', { class: 'dbplus-userAvatarWrapper' }, null, `
   <div class="dbplus-avatarWrapperOuter">
     <div class="dbplus-avatarWrapper" role="figure" aria-label="${translate("avatar")}">
       <span class="dbplus-targetWrapper">
@@ -83,8 +83,8 @@ const addFloatingEditorPortrait = editors => {
 
 export const main = async () => {
   if (window.innerWidth < 990) return;
-  
-  ({ scroll, showOwnAvatar } = await getPreferences('floatingAvatars'));
+
+  ({ scroll, showOwnAvatar } = await getOptions('floatingAvatars'));
   postFunction.start(addScrollingAvatars, postSelector);
 
   if (!scroll) document.head.append(staticStyleElement);
@@ -99,8 +99,8 @@ export const clean = async () => {
   postFunction.stop(addScrollingAvatars);
   mutationManager.stop(addFloatingEditorPortrait);
 
-  $(`.dbplus-stickyContainer > ${s('avatar')} ${s('targetWrapper')} img`).each(function() {this.sizes = "32px"});
-  $(`.dbplus-stickyContainer > ${s('avatar')} ${s('subAvatarTargetWrapper')} img`).each(function() {this.sizes = "16px"});
+  $(`.dbplus-stickyContainer > ${s('avatar')} ${s('targetWrapper')} img`).each(function () { this.sizes = "32px" });
+  $(`.dbplus-stickyContainer > ${s('avatar')} ${s('subAvatarTargetWrapper')} img`).each(function () { this.sizes = "16px" });
   $(`.${customClass}`).removeClass(customClass);
   $('.dbplus-userAvatarWrapper').remove()
   document.querySelectorAll(`.dbplus-stickyContainer > ${s('avatar')}`).forEach(avatar => avatar.closest('article').querySelector('header').prepend(avatar));

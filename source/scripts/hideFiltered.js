@@ -2,7 +2,7 @@ import { postFunction } from './utility/mutations.js';
 import { s, style } from './utility/style.js';
 import { timelineObject } from './utility/reactProps.js';
 import { apiFetch } from './utility/tumblr.js';
-import { getPreferences } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 
 const hiddenAttribute = 'data-hideFiltered-hidden';
 const styleElement = style(`${s('listTimelineObject')}:has(article[${hiddenAttribute}]) { display: none; }`);
@@ -49,7 +49,7 @@ const hideFilteredContent = async posts => {
 };
 
 export const main = async function () {
-  ({ filterOptions, blockedStyle } = await getPreferences('hideFiltered'));
+  ({ filterOptions, blockedStyle } = await getOptions('hideFiltered'));
 
   postFunction.start(hideFilteredContent, postSelector);
   document.head.append(styleElement);

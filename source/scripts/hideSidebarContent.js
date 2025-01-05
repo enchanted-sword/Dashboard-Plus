@@ -1,4 +1,4 @@
-import { getPreferences } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 import { style, s } from './utility/style.js';
 
 const styleElement = style('');
@@ -23,7 +23,7 @@ const run = ({ blogRecommendations, emptyTagView, relatedPosts, radar, ads }) =>
   } else return false;
 };
 export const main = async () => {
- const preferences = await getPreferences('hideSidebarContent');
+  const preferences = await getOptions('hideSidebarContent');
 
   if (run(preferences)) document.head.append(styleElement);
 };

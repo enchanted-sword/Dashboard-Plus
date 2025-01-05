@@ -1,11 +1,11 @@
-import { getPreferences } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 import { style, s } from './utility/style.js';
 
 const styleElement = style('');
 
 const run = ({ value }) => {
   if (value.enabled === false) return false;
-  
+
   styleElement.innerText = `
     ${s('postColumn')} > ${s('bar')}, 
     ${s('activityPopover')} ${s('selectorPopover')},
@@ -19,7 +19,7 @@ const run = ({ value }) => {
 };
 
 export const main = async () => {
-  const preferences = await getPreferences('cornerRadii');
+  const preferences = await getOptions('cornerRadii');
 
   if (run(preferences)) document.head.append(styleElement);
 };

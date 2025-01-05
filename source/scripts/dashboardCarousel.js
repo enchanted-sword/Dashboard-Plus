@@ -1,4 +1,4 @@
-import { getPreferences } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 import { style, s } from './utility/style.js';
 
 const styleElement = style('');
@@ -40,7 +40,7 @@ const run = ({ selected }) => {
 };
 
 export const main = async () => {
-  if (run(await getPreferences('dashboardCarousel'))) document.head.append(styleElement);
+  if (run(await getOptions('dashboardCarousel'))) document.head.append(styleElement);
 };
 
 export const clean = async () => styleElement.remove();

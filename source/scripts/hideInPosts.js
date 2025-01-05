@@ -1,4 +1,4 @@
-import { getPreferences } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 import { style, s } from './utility/style.js';
 import { translate } from './utility/tumblr.js';
 
@@ -23,8 +23,8 @@ const run = ({ badges, tips, blaze, follow }) => {
 };
 
 export const main = async () => {
-  const preferences = await getPreferences('hideInPosts');
-  
+  const preferences = await getOptions('hideInPosts');
+
   if (run(preferences)) document.head.append(styleElement);
 };
 

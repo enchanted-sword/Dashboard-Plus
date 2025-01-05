@@ -1,4 +1,4 @@
-import { getPreferences } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 import { style, s } from './utility/style.js';
 
 const styleElement = style('');
@@ -29,8 +29,8 @@ const run = ({ posts, postsOnTab, activity, inbox, messaging }) => {
 };
 
 export const main = async () => {
-  const preferences = await getPreferences('hideUnread');
-  
+  const preferences = await getOptions('hideUnread');
+
   if (run(preferences)) document.head.append(styleElement);
 };
 

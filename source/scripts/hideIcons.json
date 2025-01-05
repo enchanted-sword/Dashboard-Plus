@@ -17,9 +17,9 @@
         "name": "hide explore",
         "type": "toggle"
       },
-      "domains": {
+      "communities": {
         "value": false,
-        "name": "hide tumblr domains",
+        "name": "hide tumblr communities",
         "type": "toggle"
       }
     }

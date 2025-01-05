@@ -1,4 +1,4 @@
-import { getPreferences } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 import { postFunction } from './utility/mutations.js';
 import { timelineObject } from './utility/reactProps.js';
 import { s } from './utility/style.js';
@@ -51,7 +51,7 @@ const linkPosts = async posts => {
 };
 
 export const main = async () => {
-  ({ headerLinks, tagLinks } = await getPreferences('linkToPrevious'));
+  ({ headerLinks, tagLinks } = await getOptions('linkToPrevious'));
 
   if (headerLinks || tagLinks) postFunction.start(linkPosts, postSelector);
 };

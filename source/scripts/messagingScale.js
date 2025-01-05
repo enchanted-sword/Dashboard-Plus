@@ -1,11 +1,11 @@
-import { getPreferences } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 import { style, s } from './utility/style.js';
 
 const styleElement = style('');
 
 const run = ({ scale }) => {
   if (scale.enabled === false) return false;
-  
+
   styleElement.innerText = `
     [data-css~="conversationWindow"] {
       --dbplus-messagingScale: ${scale.value} !important;
@@ -22,7 +22,7 @@ const run = ({ scale }) => {
 };
 
 export const main = async () => {
-  const preferences = await getPreferences('messagingScale');
+  const preferences = await getOptions('messagingScale');
 
   if (run(preferences)) document.head.append(styleElement);
 };

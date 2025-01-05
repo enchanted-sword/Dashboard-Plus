@@ -1,5 +1,5 @@
 import { postFunction } from './utility/mutations.js';
-import { getPreferences } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 import { timelineObject } from './utility/reactProps.js';
 import { s } from './utility/style.js';
 
@@ -27,7 +27,7 @@ const filterPosts = async posts => {
     const { blogName, rebloggedFromName, rebloggedRootName, askerName, communityLabels, tags, trail } = await timelineObject(post);
     const trailBlogs = trail.map(({ blog, brokenBlog }) => blog ? blog.name : brokenBlog.name);
 
-    if ((filterBlogs.parent && isFilteredBlog(blogName)) 
+    if ((filterBlogs.parent && isFilteredBlog(blogName))
       || (filterBlogs.rebloggedFrom && isFilteredBlog(rebloggedFromName))
       || (filterBlogs.root && isFilteredBlog(rebloggedRootName))
       || (filterBlogs.trail && (trailBlogs.some(blog => isFilteredBlog(blog)) || isFilteredBlog(askerName)))
@@ -63,7 +63,7 @@ export const main = async () => {
     tagList,
     hideStyle,
     dispelStyle
-  } = await getPreferences('safeScroll'));
+  } = await getOptions('safeScroll'));
 
   filterBlogList = blogList.value.toLowerCase().replace(normalizeRegex, '').split(',');
   filterTagList = tagList.value.toLowerCase().replace(normalizeRegex, '').split(',');
