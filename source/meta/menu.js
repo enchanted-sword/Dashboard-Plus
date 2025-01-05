@@ -523,7 +523,6 @@
         });
         document.getElementById('ui-reset').addEventListener('click', function () {
           const preferences = {};
-          Object.keys(installedFeatures).map(feature => preferences[feature] = transformPreferences(installedFeatures[feature].preferences));
 
           browser.storage.local.set({ preferences });
           createFeatures(installedFeatures, preferences);

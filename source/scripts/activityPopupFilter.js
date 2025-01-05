@@ -5,8 +5,11 @@ const removeRuleIds = ['APF:all', 'APF:mentions', 'APF:reblogs', 'APF:replies'];
 const regexFilter = { // it's simply joyous that this is possible
   // eslint-disable-next-line no-useless-escape
   all: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog/[\\w\\d-]*\/notifications\\?rollups=true$',
+  // eslint-disable-next-line no-useless-escape
   mentions: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog\/[\\w\\d-]*\/notifications.*mention_in_reply$',
+  // eslint-disable-next-line no-useless-escape
   reblogs: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog\/[\\w\\d-]*\/notifications.*tags$',
+  // eslint-disable-next-line no-useless-escape
   replies: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog\/[\\w\\d-]*\/notifications.*reply_to_comment$'
 };
 const map = {

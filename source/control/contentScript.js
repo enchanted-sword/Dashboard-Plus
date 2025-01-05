@@ -144,7 +144,7 @@
         // NEED TO OPEN DATABASE HERE IF DB INTEGRATION ADDED
         installedFeatures = await importFeatures();
 
-        ({ preferences } = await browser.storage.local.get('preferences')); if (typeof preferences === 'undefined') preferences = await getJsonFile('!preferences');
+        ({ preferences } = await browser.storage.local.get('preferences'));
 
         preferences = featureify(installedFeatures, preferences);
         enabledFeatures = Object.keys(preferences).filter(key => preferences[key].enabled);
