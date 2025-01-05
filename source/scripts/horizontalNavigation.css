@@ -164,8 +164,8 @@
     justify-content: center;
     padding: 0px;
     display: flex;
-    position: absolute;
-    left: 110px;
+    position: fixed;
+    left: 24px;
   }
   [data-css~="navigationWrapper"] {
     height: 55px;
@@ -344,6 +344,9 @@
   @media (min-width: 1716px) {
     [data-css~="searchSidebarItem"] {
       left: 240px;
+    }
+    [data-css~="logoContainer"] {
+      left: 110px;
     }
   }
 }
