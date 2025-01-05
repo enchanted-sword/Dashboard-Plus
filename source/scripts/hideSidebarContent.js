@@ -8,7 +8,8 @@ const relatedSelector = `${s('sidebarItem')}:has(${s('relatedPosts')})`;
 const radarSelector = `${s('sidebarItem')}:has(${s('radar')})`;
 const adSelector = `${s('sidebarContent')}:has(${s('adContainer')})`;
 
-const run = ({ blogRecommendations, emptyTagView, relatedPosts, radar, ads }) => {
+export const main = async () => {
+  const { blogRecommendations, emptyTagView, relatedPosts, radar, ads } = await getOptions('hideSidebarContent');
   const selectors = [];
 
   if (blogRecommendations) selectors.push(blogRecSelectors);
@@ -19,15 +20,8 @@ const run = ({ blogRecommendations, emptyTagView, relatedPosts, radar, ads }) =>
 
   if (selectors.length) {
     styleElement.innerText = `${selectors.join(',')} { display: none !important; }`;
-    return true;
-  } else return false;
-};
-export const main = async () => {
-  const preferences = await getOptions('hideSidebarContent');
-
-  if (run(preferences)) document.head.append(styleElement);
+    document.head.append(styleElement);
+  } else styleElement.remove();
 };
 
 export const clean = async () => styleElement.remove();
-
-export const update = async preferences => run(preferences);

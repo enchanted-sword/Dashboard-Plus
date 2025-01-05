@@ -37,5 +37,3 @@ export const clean = async () => {
   $(`.${hiddenClass}`).removeClass(hiddenClass);
   styleElement.remove();
 };
-
-export const update = true;

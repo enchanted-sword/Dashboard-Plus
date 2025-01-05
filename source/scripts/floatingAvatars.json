@@ -15,11 +15,6 @@
         "value": false,
         "name": "also show the user avatar at the top of the timeline",
         "type": "toggle"
-      },
-      "editorAvatar": {
-        "value": false,
-        "name": "also convert the post editor blog avatar into a floating avatar",
-        "type": "toggle"
       }
     }
   },

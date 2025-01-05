@@ -35,19 +35,19 @@ const filterPosts = async posts => {
       || (hasFilteredTag(tags))) {
       post.classList.add(customClass);
 
-      if (blogAvatars.selected === 'all') post.querySelectorAll(avatarInnerSelector).forEach(avatar => avatar.setAttribute(hiddenAttribute, hideStyle.selected));
-      else if (blogAvatars.selected === 'filtered') post.querySelectorAll(avatarSelector).forEach(avatar => {
+      if (blogAvatars === 'all') post.querySelectorAll(avatarInnerSelector).forEach(avatar => avatar.setAttribute(hiddenAttribute, hideStyle));
+      else if (blogAvatars === 'filtered') post.querySelectorAll(avatarSelector).forEach(avatar => {
         const blog = avatar.querySelector('[title]').getAttribute('title');
-        if (isFilteredBlog(blog)) avatar.querySelector(avatarInnerSelector).setAttribute(hiddenAttribute, hideStyle.selected);
+        if (isFilteredBlog(blog)) avatar.querySelector(avatarInnerSelector).setAttribute(hiddenAttribute, hideStyle);
       });
 
-      if (hideStyle.selected === 'hidePost') post.setAttribute(hiddenAttribute, hideStyle.selected);
+      if (hideStyle === 'hidePost') post.setAttribute(hiddenAttribute, hideStyle);
       else {
-        if (media) post.querySelectorAll(mediaSelector).forEach(media => media.setAttribute(hiddenAttribute, hideStyle.selected));
-        if (text) post.querySelectorAll(textSelector).forEach(text => text.setAttribute(hiddenAttribute, hideStyle.selected));
+        if (media) post.querySelectorAll(mediaSelector).forEach(media => media.setAttribute(hiddenAttribute, hideStyle));
+        if (text) post.querySelectorAll(textSelector).forEach(text => text.setAttribute(hiddenAttribute, hideStyle));
       }
 
-      if (dispelStyle.selected === 'click') post.querySelectorAll(`[${hiddenAttribute}]`).forEach(content => content.addEventListener('click', removeOnClick));
+      if (dispelStyle === 'click') post.querySelectorAll(`[${hiddenAttribute}]`).forEach(content => content.addEventListener('click', removeOnClick));
     }
   }
 };
@@ -76,5 +76,3 @@ export const clean = async () => {
   $(`[${hiddenAttribute}]`).removeAttr(hiddenAttribute);
   postFunction.stop(filterPosts);
 };
-
-export const update = true;

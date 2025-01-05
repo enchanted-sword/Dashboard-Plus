@@ -5,25 +5,18 @@ const mutualLabelSelector = `${s('mutualsBadgeContainer')}`;
 const followingLabelSelector = `${s('followingBadgeContainer')}`;
 const styleElement = style('');
 
-const run = ({ mutuals, following }) => {
+export const main = async () => {
+  const { mutuals, following } = await getOptions('hideNotificationLabels');
   const selectors = [];
 
   if (mutuals) selectors.push(mutualLabelSelector);
   if (following) selectors.push(followingLabelSelector);
 
+  console.log(selectors);
   if (selectors.length) {
     styleElement.innerText = `${selectors.join(',')} { display: none !important; }`;
-    return true
-  } else return false;
-
-};
-
-export const main = async () => {
-  const preferences = await getOptions('hideNotificationLabels');
-
-  if (run(preferences)) document.head.append(styleElement);
+    document.head.append(styleElement);
+  } else styleElement.remove();
 };
 
 export const clean = async () => styleElement.remove();
-
-export const update = async preferences => run(preferences);

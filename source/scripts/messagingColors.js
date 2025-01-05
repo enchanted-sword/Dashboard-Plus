@@ -35,7 +35,7 @@ const colorMessaging = async conversations => {
 const run = ({ colorStyle, customColors }) => {
   let headerBackground, backgroundColor, messageBackground, titleColor, linkColor, timestampColor;
 
-  switch (colorStyle.selected) {
+  switch (colorStyle) {
     case 'theme':
       mutationManager.stop(colorMessaging);
 
@@ -61,7 +61,7 @@ const run = ({ colorStyle, customColors }) => {
       break;
   }
 
-  if (colorStyle.selected === 'theme' || colorStyle.selected === 'custom') {
+  if (colorStyle === 'theme' || colorStyle === 'custom') {
     styleElement.innerText = `
       :root {
         --dbplus-headerBackground: ${headerBackground};

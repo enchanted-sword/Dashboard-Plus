@@ -6,7 +6,8 @@ const exploreSelector = `${s('navItem')}[data-title="Explore"]`;
 const communitiesSelector = `${s('navItem')}:has([href="/communities/browse"])`;
 const styleElement = style('');
 
-const run = ({ shop, explore, communities }) => {
+export const main = async () => {
+  const { shop, explore, communities } = await getOptions('hideIcons');
   const selectors = [];
 
   if (shop) selectors.push(shopSelector);
@@ -15,17 +16,9 @@ const run = ({ shop, explore, communities }) => {
 
   if (selectors.length) {
     styleElement.innerText = `${selectors.join(',')} { display: none !important; }`;
-    return true
-  } else return false;
-
-};
-
-export const main = async () => {
-  const preferences = await getOptions('hideIcons');
-
-  if (run(preferences)) document.head.append(styleElement);
+    document.head.append(styleElement);
+  }
+  else styleElement.remove();
 };
 
 export const clean = async () => styleElement.remove();
-
-export const update = async options => run(options);

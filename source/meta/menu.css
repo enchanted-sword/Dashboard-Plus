@@ -160,6 +160,7 @@ h3 {
   position: relative;
   background: rgb(var(--primary));
   border-radius: var(--border-radius-sm);
+  height: 100vh;
 }
 
 #ui-tabs {
@@ -209,8 +210,16 @@ h3 {
   display: none;
   overflow: clip;
   width: calc(100% - 16px);
+  height: calc(100% - 56px);
   background: rgb(var(--white));
   border-radius: var(--border-radius-sm);
+
+  & > ul {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--white-primary-40) var(--white-primary-20);
+  }
 }
 .ui-section[active="true"] {
   display: block;
@@ -294,10 +303,6 @@ ul.ui-featureCategory {
 #ui-featureContainer {
   height: calc(100vh - 146px);
   padding: 0 8px 8px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: var(--white-primary-40) var(--white-primary-20);
 }
 #ui-featureContainer > li {
   list-style-type: none;
@@ -699,6 +704,7 @@ select + .ui-tooltip {
   background-color: rgb(var(--white));
   padding: 8px;
   border-radius: var(--border-radius-sm);
+  max-height: calc(100% - 16px);
 
   > li {
     list-style-type: none;

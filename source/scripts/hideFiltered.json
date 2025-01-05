@@ -16,6 +16,10 @@
           "blocked": {
             "title": "blocked blogs"
           }
+        },
+        "value": {
+          "content": false,
+          "blocked": false
         }
       },
       "blockedStyle": {
@@ -34,6 +38,12 @@
           "trail": {
             "title": "filter posts containing blocked blogs in the reblog trail"
           }
+        },
+        "value": {
+          "parent": false,
+          "rebloggedFrom": false,
+          "root": false,
+          "trail": false
         }
       }
     }

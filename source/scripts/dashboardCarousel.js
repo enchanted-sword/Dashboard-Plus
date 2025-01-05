@@ -32,17 +32,13 @@ const styles = {
   `
 };
 
-const run = ({ displayStyle }) => {
-  if (displayStyle === 'show') return false;
-
-  styleElement.innerText = styles[displayStyle];
-  return true;
-};
-
 export const main = async () => {
-  if (run(await getOptions('dashboardCarousel'))) document.head.append(styleElement);
+  const { displayStyle } = await getOptions('dashboardCarousel');
+  if (displayStyle === 'show') styleElement.remove();
+  else {
+    styleElement.innerText = styles[displayStyle];
+    document.head.append(styleElement);
+  }
 };
 
 export const clean = async () => styleElement.remove();
-
-export const update = async options => run(options);

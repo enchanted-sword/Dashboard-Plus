@@ -11,7 +11,8 @@ const title = document.querySelector('title');
 const modifyTitle = () => title.innerText = title.innerText.replace(/\([\d]+[+]?\)[\s]?/, '');
 const titleObserver = new MutationObserver(modifyTitle);
 
-const run = ({ posts, postsOnTab, activity, inbox, messaging }) => {
+export const main = async () => {
+  const { posts, postsOnTab, activity, inbox, messaging } = await getOptions('hideUnread');
   const selectors = [];
 
   if (posts) selectors.push(homeBadgeSelector);
@@ -23,20 +24,15 @@ const run = ({ posts, postsOnTab, activity, inbox, messaging }) => {
     titleObserver.observe(title, { subtree: true, characterData: true });
   } else titleObserver.disconnect();
 
-  styleElement.innerText = `${selectors.join(',')} { display: none !important; }`
+  if (selectors.length) {
+    styleElement.innerText = `${selectors.join(',')} { display: none !important; }`;
+    document.head.append(styleElement);
+  }
 
-  if (selectors.length) return true;
-};
-
-export const main = async () => {
-  const preferences = await getOptions('hideUnread');
-
-  if (run(preferences)) document.head.append(styleElement);
+  if (run(preferences)) 
 };
 
 export const clean = async () => {
   styleElement.remove();
   titleObserver.disconnect();
 };
-
-export const update = async preferences => run(preferences);

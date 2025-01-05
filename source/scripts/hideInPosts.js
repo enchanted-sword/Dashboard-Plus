@@ -8,7 +8,8 @@ const blazeSelector = `${s('controlIcon')}:has(button[aria-label='${translate('B
 const followSelector = `button[aria-label='${translate('Follow')}']`;
 const styleElement = style('`.${hiddenClass} { display: none !important; }`');
 
-const run = ({ badges, tips, blaze, follow }) => {
+export const main = async () => {
+  const { badges, tips, blaze, follow } = await getOptions('hideInPosts');
   const selectors = [];
 
   if (badges) selectors.push(badgeSelector);
@@ -18,16 +19,8 @@ const run = ({ badges, tips, blaze, follow }) => {
 
   if (selectors.length) {
     styleElement.innerText = `${selectors.join(',')} { display: none !important; }`;
-    return true;
-  } else return false;
-};
-
-export const main = async () => {
-  const preferences = await getOptions('hideInPosts');
-
-  if (run(preferences)) document.head.append(styleElement);
+    document.head.append(styleElement);
+  } else styleElement.remove();
 };
 
 export const clean = async () => styleElement.remove();
-
-export const update = async options => run(options);
