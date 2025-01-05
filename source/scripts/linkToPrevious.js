@@ -33,8 +33,8 @@ const linkPosts = async posts => {
         if (prevRegex.test(tagElement.innerText.replace(/[#\s]/g, ''))) {
           const tagElementCopy = tagElement.cloneNode(true);
           tagElement.replaceWith(tagElementCopy);
-          tagElementCopy.prepend(svgIcon('double-chevron-left', 24, 24, '', 'rgba(var(--accent))'));
-          tagElementCopy.style.color = 'rgb(var(--accent))';
+          tagElementCopy.prepend(svgIcon('double-chevron-left', 24, 24, '', 'var(--accent)'));
+          tagElementCopy.style.color = 'var(--accent)';
           tagElementCopy.href = navigateUrl;
           tagElementCopy.title = translate('View previous reblog');
           tagElementCopy.addEventListener('click', event => {

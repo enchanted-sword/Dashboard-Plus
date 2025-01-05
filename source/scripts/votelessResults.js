@@ -3,7 +3,7 @@ import { percentageNumber } from './utility/reactProps.js';
 import { s, style } from './utility/style.js';
 import { elem } from './utility/jsTools.js';
 
-const customClass = 'dbplus-votelessResults'; 
+const customClass = 'dbplus-votelessResults';
 const pollSelector = `${s('pollBlock')}:not(.${customClass})`;
 const styleElement = style(`
   button${s('pollAnswer')} { overflow: clip; }
@@ -13,7 +13,8 @@ const styleElement = style(`
     height: 100%;
     top: 0;
     left: 0;
-    background: rgba(var(--accent),.2);
+    background-color: var(--accent);
+    opacity: 0.2;
     border-radius: 18px;
   }
 `);
