@@ -35,4 +35,4 @@ wip
 ## Acknowledgements
 SVG icons illustrated by [dragongirlcloaca](https://tumblr.com/dragongirlcloaca).
 
-A huge thanks goes out to [twilight sparkle](https://tumblr.com/twilight-sparkle-irl) as well as the people behind [XKit Rewritten](https://github.com/AprilSylph/XKit-Rewritten/) for providing valuable insight into Tumblr's mysterious workings.
+A huge thanks goes out to [twilight sparkle](https://tumblr.com/twilight-sparkle-irl) for providing valuable insight into Tumblr's mysterious workings.
