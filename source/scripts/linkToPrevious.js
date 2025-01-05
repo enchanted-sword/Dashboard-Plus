@@ -16,7 +16,7 @@ const linkPosts = async posts => {
   for (const post of posts) {
     const { parentPostUrl, tags } = await timelineObject(post);
     if (typeof parentPostUrl === 'undefined') continue;
-    const navigateUrl = parentPostUrl.split('https://www.tumblr.com')[1];
+    const navigateUrl = parentPostUrl.split('https://www.tumblr.com').pop();
     if (headerLinks) {
       let headerLink = post.querySelector(rebloggedFromSelector).cloneNode(true);
       post.querySelector(rebloggedFromSelector).replaceWith(headerLink);
