@@ -155,6 +155,7 @@
 
             Object.keys(feature.preferences.options).forEach(key => {
               const option = feature.preferences.options[key];
+              if (typeof option.name === 'undefined') option.name = option.title; // weh
               let wrapper, tooltip, credit;
               option.tooltip && (tooltip = $(`<div class="ui-tooltipAnchor"><div class="ui-tooltip">${option.tooltip}</div></div>`));
               option.credit && ('');
@@ -205,7 +206,33 @@
                   });
                   break;
                 } case 'multiSelect': {
-                  console.warn(`${name}.${key} [missing support for ${option.type}]`);
+                  wrapper = $(`<div class="ui-inputWrapper "><label for="ui-feature-${name}-${key}">${option.name}</label></div>`);
+                  const multiSelectWrapper = $(`<div class="ui-multiSelectWrapper"></div>`);
+
+                  Object.keys(option.options).forEach(subKey => {
+                    const subOption = option.options[subKey];
+                    const multiSelectItem = $(`<div class="ui-checkboxWrapper"></div>`);
+                    const input = $('<input>', { class: 'ui-checkbox', type: 'checkbox', id: `ui-feature-${name}-${key}-${subKey}`, name: `${name}-${key}` });
+                    const label = $(`<label for="ui-feature-${name}-${key}-${subKey}" name="${name}-${key}">${subOption.name}</label>`);
+
+                    multiSelectItem.append(label);
+                    multiSelectItem.append(input);
+                    multiSelectWrapper.append(multiSelectItem);
+
+                    if (preference.options[key] === subKey) input.attr('checked', '');
+
+                    input.on('change', async function () {
+                      const checked = !!this.checked;
+                      let { preferences } = await browser.storage.local.get('preferences');
+
+                      if (checked) preferences[name].options[key] = subKey;
+                      else preferences[name].options[key] = preference.options[key].value;
+
+                      browser.storage.local.set({ preferences });
+                    });
+                  });
+
+                  wrapper.append(multiSelectWrapper);
                   break;
                 } case 'listSelect': {
                   wrapper = $(`<div class="ui-inputWrapper"><label for="ui-feature-${name}-${key}">${option.name}</label></div>`);

@@ -394,7 +394,7 @@ ul.ui-featureCategory {
   flex-flow: column nowrap;
 
   h2 {
-    border-bottom: var(--border-thickness-sm) solid var(--white-accent-50);
+    border-bottom: var(--border-thickness-sm) solid var(--white-primary-40);
     margin-bottom: 8px;
   }
 }
@@ -511,13 +511,14 @@ input.ui-toggle:checked + label {
   vertical-align: middle;
   background-origin: border-box;
   user-select: none;
-  border: var(--border-thickness-sm) solid rgb(var(--primary));
+  border: var(--border-thickness-sm) solid var(--white-primary-40);
   border-radius: 8px;
-  color: rgb(var(--primary));
+  color: rgb(var(--accent));
   height: 24px;
   width: 24px;
 
   &:checked {
+    border-color: rgb(var(--accent));
     background-image: url("data:image/svg+xml,%3csvg viewBox=%270 0 16 16%27 fill=%27white%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3cpath d=%27M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z%27/%3e%3c/svg%3e");
     background-size: 100% 100%;
     background-color: currentColor;
@@ -566,6 +567,15 @@ select {
   }
 }
 
+.ui-multiSelectWrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+  padding-left: 0.5rem;
+  border-left: var(--border-thickness-sm) solid var(--white-primary-40);
+}
+
 .ui-listSelectWrapper {
   max-height: 10rem;
   display: flex;
@@ -600,7 +610,7 @@ input.ui-listSelect:checked + label {
 .ui-textInput {
   resize: none;
   width: 100%;
-  border: var(--border-thickness-sm) solid var(--white-primary-80);
+  border: var(--border-thickness-sm) solid var(--white-primary-60);
   border-radius: var(--border-radius-sm);
   outline: none;
   padding: 4px;

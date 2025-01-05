@@ -1,3 +1,8 @@
-[data-css~="adFreeCtaBanner"], a[href*="/settings/ad-free-browsing"],
+[data-css~="adFreeCtaBanner"],
+a[href*="/settings/ad-free-browsing"],
 [data-css~="navItem"][data-title="Go Ad-Free"],
-button[data-css~="expandOnHover"]:has([data-css~="accentText"]) { display: none !important; }
+button[data-css~="expandOnHover"]:has([data-css~="accentText"]),
+[data-css~="premiumTooltip"],
+[data-css~="sidebarItem"]:has([data-css~="diamond"]) {
+  display: none !important;
+}
