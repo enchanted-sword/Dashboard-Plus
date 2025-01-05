@@ -5,6 +5,9 @@ import { userInfo } from './utility/user.js';
 import { postFunction } from './utility/mutations.js';
 import { s } from './utility/style.js';
 import { timelineObject } from './utility/reactProps.js';
+import { getOptions } from './utility/jsTools.js';
+
+let color;
 
 const customClass = 'dbplus-mutuals';
 const customAttribute = 'data-dbplus-mutual-checked';
@@ -17,12 +20,12 @@ const isFollowing = async handle => {
 };
 const followedMap = postObject => Object.fromEntries([postObject, ...postObject.trail].map(({ blog }) => [blog.name, blog.followed]));
 
-const mutualsIcon = timespan => noact({
-  className: keyToString('blogFollowing'),
+const mutualsIcon = () => noact({
+  className: keyToString('blogFollowing') + ' ' + customClass,
   ariaLabel: translate('Mutuals'),
   title: translate('Mutuals'),
   style: 'display:inline',
-  children: svgIcon('following', 16, 16, '', 'rgb(var(--green))')
+  children: svgIcon('following', 16, 16, '', `var(--color-${color})`)
 });
 
 const markMutuals = posts => posts.forEach(async post => {
@@ -49,6 +52,7 @@ const markMutuals = posts => posts.forEach(async post => {
 });
 
 export const main = async () => {
+  ({ color } = await getOptions('mutuals'));
   postFunction.start(markMutuals, `:not([${customAttribute}])`);
 };
 
@@ -57,4 +61,10 @@ export const clean = async () => {
 
   document.querySelectorAll(`.${customClass}`).forEach(e => e.remove());
   document.querySelectorAll(`[${customAttribute}]`).forEach(e => e.removeAttribute(customAttribute));
+};
+
+export const update = ({ color }) => {
+  document.querySelectorAll(`.${customClass} svg`).forEach(icon => {
+    icon.style.setProperty('--icon-color-primary', `var(--color-${color})`)
+  });
 };

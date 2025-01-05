@@ -7,7 +7,45 @@
     "dashboard"
   ],
   "preferences": {
-    "enabled": false
+    "enabled": false,
+    "options": {
+      "color": {
+        "value": "green",
+        "type": "select",
+        "name": "icon color",
+        "tooltip": "note: actual hue is theme-dependant",
+        "options": [
+          {
+            "value": "pink",
+            "name": "pink"
+          },
+          {
+            "value": "red",
+            "name": "red"
+          },
+          {
+            "value": "orange",
+            "name": "orange"
+          },
+          {
+            "value": "yellow",
+            "name": "yellow"
+          },
+          {
+            "value": "green",
+            "name": "green"
+          },
+          {
+            "value": "blue",
+            "name": "blue"
+          },
+          {
+            "value": "purple",
+            "name": "purple"
+          }
+        ]
+      }
+    }
   },
   "js": true,
   "css": true
