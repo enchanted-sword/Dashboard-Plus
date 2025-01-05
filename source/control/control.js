@@ -73,7 +73,6 @@ window.addEventListener('message', (event) => {
       }
       const labelTimelines = elements => {
         elements.forEach(element => {
-          ;; debugger
           let route = element.getAttribute('data-timeline-id').split('/v2/').pop();
           if (route.includes('blog/') && route.split('/')[1] === window.location.pathname.split('/')[1]) route = `peepr/${route}`;
           document.getElementById('base-container').setAttribute('data-route', route);
@@ -112,6 +111,8 @@ window.addEventListener('message', (event) => {
 });
 
 waitForWindow().then(async function () {
+  const initialState = JSON.parse(document.getElementById('___INITIAL_STATE___').innerText);
+  window.initialState = initialState;
   updateThemeColors();
   cssMap = await window.tumblr.getCssMap();
   languageData = window.tumblr.languageData;
