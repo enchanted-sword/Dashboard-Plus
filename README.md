@@ -30,6 +30,7 @@ You can install from https://addons.mozilla.org/en-US/firefox/addon/dashboard-pl
 ## Reporting bugs
 
 Just open an issue on github with any information that seems related. I don't remember if we ever added issue templates or not.
+FYI, the extension as it was originally engineered has been finished for a long time, but tumblr has likely fucked up it's frontend again since then, so expect slight amounts of jank.
 
 ## Contributing
 
