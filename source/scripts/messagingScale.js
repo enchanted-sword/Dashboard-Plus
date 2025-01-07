@@ -4,11 +4,9 @@ import { style, s } from './utility/style.js';
 const styleElement = style('');
 
 const run = ({ scale }) => {
-  if (scale.enabled === false) return false;
-
   styleElement.innerText = `
     [data-css~="conversationWindow"] {
-      --dbplus-messagingScale: ${scale.value} !important;
+      --dbplus-messagingScale: ${scale} !important;
 
       &:has([data-css~="conversation"]:not(.dbplus-revertMessaging)) {
         width: calc(360px * var(--dbplus-messagingScale)); 
