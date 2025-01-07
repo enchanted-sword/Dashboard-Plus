@@ -767,6 +767,9 @@ select + .ui-tooltip {
   padding: 8px;
   border-radius: var(--border-radius-sm);
   max-height: calc(100% - 16px);
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 0.25rem;
 
   > li {
     list-style-type: none;
@@ -775,7 +778,6 @@ select + .ui-tooltip {
     background: var(--white-primary-10);
     border: var(--border-thickness-sm) solid var(--white-primary-60);
     border-radius: var(--border-radius-sm);
-    margin-bottom: 4px;
   }
 }
 
@@ -813,20 +815,21 @@ select + .ui-tooltip {
 }
 
 .ui-aboutLink {
+  background-color: var(--white-primary-10);
+  border: var(--border-thickness-sm) solid var(--white-primary-60);
+  border-radius: var(--border-radius-sm);
+  text-decoration: none;
+  padding: 0.25rem;
+
+  &:hover {
+    background-color: var(--white-primary-20);
+  }
+}
+
+a.ui-aboutLink {
   display: flex;
   font-size: 24px;
   text-align: center;
   justify-content: center;
   align-items: center;
-  background-color: var(--white-primary-10);
-  border: var(--border-thickness-sm) solid var(--white-primary-60);
-  border-radius: var(--border-radius-sm);
-  text-decoration: none;
-
-  &:not(:last-of-type) {
-    margin-bottom: 4px;
-  }
-  &:hover {
-    background-color: var(--white-primary-20);
-  }
 }
