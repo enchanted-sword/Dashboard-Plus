@@ -4,7 +4,7 @@
   "description": "disables tumblr's 'tumblr premium' and 'go ad-free' marketing",
   "category": "dashboard",
   "preferences": {
-    "enabled": false
+    "enabled": true
   },
   "css": "true"
 }
