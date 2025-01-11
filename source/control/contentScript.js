@@ -6,12 +6,6 @@
 
   const { getURL } = browser.runtime;
   let cssMap, languageData, themeColors;
-  let areHelpersLoaded = false;
-
-  const isReactLoaded = () => document.querySelector('[data-rh]') === null;
-  const waitForLoad = () => new Promise(resolve => {
-    window.requestAnimationFrame(() => (isReactLoaded() && areHelpersLoaded) ? resolve() : waitForLoad().then(resolve));
-  });
 
   const runContextScript = () => {
     const script = document.createElement('script');
@@ -19,7 +13,14 @@
     (document.head || document.documentElement).append(script);
     script.onload = () => script.remove();
   };
+  const observer = new MutationObserver(() => {
+    if (document.querySelector('[data-rh]') === null) {
+      observer.disconnect();
+      scriptManager();
+    }
+  });
 
+  observer.observe(document.documentElement, { childList: true, subtree: true });
   runContextScript();
 
   const sendCachedData = async () => {
@@ -33,7 +34,6 @@
     if (event.origin !== 'https://www.tumblr.com') return;
     if (event.data?.text === 'db+controlInitMessage') sendCachedData(); //recive control init message and respond with helper functions
     else if (event.data?.text === 'db+helperLoadMessage') { //recieve helper functions and update storage
-      areHelpersLoaded = true;
       ({ cssMap, languageData } = event.data);
 
       browser.storage.local.set({ cssMap, languageData });
@@ -45,7 +45,7 @@
     }
   });
 
-  waitForLoad().then(() => {
+  const scriptManager = async () =>
     import(browser.runtime.getURL('/scripts/utility/jsTools.js')).then(({ deepEquals, importFeatures, featureify }) => {  // browser.runtime.getURL is only a valid escape when written in full
       let installedFeatures = {};
       let menuFeatures = ['inheritColors'];
@@ -163,5 +163,5 @@
       console.info('loaded!');
       console.info(browser.storage.local.get());
     });
-  });
+
 }

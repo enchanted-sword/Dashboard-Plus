@@ -45,6 +45,11 @@ export const replaceTranslate = (string = '', replaceValue = '') => translate(st
 export const apiFetch = async (...args) => {
   return inject(
     async (resource, init = {}) => {
+      const isReactLoaded = () => document.querySelector('[data-rh]') === null;
+      const waitForLoad = () => new Promise(resolve => {
+        window.requestAnimationFrame(() => (isReactLoaded() ? resolve() : waitForLoad().then(resolve)));
+      });
+
       init.headers ??= {};
       init.headers['DBPlus'] = '1';
 
@@ -75,6 +80,7 @@ export const apiFetch = async (...args) => {
         }
       }
 
+      await waitForLoad();
       return window.tumblr.apiFetch(resource, init);
     },
     args
