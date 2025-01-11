@@ -35,6 +35,7 @@ const markMutuals = posts => posts.forEach(async post => {
 
   blogs.forEach(async blog => {
     const blogName = blog.textContent;
+    if (blogName === userInfo.name) return;
     let mutuals;
     if (mutualCache.has(blogName)) mutuals = mutualCache.get(blogName);
     else {
