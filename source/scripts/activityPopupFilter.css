@@ -1,3 +1,4 @@
-[data-activity-popup-filter="filtered"] {
+[data-activity-popup-filter="filtered"],
+[data-css~="topBorder"]:not(:has([data-activity-popup-filter=""])) {
   display: none;
 }

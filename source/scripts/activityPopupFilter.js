@@ -12,7 +12,6 @@ const filterNotifications = notifications => {
   notifications.map(async notification => {
     const note = await notificationObject(notification);
     const { followed, followingYou, fromTumblelogName, fromTumblelogs } = note;
-    console.log(note);
 
     if (fromTumblelogs === void 0 && fromTumblelogName !== void 0) {
       if (showFrom.all

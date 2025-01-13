@@ -1,4 +1,5 @@
 import { inject } from './inject.js';
+import { isFollowing } from './user.js';
 
 const timelineObjectCache = new WeakMap();
 const notificationCache = new WeakMap();
@@ -29,6 +30,20 @@ const getNotificationObject = async () => {
     const { notification } = fiber.memoizedProps || {};
     if (typeof notification !== 'undefined') {
       return notification;
+    } else {
+      fiber = fiber.return;
+    }
+  }
+};
+const getActivityItem = async () => {
+  const elem = document.currentScript.parentElement;
+  const fiberKey = Object.keys(elem).find(key => key.startsWith('__reactFiber'));
+  let fiber = elem[fiberKey];
+
+  while (fiber !== null) {
+    const { content, title } = fiber.memoizedProps || {};
+    if ((typeof content !== 'undefined') && (typeof title !== 'undefined')) {
+      return fiber.memoizedProps;
     } else {
       fiber = fiber.return;
     }
@@ -98,13 +113,30 @@ export const timelineObject = async post => {
   return timelineObjectCache.get(post);
 };
 
+const activityToNotification = async activityItem => {
+  const { title, relationship } = activityItem;
+  const { start, end } = title.formatting.find(i => i.type === 'mention');
+  const fromTumblelogName = Array.from(title.text).slice(start, end).join('');
+  const followed = ['following', 'mutuals'].includes(relationship);
+  let followingYou = false;
+  if (relationship === 'mutuals') followingYou = true;
+  else if (await isFollowing(fromTumblelogName)) followingYou = true; // these two conditions are split to improve execution time (maybe?)
+
+  return { fromTumblelogName, followed, followingYou };
+};
+
 /**
  * @param {Element} notification - Notification element to fetch property from
  * @returns {any} Fetched notification property
  */
 export const notificationObject = async notification => {
   if (!notificationCache.has(notification)) {
-    notificationCache.set(notification, inject(getNotificationObject, [], notification));
+    if (notification.matches('[data-css~="activityItem"]')) {
+      const activityItem = await inject(getActivityItem, [], notification);
+      notificationCache.set(notification, await activityToNotification(activityItem));
+    } else {
+      notificationCache.set(notification, inject(getNotificationObject, [], notification));
+    }
   }
 
   if (notificationCache.get(notification) === null) {

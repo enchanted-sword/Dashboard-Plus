@@ -39,3 +39,8 @@ export const adminBlogs = userInfo?.blogs?.filter(blog => blog.admin) ?? [];
  * {string[]} adminBlogNames -  Array of blog names the user has admin permissions for
  */
 export const adminBlogNames = adminBlogs.map(blog => blog.name);
+
+export const isFollowing = async handle => {
+  const { response } = await apiFetch(`/v2/blog/${userInfo.name}/followed_by?query=${handle}`);
+  return response.followedBy;
+};
