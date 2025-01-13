@@ -1,5 +1,31 @@
 import { getOptions, getJsonFile } from './utility/jsTools.js';
 import { declarativeNetRequest } from './utility/dnr.js';
+import { mutationManager } from './utility/mutations.js';
+import { notificationSelector } from './utility/document.js';
+import { notificationObject } from './utility/reactProps.js';
+
+let showFrom;
+
+const customAttribute = 'data-activity-popup-filter';
+
+const filterNotifications = notifications => {
+  notifications.map(async notification => {
+    const note = await notificationObject(notification);
+    const { followed, followingYou, fromTumblelogName, fromTumblelogs } = note;
+    console.log(note);
+
+    if (fromTumblelogs === void 0 && fromTumblelogName !== void 0) {
+      if (showFrom.all
+        || (showFrom.mutuals && followed && followingYou)
+        || (showFrom.following && followed)
+        || (showFrom.followers && followingYou)
+      ) notification.setAttribute(customAttribute, '');
+      else {
+        notification.setAttribute(customAttribute, 'filtered');
+      }
+    }
+  });
+};
 
 const removeRuleIds = ['APF:all', 'APF:mentions', 'APF:reblogs', 'APF:replies'];
 const regexFilter = { // it's simply joyous that this is possible
@@ -90,16 +116,22 @@ const urlQueryFromArray = (arr = []) => {
 
 /* 
   this feature amazingly doesn't interfere with the activity page itself because:
-  a) the default activity page notifications served fetched via html (possibly?)
+  a) any notifications loaded when the page is loaded are part of the initial state and aren't fetched via XHP
   b) all other activity page fetches end with type[n]=earned_badge and can be filtered out
-  c) any notifications loaded when the page is loaded are part of the initial state and aren't fetched via XHP
   d) any new notifications loaded in afterwards have an additional query param for the timestamp
  */
 
 export const main = async () => {
   const feature = await getJsonFile('activityPopupFilter');
   const preferences = await getOptions('activityPopupFilter');
-  const enabled = Object.keys(preferences).filter(key => feature.preferences.options[key].value.sort().join('') !== preferences[key].sort().join(''));
+  ({ showFrom } = preferences);
+  mutationManager.start(notificationSelector + `:not([${customAttribute}])`, filterNotifications);
+
+  if (!showFrom.all) ['all', 'mentions', 'reblogs', 'replies'].forEach(key =>
+    preferences[key] = preferences[key].filter(item => item !== 'rollups')
+  );
+
+  const enabled = ['all', 'mentions', 'reblogs', 'replies'].filter(key => feature.preferences.options[key].value.sort().join('') !== preferences[key].sort().join(''));
   if (enabled.length === 0) return;
 
   const newRules = enabled.map(key => declarativeNetRequest.newRule(`APF:${key}`, regexFilter[key], {
@@ -113,4 +145,8 @@ export const main = async () => {
   declarativeNetRequest.updateDynamicRules(newRules);
 };
 
-export const clean = async () => declarativeNetRequest.clearDynamicRules(removeRuleIds);
+export const clean = async () => {
+  declarativeNetRequest.clearDynamicRules(removeRuleIds);
+  mutationManager.stop(filterNotifications);
+  $(`[${customAttribute}]`).removeAttr(customAttribute);
+};

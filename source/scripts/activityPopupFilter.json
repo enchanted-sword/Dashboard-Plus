@@ -177,8 +177,33 @@
           "commuities moderation",
           "commuities"
         ]
+      },
+      "showFrom": {
+        "name": "show notifications from:",
+        "type": "multiSelect",
+        "options": {
+          "all": {
+            "name": "all users"
+          },
+          "followers": {
+            "name": "your followers"
+          },
+          "following": {
+            "name": "users you follow"
+          },
+          "mutuals": {
+            "name": "your mutuals"
+          }
+        },
+        "value": {
+          "all": true,
+          "followers": true,
+          "following": true,
+          "mutuals": true
+        }
       }
     }
   },
-  "js": true
+  "js": true,
+  "css": true
 }
