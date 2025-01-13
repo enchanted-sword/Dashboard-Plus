@@ -30,5 +30,6 @@
   "postDebugInfo",
   "skipAdultWall",
   "noTagPrompt",
-  "mutuals"
+  "mutuals",
+  "emptyInbox"
 ]
