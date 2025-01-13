@@ -1,7 +1,7 @@
 import { svgIcon } from './utility/dashboardElements.js';
 import { noact } from './utility/noact.js';
-import { keyToString, translate, apiFetch } from './utility/tumblr.js';
-import { userInfo } from './utility/user.js';
+import { keyToString, translate } from './utility/tumblr.js';
+import { userInfo, isFollowing } from './utility/user.js';
 import { postFunction } from './utility/mutations.js';
 import { s } from './utility/style.js';
 import { timelineObject } from './utility/reactProps.js';
@@ -14,10 +14,6 @@ const customAttribute = 'data-dbplus-mutual-checked';
 
 const mutualCache = new Map();
 
-const isFollowing = async handle => {
-  const { response } = await apiFetch(`/v2/blog/${userInfo.name}/followed_by?query=${handle}`);
-  return response.followedBy;
-};
 const followedMap = postObject => Object.fromEntries([postObject, ...postObject.trail].map(({ blog }) => [blog.name, blog.followed]));
 
 const mutualsIcon = () => noact({
