@@ -110,7 +110,7 @@ export const timelineObject = async post => {
   if (!timelineObjectCache.has(post)) {
     const postObject = await inject(getTimelineObject, [], post);
     if (typeof postObject !== 'undefined') updateData({ postStore: postObject });
-    timelineObjectCache.set(post,);
+    timelineObjectCache.set(post, postObject);
   }
 
   return timelineObjectCache.get(post);
