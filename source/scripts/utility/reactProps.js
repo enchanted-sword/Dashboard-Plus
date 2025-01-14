@@ -1,5 +1,6 @@
 import { inject } from './inject.js';
 import { isFollowing } from './user.js';
+import { updateData } from './database.js';
 
 const timelineObjectCache = new WeakMap();
 const notificationCache = new WeakMap();
@@ -107,7 +108,9 @@ const getNoteObject = async () => {
  */
 export const timelineObject = async post => {
   if (!timelineObjectCache.has(post)) {
-    timelineObjectCache.set(post, inject(getTimelineObject, [], post));
+    const postObject = await inject(getTimelineObject, [], post);
+    if (typeof postObject !== 'undefined') updateData({ postStore: postObject });
+    timelineObjectCache.set(post,);
   }
 
   return timelineObjectCache.get(post);
