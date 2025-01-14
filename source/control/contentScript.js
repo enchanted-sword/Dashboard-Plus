@@ -141,7 +141,7 @@
       };
 
       const initFeatures = async () => {
-        // NEED TO OPEN DATABASE HERE IF DB INTEGRATION ADDED
+        await import(browser.runtime.getURL('/scripts/utilities/database.js')).then(({ openDatabase }) => openDatabase()); // ensures the database is created before anything interacts with it
         installedFeatures = await importFeatures();
 
         ({ preferences } = await browser.storage.local.get('preferences'));
