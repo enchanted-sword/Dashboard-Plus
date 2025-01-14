@@ -124,8 +124,9 @@ const activityToNotification = async activityItem => {
   let followingYou = false;
   if (relationship === 'mutuals') followingYou = true;
   else if (await isFollowing(fromTumblelogName)) followingYou = true; // these two conditions are split to improve execution time (maybe?)
+  const mutuals = relationship === 'mutuals';
 
-  return { fromTumblelogName, followed, followingYou };
+  return { fromTumblelogName, followed, followingYou, mutuals };
 };
 
 /**
