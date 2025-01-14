@@ -1,0 +1,12 @@
+{
+  "name": "emptyInbox",
+  "title": "empty inbox",
+  "category": [
+    "utility"
+  ],
+  "description": "adds a button to empty your inbox, deleting all of your asks, including ghost asks. note well that deleted asks cannot be retrieved",
+  "preferences": {
+    "enabled": false
+  },
+  "js": true
+}
