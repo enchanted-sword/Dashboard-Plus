@@ -1,10 +1,10 @@
 import { apiFetch, keyToClasses } from "./utility/tumblr.js";
 import { mutationManager } from "./utility/mutations.js";
 import { noact } from "./utility/noact.js";
-import { s } from "./utility/style.js";
+import { s, smartCopy } from "./utility/style.js";
 
 const customClass = 'dbplus-emptyInbox';
-const targetSelector = `${s('main')}:has([data-timeline="/v2/user/inbox"]) + ${s('sidebar')} aside`;
+const targetSelector = `${s('main')}:has([data-timeline*="/v2/user/inbox"]) + ${s('sidebar')} aside`;
 let sideBarClass, activeClass;
 
 const empty = function () {
@@ -14,9 +14,7 @@ const empty = function () {
 const addEmptyButton = targets => {
   const target = targets.pop();
 
-  ;; debugger
-  sideBarClass = target.querySelector(s('sideBar')).classList.item(0);
-  activeClass = target.querySelector(s('active')).classList.item(1);
+  sideBarClass = smartCopy(target.querySelector(s('sideBar')), 'sideBar');
 
   const button = noact({
     tag: 'ul',
@@ -24,8 +22,10 @@ const addEmptyButton = targets => {
     style: 'margin-top: -60px;',
     children: {
       tag: 'li',
+      style: 'background: rgba(var(--white-on-dark),.07);',
       className: activeClass,
       children: {
+        style: 'width: 100%;',
         onclick: empty,
         children: 'Clear inbox'
       }
