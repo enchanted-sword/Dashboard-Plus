@@ -2,18 +2,21 @@
   white-space: nowrap;
   border-radius: 4px;
   padding: 0 4px;
-  font-size: .78125rem;
+  font-size: 0.78125rem;
   font-weight: 700;
   line-height: 1.52;
   display: inline-block;
 }
+[data-css~="mention"] + .dbplus-customLabelContainer {
+  margin-left: 4px;
+}
 .dbplus-customLabelContainer.dbplus-followingYou {
   color: rgb(var(--blue));
-  background-color: rgba(var(--blue),.2);
+  background-color: rgba(var(--blue), 0.2);
 }
 .dbplus-customLabelContainer.dbplus-potentialBot {
   color: rgb(var(--red));
-  background-color: rgba(var(--red),.2);
+  background-color: rgba(var(--red), 0.2);
 }
 .dbplus-customLabelContainer.dbplus-potentialBot::after {
   content: "about";
@@ -32,7 +35,7 @@
   opacity: 0;
   width: 240px;
   background-color: rgb(var(--white));
-  box-shadow: 2px 2px rgba(var(--black),.07);
+  box-shadow: 2px 2px rgba(var(--black), 0.07);
   color: inherit;
   text-align: center;
   padding: 2px;
