@@ -44,9 +44,10 @@ const potentialBotLabel = () => $(`
 
 const addFollowingYouLabels = async notifications => {
   for (const notification of notifications) {
+    console.log(notification);
     const { followingYou, mutuals } = await notificationObject(notification);
     if (followingYou && !mutuals && !notification.querySelector('.dbplus-customLabelContainer')) {
-      $(notification).find(s('tumblelogName')).append(followingYouLabel());
+      $(notification).find(`:is(${s('tumblelogName')},${s('npfTitleMention')})`).append(followingYouLabel());
     }
   }
 };
