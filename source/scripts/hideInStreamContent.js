@@ -6,7 +6,7 @@ let blogRecommendations, tagRecommendations, blazedContent, inStreamAds, communi
 const blogRecSelector = `[data-cell-id*="timelineObject:carousel"] ${s('listTimelineObject')}:has(${s('blogLinkRecommendationWrapper')})`;
 const tagRecSelector = `[data-cell-id*="timelineObject:carousel"] ${s('listTimelineObject')}:has(${s('tagCard')})`;
 const blazedSelector = `${s('listTimelineObject')}:has([href="#managed-icon__badge-blaze"])`;
-const adSelector = `${s('listTimelineObject')}:has(${s('adTimelineObject')})`;
+const adSelector = `${s('listTimelineObject')}:has(${s('adTimelineObject')},${s('adMeatballMenu')})`;
 const communitiesRecSelector = `[data-cell-id*="timelineObject:carousel"] ${s('listTimelineObject')}:has(${s('communityCard')})`;
 const hiddenClass = 'dbplus-hiddenInStream';
 const styleElement = style(`
