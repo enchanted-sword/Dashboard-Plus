@@ -40,9 +40,7 @@ const rechost = async (blogName, parent_tumblelog_uuid, parent_post_id, reblog_k
     tags,
     parent_tumblelog_uuid,
     parent_post_id,
-    reblog_key,
-    tags,
-    content
+    reblog_key
   }
 });
 

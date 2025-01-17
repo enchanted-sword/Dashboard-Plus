@@ -833,3 +833,20 @@ a.ui-aboutLink {
   justify-content: center;
   align-items: center;
 }
+
+.ui-changelog {
+  padding: 0.25rem 0.75rem;
+}
+.ui-changelog :is(h1, h2) {
+  text-align: center;
+}
+.ui-changelog h3 {
+  font-weight: bold;
+}
+.ui-changelog ul {
+  margin-left: 1rem;
+  list-style: disc;
+}
+.ui-new {
+  color: rgb(var(--blueberry));
+}
