@@ -8,7 +8,6 @@ const waitForWindow = () => new Promise(resolve => {
 });
 
 const camelCase = str => str.replace(/(?:-(\w))/g, (a, b) => b.toUpperCase());
-const rgbaRegex = /(?:rgba?\()?(\d{1,3}.+?\d{1,3}.+?\d{1,3})(?:.+?(\d[\.\d]*))?/g
 const getThemeColor = color => {
   const value = getComputedStyle(document.getElementById('root')).getPropertyValue(`--${color}`);
   const [r, g, b, a] = value.replace(/[^\d]/g, ' ').replace(/\s{2,}/g, ' ').trim().split(' ');
