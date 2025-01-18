@@ -207,7 +207,7 @@
     z-index: 100;
     right: 90px;
 
-    [data-css~="navItem"][data-title="Settings"],
+    [data-css~="navItem"][data-title="Settings"]:not(.dbplus-hnav),
     [data-css~="navItem"][data-title="Get a domain"],
     [data-css~="navItem"][data-title="Go Ad-Free"] {
       display: none;
