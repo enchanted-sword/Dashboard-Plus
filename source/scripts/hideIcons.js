@@ -6,19 +6,22 @@ const exploreSelector = `${s('navItem')}[data-title="Explore"]`;
 const communitiesSelector = `${s('navItem')}:has([href="/communities/browse"])`;
 const styleElement = style('');
 
-export const main = async () => {
-  const { shop, explore, communities } = await getOptions('hideIcons');
+const run = ({ shop, explore, communities }) => {
   const selectors = [];
 
   if (shop) selectors.push(shopSelector);
   if (explore) selectors.push(exploreSelector);
   if (communities) selectors.push(communitiesSelector);
 
-  if (selectors.length) {
-    styleElement.innerText = `${selectors.join(',')} { display: none !important; }`;
-    document.head.append(styleElement);
-  }
-  else styleElement.remove();
+  styleElement.innerText = `${selectors.join(',')} { display: none !important; }`;
+}
+
+export const main = async () => {
+  const preferences = await getOptions('hideIcons');
+  run(preferences);
+  document.head.append(styleElement);
 };
 
 export const clean = async () => styleElement.remove();
+
+export const update = async preferences => run(preferences);
