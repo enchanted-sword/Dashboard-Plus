@@ -24,7 +24,8 @@ module.exports = {
     "sourceType": "module"
   },
   "globals": {
-    "Coloris": "readonly",
+    "culori": "readonly",
+    "poline": "readonly",
     "idb": "readonly"
   },
   "rules": {

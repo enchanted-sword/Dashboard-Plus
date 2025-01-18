@@ -406,10 +406,6 @@
 
             featureItem.querySelector('.ui-secondaryContent').append(optionsWrapper[0]); // jquery to html conversion
           }
-
-          if (name === 'customColors' && preference.options.menuTheme) {
-
-          }
         } catch (e) {
           console.error(`error creating feature item '${name}':`, e);
         }
