@@ -1,0 +1,89 @@
+#ui-picker {
+  z-index: 101;
+  position: fixed;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  width: 15rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: rgb(var(--white));
+  color: rgb(var(--black));
+
+  #display {
+    transition: none;
+    background-color: var(--picker-color);
+    width: 15rem;
+    height: 6rem;
+  }
+  figure {
+    margin: 0;
+    border-radius: 0.5rem;
+  }
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  h1 {
+    display: block;
+    margin: 0;
+  }
+  [type="number"],
+  [type="text"] {
+    appearance: none;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+    font-family: inherit;
+    font-size: 1rem;
+
+    &:focus-visible {
+      outline: none;
+      border-color: oklch(var(--picker-color));
+    }
+    &[type="number"] {
+      width: 5rem;
+    }
+    &[type="text"] {
+      width: calc(100% - 0.75rem);
+    }
+  }
+  .range {
+    width: 15rem;
+    height: 1.5rem;
+    position: relative;
+
+    figure {
+      width: 100%;
+      left: 0;
+    }
+    * {
+      height: 100%;
+      position: absolute;
+      top: 0;
+    }
+  }
+  [type="range"] {
+    left: -10px;
+    width: calc(100% + 20px);
+    margin: 0;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+  }
+  ::-moz-range-thumb {
+    outline: none;
+    border: 2px solid white;
+    border-radius: 50%;
+    width: 1rem;
+    height: 1rem;
+    background-color: oklch(var(--picker-color));
+  }
+}

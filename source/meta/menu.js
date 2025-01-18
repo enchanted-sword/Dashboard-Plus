@@ -2,25 +2,12 @@
 {
   (
     async function () {
-      const { debounce, importFeatures, featureify } = await import('../scripts/utility/jsTools.js');
+      const { debounce, importFeatures, featureify, deepEquals } = await import('../scripts/utility/jsTools.js');
       const { noact } = await import('../scripts/utility/noact.js');
       const { camelCase } = await import('../scripts/utility/case.js');
+      const { parse, formatRgb } = culori;
 
-      const descButton = () => {
-        const button = $(`<button class='ui-descButton'><div class="ui-caretWrapper"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="transform: rotate(180deg);"><use href="#icons-caret"></use></svg></div></button>`);
-        button.on('click', function () {
-          const secondaryContent = this.closest('li').querySelector('.ui-secondaryContent');
-          const caret = this.querySelector('svg');
-          if (secondaryContent.getAttribute('active') === 'true') {
-            secondaryContent.setAttribute('active', 'false');
-            caret.style.transform = 'rotate(180deg)';
-          } else {
-            secondaryContent.setAttribute('active', 'true');
-            caret.style.transform = 'rotate(360deg)';
-          }
-        });
-        return button;
-      }
+      let picker;
 
       const onToggleFeature = async function () {
         const name = this.getAttribute('name');
@@ -45,12 +32,17 @@
 
         browser.storage.local.set({ preferences });
       };
-      const onColorChange = async (color, input) => {
-        let { preferences } = await browser.storage.local.get('preferences');
-        $(input.nextElementSibling).css('background', color);
-        const [name, key, optionsKey] = input.getAttribute('name').split('-');
-        preferences[name].preferences[key][optionsKey] = color;
-        browser.storage.local.set({ preferences });
+
+      const updateTheme = colors => {
+        document.getElementById('ui-theme').innerText = `
+          :root {
+            --white: ${colors.white};
+            --white-on-dark: ${colors.whiteOnDark};
+            --primary: ${colors.navy};
+            --accent: ${colors.accent};
+            --secondary-accent: ${colors.deprecatedAccent || colors.secondaryAccent};
+            --black: ${colors.black};
+          }`;
       };
 
       const title = featureTitle => {
@@ -88,6 +80,24 @@
             }
           ]
         }
+      };
+
+      const luminance = rgb => {
+        const channels = [rgb.r, rgb.g, rgb.b];
+        const a = channels.map(c => c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+        return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+      };
+      const ratio = (lum1, lum2) => lum1 > lum2 ? ((lum2 + 0.05) / (lum1 + 0.05)) : ((lum1 + 0.05) / (lum2 + 0.05));
+      const black = { mode: 'rgb', r: 0.09803921568627451, g: 0.09803921568627451, b: 0.09803921568627451 };
+      const white = { mode: 'rgb', r: 1, g: 1, b: 1 };
+      const lumBlack = luminance(black);
+      const lumWhite = luminance(white);
+      const contrastBW = rgb => {
+        const lum = luminance(rgb);
+        const ratioBlk = ratio(lum, lumBlack);
+        const ratioWht = ratio(lum, lumWhite);
+        if (ratioBlk < ratioWht) return formatRgb(black);
+        else return formatRgb(white);
       };
 
       const newFeatureItem = (name, feature = {}, preference = {}) => {
@@ -345,6 +355,44 @@
 
                   textInput.on('change', debounce(onTextInput));
                   break;
+                } case 'color': {
+                  wrapper = $('<div>', { class: 'ui-inputWrapper' });
+                  const colorButton = $('<button>', { id: `ui-feature-${name}-${key}`, class: 'ui-colorInput', feature: name, value: key });
+                  const resetButton = $('<button>', { class: 'ui-colorInput ui-reset' });
+
+                  colorButton.text(option.name);
+                  colorButton.css({
+                    backgroundColor: `rgb(${preference.options[key]})`,
+                    color: contrastBW(parse(`rgb(${preference.options[key]})`)),
+                    borderColor: `color-mix(in srgb, rgb(${preference.options[key]}), rgb(var(--black)) 20%)`
+                  });
+                  colorButton.on('click', locatePicker);
+
+                  resetButton.text('reset');
+                  resetButton.css({
+                    backgroundColor: `rgb(${option.value})`,
+                    color: contrastBW(parse(`rgb(${option.value})`)),
+                    borderColor: `color-mix(in srgb, rgb(${option.value}), rgb(var(--black)) 20%)`
+                  });
+                  resetButton.on('click', async () => {
+                    colorButton.css({
+                      backgroundColor: `rgb(${option.value})`,
+                      color: contrastBW(parse(`rgb(${option.value})`)),
+                      borderColor: `color-mix(in srgb, rgb(${option.value}), rgb(var(--black)) 20%)`
+                    });
+                    let { preferences } = await browser.storage.local.get('preferences');
+                    preferences[name].options[key] = option.value;
+                    browser.storage.local.set({ preferences });
+
+                    if (preferences.customColors.enabled && preferences.customColors.options.menuTheme) {
+                      updateTheme(preferences.customColors.options);
+                    }
+                  });
+
+                  wrapper.append(colorButton);
+                  wrapper.append(resetButton);
+
+                  break;
                 } default: {
                   console.warn(`${name}.${key} [missing support for ${option.type}]`);
                   break;
@@ -357,6 +405,10 @@
             });
 
             featureItem.querySelector('.ui-secondaryContent').append(optionsWrapper[0]); // jquery to html conversion
+          }
+
+          if (name === 'customColors' && preference.options.menuTheme) {
+
           }
         } catch (e) {
           console.error(`error creating feature item '${name}':`, e);
@@ -400,69 +452,46 @@
         else document.getElementById('ui-searchFilter').innerText = '';
       };
 
-      /* const hexToRgbString = hex =>
-        hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => '#' + r + r + g + g + b + b)
-          .substring(1).match(/.{2}/g)
-          .map(x => parseInt(x, 16))
-          .join(',');
+      const clampY = y => y + 456 <= visualViewport.height ? y : visualViewport.height - 456;
+      const clampX = x => x + 240 <= visualViewport.width ? x : visualViewport.width - 256;
+      const closePicker = () => {
+        window.setTimeout(() => {
+          if (!picker.is(':hover')) {
+            picker.css('opacity', 0);
+            picker[0].dataset.target = '';
+            window.setTimeout(() => { picker.hide() }, 150);
+          }
+        }, 300);
+      };
+      const locatePicker = async ({ originalEvent }) => {
+        const { target } = originalEvent;
+        picker[0].dataset.target = target.id;
+        const { preferences } = await browser.storage.local.get('preferences');
+        const color = parse(`rgb(${preferences[target.getAttribute('feature')].options[target.value]})`);
+        picker.css({
+          opacity: 1,
+          top: clampY(originalEvent.clientY + 8),
+          left: clampX(originalEvent.clientX + 8)
+        });
+        $('#rgb').val(formatRgb(color));
+        document.getElementById('rgb').dispatchEvent(new Event('input'));
+        picker.show();
+        picker.on('mouseleave', closePicker);
+      };
 
-      let themeStyleElement;
-
+      const updateThemeColors = (themeColors, preferences) => {
+        if (preferences.customColors.enabled && preferences.customColors.options.menuTheme) {
+          updateTheme(preferences.customColors.options);
+        } else {
+          updateTheme(themeColors);
+        }
+      };
       const onStorageChanged = async (changes, areaName) => {
         let { themeColors, preferences } = changes;
-        if (areaName !== 'local' || (typeof themeColors === 'undefined' && typeof preferences === 'undefined') || deepEquals(preferences?.oldValue.customColors, preferences?.newValue.customColors)) return;
-        if (typeof themeColors === 'undefined' && !preferences?.newValue.customColors.enabled) { // case when disabling customColors
-          ({ themeColors } = await browser.storage.local.get('themeColors'));
-          themeColors = { newValue: themeColors };
-        }
+        if (areaName !== 'local' || (typeof themeColors === 'undefined' && typeof preferences === 'undefined') || deepEquals(themeColors?.oldValue, themeColors?.newValue)) return;
 
-        themeHandler.updateThemeColors(themeColors?.newValue, preferences.newValue);
+        updateThemeColors(themeColors?.newValue, preferences.newValue);
       };
-      const themeStyle = colors => themeStyleElement.innerText = `
-      :root {
-        --t-black: ${colors.black};
-        --t-white: ${colors.white};
-        --t-white-on-dark: ${colors.whiteOnDark};
-        --t-navy: ${colors.navy};
-        --t-red: ${colors.red};
-        --t-orange: ${colors.orange};
-        --t-yellow: ${colors.yellow};
-        --t-green: ${colors.green};
-        --t-blue: ${colors.blue};
-        --t-purple: ${colors.purple};
-        --t-pink: ${colors.pink};
-        --t-accent: ${colors.accent};
-        --t-secondary-accent: ${colors.secondaryAccent};
-        --t-follow: ${colors.follow};
-      }
-    `;
-      const updateThemeColors = (themeColors, preferences) => {
-        if (preferences && preferences.customColors.enabled) {
-          const rgbColors = preferences.customColors.preferences.colors;
-          Object.keys(rgbColors).forEach(function (color) { rgbColors[color] = hexToRgbString(rgbColors[color]); });
-          themeStyle(rgbColors);
-        } else if (themeColors) themeStyle(themeColors);
-      };
-      const themeHandler = {
-        active: true,
-        start: async function () {
-          if (this.active) this.stop;
-          const { themeColors, preferences } = await browser.storage.local.get();
-          themeStyleElement = document.createElement('style');
-          themeStyleElement.id = 'ui-themeStyleElement';
-          document.documentElement.append(themeStyleElement);
-          updateThemeColors(themeColors, preferences);
-
-          this.active = true;
-          browser.storage.onChanged.addListener(onStorageChanged);
-        },
-        stop: function () {
-          if (!this.active) return;
-          $('#ui-themeStyleElement').remove();
-          this.active = false;
-          browser.storage.onChanged.removeListener(onStorageChanged);
-        }
-      }; */
 
       const init = async () => {
         if (location.search === '?popup=true') {
@@ -470,12 +499,17 @@
           document.body.style.overflow = 'hidden';
         }
 
+        picker = $('#ui-picker');
+        picker.hide();
+
         const installedFeatures = await importFeatures(); // "await has no effect on this type of expression"- it does, actually!
-        let { preferences } = await browser.storage.local.get('preferences');
+        let { preferences, themeColors } = await browser.storage.local.get();
 
         if (typeof preferences === 'undefined') {
           preferences = featureify(installedFeatures, preferences);
         }
+
+        updateThemeColors(themeColors, preferences);
 
         createFeatures(installedFeatures, preferences);
 
@@ -500,7 +534,7 @@
           exportLink.remove();
           URL.revokeObjectURL(url);
         });
-        document.getElementById('ui-import').addEventListener('click', () => {
+        document.getElementById('ui-import').addEventListener('click', function () {
           let preferences;
           const input = document.getElementById('ui-preferenceText');
           if (!input.value) return;
@@ -527,41 +561,19 @@
           browser.storage.local.set({ preferences });
           createFeatures(installedFeatures, preferences);
         });
+        document.querySelector('.ui-featureTab[target="search"]').addEventListener('click', function () {
+          document.getElementById('ui-featureSearch').focus();
+        });
         document.getElementById('ui-featureSearch').addEventListener('input', debounce(onSearch));
-
-        /* const inheritColors = document.getElementById('ui-manage-inheritColors');
-        if (preferences.inheritColors) {
-          inheritColors.checked = true;
-          themeHandler.start();
-        }
-
-        inheritColors.addEventListener('change', async function () {
-          const { preferences } = await browser.storage.local.get('preferences');
-          if (this.checked) {
-            themeHandler.start();
-            preferences.inheritColors = true;
-          }
-          else {
-            themeHandler.stop();
-            preferences.inheritColors = false;
-          }
-          browser.storage.local.set({ preferences });
-        }); */
 
         const version = browser.runtime.getManifest().version;
         document.getElementById('version').innerText = `version: v${version}`;
 
         Object.keys(preferences).forEach(key => { if (preferences[key].new) delete preferences[key].new; });
         browser.storage.local.set({ preferences });
-      };
 
-      Coloris({
-        themeMode: 'auto',
-        alpha: false,
-        theme: 'polaroid',
-        el: '.ui-colors',
-        onChange: debounce(onColorChange)
-      });
+        browser.storage.onChanged.addListener(onStorageChanged);
+      };
 
       init();
     }()

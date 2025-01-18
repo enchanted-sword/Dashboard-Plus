@@ -31,5 +31,6 @@
   "skipAdultWall",
   "noTagPrompt",
   "mutuals",
-  "emptyInbox"
+  "emptyInbox",
+  "customColors"
 ]

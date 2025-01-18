@@ -5,9 +5,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=360, initial-scale=1" />
     <script src="../libraries/jquery.min.js"></script>
-    <script src="../libraries/coloris.js"></script>
-    <link rel="stylesheet" href="../libraries/coloris.css" />
+    <script src="../libraries/culori.min.js"></script>
+    <script src="../libraries/poline.min.js"></script>
     <link rel="stylesheet" href="menu.css" />
+    <link rel="stylesheet" href="picker.css" />
+    <style id="ui-theme">
+      :root {
+        --white: 255 255 255;
+        --white: 250 245 255;
+        --primary: 0 25 53;
+        --accent: 0 148 255;
+        --black: 0 0 12;
+        --purple: 124 92 255;
+      }
+    </style>
   </head>
   <body>
     <aside id="icons-container">
@@ -22,7 +33,7 @@
         style="enable-background: new 0 0 180 180"
         xml:space="preserve"
         ,
-        fill="rgb(var(--text))"
+        fill="rgb(var(--black))"
       >
         <path
           class="st0"
@@ -191,7 +202,56 @@
         </ul>
       </section>
     </main>
-
+    <div id="ui-picker">
+      <section>
+        <figure id="display" width="320" height="128"></figure>
+        <input id="oklch" type="text" />
+        <input id="rgb" type="text" />
+      </section>
+      <section>
+        <header>
+          <h1>lightness</h1>
+          <input
+            id="lightness-value"
+            type="number"
+            min="0"
+            max="100"
+            step="1"
+          />
+        </header>
+        <div class="range">
+          <figure id="lightness-display"></figure>
+          <input id="lightness" type="range" min="0" max="100" step="0.01" />
+        </div>
+      </section>
+      <section>
+        <header>
+          <h1>chroma</h1>
+          <input
+            id="chroma-value"
+            type="number"
+            min="0"
+            max="0.4"
+            step="0.01"
+          />
+        </header>
+        <div class="range">
+          <figure id="chroma-display"></figure>
+          <input id="chroma" type="range" min="0" max="0.4" step="0.0001" />
+        </div>
+      </section>
+      <section>
+        <header>
+          <h1>hue</h1>
+          <input id="hue-value" type="number" min="0" max="360" step="1" />
+        </header>
+        <div class="range">
+          <figure id="hue-display"></figure>
+          <input id="hue" type="range" min="0" max="360" step="0.01" />
+        </div>
+      </section>
+    </div>
     <script src="menu.js"></script>
+    <script src="picker.js"></script>
   </body>
 </html>

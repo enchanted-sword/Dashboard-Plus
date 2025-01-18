@@ -7,8 +7,13 @@ const waitForWindow = () => new Promise(resolve => {
   window.requestAnimationFrame(() => (typeof window.tumblr === 'undefined' || typeof window.tumblr.getCssMap === 'undefined' || typeof window.tumblr.apiFetch === 'undefined') ? waitForWindow().then(resolve) : resolve());
 });
 
-const camelCase = str => str.replace(/(?:-(\w))/g, (a, b) => b.toUpperCase())
-const getThemeColor = color => getComputedStyle(document.getElementById('root')).getPropertyValue(`--${color}`);
+const camelCase = str => str.replace(/(?:-(\w))/g, (a, b) => b.toUpperCase());
+const rgbaRegex = /(?:rgba?\()?(\d{1,3}.+?\d{1,3}.+?\d{1,3})(?:.+?(\d[\.\d]*))?/g
+const getThemeColor = color => {
+  const value = getComputedStyle(document.getElementById('root')).getPropertyValue(`--${color}`);
+  const [r, g, b, a] = value.replace(/[^\d]/g, ' ').replace(/\s{2,}/g, ' ').trim().split(' ');
+  return `${r} ${g} ${b}${a ? ` / ${a}` : ''}`;
+}
 const colors = [
   'black',
   'white',
@@ -22,13 +27,14 @@ const colors = [
   'purple',
   'pink',
   'accent',
-  'secondary-accent',
+  'deprecated-accent',
   'follow'
 ];
 const updateThemeColors = () => {
   colors.forEach(color => {
     themeColors[camelCase(color)] = getThemeColor(color)
   });
+
   window.postMessage({ text: 'db+themeColorUpdateMessage', themeColors }, 'https://www.tumblr.com');
 }
 
@@ -118,7 +124,9 @@ waitForWindow().then(async function () {
   languageData = window.tumblr.languageData;
   window.postMessage({ text: 'db+helperLoadMessage', cssMap, languageData }, 'https://www.tumblr.com');
 
-  window.addEventListener('keydown', event => { if (['p', 'P'].includes(event.key) && event.shiftKey) updateThemeColors(); });
+  window.addEventListener('keydown', event => {
+    if (['p', 'P'].includes(event.key) && event.shiftKey) window.setTimeout(updateThemeColors, 1000);
+  });
   const colorPaletteSwitcher = document.getElementById('colorPaletteSwitcher');
   if (colorPaletteSwitcher) colorPaletteSwitcher.addEventListener('change', () => window.setTimeout(() => updateThemeColors(), 100));
 });

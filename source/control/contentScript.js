@@ -152,7 +152,6 @@
         if (enabledFeatures.length) enabledFeatures.forEach(executeFeature);
         browser.storage.onChanged.addListener(onStorageChanged);
 
-        browser.storage.onChanged.addListener(onStorageChanged);
         window.addEventListener('resize', onResized);
 
         console.info(`running ${enabledFeatures.length} of ${Object.keys(installedFeatures).length} features`)

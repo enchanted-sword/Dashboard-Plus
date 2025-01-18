@@ -3,55 +3,78 @@
   "title": "customize site colors",
   "category": "appearance",
   "description": "customizes the site's color palette",
-  "type": "toggle",
-  "extend": true,
   "preferences": {
-    "colors": {
-      "title": "colors",
-      "type": "colors",
-      "options": {
-        "black": {
-          "title": "black"
-        },
-        "white": {
-          "title": "white"
-        },
-        "whiteOnDark": {
-          "title": "white on dark"
-        },
-        "navy": {
-          "title": "navy"
-        },
-        "red": {
-          "title": "red"
-        },
-        "orange": {
-          "title": "orange"
-        },
-        "yellow": {
-          "title": "yellow"
-        },
-        "green": {
-          "title": "green"
-        },
-        "blue": {
-          "title": "blue"
-        },
-        "purple": {
-          "title": "purple"
-        },
-        "pink": {
-          "title": "pink"
-        },
-        "accent": {
-          "title": "accent"
-        },
-        "secondaryAccent": {
-          "title": "secondary accent"
-        },
-        "follow": {
-          "title": "follow"
-        }
+    "enabled": false,
+    "options": {
+      "menuTheme": {
+        "name": "apply theme to config menu",
+        "type": "toggle",
+        "value": false
+      },
+      "black": {
+        "name": "black",
+        "value": "0 0 0",
+        "type": "color"
+      },
+      "white": {
+        "name": "white",
+        "value": "255 255 255",
+        "type": "color"
+      },
+      "whiteOnDark": {
+        "name": "white on dark",
+        "value": "255 255 255",
+        "type": "color"
+      },
+      "navy": {
+        "name": "navy",
+        "value": "0 25 53",
+        "type": "color"
+      },
+      "red": {
+        "name": "red",
+        "value": "255 73 48",
+        "type": "color"
+      },
+      "orange": {
+        "name": "orange",
+        "value": "255 138 0",
+        "type": "color"
+      },
+      "yellow": {
+        "name": "yellow",
+        "value": "232 215 56",
+        "type": "color"
+      },
+      "green": {
+        "name": "green",
+        "value": "0 207 53",
+        "type": "color"
+      },
+      "blue": {
+        "name": "blue",
+        "value": "0 184 255",
+        "type": "color"
+      },
+      "purple": {
+        "name": "purple",
+        "value": "124 92 255",
+        "type": "color"
+      },
+      "pink": {
+        "name": "pink",
+        "value": "255 98 206",
+        "type": "color"
+      },
+      "accent": {
+        "name": "accent",
+        "value": "0 184 255",
+        "type": "color"
+      },
+      "secondaryAccent": {
+        "name": "secondary accent",
+        "value": "229 231 234",
+        "type": "color"
       }
     }
   },

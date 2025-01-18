@@ -1,8 +1,9 @@
 {
   "dependencies": {
-    "coloris": "^0.1.0",
+    "culori": "^4.0.1",
     "idb": "^8.0.1",
-    "jquery": "^3.7.1"
+    "jquery": "^3.7.1",
+    "poline": "^0.7.0"
   },
   "devDependencies": {
     "eslint": "^8.55.0",
