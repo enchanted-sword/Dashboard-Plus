@@ -1,11 +1,16 @@
 import { getOptions } from './utility/jsTools.js';
 import { style } from './utility/style.js';
-import { hexToRgbString } from './utility/color.js';
 
 const styleElement = style('');
 
-const run = ({ colors }) => {
-  Object.keys(colors).forEach(hex => colors[hex] = hexToRgbString(colors[hex]));
+const newToOldRgb = rgba => { // tumblr uses the old rgb format, rgba(r,g,b,a), whereas dbplus internals use the new format, rgb(r g b / a)
+  const [r, g, b] = rgba.replace(/[^\d]/g, ' ').replace(/\s{2,}/g, ' ').trim().split(' ');
+  return `${r},${g},${b}`;
+}
+
+const run = preferences => {
+  console.log('zawawa!');
+  const colors = Object.fromEntries(Object.entries(preferences).filter(([key]) => key !== 'menuTheme').map(([key, color]) => [key, newToOldRgb(color)]));
   styleElement.innerText = `
     :root {
       --black: ${colors.black} !important;
@@ -19,9 +24,13 @@ const run = ({ colors }) => {
       --blue: ${colors.blue} !important;
       --purple: ${colors.purple} !important;
       --pink: ${colors.pink} !important;
-      --accent: ${colors.accent} !important;
-      --secondary-accent: ${colors.secondaryAccent} !important;
+      --accent: rgba(${colors.accent}, 1) !important;
+      --deprecated-accent: ${colors.secondaryAccent} !important;
       --follow: ${colors.follow} !important;
+
+      --chrome: rgba(${colors.navy}, 1) !important;
+      --chrome-ui: rgba(${colors.accent}, 1) !important;
+      --chrome-ui-hover: color-mix(in srgb, rgb(${colors.accent}), white 10%) !important;
     }
   `;
 };
@@ -30,7 +39,7 @@ export const main = async () => {
   const preferences = await getOptions('customColors');
 
   run(preferences);
-  document.getElementById('root').append(styleElement);
+  document.head.append(styleElement);
 }
 
 export const clean = async () => styleElement.remove();
