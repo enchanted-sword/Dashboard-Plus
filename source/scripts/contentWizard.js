@@ -1,11 +1,9 @@
-import { getOptions, getStorage } from './utility/jsTools.js';
+import { getOptions } from './utility/jsTools.js';
 import { style, s } from './utility/style.js';
 
 const styleElement = style('');
 
-const run = async ({ width, justify }) => {
-  if (width === 540 && justify === 'center') return false;
-
+const run = ({ width, justify }) => {
   styleElement.innerText = `
     ${s('main')} { max-width: ${width}px !important; }
     ${s('postColumn')} { max-width: ${width}px !important; }
@@ -19,13 +17,13 @@ const run = async ({ width, justify }) => {
     }
   `;
 
-  return true;
 };
 
 export const main = async () => {
   const preferences = await getOptions('contentWizard');
+  run(preferences);
 
-  if (await run(preferences)) document.head.append(styleElement);
+  document.head.append(styleElement);
 };
 
 export const clean = async () => styleElement.remove();
