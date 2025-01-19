@@ -1,0 +1,13 @@
+{
+  "name": "postFinder",
+  "title": "post finder",
+  "description": "find posts you've seen before",
+  "category": [
+    "posts",
+    "utility"
+  ],
+  "preferences": {
+    "enabled": false
+  },
+  "js": true
+}

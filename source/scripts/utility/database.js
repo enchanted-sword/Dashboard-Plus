@@ -1,6 +1,6 @@
 const { openDB, wrap } = idb;
 
-const DB_VERSION = 1; // database version
+const DB_VERSION = 3; // database version
 const EXPIRY_TIME = 86400000; // period after which data is considered expired
 
 const updateEvent = 'dbplus-database-update';
@@ -33,12 +33,16 @@ export const openDatabase = async () => openDB('dbplus', DB_VERSION, {
     conditionalCreateIndex(blogStore, 'name', 'name', { unique: true });
     conditionalCreateIndex(blogStore, 'uuid', 'uuid', { unique: true });
     conditionalCreateIndex(blogStore, 'storedAt', 'storedAt', { unique: false });
+
+    const searchStore = conditionalCreateStore(transaction, 'searchStore', { keyPath: 'id' });
+    conditionalCreateIndex(searchStore, 'id', 'id', { unique: true });
+    conditionalCreateIndex(postStore, 'quickInfo', 'quickInfo', { unique: false });
   }
 });
 
 const db = await openDatabase();
 
-const updateNeeded = data => (Date.now() - data.storedAt) > EXPIRY_TIME;
+export const updateNeeded = data => (Date.now() - data.storedAt) > EXPIRY_TIME;
 const smartGetData = async (store, data) => {
   let val;
   const key = data[store.keyPath];

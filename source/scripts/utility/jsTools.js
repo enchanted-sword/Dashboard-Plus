@@ -88,7 +88,7 @@ export const debounce = func => {
 };
 
 /**
- * Reduces an array to unqiue entries 
+ * Reduces an array to unique entries 
  * @param {Array} array
  * @returns {Array}
  */
