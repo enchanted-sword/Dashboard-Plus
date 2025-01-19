@@ -118,6 +118,7 @@ window.addEventListener('message', (event) => {
 waitForWindow().then(async function () {
   const initialState = JSON.parse(document.getElementById('___INITIAL_STATE___').innerText);
   window.initialState = initialState;
+  window.apiKey = initialState?.apiFetchStore?.API_TOKEN;
   updateThemeColors();
   cssMap = await window.tumblr.getCssMap();
   languageData = window.tumblr.languageData;
