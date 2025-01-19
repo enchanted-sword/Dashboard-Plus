@@ -109,7 +109,10 @@ const getNoteObject = async () => {
 export const timelineObject = async post => {
   if (!timelineObjectCache.has(post)) {
     const postObject = await inject(getTimelineObject, [], post);
-    if (typeof postObject !== 'undefined') updateData({ postStore: postObject });
+    if (typeof postObject !== 'undefined') {
+      const blogs = [postObject.blog, ...postObject.trail.map(({ blog }) => blog)];
+      updateData({ postStore: postObject, blogStore: blogs });
+    }
     timelineObjectCache.set(post, postObject);
   }
 
