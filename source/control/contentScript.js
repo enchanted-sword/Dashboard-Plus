@@ -2,7 +2,39 @@
 
 {
   console.info('init');
-  console.info(browser.storage.local.get());
+
+  const preloadStyles = async () => {
+    const t0 = Date.now();
+    const { extensionStyles } = await browser.storage.local.get('extensionStyles');
+
+    const style = Object.assign(document.createElement('style'), {
+      id: 'dbplus-extensionStyles',
+      textContent: extensionStyles
+    });
+
+    document.documentElement.append(style);
+    console.info(`preloaded stylesheets in ${Date.now() - t0}ms`);
+  }
+  preloadStyles();
+
+  const cacheExtensionStyles = () => {
+    const extensionStyles = Array.from(document.styleSheets)
+      ?.filter(sheet => sheet.ownerNode?.matches('.dbplus-style') || sheet.href?.includes('moz-extension'))
+      .flatMap(sheet => Array.from(sheet.cssRules))
+      .map(rule => rule.cssText)
+      .join('\n');
+
+    browser.storage.local.set({ extensionStyles });
+  }
+  const styleObserver = new MutationObserver(mutations => {
+    const changedNodes = mutations
+      .flatMap(({ addedNodes, removedNodes }) => [...addedNodes, ...removedNodes])
+      .filter(node => node instanceof Element)
+      .filter(node => node.matches('.dbplus-style'));
+
+    if (changedNodes.length) cacheExtensionStyles
+  });
+  styleObserver.observe(document.documentElement, { childList: true, subtree: true });
 
   const { getURL } = browser.runtime;
   let cssMap, languageData, themeColors;
@@ -13,14 +45,14 @@
     (document.head || document.documentElement).append(script);
     script.onload = () => script.remove();
   };
-  const observer = new MutationObserver(() => {
+  const reactObserver = new MutationObserver(() => {
     if (document.querySelector('[data-rh]') === null) {
-      observer.disconnect();
+      reactObserver.disconnect();
       scriptManager();
     }
   });
 
-  observer.observe(document.documentElement, { childList: true, subtree: true });
+  reactObserver.observe(document.documentElement, { childList: true, subtree: true });
   runContextScript();
 
   const sendCachedData = async () => {
@@ -48,7 +80,6 @@
   const scriptManager = async () =>
     import(browser.runtime.getURL('/scripts/utility/jsTools.js')).then(({ deepEquals, importFeatures, featureify }) => {  // browser.runtime.getURL is only a valid escape when written in full
       let installedFeatures = {};
-      let menuFeatures = ['inheritColors'];
       let enabledFeatures = [];
       let resizeListeners = [];
       let preferences = {};
@@ -61,6 +92,8 @@
           if (feature.desktopOnly && !resizeListeners.includes(name)) resizeListeners.push(name);
           if (feature.css) {
             const link = Object.assign(document.createElement('link'), {
+              id: `dbplus-styles-${name}`,
+              class: 'dbplus-style',
               rel: 'stylesheet',
               href: getURL(`/scripts/${name}.css`)
             });
@@ -92,6 +125,8 @@
             browser.storage.onChanged.addListener(preferenceListeners[name]);
           }
         } catch (e) { console.error(`failed to execute feature ${name}`, e); }
+
+        return void 0;
       };
       const destroyFeature = async name => {
         const feature = installedFeatures[name];
@@ -110,6 +145,8 @@
           resizeListeners = resizeListeners.filter(val => val !== name);
           enabledFeatures = enabledFeatures.filter(val => val !== name);
         } catch (e) { console.error(`failed to destroy feature ${name}`, e); }
+
+        return void 0;
       };
 
       const onStorageChanged = async (changes, areaName) => {
@@ -123,9 +160,8 @@
         const newlyEnabled = Object.keys(newValue).filter(feature => !oldValue[feature]?.enabled && newValue[feature]?.enabled);
         const newlyDisabled = Object.keys(oldValue).filter(feature => oldValue[feature]?.enabled && !newValue[feature]?.enabled);
 
-        newlyEnabled.forEach(executeFeature);
+        Promise.all([...newlyEnabled.map(executeFeature), ...newlyDisabled.map(destroyFeature)]).then(cacheExtensionStyles)
         enabledFeatures.push(newlyEnabled);
-        newlyDisabled.forEach(destroyFeature);
       };
       const onResized = () => {
         if (window.innerWidth < 990) {
@@ -149,7 +185,10 @@
         preferences = featureify(installedFeatures, preferences);
         enabledFeatures = Object.keys(preferences).filter(key => preferences[key].enabled);
         browser.storage.local.set({ preferences });
-        if (enabledFeatures.length) enabledFeatures.forEach(executeFeature);
+
+        if (enabledFeatures.length) Promise.all(enabledFeatures.map(executeFeature)).then(() => document.getElementById('dbplus-extensionStyles').remove());
+        else document.getElementById('dbplus-extensionStyles').remove();
+
         browser.storage.onChanged.addListener(onStorageChanged);
 
         window.addEventListener('resize', onResized);
@@ -162,5 +201,4 @@
       console.info('loaded!');
       console.info(browser.storage.local.get());
     });
-
 }
