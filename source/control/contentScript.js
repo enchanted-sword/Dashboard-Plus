@@ -3,6 +3,10 @@
 {
   console.info('init');
 
+  const { getURL } = browser.runtime;
+  const urlPrefix = getURL('');
+  let cssMap, languageData, themeColors;
+
   const preloadStyles = async () => {
     const t0 = Date.now();
     const { extensionStyles } = await browser.storage.local.get('extensionStyles');
@@ -19,7 +23,7 @@
 
   const cacheExtensionStyles = () => {
     const extensionStyles = Array.from(document.styleSheets)
-      ?.filter(sheet => sheet.ownerNode?.matches('.dbplus-style') || sheet.href?.includes('moz-extension'))
+      ?.filter(sheet => sheet.ownerNode?.matches('.dbplus-style') || sheet.href?.includes(urlPrefix))
       .flatMap(sheet => Array.from(sheet.cssRules))
       .map(rule => rule.cssText)
       .join('\n');
@@ -35,9 +39,6 @@
     if (changedNodes.length) cacheExtensionStyles
   });
   styleObserver.observe(document.documentElement, { childList: true, subtree: true });
-
-  const { getURL } = browser.runtime;
-  let cssMap, languageData, themeColors;
 
   const runContextScript = () => {
     const script = document.createElement('script');
