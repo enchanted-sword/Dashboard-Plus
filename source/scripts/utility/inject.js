@@ -1,11 +1,11 @@
-import { elem } from './jsTools.js';
+import { noact } from './utility/noact.js';
 
 const getNonce = () => {
   const { nonce } = [...document.scripts].find(script => script.nonce) || '';
   if (!nonce) console.error('Empty nonce attribute: injected script may not run');
   return nonce;
 };
-const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+const AsyncFunction = Object.getPrototypeOf(async function () { }).constructor;
 
 /**
  * @param {Function} func - Function to run in the page context
@@ -18,12 +18,15 @@ export const inject = async (func, args = [], target = document.documentElement)
   const name = `dbplus$${func.name || 'injected'}`;
   const async = func instanceof AsyncFunction;
 
-  const script = elem('script', { nonce: getNonce() }, null, [`{
+  const script = noact({
+    tag: 'script',
+    nonce: getNonce(),
+    children: `{
     const { dataset } = document.currentScript;
     const ${name} = ${func.toString()};
     const returnValue = ${name}(...${JSON.stringify(args)});
     ${async
-      ? `returnValue
+        ? `returnValue
           .then(result => { dataset.result = JSON.stringify(result || null); })
           .catch(exception => { dataset.exception = JSON.stringify({
             message: exception.message,
@@ -32,9 +35,10 @@ export const inject = async (func, args = [], target = document.documentElement)
             ...exception
           })})
         `
-      : 'dataset.result = JSON.stringify(returnValue || null);'
-    }
-  }`]);
+        : 'dataset.result = JSON.stringify(returnValue || null);'
+      }
+    }`
+  });
 
   if (async) {
     return new Promise((resolve, reject) => {

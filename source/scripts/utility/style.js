@@ -1,10 +1,14 @@
-import { elem } from './jsTools.js';
+import { noact } from './noact.js';
 
 /**
  * @param {string} css - string of CSS rules 
  * @returns {Element} an HTML <style> element containing the given rules
  */
-export const style = (css = '') => elem('style', { class: 'dbplus-style' }, null, [css]);
+export const style = (css = '') => noact({
+  tag: 'style',
+  className: 'dbplus-style',
+  children: css
+});
 
 /**
  * @param {string} str - space-separated string of one or more class names

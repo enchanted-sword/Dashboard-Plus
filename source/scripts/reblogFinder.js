@@ -1,6 +1,7 @@
 import { mutationManager, postFunction } from './utility/mutations.js';
 import { noteObject } from './utility/reactProps.js';
-import { elem, debounce } from './utility/jsTools.js';
+import { debounce } from './utility/jsTools.js';
+import { noact } from './utility/noact.js';
 import { svgIcon } from './utility/dashboardElements.js';
 import { translate } from './utility/tumblr.js';
 import { s } from './utility/style.js';
@@ -46,18 +47,32 @@ const reblogQueryFilter = notes => {
     else note.setAttribute(hiddenAttribute, '');
   });
 };
-const onInput = ({ target }) => {
+function onInput({ target }) {
   const postId = target.closest('[data-id]').getAttribute('data-id');
   const noteSelector = `[data-id='${postId}'] [aria-label='${translate('Post Activity')}'] ${s('root')} > ${s('content')} ${s('root')}`;
   mutationManager.stop(reblogQueryFilter);
   if ($(`[${hiddenAttribute}]`).length) reblogQueryFilter(document.querySelectorAll(`[${hiddenAttribute}]`));
   if (target.value) mutationManager.start(noteSelector, reblogQueryFilter);
 };
-const search = elem('div', { id: searchId }, null, [
-  elem('div', { class: 'dbplus-reblogFinder-icon' }, null, [svgIcon('search', 18, 18)]),
-  elem('input', { type: 'text', id: inputId, placeholder: 'Search in notes', value: '' }, { 'input': debounce(onInput) }, null)
-]);
-const toggleSearch = event => {
+
+const search = noact({
+  id: searchId,
+  children: [
+    {
+      className: 'dbplus-reblogFinder-icon',
+      children: svgIcon('search', 18, 18)
+    },
+    {
+      tag: 'input',
+      type: 'text',
+      id: inputId,
+      placeholder: 'Search in notes',
+      value: '',
+      oninput: debounce(onInput)
+    }
+  ]
+})
+function toggleSearch(event) {
   const target = event.target;
   const state = target.getAttribute('active') === 'true' ? true : false;
   const postActivity = target.closest(`[aria-label='${translate('Post Activity')}']`);
@@ -73,7 +88,14 @@ const toggleSearch = event => {
   }
   $(`[${hiddenAttribute}]`).removeAttr(hiddenAttribute);
 };
-const rootButton = () => elem('button', { class: 'dbplus-reblogFinder-tab', title: 'Note Finder', role: 'tab', active: false }, { click: toggleSearch }, [svgIcon('search', 18, 18)]);
+
+const rootButton = () => noact({
+  className: 'dbplus-reblogFinder-tab',
+  title: 'Note Finder',
+  role: 'tab', active: false,
+  onclick: toggleSearch,
+  children: svgIcon('search', 18, 18)
+})
 const addRootButton = elements => elements.forEach(element => element.after(rootButton()));
 
 export const main = async () => mutationManager.start(targetSelector, addRootButton);
