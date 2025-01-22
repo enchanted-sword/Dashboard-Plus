@@ -31,7 +31,7 @@ export const noact = obj => {
     if ('tag' in obj && (validTags.includes(obj.tag) || svgNs.includes(obj.tag))) tag = obj.tag;
     else {
       if ('href' in obj) tag = 'a';
-      else if ('src' in obj) tag = 'img';
+      else if ('src' in obj || 'srcset' in obj) tag = 'img';
       else if ('viewBox' in obj) tag = 'svg';
       else if ('d' in obj) tag = 'path';
       else if ('onclick' in obj) tag = 'button';
