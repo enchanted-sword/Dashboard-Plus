@@ -46,6 +46,7 @@ export const noact = obj => {
       Object.keys(obj).filter(key => !['tag', 'dataset', 'children'].includes(key))
         .map(key => {
           if (/aria[A-Z]/.match(key)) return /(aria)([A-Z].*$)/.exec().slice(1).join('-').toLowerCase();
+          else return key;
         })
         .forEach(key => el.setAttribute(key === 'className' ? 'class' : key, obj[key]));
     } else {
