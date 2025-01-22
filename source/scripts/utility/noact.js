@@ -1,17 +1,17 @@
 const validTags = [
-  'a','abbr','abbr','address','embed','object','area','article','aside','audio','b','base','bdi','bdo',
-  'blockquote','body','br','button','canvas','caption','cite','code','col','colgroup','data','datalist',
-  'dd','del','details','dfn','dialog','ul','div','dl','dt','em','embed','fieldset','figcaption','figure',
-  'footer','form','h1','h2','h3','h4','h5','h6','head','header','hr','html','i','iframe','img','input',
-  'ins','kbd','label','legend','li','link','main','map','mark','meta','meter','nav','noscript','object',
-  'ol','optgroup','option','output','p','param','picture','pre','progress','q','rp','rt','ruby','s','samp',
-  'script','section','select','small','source','span','del','s','strong','style','sub','summary','sup',
-  'table','tbody','td','template','textarea','tfoot','th','thead','time','title','tr','track','u','ul',
-  'var','video','wbr'
+  'a', 'abbr', 'abbr', 'address', 'embed', 'object', 'area', 'article', 'aside', 'audio', 'b', 'base', 'bdi', 'bdo',
+  'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'cite', 'code', 'col', 'colgroup', 'data', 'datalist',
+  'dd', 'del', 'details', 'dfn', 'dialog', 'ul', 'div', 'dl', 'dt', 'em', 'embed', 'fieldset', 'figcaption', 'figure',
+  'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hr', 'html', 'i', 'iframe', 'img', 'input',
+  'ins', 'kbd', 'label', 'legend', 'li', 'link', 'main', 'map', 'mark', 'meta', 'meter', 'nav', 'noscript', 'object',
+  'ol', 'optgroup', 'option', 'output', 'p', 'param', 'picture', 'pre', 'progress', 'q', 'rp', 'rt', 'ruby', 's', 'samp',
+  'script', 'section', 'select', 'small', 'source', 'span', 'del', 's', 'strong', 'style', 'sub', 'summary', 'sup',
+  'table', 'tbody', 'td', 'template', 'textarea', 'tfoot', 'th', 'thead', 'time', 'title', 'tr', 'track', 'u', 'ul',
+  'var', 'video', 'wbr'
 ];
 const svgNs = [
-  'circle','clipPath','defs','ellipse','g','line','linearGradient','marker','mask','mpath','path','pattern',
-  'polygon','polyline','radialGradient','rect','set','stop','svg','symbol','text','textPath','use','view'
+  'circle', 'clipPath', 'defs', 'ellipse', 'g', 'line', 'linearGradient', 'marker', 'mask', 'mpath', 'path', 'pattern',
+  'polygon', 'polyline', 'radialGradient', 'rect', 'set', 'stop', 'svg', 'symbol', 'text', 'textPath', 'use', 'view'
 ];
 
 const isArrow = fn => !fn.toString().replace('async', '').trim().startsWith('function');
@@ -24,7 +24,7 @@ const isArrow = fn => !fn.toString().replace('async', '').trim().startsWith('fun
  * @returns {Element} element
  */
 export const noact = obj => {
-  if (!obj) return ''; 
+  if (!obj) return '';
   let el, tag;
 
   try {
@@ -39,19 +39,14 @@ export const noact = obj => {
       else if ('children' in obj && obj.children.constructor.name === 'Array' && !obj?.children.filter(child => typeof child === 'object').length) tag = 'p';
       else tag = 'div';
     }
-  
+
     if (svgNs.includes(tag)) {
       el = document.createElementNS('http://www.w3.org/2000/svg', tag);
-      if (tag === 'svg' && !('style' in obj)) {
-        !('fill' in obj) && el.setAttribute('fill', 'none');
-        !('stroke' in obj) && el.setAttribute('stroke', 'currentColor');
-        !('stroke-width' in obj) && el.setAttribute('stroke-width', 1.5);
-        !('aria-hidden' in obj) && el.setAttribute('aria-hidden', true);
-      } else if (tag === 'path' && !('style' in obj)) {
-        !('stroke-linejoin' in obj) && el.setAttribute('stroke-linejoin', 'round');
-        !('stroke-linecap' in obj) && el.setAttribute('stroke-linecap', 'round');
-      }
+
       Object.keys(obj).filter(key => !['tag', 'dataset', 'children'].includes(key))
+        .map(key => {
+          if (/aria[A-Z]/.match(key)) return /(aria)([A-Z].*$)/.exec().slice(1).join('-').toLowerCase();
+        })
         .forEach(key => el.setAttribute(key === 'className' ? 'class' : key, obj[key]));
     } else {
       el = document.createElement(tag);
@@ -74,7 +69,7 @@ export const noact = obj => {
         else el.append(document.createTextNode(child));
       });
     }
-  } catch (e) {console.error('noact:', e, obj)}
+  } catch (e) { console.error('noact:', e, obj) }
 
   return el;
 };
