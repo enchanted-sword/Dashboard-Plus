@@ -23,20 +23,20 @@ const isArrow = fn => !fn.toString().replace('async', '').trim().startsWith('fun
  * @property children - can be any combination of existing elements, strings (converted to text nodes), or other valid noact objects (recursively processed)
  * @returns {Element} element
  */
-export const noact = obj => {
+export const noact = (obj = {}) => {
   if (!obj) return '';
   let el, tag;
 
   try {
-    if ('tag' in obj && (validTags.includes(obj.tag) || svgNs.includes(obj.tag))) tag = obj.tag;
+    if (obj.hasOwnProperty('tag') && (validTags.includes(obj.tag) || svgNs.includes(obj.tag))) tag = obj.tag;
     else {
-      if ('href' in obj) tag = 'a';
-      else if ('src' in obj || 'srcset' in obj) tag = 'img';
-      else if ('viewBox' in obj) tag = 'svg';
-      else if ('d' in obj) tag = 'path';
-      else if ('onclick' in obj) tag = 'button';
-      else if ('dateTime' in obj) tag = 'time';
-      else if ('children' in obj && obj.children.constructor.name === 'Array' && !obj?.children.filter(child => typeof child === 'object').length) tag = 'p';
+      if (obj.hasOwnProperty('href')) tag = 'a';
+      else if (obj.hasOwnProperty('src') || obj.hasOwnProperty('srcset')) tag = 'img';
+      else if (obj.hasOwnProperty('viewBox')) tag = 'svg';
+      else if (obj.hasOwnProperty('d')) tag = 'path';
+      else if (obj.hasOwnProperty('onclick')) tag = 'button';
+      else if (obj.hasOwnProperty('dateTime')) tag = 'time';
+      else if (obj.hasOwnProperty('children') && obj.children.constructor.name === 'Array' && !obj?.children.filter(child => typeof child === 'object').length) tag = 'p';
       else tag = 'div';
     }
 
@@ -57,8 +57,8 @@ export const noact = obj => {
         });
     }
 
-    if ('dataset' in obj) Object.keys(obj.dataset).forEach(key => el.dataset[key] = obj.dataset[key]);
-    if ('children' in obj && obj.children !== null) {
+    if (obj.hasOwnProperty('dataset')) Object.keys(obj.dataset).forEach(key => el.dataset[key] = obj.dataset[key]);
+    if (obj.hasOwnProperty('children') && obj.children !== null) {
       [obj.children].flat(Infinity).forEach(child => { // make all children arrays. additionally, some implementations of the function use nesting arrays as children, so they need to be flattened anyways
         if (!child) return;
         if (typeof child === 'object' && 'nodeType' in child) el.append(child);
