@@ -44,10 +44,6 @@ export const noact = obj => {
       el = document.createElementNS('http://www.w3.org/2000/svg', tag);
 
       Object.keys(obj).filter(key => !['tag', 'dataset', 'children'].includes(key))
-        .map(key => {
-          if (/aria[A-Z]/.match(key)) return /(aria)([A-Z].*$)/.exec().slice(1).join('-').toLowerCase();
-          else return key;
-        })
         .forEach(key => el.setAttribute(key === 'className' ? 'class' : key, obj[key]));
     } else {
       el = document.createElement(tag);
