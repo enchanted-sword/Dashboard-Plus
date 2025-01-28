@@ -74,6 +74,7 @@
         --primary: ${preferences.customColors.options.navy};
         --accent: ${preferences.customColors.options.accent};
         --secondary-accent: ${preferences.customColors.options.secondaryAccent};
+        --purple: ${preferences.customColors.options.purple};
         --black: ${preferences.customColors.options.black};
       }`
     }

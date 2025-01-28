@@ -3,16 +3,6 @@
   src: url("./resources/Favorit.ttf") format("truetype");
 }
 
-/* :root {
-  --t-white: 250, 245, 255;
-  --t-navy: 0, 25, 53;
-  --t-black: 0, 0, 12;
-  --t-accent: 0, 148, 255;
-  --t-red: 255, 56, 80;
-  --t-text: var(--black);
-  --t-white-on-dark: 250, 245, 255;
-} */
-
 * {
   transition: 0.3s;
   scrollbar-width: none;
@@ -392,7 +382,7 @@ ul.ui-featureCategory {
   flex-flow: column nowrap;
 
   h2 {
-    border-bottom: var(--border-thickness-sm) solid var(--white-primary-40);
+    border-bottom: var(--border-thickness-sm) solid rgba(var(--black) / 0.26);
     margin-bottom: 8px;
   }
 }
@@ -518,7 +508,7 @@ input.ui-toggle:checked + label {
   vertical-align: middle;
   background-origin: border-box;
   user-select: none;
-  border: var(--border-thickness-sm) solid var(--white-primary-40);
+  border: var(--border-thickness-sm) solid rgba(var(--black) / 0.26);
   border-radius: 8px;
   color: rgb(var(--accent));
   height: 24px;
@@ -554,7 +544,8 @@ input.ui-toggle:checked + label {
 select {
   appearance: none;
   cursor: pointer;
-  border: var(--border-thickness-sm) solid var(--white-primary-60);
+  color: rgb(var(--black));
+  border: var(--border-thickness-sm) solid rgba(var(--black) / 0.26);
   border-radius: var(--border-radius-sm);
   padding: 8px 36px 8px 12px;
   font-size: 18px;
