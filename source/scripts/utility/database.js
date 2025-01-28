@@ -97,6 +97,8 @@ export const updateData = (dataObj, options = null) => {
     options && (storeOptions = options[dataStore]);
     const store = tx.objectStore(dataStore);
     [dataObj[dataStore]].flat().map(async data => {
+      if (typeof data === 'undefined') return;
+
       let updateData;
       const existingData = await smartGetData(store, data);
       if (storeOptions?.updateStrict && typeof existingData === 'undefined') return;
