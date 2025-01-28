@@ -9,7 +9,6 @@ const newToOldRgb = rgba => { // tumblr uses the old rgb format, rgba(r,g,b,a), 
 }
 
 const run = preferences => {
-  console.log('zawawa!');
   const colors = Object.fromEntries(Object.entries(preferences).filter(([key]) => key !== 'menuTheme').map(([key, color]) => [key, newToOldRgb(color)]));
   styleElement.innerText = `
     :root {
