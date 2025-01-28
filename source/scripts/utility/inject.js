@@ -1,4 +1,4 @@
-import { noact } from './utility/noact.js';
+import { noact } from './noact.js';
 
 const getNonce = () => {
   const { nonce } = [...document.scripts].find(script => script.nonce) || '';
