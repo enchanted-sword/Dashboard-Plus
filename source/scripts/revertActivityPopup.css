@@ -16,6 +16,7 @@
       font-size: 0;
     }
     &:first-of-type [tabindex]:after {
+      content: "All";
       font-size: 1rem;
     }
   }
