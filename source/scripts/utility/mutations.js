@@ -1,6 +1,6 @@
 import { cellSelector, postSelector } from './document.js';
 
-const root = document.getElementById('root');
+const root = document.getElementById('root') || document.documentElement;
 const addedNodesQueue = [];
 
 let updateQueued = false;
