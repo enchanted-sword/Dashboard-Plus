@@ -2,7 +2,7 @@
   "name": "customColors",
   "title": "customize site colors",
   "category": "appearance",
-  "description": "customizes the site's color palette",
+  "description": "customizes the site's color palette. this feature is still a work in progress, some elements may not enforce proper contrast",
   "preferences": {
     "enabled": false,
     "options": {
