@@ -48,7 +48,6 @@
   const scriptManager = async () =>
     import(browser.runtime.getURL('/scripts/utility/jsTools.js')).then(({ deepEquals, importFeatures, featureify }) => {  // browser.runtime.getURL is only a valid escape when written in full
       let installedFeatures = {};
-      let menuFeatures = ['inheritColors'];
       let enabledFeatures = [];
       let resizeListeners = [];
       let preferences = {};
