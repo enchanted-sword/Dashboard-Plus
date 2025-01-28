@@ -32,6 +32,7 @@ const run = preferences => {
       --chrome: rgba(${colors.navy}, 1) !important;
       --chrome-ui: rgba(${colors.accent}, 1) !important;
       --chrome-ui-hover: color-mix(in srgb, rgb(${colors.accent}), white 10%) !important;
+      --chrome-ui-pressed: color-mix(in srgb, rgb(${colors.accent}), white 20%) !important;
     }
   `;
 };
