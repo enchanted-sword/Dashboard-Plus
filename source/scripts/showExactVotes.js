@@ -2,7 +2,7 @@ import { mutationManager } from './utility/mutations.js';
 import { percentageNumber } from './utility/reactProps.js';
 import { s, style } from './utility/style.js';
 
-const customClass = 'dbplus-exactVotes'; 
+const customClass = 'dbplus-exactVotes';
 const pollSelector = `${s('pollBlock')}:not(.${customClass})`;
 const styleElement = style(`
   ${s('pollAnswerPercentage')} {
@@ -30,7 +30,7 @@ const detailPolls = async polls => {
 };
 
 export const main = async () => {
-  document.head.append(styleElement);
+  document.body.append(styleElement);
   mutationManager.start(pollSelector, detailPolls);
 }
 

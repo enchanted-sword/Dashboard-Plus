@@ -37,7 +37,7 @@ export const main = async () => {
   if (displayStyle === 'show') styleElement.remove();
   else {
     styleElement.innerText = styles[displayStyle];
-    document.head.append(styleElement);
+    document.body.append(styleElement);
   }
 };
 

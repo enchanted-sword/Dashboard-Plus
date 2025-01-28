@@ -7,7 +7,7 @@ import { noact } from './noact.js';
 export const style = (css = '') => noact({
   tag: 'style',
   className: 'dbplus-style',
-  children: css
+  innerText: css
 });
 
 /**

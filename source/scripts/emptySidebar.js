@@ -18,7 +18,7 @@ export const main = async () => {
 
   if (empty || collapseStyle === 'force') {
     styleElement.innerText = `${s('sidebar')} { display: none; }`;
-    document.head.append(styleElement);
+    document.body.append(styleElement);
   }
 };
 

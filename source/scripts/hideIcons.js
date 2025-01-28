@@ -19,7 +19,7 @@ const run = ({ shop, explore, communities }) => {
 export const main = async () => {
   const preferences = await getOptions('hideIcons');
   run(preferences);
-  document.head.append(styleElement);
+  document.body.append(styleElement);
 };
 
 export const clean = async () => styleElement.remove();

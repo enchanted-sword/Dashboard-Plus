@@ -20,7 +20,7 @@ const run = ({ radius }) => {
 export const main = async () => {
   const preferences = await getOptions('cornerRadii');
 
-  if (run(preferences)) document.head.append(styleElement);
+  if (run(preferences)) document.body.append(styleElement);
 };
 
 export const clean = async () => styleElement.remove();

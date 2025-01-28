@@ -22,7 +22,7 @@ const run = ({ badges, tips, blaze, follow }) => {
 export const main = async () => {
   const preferences = await getOptions('hideInPosts');
   run(preferences)
-  document.head.append(styleElement);
+  document.body.append(styleElement);
 };
 
 export const clean = async () => styleElement.remove();

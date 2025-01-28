@@ -59,7 +59,7 @@ const revertHeaders = async posts => {
 
 export const main = async () => {
   postFunction.start(revertHeaders, postSelector);
-  document.head.append(styleElement)
+  document.body.append(styleElement)
 }
 
 export const clean = async () => {

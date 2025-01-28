@@ -28,7 +28,7 @@ export const main = async () => {
 
   if (selectors.length) {
     mutationManager.start(selectors.join(','), hideInStreamElements);
-    document.head.append(styleElement);
+    document.body.append(styleElement);
   }
 };
 

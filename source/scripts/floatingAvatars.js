@@ -72,7 +72,7 @@ export const main = async () => {
   ({ scroll, showOwnAvatar } = await getOptions('floatingAvatars'));
   postFunction.start(addScrollingAvatars, postSelector);
 
-  if (!scroll) document.head.append(staticStyleElement);
+  if (!scroll) document.body.append(staticStyleElement);
   if (showOwnAvatar) addUserPortrait();
 }
 
@@ -91,7 +91,7 @@ export const clean = async () => {
 export const update = async preferences => {
   ({ scroll, showOwnAvatar } = preferences);
 
-  if (!scroll) document.head.append(staticStyleElement);
+  if (!scroll) document.body.append(staticStyleElement);
   else staticStyleElement.remove();
   if (showOwnAvatar) addUserPortrait();
   else $('.dbplus-userAvatarWrapper').remove();

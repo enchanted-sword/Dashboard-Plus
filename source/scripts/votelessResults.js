@@ -35,7 +35,7 @@ const showVotes = async polls => {
 };
 
 export const main = async () => {
-  document.head.append(styleElement);
+  document.body.append(styleElement);
   mutationManager.start(pollSelector, showVotes);
 }
 
