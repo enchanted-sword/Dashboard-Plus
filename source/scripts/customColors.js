@@ -27,6 +27,7 @@ const run = preferences => {
 
       --color-primary-link: rgb(${colors.accent}) !important;
       --unread-tint: rgba(${colors.accent}, .1) !important;
+      --unread-tint-hover: rgba(${colors.accent}, .2) !important;
 
       --chrome: rgba(${colors.navy}, 1) !important;
       --chrome-ui: rgba(${colors.accent}, 1) !important;
@@ -39,7 +40,7 @@ export const main = async () => {
   const preferences = await getOptions('customColors');
 
   run(preferences);
-  document.head.append(styleElement);
+  document.body.append(styleElement);
 }
 
 export const clean = async () => styleElement.remove();
