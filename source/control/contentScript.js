@@ -91,7 +91,7 @@
 
             browser.storage.onChanged.addListener(preferenceListeners[name]);
           }
-        } catch (e) { console.error(`failed to execute feature ${name}`, e); }
+        } catch (e) { console.error(`failed to execute feature ${name}`, e, 'IF THIS IS A "FAILED TO IMPORT DYNAMIC MODULE" ERROR, ENABLE WARNINGS IN THE BROWSER CONSOLE TO DISPLAY IMPORT PATH ERRORS'); }
       };
       const destroyFeature = async name => {
         const feature = installedFeatures[name];
