@@ -12,7 +12,6 @@ export const main = async () => {
   if (mutuals) selectors.push(mutualLabelSelector);
   if (following) selectors.push(followingLabelSelector);
 
-  console.log(selectors);
   if (selectors.length) {
     styleElement.innerText = `${selectors.join(',')} { display: none !important; }`;
     document.body.append(styleElement);
