@@ -24,7 +24,15 @@
   const cacheExtensionStyles = () => {
     const extensionStyles = Array.from(document.styleSheets)
       ?.filter(sheet => sheet.ownerNode?.matches('.dbplus-style') || sheet.href?.includes(urlPrefix))
-      .flatMap(sheet => Array.from(sheet.cssRules))
+      .flatMap(sheet => {
+        try {
+          return Array.from(sheet.cssRules)
+        } catch (e) {
+          console.error(e, sheet);
+          return void 0;
+        }
+      })
+      .filter(rule => !!rule)
       .map(rule => rule.cssText)
       .join('\n');
 
