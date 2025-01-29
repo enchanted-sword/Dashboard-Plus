@@ -176,7 +176,7 @@ export const clearData = (dataObj, options = null) => {
     let storeOptions, index;
     options && (storeOptions = options[dataStore]);
     const store = tx.objectStore(dataStore);
-    'index' in storeOptions && (index = store.index(storeOptions.index));
+    storeOptions && ('index' in storeOptions) && (index = store.index(storeOptions.index));
     [dataObj[dataStore]].flat().map(async key => {
       if (!key) {
         console.warn('clearData: key is undefined');
