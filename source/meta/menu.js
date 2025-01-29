@@ -477,8 +477,8 @@
       };
 
       const updateThemeColors = (themeColors, preferences) => {
-        if (preferences.customColors.enabled && preferences.customColors.options.menuTheme) {
-          updateTheme(preferences.customColors.options);
+        if (preferences.customColors?.enabled && preferences.customColors?.options.menuTheme) {
+          updateTheme(preferences?.customColors.options);
         } else {
           updateTheme(themeColors);
         }
