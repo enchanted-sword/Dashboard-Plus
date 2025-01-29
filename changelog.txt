@@ -8,6 +8,7 @@ general
 - improved stylesheet preloading to speed up visual changes to the page
 - fixed bug where the mutation manager would encounter a yet-to-be-defined root node
 - fixed undefined data error when trying to store deleted blogs
+- added api request queueing to reduce potential rate limiting
 
 new feature! customize site colors
 
@@ -17,6 +18,10 @@ new feature! customize site colors
 horizontal navigation
 
 - fixed settings submenu icon not showing up
+
+show mutuals
+
+- added blog database integration to cut down on the need for api requests
 
 v1.1.0
 
