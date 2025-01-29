@@ -59,7 +59,7 @@ const search = noact({
     },
     {
       tag: 'input',
-      type: text,
+      type: 'text',
       id: inputId,
       placeholder: 'Search the timeline',
       value: '',
