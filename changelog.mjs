@@ -24,6 +24,8 @@ const main = async () => {
 
   htmlChangelog.write(html, 0);
   textChangelog.write(markdown.replace(/#{1,3}\s/g, ''), 0);
+
+  [markdownChangelog, htmlChangelog, textChangelog].map(fileHandle => fileHandle.close());
 };
 
 main();
