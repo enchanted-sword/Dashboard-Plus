@@ -7,6 +7,7 @@
   },
   "devDependencies": {
     "eslint": "^8.55.0",
+    "marked": "^15.0.6",
     "web-ext": "^7.11.0"
   },
   "scripts": {
@@ -14,7 +15,8 @@
     "posttest": "eslint ./",
     "build": "web-ext build",
     "start:dev": "web-ext run --firefox=deved -t=firefox-desktop",
-    "start:adb": "web-ext run -t=firefox-android --adb-device=[] --firefox-apk=org.mozilla.fenix"
+    "start:adb": "web-ext run -t=firefox-android --adb-device=[] --firefox-apk=org.mozilla.fenix",
+    "changelog": "node changelog.mjs"
   },
   "webExt": {
     "sourceDir": "source/",
