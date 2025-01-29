@@ -1,3 +1,23 @@
+# v1.2.0
+
+## general
+
+- fixed a bunch of features' update methods to reduce visual flashing
+- implemented menu themes other than true blue
+- replaced evil innerHTML methods with noact to please web-ext-lint
+- improved stylesheet preloading to speed up visual changes to the page
+- fixed bug where the mutation manager would encounter a yet-to-be-defined root node
+- fixed undefined data error when trying to store deleted blogs
+
+# new feature! customize site colors
+
+- customizes the site's color palettes (and optionally, the menu theme)
+- work in progress feature, contrast may not be properly enforced for some elements
+
+# horizontal navigation
+
+- fixed settings submenu icon not showing up
+
 # v1.1.0
 
 ## general
