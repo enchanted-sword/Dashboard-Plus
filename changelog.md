@@ -10,16 +10,16 @@
 - fixed undefined data error when trying to store deleted blogs
 - added api request queueing to reduce potential rate limiting
 
-# new feature! customize site colors
+## new feature! customize site colors
 
 - customizes the site's color palettes (and optionally, the menu theme)
 - work in progress feature, contrast may not be properly enforced for some elements
 
-# horizontal navigation
+## horizontal navigation
 
 - fixed settings submenu icon not showing up
 
-# show mutuals
+## show mutuals
 
 - added blog database integration to cut down on the need for api requests
 
