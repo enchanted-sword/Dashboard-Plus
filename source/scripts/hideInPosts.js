@@ -6,7 +6,7 @@ const badgeSelector = `${s('badgesContainer')},${s('peeprHeaderBadgesWrapper')}`
 const tipSelector = `${s('targetWrapperFlex')}:has(button[aria-label='${translate('Tip')}']),button[aria-label='${translate('Tip button')}']`;
 const blazeSelector = `${s('controlIcon')}:has(button[aria-label='${translate('Blaze')}'])`;
 const followSelector = `button[aria-label='${translate('Follow')}']`;
-const styleElement = style('`.${hiddenClass} { display: none !important; }`');
+const styleElement = style('');
 
 const run = ({ badges, tips, blaze, follow }) => {
   const selectors = [];
@@ -22,7 +22,7 @@ const run = ({ badges, tips, blaze, follow }) => {
 export const main = async () => {
   const preferences = await getOptions('hideInPosts');
   run(preferences)
-  document.head.append(styleElement);
+  document.body.append(styleElement);
 };
 
 export const clean = async () => styleElement.remove();

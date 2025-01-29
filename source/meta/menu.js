@@ -41,6 +41,7 @@
             --primary: ${colors.navy};
             --accent: ${colors.accent};
             --secondary-accent: ${colors.deprecatedAccent || colors.secondaryAccent};
+            --purple: ${colors.purple};
             --black: ${colors.black};
           }`;
       };

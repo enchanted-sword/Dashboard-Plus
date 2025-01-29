@@ -22,7 +22,7 @@ const run = ({ scale }) => {
 export const main = async () => {
   const preferences = await getOptions('messagingScale');
 
-  if (run(preferences)) document.head.append(styleElement);
+  if (run(preferences)) document.body.append(styleElement);
 };
 
 export const clean = async () => styleElement.remove();

@@ -5,7 +5,7 @@ const postData = data => {
   if (!connected) {
     connectionPort = browser.runtime.connect({ name: "dnrPort" });
     connected = true;
-    
+
     connectionPort.onDisconnect.addListener(() => connected = false)
   }
   connectionPort.postMessage({ action: 'dynamicDnr', data });
@@ -15,14 +15,14 @@ const encodeId = str => {
   let num = 0
   for (const char of str) num += char.charCodeAt(0);
   return num;
-}
+};
 
 export const declarativeNetRequest = Object.freeze({
   /**
    * Creates a DNR rule with a unique id
-   * @param {*} uniqueIdentifier - Feature name or other unique identifying string
-   * @param {*} regexFilter - declarativeNetRequest regexFilter string
-   * @param {*} action - declarativeNetRequest action object
+   * @param {string} uniqueIdentifier - Feature name or other unique identifying string
+   * @param {string} regexFilter - declarativeNetRequest regexFilter string
+   * @param {object} action - declarativeNetRequest action object
    * @returns declarativeNetRequest rule
    */
   newRule: (uniqueIdentifier, regexFilter, action) => {
@@ -31,8 +31,8 @@ export const declarativeNetRequest = Object.freeze({
       priority: 6,
       condition: {
         regexFilter,
-        requestDomains: [ 'tumblr.com' ],
-        resourceTypes: [ 'xmlhttprequest' ]
+        requestDomains: ['tumblr.com'],
+        resourceTypes: ['xmlhttprequest']
       },
       action
     };

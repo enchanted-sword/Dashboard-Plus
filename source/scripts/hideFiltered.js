@@ -52,7 +52,7 @@ export const main = async function () {
   ({ filterOptions, blockedStyle } = await getOptions('hideFiltered'));
 
   postFunction.start(hideFilteredContent, postSelector);
-  document.head.append(styleElement);
+  document.body.append(styleElement);
 };
 
 export const clean = async function () {

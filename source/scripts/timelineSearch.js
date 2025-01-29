@@ -1,6 +1,6 @@
 import { mutationManager, postFunction } from './utility/mutations.js';
 import { timelineObject } from './utility/reactProps.js';
-import { elem } from './utility/jsTools.js';
+import { noact } from './utility/noact.js';
 import { svgIcon } from './utility/dashboardElements.js';
 import { debounce } from './utility/jsTools.js';
 
@@ -45,15 +45,28 @@ const queryFilter = posts => {
     else post.removeAttribute(hiddenAttribute);
   });
 };
-const onInput = ({ target }) => {
+function onInput({ target }) {
   postFunction.stop(queryFilter);
   if ($(`[${hiddenAttribute}]`).length) queryFilter(document.querySelectorAll(`[${hiddenAttribute}]`));
   if (target.value) postFunction.start(queryFilter, postSelector);
 };
-const search = elem('div', { class: 'dbplus-timelineSearchContainer' }, null, [
-  elem('div', { class: 'dbplus-timelineSearchIcon' }, null, [svgIcon('search', 18, 18, '', 'rgba(var(--white-on-dark),.65)')]),
-  elem('input', { type: 'text', id: inputId, placeholder: 'Search the timeline', value: '' }, { input: debounce(onInput) }, null)
-]);
+const search = noact({
+  className: 'dbplus-timelineSearchContainer',
+  children: [
+    {
+      className: 'dbplus-timelineSearchIcon',
+      children: svgIcon('search', 18, 18, '', 'rgba(var(--white-on-dark),.65)')
+    },
+    {
+      tag: 'input',
+      type: text,
+      id: inputId,
+      placeholder: 'Search the timeline',
+      value: '',
+      oninput: debounce(onInput)
+    }
+  ]
+});
 const renderSearch = element => element[0].prepend(search);
 
 export const main = async () => mutationManager.start(targetSelector, renderSearch);

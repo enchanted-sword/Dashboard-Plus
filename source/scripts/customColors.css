@@ -1,0 +1,12 @@
+[data-css~="activity"],
+[data-css~="bar"] [data-css~="postTypeButton"] {
+  color: rgb(var(--black)) !important;
+}
+
+[data-css~="activity"] [data-css~="summary"] {
+  color: color-mix(
+    in srgb,
+    rgb(var(--black)),
+    rgb(var(--white)) 50%
+  ) !important;
+}

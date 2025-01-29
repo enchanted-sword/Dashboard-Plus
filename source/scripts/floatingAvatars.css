@@ -1,55 +1,66 @@
 @media (min-width: 990px) {
   #base-container:not([data-navigation="horizontal"], [data-route*="peepr"]) {
-    [data-css~="navigationWrapper"] { margin: 0 !important; }
-    [data-css~="tabsHeader"] { margin-left: -93px !important ;}
+    [data-css~="navigationWrapper"] {
+      margin: 0 !important;
+    }
+    [data-css~="tabsHeader"] {
+      margin-left: -93px !important ;
+    }
   }
   #base-container:not([data-route*="peepr"]) {
     [data-css~="mainContentWrapper"] {
       flex-basis: 982px;
-      
-      [data-css~='main']:not([data-css~='sidebar'] [data-css~='main']) { margin-left: 93px !important; }
-      [data-css~="container"] { max-width: none !important }
+
+      [data-css~="main"]:not([data-css~="sidebar"] [data-css~="main"]) {
+        margin-left: 93px !important;
+      }
+      [data-css~="container"] {
+        max-width: none !important;
+      }
     }
-    
   }
-  
+
   .dbplus-userAvatarWrapper {
     top: 0;
     position: absolute;
     left: -84px;
-  
+
     > [data-css~="avatar"] {
       position: absolute !important;
       top: 0 !important;
     }
   }
-  
+
   .dbplus-stickyContainer {
     color: RGB(var(--white-on-dark));
     height: 100%;
     position: absolute;
     left: -85px;
     padding: 0;
-  
+
     > [data-css~="avatar"] {
       position: sticky;
       top: 69px;
-      transition: top .25s;
+      transition: top 0.25s;
     }
     [data-css~="blogLink"] > [data-css~="avatar"],
     [data-css~="blogLink"] > [data-css~="avatar"] [data-css~="image"],
     [data-css~="anonymous"] {
-    width: 64px !important;
-    height: 64px !important;
+      width: 64px !important;
+      height: 64px !important;
     }
     [data-css~="blogLink"] > [data-css~="subavatar"],
     [data-css~="blogLink"] > [data-css~="subavatar"] [data-css~="image"] {
-    width: 32px !important;
-    height: 32px !important;
+      width: 32px !important;
+      height: 32px !important;
     }
-    [data-css~="badge"] { display: none; }
+    [data-css~="badge"] {
+      display: none;
+    }
   }
-  .dbplus-avatarWrapper { position: relative; }
+  .dbplus-avatarWrapper {
+    position: relative;
+  }
   .dbplus-blogLink {
     cursor: pointer;
     word-break: break-word;
@@ -60,7 +71,11 @@
     vertical-align: top;
     display: inline-block;
   }
-  .dbplus-avatarInner { position: relative; }
+  .dbplus-avatarInner {
+    width: 64px;
+    height: 64px;
+    position: relative;
+  }
   .dbplus-avatarWrapperInner {
     border-radius: var(--border-radius-small);
     width: 100%;
@@ -71,14 +86,19 @@
     width: 100%;
     line-height: 0;
     position: relative;
+    padding-bottom: 100%;
   }
   .dbplus-avatarImage {
     position: absolute;
     top: 0;
     left: 0;
+    width: 64px;
+    height: 64px;
     object-fit: cover;
     visibility: visible;
   }
 
-  figure[data-css~="anonymous"] {background-image: url(https://assets.tumblr.com/pop/src/assets/images/avatar/anonymous_avatar_96-223fabe0.png) !important; }
+  figure[data-css~="anonymous"] {
+    background-image: url(https://assets.tumblr.com/pop/src/assets/images/avatar/anonymous_avatar_96-223fabe0.png) !important;
+  }
 }

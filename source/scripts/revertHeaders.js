@@ -1,4 +1,4 @@
-import { elem } from './utility/jsTools.js';
+import { noact } from './utility/noact.js';
 import { postFunction } from './utility/mutations.js';
 import { timelineObject } from './utility/reactProps.js';
 import { s, style } from './utility/style.js';
@@ -7,7 +7,11 @@ import { addUrlPopover, svgIcon } from './utility/dashboardElements.js';
 
 const customClass = 'dbplus-revertHeaders'
 const postSelector = `[data-timeline-id]:not([data-route="user/inbox"]) [data-id] article:not(.${customClass})`;
-const reblogIcon = () => elem('span', { class: 'dbplus-reblogIcon' }, null, [svgIcon('reblog-compact', 15, 15)]);
+const reblogIcon = () => noact({
+  tag: 'span',
+  className: 'dbplus-reblogIcon',
+  children: svgIcon('reblog-compact', 15, 15)
+});
 const styleElement = style(`
   ${s('attribution')} ${s('targetWrapperInline')} + ${s('badgeContainer')} { margin-left: 5px; }
   .dbplus-reblogIcon {
@@ -55,7 +59,7 @@ const revertHeaders = async posts => {
 
 export const main = async () => {
   postFunction.start(revertHeaders, postSelector);
-  document.head.append(styleElement)
+  document.body.append(styleElement)
 }
 
 export const clean = async () => {

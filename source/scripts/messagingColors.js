@@ -79,7 +79,7 @@ export const main = async () => {
   const preferences = await getOptions('messagingColors');
 
   run(preferences);
-  document.head.append(styleElement);
+  document.body.append(styleElement);
 };
 
 export const clean = async () => {

@@ -1,7 +1,7 @@
 import { mutationManager } from './utility/mutations.js';
 import { percentageNumber } from './utility/reactProps.js';
 import { s, style } from './utility/style.js';
-import { elem } from './utility/jsTools.js';
+import { noact } from './utility/noact.js';
 
 const customClass = 'dbplus-votelessResults';
 const pollSelector = `${s('pollBlock')}:not(.${customClass})`;
@@ -24,7 +24,10 @@ const showVotes = async polls => {
     const votes = Array.from(poll.querySelectorAll(`:scope button${s('vote')}`));
     await Promise.all(votes.map(async vote => {
       const { percentage } = await percentageNumber(vote);
-      const percentageBar = elem('div', { class: 'dbplus-percentageBar', style: `width: ${percentage}%;` }, null, null);
+      const percentageBar = noact({
+        className: 'dbplus-percentageBar',
+        style: `width: ${percentage}%;`
+      })
       vote.prepend(percentageBar);
     }));
     poll.classList.add(customClass);
@@ -32,7 +35,7 @@ const showVotes = async polls => {
 };
 
 export const main = async () => {
-  document.head.append(styleElement);
+  document.body.append(styleElement);
   mutationManager.start(pollSelector, showVotes);
 }
 

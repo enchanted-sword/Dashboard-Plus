@@ -23,7 +23,7 @@ export const main = async () => {
   const preferences = await getOptions('contentWizard');
   run(preferences);
 
-  document.head.append(styleElement);
+  document.body.append(styleElement);
 };
 
 export const clean = async () => styleElement.remove();

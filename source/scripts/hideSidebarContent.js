@@ -20,7 +20,7 @@ export const main = async () => {
 
   if (selectors.length) {
     styleElement.innerText = `${selectors.join(',')} { display: none !important; }`;
-    document.head.append(styleElement);
+    document.body.append(styleElement);
   } else styleElement.remove();
 };
 

@@ -24,12 +24,15 @@ const run = preferences => {
       --purple: ${colors.purple} !important;
       --pink: ${colors.pink} !important;
       --accent: rgba(${colors.accent}, 1) !important;
-      --deprecated-accent: ${colors.secondaryAccent} !important;
-      --follow: ${colors.follow} !important;
+
+      --color-primary-link: rgb(${colors.accent}) !important;
+      --unread-tint: rgba(${colors.accent}, .1) !important;
+      --unread-tint-hover: rgba(${colors.accent}, .2) !important;
 
       --chrome: rgba(${colors.navy}, 1) !important;
       --chrome-ui: rgba(${colors.accent}, 1) !important;
       --chrome-ui-hover: color-mix(in srgb, rgb(${colors.accent}), white 10%) !important;
+      --chrome-ui-pressed: color-mix(in srgb, rgb(${colors.accent}), white 20%) !important;
     }
   `;
 };
@@ -38,7 +41,7 @@ export const main = async () => {
   const preferences = await getOptions('customColors');
 
   run(preferences);
-  document.head.append(styleElement);
+  document.body.append(styleElement);
 }
 
 export const clean = async () => styleElement.remove();
