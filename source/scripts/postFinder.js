@@ -60,7 +60,7 @@ const indexPosts = async (force = false) => {
   }
 };
 const indexFromUpdate = async ({ detail: { targets } }) => { // take advantage of dispatched events to index new posts for free without opening extra cursors
-  if (targets.hasOwnProperty('postStore')) {
+  if ('postStore' in targets) {
     [targets.postStore].flat().map(post => {
       if (postIndices.includes(post.id)) postIndices.push(post.id);
       if (!searchableIndices.includes(post.id) || updateNeeded(post)) {

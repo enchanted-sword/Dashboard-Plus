@@ -49,7 +49,7 @@ function onInput({ target }) {
   postFunction.stop(queryFilter);
   if ($(`[${hiddenAttribute}]`).length) queryFilter(document.querySelectorAll(`[${hiddenAttribute}]`));
   if (target.value) postFunction.start(queryFilter, postSelector);
-};
+}
 const search = noact({
   className: 'dbplus-timelineSearchContainer',
   children: [

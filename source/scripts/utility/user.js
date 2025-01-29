@@ -44,7 +44,7 @@ export const adminBlogNames = adminBlogs.map(blog => blog.name);
 export const isFollowing = async handle => {
   const blog = await getIndexedBlogs(handle);
 
-  if (blog.hasOwnProperty('followedBy')) return blog.followedBy;
+  if ('followedBy' in blog) return blog.followedBy;
   else {
     const { response } = await apiFetch(`/v2/blog/${userInfo.name}/followed_by?query=${handle}`);
 

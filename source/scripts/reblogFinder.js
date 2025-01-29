@@ -53,7 +53,7 @@ function onInput({ target }) {
   mutationManager.stop(reblogQueryFilter);
   if ($(`[${hiddenAttribute}]`).length) reblogQueryFilter(document.querySelectorAll(`[${hiddenAttribute}]`));
   if (target.value) mutationManager.start(noteSelector, reblogQueryFilter);
-};
+}
 
 const search = noact({
   id: searchId,
@@ -87,7 +87,7 @@ function toggleSearch(event) {
     target.setAttribute('active', 'true');
   }
   $(`[${hiddenAttribute}]`).removeAttr(hiddenAttribute);
-};
+}
 
 const rootButton = () => noact({
   className: 'dbplus-reblogFinder-tab',

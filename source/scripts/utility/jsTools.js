@@ -85,7 +85,7 @@ export function debounce(func) {
     clearTimeout(timeoutID);
     timeoutID = setTimeout(function () { func(...args) }, 500);
   };
-};
+}
 
 /**
  * Reduces an array to unique entries 
