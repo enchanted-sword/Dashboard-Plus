@@ -24,7 +24,7 @@ const run = async ({ blogRecommendations, emptyTagView, relatedPosts, radar, ads
 export const main = async () => {
   const preferences = await getOptions('hideSidebarContent');
 
-  run(preferences)
+  run(preferences);
   document.body.append(styleElement);
 };
 
