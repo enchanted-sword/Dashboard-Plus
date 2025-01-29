@@ -37,54 +37,54 @@ export const translate = (string = '') => `${languageData.translations[string] |
  */
 export const replaceTranslate = (string = '', replaceValue = '') => translate(string).replace('%1$s', replaceValue);
 
+const apiQueue = new WeakMap();
+
 /**
  * @param {...any} args - Arguments to pass to the API call
  * @see {@link https://github.com/tumblr/docs/blob/master/web-platform.md#apifetch}
  * @returns {Promise<Response|Error>} Resolves or rejects with result of the API call
  */
 export const apiFetch = async (...args) => {
-  return inject(
-    async (resource, init = {}) => {
-      const isReactLoaded = () => document.querySelector('[data-rh]') === null;
-      const waitForLoad = () => new Promise(resolve => {
-        window.requestAnimationFrame(() => (isReactLoaded() ? resolve() : waitForLoad().then(resolve)));
-      });
+  if (!apiQueue.has(args)) {
+    apiQueue.set(args, inject(
+      async (resource, init = {}) => {
+        init.headers ??= {};
+        init.headers['DBPlus'] = '1';
 
-      init.headers ??= {};
-      init.headers['DBPlus'] = '1';
+        if (init.body !== undefined) {
+          const objects = [init.body];
 
-      if (init.body !== undefined) {
-        const objects = [init.body];
+          while (objects.length !== 0) {
+            const currentObjects = objects.splice(0);
 
-        while (objects.length !== 0) {
-          const currentObjects = objects.splice(0);
+            currentObjects.forEach(obj => {
+              Object.keys(obj).forEach(key => {
+                const snakeCaseKey = key
+                  .replace(/^[A-Z]/, match => match.toLowerCase())
+                  .replace(/[A-Z]/g, match => `_${match.toLowerCase()}`);
 
-          currentObjects.forEach(obj => {
-            Object.keys(obj).forEach(key => {
-              const snakeCaseKey = key
-                .replace(/^[A-Z]/, match => match.toLowerCase())
-                .replace(/[A-Z]/g, match => `_${match.toLowerCase()}`);
-
-              if (snakeCaseKey !== key) {
-                obj[snakeCaseKey] = obj[key];
-                delete obj[key];
-              }
+                if (snakeCaseKey !== key) {
+                  obj[snakeCaseKey] = obj[key];
+                  delete obj[key];
+                }
+              });
             });
-          });
 
-          objects.push(
-            ...currentObjects
-              .flatMap(Object.values)
-              .filter(value => value instanceof Object)
-          );
+            objects.push(
+              ...currentObjects
+                .flatMap(Object.values)
+                .filter(value => value instanceof Object)
+            );
+          }
         }
-      }
 
-      await waitForLoad();
-      return window.tumblr.apiFetch(resource, init);
-    },
-    args
-  );
+        return window.tumblr.apiFetch(resource, init);
+      },
+      args
+    ));
+  }
+
+  return apiQueue.get(args);
 };
 
 /**
