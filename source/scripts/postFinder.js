@@ -1,7 +1,10 @@
 import { openDatabase, updateData, updateNeeded } from './utility/database.js';
-import { unique } from './utility/jsTools.js';
+import { unique, debounce } from './utility/jsTools.js';
+import { noact } from './utility/noact.js';
 
-let db, postIndices, searchableIndices;
+const customClass = 'dbplus-postFinder';
+
+let db, postIndices, searchableIndices, splitMode = 'comma';
 const textSeparator = 'φ(,)';
 
 const unstringifyHits = hit => {
@@ -107,6 +110,36 @@ const indexFromUpdate = async ({ detail: { targets } }) => { // take advantage o
   }
 };
 
+async function onKeywordSearch({ target }) {
+  let keywords = target.value;
+
+  if (splitMode === 'comma') keywords = keywords.split(',').map(v => v.trim()).filter(isDefined);
+
+  if (!(keywords.length)) return;
+
+  const hits = await keywordSearch(...keywords);
+  console.log(hits);
+}
+
+const ui = noact({
+  className: customClass,
+  children: [
+    {
+      tag: 'h1',
+      className: `${customClass}-title`,
+      children: 'post finder'
+    },
+    {
+      tag: 'input',
+      id: `${customClass}-keywordInput`,
+      className: `${customClass}-input`,
+      type: 'text',
+      placeholder: 'search all fields',
+      oninput: debounce(onKeywordSearch)
+    }
+  ]
+});
+
 export const main = async () => {
   db = await openDatabase();
   postIndices = await db.getAllKeys('postStore');
@@ -115,7 +148,9 @@ export const main = async () => {
   indexPosts();
   window.addEventListener('dbplus-database-update', indexFromUpdate);
 
-  console.log(strictCategorySearch({ blogs: 'dragongirlsweetie', texts: '[e;ase' }));
-}
+  document.body.append(ui);
+};
 
-export const clean = async () => void 0;
+export const clean = async () => {
+  document.querySelectorAll(`.${customClass}`).forEach(e => e.remove());
+};
