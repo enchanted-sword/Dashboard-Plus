@@ -11,7 +11,7 @@ const staticStyleElement = style(`.dbplus-stickyContainer > ${s('avatar')} { pos
 const customClass = 'dbplus-floatingAvatars';
 const postSelector = `${s('main')} > :not(${s('blogTimeline')}) [data-timeline-id]:not([data-timeline-id*='posts/'],${s('masonry')}) [tabindex='-1']:not([data-css*='masonryTimelineObject']) article:not(.${customClass})`;
 const userAvatar = noact({
-  className: 'dbplus-avatarWrapperOuter',
+  className: 'dbplus-avatarWrapperOuter dbplus-userAvatarWrapper',
   children: {
     className: 'dbplus-avatarWrapper',
     role: 'figure',
