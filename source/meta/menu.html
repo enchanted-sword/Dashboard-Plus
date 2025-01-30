@@ -116,29 +116,22 @@
         <a href="https://tumblr.com/dragongirlsnout" target="_blank" class="ui-aboutLink">my tumblr!</a>
         <a href="https://www.paypal.com/paypalme/dragongirled" target="_blank" class="ui-aboutLink">support my work!</a>
         <div class="ui-aboutLink ui-changelog">
-          <h1 style="text-align:center;">v1.2.0</h1>
+          <h1 style="text-align:center;">v1.2.1</h1>
           <h2 style="text-align:center;">general</h2>
           <ul>
-            <li>fixed a bunch of features&#39; update methods to reduce visual flashing</li>
-            <li>implemented menu themes other than true blue</li>
-            <li>replaced evil innerHTML methods with noact to please web-ext-lint</li>
-            <li>improved stylesheet preloading to speed up visual changes to the page</li>
-            <li>fixed bug where the mutation manager would encounter a yet-to-be-defined root node</li>
-            <li>fixed undefined data error when trying to store deleted blogs</li>
-            <li>added api request queueing to reduce potential rate limiting</li>
+            <li>added a redundant react hydration check in the api chain</li>
+            <li>added <span class="ui-new">the dragon</span></li>
           </ul>
-          <h2 style="text-align:center;"><span class="ui-new">new feature!</span> customize site colors</h2>
+          <h2 style="text-align:center;">floating avatars</h2>
           <ul>
-            <li>customizes the site&#39;s color palettes (and optionally, the menu theme)</li>
-            <li>work in progress feature, contrast may not be properly enforced for some elements</li>
-          </ul>
-          <h2 style="text-align:center;">horizontal navigation</h2>
-          <ul>
-            <li>fixed settings submenu icon not showing up</li>
+            <li>fixed the user portrait showing up overtop of the bar instead of beside it</li>
+            <li>fixed the user portrait being replaced by undefined.tumblr.com?</li>
           </ul>
           <h2 style="text-align:center;">show mutuals</h2>
           <ul>
-            <li>added blog database integration to cut down on the need for api requests</li>
+            <li>fixed the followed by check not checking if a blog was indexed before checking if it had a followed by
+              status</li>
+            <li>fixed the follow map not checking if a blog taken from react props was undefined</li>
           </ul>
         </div>
       </ul>

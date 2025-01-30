@@ -1,7 +1,7 @@
 import { Marked } from "marked";
 import * as fs from 'node:fs/promises';
 
-const preprocess = text => text.replace('new feature!', '<span class="ui-new">new feature!</span>');
+const preprocess = text => text.replaceAll('new feature!', '<span class="ui-new">new feature!</span>').replaceAll('the dragon', '<span class="ui-new">the dragon</span>');
 const renderer = {
   heading({ tokens, depth }) {
     return `<h${depth} ${depth < 3 ? 'style="text-align:center;"' : ''}>${this.parser.parseInline(tokens)}</h${depth}>`;

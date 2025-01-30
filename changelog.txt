@@ -1,3 +1,20 @@
+v1.2.1
+
+general
+
+- added a redundant react hydration check in the api chain
+- added the dragon
+
+floating avatars
+
+- fixed the user portrait showing up overtop of the bar instead of beside it
+- fixed the user portrait being replaced by undefined.tumblr.com?
+
+show mutuals
+
+- fixed the followed by check not checking if a blog was indexed before checking if it had a followed by status
+- fixed the follow map not checking if a blog taken from react props was undefined
+
 v1.2.0
 
 general
