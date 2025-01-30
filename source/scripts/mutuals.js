@@ -14,7 +14,7 @@ const customAttribute = 'data-dbplus-mutual-checked';
 
 const mutualCache = new Map();
 
-const followedMap = postObject => Object.fromEntries([postObject, ...postObject.trail].map(({ blog }) => [blog.name, blog.followed]));
+const followedMap = postObject => Object.fromEntries([postObject, ...postObject.trail].filter(({ blog }) => blog).map(({ blog }) => [blog.name, blog.followed]));
 
 const mutualsIcon = () => noact({
   className: keyToString('blogFollowing') + ' ' + customClass,
