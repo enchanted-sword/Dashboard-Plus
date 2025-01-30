@@ -9,5 +9,6 @@
   "preferences": {
     "enabled": false
   },
-  "js": true
+  "js": true,
+  "css": true
 }

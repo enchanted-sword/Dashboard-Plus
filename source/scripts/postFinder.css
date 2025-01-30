@@ -1,0 +1,28 @@
+.dbplus-postFinder {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  width: 12rem;
+  height: 24rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 0.5rem;
+}
+
+.dbplus-postFinder-title {
+  font-weight: bold;
+  color: rgb(var(--white-on-dark));
+  font-size: 2rem;
+}
+
+.dbplus-postFinder-input {
+  border-radius: 8px;
+  width: 100%;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  border: none;
+  outline: none;
+  padding: 0 0.5rem;
+}

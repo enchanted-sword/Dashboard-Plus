@@ -1,13 +1,27 @@
 import { openDatabase, updateData, updateNeeded } from './utility/database.js';
-import { unique } from './utility/jsTools.js';
+import { unique, debounce } from './utility/jsTools.js';
+import { noact } from './utility/noact.js';
 
-let db, postIndices, searchableIndices;
+const customClass = 'dbplus-postFinder';
+
+let db, postIndices, searchableIndices, splitMode = 'comma';
+const textSeparator = 'φ(,)';
+
+const unstringifyHits = hit => {
+  const parsedInfo = JSON.parse(hit.quickInfo);
+
+  parsedInfo.texts && (parsedInfo.texts = parsedInfo.texts.split(textSeparator));
+  parsedInfo.blogs && (parsedInfo.blogs = parsedInfo.blogs.split(','));
+  parsedInfo.types && (parsedInfo.types = parsedInfo.types.split(','));
+  parsedInfo.tags && (parsedInfo.tags = parsedInfo.tags.split(','));
+
+  return Object.assign(hit, { quickInfo: parsedInfo });
+}
 
 const keywordSearch = async (...keywords) => {
   const tx = db.transaction('searchStore', 'readonly');
   const hits = [];
   let cursor = await tx.store.openCursor(), searchable;
-
 
   while (cursor) {
     searchable = cursor.value;
@@ -15,33 +29,56 @@ const keywordSearch = async (...keywords) => {
     cursor = await cursor.continue();
   }
 
-  return hits;
+  return hits.map(unstringifyHits);
 };
-const categorySearch = async ({ blogs, types, texts, tags }) => {
-  const checks = [blogs, types, texts, tags].filter(isDefined);
-  let hits = await keywordSearch(...checks);
-  return hits;
+const categorySearch = async ({ blogs, types, texts, tags, date }) => {
+  const checks = [blogs, types, texts, tags, date].filter(isDefined);
+  return keywordSearch(...checks);
 };
+const strictCategorySearch = async ({ blogs, types, texts, tags, date }) => categorySearch({ blogs, types, texts, tags, date }).then(hits => {
+  const threshold = [blogs, types, texts, tags, date].filter(isDefined).length;
+  const matches = [];
+
+  hits.forEach(postInfo => {
+    const { quickInfo } = postInfo;
+    let n = 0;
+
+    if (quickInfo.blogs?.length && blogs
+      && blogs.split(',').every(searchedBlog => quickInfo.blogs.includes(searchedBlog))) ++n;
+    if (quickInfo.types?.length && types
+      && types.split(',').every(searchedType => quickInfo.types.includes(searchedType))) ++n;
+    if (quickInfo.texts?.length && texts
+      && quickInfo.texts.some(postText => postText.includes(texts))) ++n;
+    if (quickInfo.tags?.length && tags
+      && tags.split(',').every(searchedTag => quickInfo.tags.includes(searchedTag))) ++n;
+    if (date && quickInfo.date?.includes(date)) ++n;
+
+    if (n === threshold) matches.push(postInfo);
+  });
+
+  return matches;
+});
 
 const isDefined = x => !!x;
-const quickInfo = ({ id, blog, content, trail, tags }) => {
+const quickInfo = ({ id, blog, content, trail, tags, date }) => {
   const blogs = [blog, ...trail.map(({ blog }) => blog)].filter(isDefined);
   const contents = unique([...content, ...trail.flatMap(({ content }) => content)].filter(isDefined));
-  const tagStr = unique([...tags, ...trail.flatMap(({ tags }) => tags)]).join(',');
+  const tagStr = unique([...tags, ...trail.flatMap(({ tags }) => tags)]).filter(isDefined).join(',');
   const texts = unique(contents.map(({ question, answers, text }) => {
     const returnArr = [];
     question && returnArr.push(question);
     answers && returnArr.push(...answers.map(({ answerText }) => answerText));
     text && returnArr.push(text);
     return returnArr;
-  }).flat(Infinity)).filter(isDefined).join(',');
+  }).flat(Infinity)).filter(isDefined).join(textSeparator);
 
   return JSON.stringify({
     id,
-    blogs: unique(blogs.map(blog => blog.name)).join(','),
-    types: unique(contents.map(({ type }) => type)).join(','),
+    blogs: unique(blogs.map(blog => blog.name)).filter(isDefined).join(','),
+    types: unique(contents.map(({ type }) => type)).filter(isDefined).join(','),
     texts,
-    tags: tagStr
+    tags: tagStr,
+    date
   });
 }
 const indexPosts = async (force = false) => {
@@ -73,6 +110,36 @@ const indexFromUpdate = async ({ detail: { targets } }) => { // take advantage o
   }
 };
 
+async function onKeywordSearch({ target }) {
+  let keywords = target.value;
+
+  if (splitMode === 'comma') keywords = keywords.split(',').map(v => v.trim()).filter(isDefined);
+
+  if (!(keywords.length)) return;
+
+  const hits = await keywordSearch(...keywords);
+  console.log(hits);
+}
+
+const ui = noact({
+  className: customClass,
+  children: [
+    {
+      tag: 'h1',
+      className: `${customClass}-title`,
+      children: 'post finder'
+    },
+    {
+      tag: 'input',
+      id: `${customClass}-keywordInput`,
+      className: `${customClass}-input`,
+      type: 'text',
+      placeholder: 'search all fields',
+      oninput: debounce(onKeywordSearch)
+    }
+  ]
+});
+
 export const main = async () => {
   db = await openDatabase();
   postIndices = await db.getAllKeys('postStore');
@@ -80,6 +147,10 @@ export const main = async () => {
 
   indexPosts();
   window.addEventListener('dbplus-database-update', indexFromUpdate);
-}
 
-export const clean = async () => void 0;
+  document.body.append(ui);
+};
+
+export const clean = async () => {
+  document.querySelectorAll(`.${customClass}`).forEach(e => e.remove());
+};
