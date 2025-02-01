@@ -17,12 +17,12 @@
       match: 'let i=e=>e.filter(e=>e.askingName||e.isSubmission)',
       transformation: (x) => x.replace('let i=e=>e.filter(e=>e.askingName||e.isSubmission)', 'let i=e=>e')
     },
-    vanilla_video: { // this should work as intended
-      match: "hideNativeVideoControls",
+    vanillaVideo: { // this should work as intended
+      match: 'hideNativeVideoControls',
       transformation: (x) => {
         let module = x;
         let transformations = [
-          (x) => x.replace("hideNativeVideoControls:!0", "hideNativeVideoControls:0"),
+          (x) => x.replace('hideNativeVideoControls:!0', 'hideNativeVideoControls:0'),
           (x) => x.replace('()(this,"shouldShowCustomControls",()=>(this.props.isVideoSponsoredDay||', '()(this,"shouldShowCustomControls",()=>(false&&'),
           (x) => x.replace('controlsList:"nodownload",', 'onVolumeChange:this.onVolumeChangeFullScreen,onPause:()=>this.setState({isPlaying:false}),onPlay:()=>this.setState({isPlaying:true}),')
         ]

@@ -8,13 +8,13 @@
       match: "tumblr-client-begin",
       transformation: (x) => x.replace(/"production"===(\w+\.\w+\.)(Development|Production)/g, (_, y, z) => `"development"===${y + z}`)
     },
-    devMode: {
+    /* devMode: {
       match: 'return e.Development="development",e.Production="production",e',
       transformation: (x) => {
         let module = x.replaceAll('return e.Development="development",e.Production="production",e', 'return e.Development = "production", e.Production = "development", e');
         return module;
       }
-    }
+    } */
   };
 
   // == LOADER ==
@@ -29,6 +29,8 @@
     if (!window.__webpack_modules__[moduleId]) return;
 
     let module_str = window.__webpack_modules__[moduleId].toString(); // Turn this func into a string!
+
+    if (module_str.includes('"production"===')) console.log(moduleId, module_str);
 
     // Do we have any requests for this module? If not, move on.
     if (!Object.values(module_hooks).some(x => module_str.match(x.match))) return;
