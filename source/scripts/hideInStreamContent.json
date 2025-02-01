@@ -30,6 +30,11 @@
         "value": false,
         "title": "hide suggested communities",
         "type": "toggle"
+      },
+      "communityPosts": {
+        "value": false,
+        "title": "hide posts from communities you aren't subscribed to",
+        "type": "toggle"
       }
     }
   },
