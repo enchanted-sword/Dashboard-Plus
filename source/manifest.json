@@ -16,6 +16,15 @@
   "host_permissions": [
     "*://*.tumblr.com/"
   ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset",
+        "enabled": true,
+        "path": "control/redirectRules.json"
+      }
+    ]
+  },
   "web_accessible_resources": [
     {
       "resources": [

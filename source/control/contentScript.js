@@ -3,6 +3,53 @@
 {
   console.info('init');
 
+  const serialiseHooks = hooks => Object.fromEntries(Object.entries(hooks).map(([key, val]) => {
+    if (typeof val.match === 'object' && val.match.__proto__.hasOwnProperty('source')) {
+      val.match = val.match.source.replace(/\\{2}/g, '\\');
+      val.regexMatch = true;
+    }
+    val.transformation = val.transformation.toString();
+    return [key, val];
+  }));
+
+  const module_hooks = {
+    poll_answer: {
+      match: "poll-answer",
+      transformation: (x) => {
+        let module = x;
+        let transformations = [
+          (x) => x.replace(/percentage:(.)(.*?)\=\>\{let/, "percentage:__data$2=>{let $1=__data[0];let __amnt=__data[1];let"),
+          (x) => x.replace(/(className:..?\.pollAnswerPercentage,children:)`\$\{(.)\}%`/, "$1`${$2}% (${__amnt})`"),
+          (x) => x.replace(/(let .=)(0===.\?0:(.\[.\.clientId\])\/.\*100)/, "$1[$2,$3]")
+        ]
+        for (let transform of transformations) {
+          module = transform(module);
+        }
+        return module;
+      }
+    },
+    unfilterInbox: {
+      match: 'let i=e=>e.filter(e=>e.askingName||e.isSubmission)',
+      transformation: (x) => x.replace('let i=e=>e.filter(e=>e.askingName||e.isSubmission)', 'let i=e=>e')
+    },
+    vanilla_video: {
+      match: "hideNativeVideoControls",
+      transformation: (x) => {
+        let module = x;
+        let transformations = [
+          (x) => x.replace("hideNativeVideoControls:!0", "hideNativeVideoControls:0"),
+          (x) => x.replace('()(this,"shouldShowCustomControls",()=>(this.props.isVideoSponsoredDay||', '()(this,"shouldShowCustomControls",()=>(false&&'),
+          (x) => x.replace('controlsList:"nodownload",', 'onVolumeChange:this.onVolumeChangeFullScreen,onPause:()=>this.setState({isPlaying:false}),onPlay:()=>this.setState({isPlaying:true}),')
+        ]
+        for (let transform of transformations) {
+          module = transform(module);
+        }
+        return module;
+      }
+    }
+  };
+  document.documentElement.append(Object.assign(document.createElement('script'), { id: 'dbplus-moduleHookControl', textContent: JSON.stringify({ module_hooks: serialiseHooks(module_hooks) }) }));
+
   const { getURL } = browser.runtime;
   const urlPrefix = getURL('');
   let cssMap, languageData, themeColors;

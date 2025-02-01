@@ -1,0 +1,21 @@
+[
+  {
+    "id": 4,
+    "condition": {
+      "regexFilter": "^https?://assets\\.tumblr\\.com/pop/js/modern/runtime\\-[a-z0-9]*\\.js$",
+      "requestDomains": [
+        "tumblr.com"
+      ],
+      "resourceTypes": [
+        "xmlhttprequest",
+        "script"
+      ]
+    },
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/control/moduleHook.js"
+      }
+    }
+  }
+]
