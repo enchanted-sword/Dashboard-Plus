@@ -13,26 +13,11 @@
   }));
 
   const module_hooks = {
-    poll_answer: {
-      match: "poll-answer",
-      transformation: (x) => {
-        let module = x;
-        let transformations = [
-          (x) => x.replace(/percentage:(.)(.*?)\=\>\{let/, "percentage:__data$2=>{let $1=__data[0];let __amnt=__data[1];let"),
-          (x) => x.replace(/(className:..?\.pollAnswerPercentage,children:)`\$\{(.)\}%`/, "$1`${$2}% (${__amnt})`"),
-          (x) => x.replace(/(let .=)(0===.\?0:(.\[.\.clientId\])\/.\*100)/, "$1[$2,$3]")
-        ]
-        for (let transform of transformations) {
-          module = transform(module);
-        }
-        return module;
-      }
-    },
-    unfilterInbox: {
+    unfilterInbox: { // testing ghost asks
       match: 'let i=e=>e.filter(e=>e.askingName||e.isSubmission)',
       transformation: (x) => x.replace('let i=e=>e.filter(e=>e.askingName||e.isSubmission)', 'let i=e=>e')
     },
-    vanilla_video: {
+    vanilla_video: { // this should work as intended
       match: "hideNativeVideoControls",
       transformation: (x) => {
         let module = x;
