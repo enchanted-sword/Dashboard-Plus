@@ -136,6 +136,9 @@
     top: -48% !important;
     left: 65% !important;
   }
+  [data-css~="unreadCount"][data-css~="default"] {
+    border: 2px solid var(--chrome);
+  }
   .dbplus-hnav [data-css~="headingLink"] {
     text-decoration: none;
     color: rgba(var(--black), 0.65);
