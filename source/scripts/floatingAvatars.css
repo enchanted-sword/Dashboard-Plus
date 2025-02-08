@@ -8,7 +8,7 @@
     }
   }
   #base-container:not([data-route*="peepr"]) {
-    [data-css~="mainContentWrapper"] {
+    [data-css~="mainContentWrapper"]:not([data-css~="mainContentIsMasonry"]) {
       flex-basis: 982px;
 
       [data-css~="main"]:not([data-css~="sidebar"] [data-css~="main"]) {
