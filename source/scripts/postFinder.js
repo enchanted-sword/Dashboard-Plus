@@ -1,6 +1,8 @@
-import { openDatabase, updateData, updateNeeded } from './utility/database.js';
+import { openDatabase, updateData, updateNeeded, getIndexedPosts } from './utility/database.js';
 import { unique, debounce } from './utility/jsTools.js';
 import { noact } from './utility/noact.js';
+import { svgIcon } from './utility/dashboardElements.js';
+import { navigate } from './utility/tumblr.js';
 
 const customClass = 'dbplus-postFinder';
 
@@ -29,7 +31,7 @@ const keywordSearch = async (...keywords) => {
     cursor = await cursor.continue();
   }
 
-  return hits.map(unstringifyHits);
+  return hits.map(unstringifyHits).sort((a, b) => (new Date(b.quickInfo.date)) - (new Date(a.quickInfo.date)));
 };
 const categorySearch = async ({ blogs, types, texts, tags, date }) => {
   const checks = [blogs, types, texts, tags, date].filter(isDefined);
@@ -110,34 +112,172 @@ const indexFromUpdate = async ({ detail: { targets } }) => { // take advantage o
   }
 };
 
+const months = ['jan', 'feb', 'mar', 'apr', 'may', 'june', 'july', 'aug', 'sept', 'oct', 'nov', 'dec'];
+
+const typeIconColour = {
+  text: 'black',
+  photo: 'red',
+  quote: 'orange',
+  link: 'green',
+  chat: 'blue',
+  audio: 'purple',
+  video: 'pink',
+  ask: 'blue'
+};
+
+const renderResult = (post, hit) => {
+  const d = new Date(post.date);
+
+  return noact({
+    tag: 'li',
+    onclick: function (event) {
+      closeDialog(event);
+      navigate(`/${post.blogName}/${post.id}`)
+    },
+    className: 'postFinder-result',
+    children: [
+      {
+        className: 'postFinder-info',
+        children: [
+          {
+            className: 'postFinder-blog',
+            children: [
+              {
+                children: [
+                  {
+                    src: post.blog.avatar[2].url,
+                    alt: post.blogName
+                  },
+                  post.blogName,
+                ]
+              },
+              `${d.getDate()} ${months[d.getMonth()]}, ${d.getFullYear()}`
+            ]
+          },
+          {
+            className: 'postFinder-types',
+            children: hit.quickInfo.types.map(type => {
+              type === 'image' && (type = 'photo');
+              return svgIcon(`posts-${type}`, 24, 24, '', `rgb(var(--${typeIconColour[type]}))`);
+            })
+          }
+        ]
+      },
+      {
+        className: 'postFinder-post',
+        children: [
+          post.summary ? post.summary : null
+        ]
+      },
+      post.tags.length ? {
+        className: 'postFinder-tags',
+        children: post.tags.map(t => ({ children: '#' + t }))
+      } : null,
+      {
+        className: 'postFinder-link',
+        href: post.postUrl,
+        children: post.postUrl
+      }
+    ]
+  });
+};
+
 async function onKeywordSearch({ target }) {
   let keywords = target.value;
 
   if (splitMode === 'comma') keywords = keywords.split(',').map(v => v.trim()).filter(isDefined);
 
-  if (!(keywords.length)) return;
+  if (!(keywords.length)) {
+    document.getElementById('postFinder-results').replaceChildren([]);
+    return;
+  }
 
   const hits = await keywordSearch(...keywords);
-  console.log(hits);
+  console.info(hits);
+
+  if (!hits.length) return;
+
+  const posts = await getIndexedPosts(hits.map(({ id }) => id));
+  const results = posts.map((post, i) => renderResult(post, hits[i]));
+
+  console.info(posts);
+
+  document.getElementById('postFinder-results').replaceChildren(...results);
 }
 
-const ui = noact({
-  className: customClass,
+function showDialog(event) {
+  event.preventDefault();
+  searchWindow.setAttribute('open', '');
+};
+function closeDialog(event) { if (!('key' in event) || (event.key === 'Escape' && searchWindow.hasAttribute('open'))) searchWindow.removeAttribute('open'); }
+
+const button = noact({
+  className: 'postFinder-button',
+  onclick: showDialog,
   children: [
     {
-      tag: 'h1',
-      className: `${customClass}-title`,
+      tag: 'h2',
+      className: 'postFinder-title',
       children: 'post finder'
     },
-    {
-      tag: 'input',
-      id: `${customClass}-keywordInput`,
-      className: `${customClass}-input`,
-      type: 'text',
-      placeholder: 'search all fields',
-      oninput: debounce(onKeywordSearch)
-    }
+    svgIcon('search', 24, 24, 'postFinder-icon', 'rgb(var(--white-on-dark))')
   ]
+});
+const searchWindow = noact({
+  tag: 'dialog',
+  className: `${customClass} postFinder-dialog`,
+  onclick: function (event) {
+    try {
+      event.stopPropagation();
+      if (event.target.matches(':is(dialog, .postFinder-close)')) searchWindow.removeAttribute('open');
+    } catch { void 0; }
+  },
+  children: [{
+    className: 'postFinder-container',
+    children: [
+      {
+        className: 'postFinder-titleRow',
+        children: [
+          {
+            tag: 'h2',
+            children: ['search']
+          },
+          {
+            tag: 'svg',
+            className: 'postFinder-close',
+            fill: 'none',
+            viewBox: '0 0 24 24',
+            'stroke-width': 2,
+            stroke: 'rgb(var(--red))',
+            'aria-hidden': true,
+            children: [{
+              'stroke-linecap': 'round',
+              'stroke-linejoin': 'round',
+              d: 'M6 18L18 6M6 6l12 12'
+            }]
+          }
+        ]
+      },
+      {
+        tag: 'input',
+        className: 'w-full',
+        type: 'text',
+        name: 'q1',
+        placeholder: 'search cached posts',
+        oninput: debounce(onKeywordSearch)
+      },
+      {
+        className: 'postFinder-placeholder',
+        children: ['enter a query to see results!']
+      },
+      {
+        id: 'postFinder-results',
+        tag: 'ul',
+        children: [
+        ]
+      }
+    ]
+  }]
 });
 
 export const main = async () => {
@@ -148,9 +288,14 @@ export const main = async () => {
   indexPosts();
   window.addEventListener('dbplus-database-update', indexFromUpdate);
 
-  document.body.append(ui);
+  document.body.append(button);
+  document.body.append(searchWindow);
+  document.addEventListener('keydown', closeDialog);
 };
 
 export const clean = async () => {
+  button.remove();
+  searchWindow.remove();
   document.querySelectorAll(`.${customClass}`).forEach(e => e.remove());
+  document.removeEventListener('keydown', closeDialog);
 };
