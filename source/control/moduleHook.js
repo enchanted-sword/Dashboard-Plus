@@ -30,8 +30,6 @@
 
     let module_str = window.__webpack_modules__[moduleId].toString(); // Turn this func into a string!
 
-    if (module_str.includes('"production"===')) console.log(moduleId, module_str);
-
     // Do we have any requests for this module? If not, move on.
     if (!Object.values(module_hooks).some(x => module_str.match(x.match))) return;
 
