@@ -51,7 +51,7 @@ export const noact = (obj = {}) => {
         .forEach(key => {
           const prop = obj[key];
           if (typeof prop === 'function' && isArrow(prop)) {
-            console.error(`noact: illegal arrow function on property ${key}`, el, prop);
+            console.error(`noact: illegal arrow function on property ${key}`, el, prop.toString());
             return;
           } else el[key] = prop;
         });
