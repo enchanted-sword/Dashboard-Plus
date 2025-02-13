@@ -124,7 +124,7 @@
               if ((changed.includes(name) && newPref.enabled === true)
                 || feature.recieveUpdates?.some(key => changed.includes(key))) {
                 if (update instanceof Function && 'options' in newPref) {
-                  const diff = Object.entries(newPref.options).filter(([key, val]) => val !== oldPref.options[key]);
+                  const diff = Object.entries(newPref.options).filter(([key, val]) => !deepEquals(val, oldPref.options[key]));
                   update(newPref.options, Object.fromEntries(diff));
                 }
                 else clean().then(main);
