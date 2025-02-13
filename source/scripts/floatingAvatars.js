@@ -55,6 +55,8 @@ const addUserPortrait = () => {
 };
 const addScrollingAvatars = posts => {
   for (const post of posts) {
+    if (post.matches(s('masonryTimelineObject'))) return;
+
     const avatar = post.querySelector(`header > ${s('avatar')}`);
     const stickyContainer = noact({ className: 'dbplus-stickyContainer' });
 

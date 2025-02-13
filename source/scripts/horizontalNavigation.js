@@ -100,8 +100,7 @@ const newSubnavItem = (title, href, icon, h, w) => {
 const keyToClass = key => keyToClasses(key)[0];
 
 const fetchStats = async () => {
-  const data = userBlogs;
-  for (const blog of data) {
+  for (const blog of userBlogs) {
     for (const key of ['posts', 'followers', 'drafts', 'queue']) {
       if (blog[key]) {
         const count = $(elem('span', { class: `${customClass}-count` }, null, [blog[key]]));
@@ -111,12 +110,14 @@ const fetchStats = async () => {
       }
     }
     if (blog.isGroupChannel) {
-      const members = elem('li', null, null,
-        `<a class='${customClass}' href='/blog/${blog.name}/members' target='_blank'>
-          <span>${translate('Members')}</span>
-        </a>`
-      );
-      $(`#${customClass}-${blog.name}-activity`)[0].after(members);
+      try {
+        const members = elem('li', null, null,
+          `<a class='${customClass}' href='/blog/${blog.name}/members' target='_blank'>
+            <span>${translate('Members')}</span>
+          </a>`
+        );
+        $(`#${customClass}-${blog.name}-activity`)[0].after(members);
+      } catch (e) { console.warn(e); }
     }
   }
 };
@@ -159,7 +160,6 @@ const menuModfifcations = menu => {
 
   if (menu.matches('#account_subnav')) {
     menu.prepend(accountHeader);
-    $(accountHeader).append($(s('logoutButton')));
 
     $(`[href="/likes"] ${s('childWrapper')}`).prepend(svgIcon('like-filled', 18, 20, customClass));
     $(`[href="/following"] ${s('childWrapper')}`).prepend(svgIcon('following', 20, 21, customClass));
@@ -209,6 +209,7 @@ export const main = async function () {
       $(s('about withLoggedOutImprovementsCTAs')).appendTo($(s('sidebarTopContainer')));
     }
 
+    $(accountHeader).append($(s('logoutButton')));
     mutationManager.start(menuSelector, menuModfifcations);
   });
 };

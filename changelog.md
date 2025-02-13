@@ -1,3 +1,19 @@
+# v1.2.2
+
+## floating avatars
+
+- fixed left margin being widened on masonry pages
+- fixed floating avatars showing up on masonry columns
+
+## hide dashboard tabs
+
+- fixed tag page controls being hidden
+
+## horizontal navigation
+
+- fixed unread posts badge border
+- fixed log out button duplication
+
 # v1.2.1
 
 ## general
