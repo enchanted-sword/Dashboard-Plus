@@ -15,6 +15,9 @@
           },
           "blocked": {
             "name": "blocked blogs"
+          },
+          "blockedTerms": {
+            "name": "listed terms"
           }
         },
         "value": {
@@ -45,6 +48,13 @@
           "root": false,
           "trail": false
         }
+      },
+      "blockedTerms": {
+        "value": "",
+        "name": "filtered terms",
+        "type": "text",
+        "tooltip": "filter posts containing specific terms",
+        "placeholder": "comma-separated list of terms"
       }
     }
   },
