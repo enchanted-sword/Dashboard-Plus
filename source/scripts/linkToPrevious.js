@@ -18,15 +18,18 @@ const linkPosts = async posts => {
     if (typeof parentPostUrl === 'undefined') continue;
     const navigateUrl = parentPostUrl.split('https://www.tumblr.com').pop();
     if (headerLinks) {
-      let headerLink = post.querySelector(rebloggedFromSelector).cloneNode(true);
-      post.querySelector(rebloggedFromSelector).replaceWith(headerLink);
-      headerLink.href = parentPostUrl;
-      headerLink.title = translate('View previous reblog');
-      headerLink.addEventListener('click', event => {
-        event.preventDefault();
-        event.stopPropagation();
-        navigate(navigateUrl);
-      });
+      let headerLink = post.querySelector(rebloggedFromSelector)?.cloneNode(true);
+
+      if (headerLink) {
+        post.querySelector(rebloggedFromSelector).replaceWith(headerLink);
+        headerLink.href = parentPostUrl;
+        headerLink.title = translate('View previous reblog');
+        headerLink.addEventListener('click', event => {
+          event.preventDefault();
+          event.stopPropagation();
+          navigate(navigateUrl);
+        });
+      }
     }
     if (tagLinks && tags.length && tags.some(tag => prevRegex.test(tag.replace(/\s/g, '')))) {
       post.querySelectorAll(`:scope a${s('tag')}`).forEach(tagElement => {
