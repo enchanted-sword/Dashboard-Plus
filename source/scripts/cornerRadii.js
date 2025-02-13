@@ -12,6 +12,8 @@ const run = ({ radius }) => {
     ${s('searchbarContainer')},
     .dbplus-timelineSearchContainer { border-radius: ${radius}px !important; }
     article${s('post')} header { border-radius: ${radius}px ${radius}px 0 0 !important; }
+
+    :root { --dbplus-cornerRadius: ${radius}px; }
   `;
 
   return true;
