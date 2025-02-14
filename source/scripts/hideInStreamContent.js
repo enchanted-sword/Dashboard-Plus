@@ -3,15 +3,15 @@ import { style, s } from './utility/style.js';
 import { mutationManager, postFunction } from './utility/mutations.js';
 import { timelineObject } from './utility/reactProps.js';
 
-const blogRecSelector = `[data-cell-id*="timelineObject:carousel"] ${s('listTimelineObject')}:has(${s('blogLinkRecommendationWrapper')})`;
-const tagRecSelector = `[data-cell-id*="timelineObject:carousel"] ${s('listTimelineObject')}:has(${s('tagCard')})`;
+const blogRecSelector = `${s('listTimelineObject')}:has(${s('blogLinkRecommendationWrapper')})`;
+const tagRecSelector = `${s('listTimelineObject')}:has(${s('tagCard')})`;
 const blazedSelector = `${s('listTimelineObject')}:has([href="#managed-icon__badge-blaze"])`;
 const adSelector = `${s('listTimelineObject')}:has(${s('adTimelineObject')},${s('adMeatballMenu')})`;
 const communitiesRecSelector = `${s('listTimelineObject')}:has(${s('communityCard')})`;
 const hiddenClass = 'dbplus-hiddenInStream';
 const checkedClass = 'dbplus-notCommunityRec';
 const styleElement = style(`
-  [data-cell-id*="timelineObject:title"]:has(+ [data-cell-id*="timelineObject:carousel"] ${s('listTimelineObject')}.${hiddenClass}),
+  [data-cell-id*="timelineObject:title"]:has(+ ${s('listTimelineObject')}.${hiddenClass}),
     .${hiddenClass} { display: none !important; }
 `);
 
