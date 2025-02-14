@@ -7,7 +7,7 @@ const blogRecSelector = `${s('listTimelineObject')}:has(${s('blogLinkRecommendat
 const tagRecSelector = `${s('listTimelineObject')}:has(${s('tagCard')})`;
 const blazedSelector = `${s('listTimelineObject')}:has([href="#managed-icon__badge-blaze"])`;
 const adSelector = `${s('listTimelineObject')}:has(${s('adTimelineObject')},${s('adMeatballMenu')})`;
-const communitiesRecSelector = `[data-cell-id*="timelineObject:carousel"] ${s('listTimelineObject')}:has(${s('communityCard')})`;
+const communitiesRecSelector = `${s('listTimelineObject')}:has(${s('communityCard')})`;
 const hiddenClass = 'dbplus-hiddenInStream';
 const checkedClass = 'dbplus-notCommunityRec';
 const styleElement = style(`
