@@ -9,7 +9,7 @@ const run = ({ width, justify }) => {
     ${s('postColumn')} { max-width: ${width}px !important; }
     #base-container[data-navigation="horizontal"] {
       ${s('mainContentWrapper')} { width: 100%; }
-      [data-css~="container"] { justify-content: ${justify}; }
+      ${s('mainContentWrapper')} > ${s('container')} { justify-content: ${justify}; }
     }
     #base-container:not([data-navigation="horizontal"]) {
       ${s('mainContentWrapper')} { width: ${width + 370}px; }
