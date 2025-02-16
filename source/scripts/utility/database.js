@@ -1,6 +1,6 @@
 const { openDB, wrap } = idb;
 
-const DB_VERSION = 3; // database version
+const DB_VERSION = 4; // database version
 const EXPIRY_TIME = 86400000; // period after which data is considered expired
 
 const updateEvent = 'dbplus-database-update';
