@@ -1,3 +1,22 @@
+# v1.2.3
+
+## general
+
+- correctly implemented diff updates
+
+## hide filtered
+
+- added the option to filter keywords
+
+## content wizard
+
+- fixed justification for vertical nav layout
+- fixed justification breaking long posts in the editor when in horizontal nav layout
+
+## hide in stream content
+
+- fixed carousels and carousel titles not being hidden
+
 # v1.2.2
 
 ## floating avatars
