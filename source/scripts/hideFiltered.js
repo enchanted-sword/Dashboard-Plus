@@ -19,9 +19,7 @@ const hideFilteredContent = async posts => {
       post.setAttribute(hiddenAttribute, '');
       continue;
     } else {
-      console.log(post);
       const { blog, rebloggedFromUuid, rebloggedRootUuid, content, trail, askingName } = await timelineObject(post);
-      console.log(post);
 
       if (filterOptions.blockedTerms && blockedTerms.length) {
         const text = reduceToText(content, ...trail.map(({ content }) => content));
