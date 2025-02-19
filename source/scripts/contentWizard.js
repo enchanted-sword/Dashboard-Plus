@@ -13,7 +13,7 @@ const run = ({ width, justify }) => {
     }
     #base-container:not([data-navigation="horizontal"]) {
       ${s('mainContentWrapper')} { width: ${width + 370}px; }
-      ${s('bluespaceLayout')} > ${s('newDesktopLayout')} { justify-content: ${justify}; }
+      ${s('bluespaceLayout')} > div { justify-content: ${justify}; }
     }
   `;
 
