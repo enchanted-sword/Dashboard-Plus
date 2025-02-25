@@ -11,7 +11,7 @@ const communitiesRecSelector = `${s('listTimelineObject')}:has(${s('communityCar
 const hiddenClass = 'dbplus-hiddenInStream';
 const checkedClass = 'dbplus-notCommunityRec';
 const styleElement = style(`
-  [data-cell-id*="timelineObject:title"]:has(+ ${s('listTimelineObject')}.${hiddenClass}),
+  [data-cell-id*="timelineObject:title"]:has(+ [data-cell-id] .${hiddenClass}) ${s('listTimelineObject')},
     .${hiddenClass} { display: none !important; }
 `);
 
