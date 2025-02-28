@@ -32,5 +32,6 @@
   "noTagPrompt",
   "mutuals",
   "emptyInbox",
-  "customColors"
+  "customColors",
+  "followingAsDefault"
 ]

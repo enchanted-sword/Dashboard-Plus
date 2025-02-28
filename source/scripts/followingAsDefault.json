@@ -1,0 +1,10 @@
+{
+  "name": "followingAsDefault",
+  "title": "following tab as default",
+  "category": "dashboard",
+  "description": "always defaults your dashboard to the \"following\" tab. otherwise, tumblr will randomly switch it to \"for you\".",
+  "preferences": {
+    "enabled": false
+  },
+  "js": true
+}
