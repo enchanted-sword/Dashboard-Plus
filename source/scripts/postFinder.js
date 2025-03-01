@@ -1,6 +1,8 @@
 import { openDatabase, updateData, updateNeeded, getIndexedPosts } from './utility/database.js';
 import { unique, debounce, getOptions } from './utility/jsTools.js';
 import { noact } from './utility/noact.js';
+import { svgIcon } from './utility/dashboardElements.js';
+import { navigate } from './utility/tumblr.js';
 
 const customClass = 'dbplus-postFinder';
 
@@ -38,7 +40,7 @@ const keywordSearch = async (...keywords) => {
     cursor = await cursor.continue();
   }
 
-  return hits.map(unstringifyHits);
+  return hits.map(unstringifyHits).sort((a, b) => (new Date(b.quickInfo.date)) - (new Date(a.quickInfo.date)));
 };
 const categorySearch = async ({ blogs, types, texts, tags, date }) => keywordSearch(...[blogs, types, texts, tags, date].flat());
 const strictCategorySearch = async ({ blogs, types, texts, tags, date }) => categorySearch({ blogs, types, texts, tags, date }).then(hits => {
@@ -206,7 +208,10 @@ async function onKeywordSearch({ target }) {
   keywords = keywords.split(querySeparators[splitMode]).map(v => v.trim()).filter(isDefined);
   if (splitMode === 'space') keywords = keywords.map(v => v.replace(/_/g, ' '));
 
-  if (!(keywords.length)) return;
+  if (!(keywords.length)) {
+    document.getElementById('postFinder-results').replaceChildren([]);
+    return;
+  }
 
   keywordSearch(...keywords).then(renderResults);
 }
@@ -262,18 +267,11 @@ const button = noact({
   onclick: showDialog,
   children: [
     {
-      tag: 'h1',
-      className: `${customClass}-title`,
+      tag: 'h2',
+      className: 'postFinder-title',
       children: 'post finder'
     },
-    {
-      tag: 'input',
-      id: `${customClass}-keywordInput`,
-      className: `${customClass}-input`,
-      type: 'text',
-      placeholder: 'search all fields',
-      oninput: debounce(onKeywordSearch)
-    }
+    svgIcon('search', 24, 24, 'postFinder-icon', 'rgb(var(--white-on-dark))')
   ]
 });
 
@@ -469,5 +467,8 @@ export const main = async () => {
 };
 
 export const clean = async () => {
+  button.remove();
+  searchWindow.remove();
   document.querySelectorAll(`.${customClass}`).forEach(e => e.remove());
+  document.removeEventListener('keydown', closeDialog);
 };
