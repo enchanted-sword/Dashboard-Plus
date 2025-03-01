@@ -1,13 +1,30 @@
 {
   "name": "postFinder",
   "title": "post finder",
-  "description": "find posts you've seen before",
+  "description": "find posts you've seen before!",
   "category": [
     "posts",
     "utility"
   ],
   "preferences": {
-    "enabled": false
+    "enabled": false,
+    "options": {
+      "splitMode": {
+        "name": "query split mode",
+        "value": "comma",
+        "type": "select",
+        "options": [
+          {
+            "value": "comma",
+            "name": "comma"
+          },
+          {
+            "value": "space",
+            "name": "space (replace spaces in queries with \"_\")"
+          }
+        ]
+      }
+    }
   },
   "js": true,
   "css": true
