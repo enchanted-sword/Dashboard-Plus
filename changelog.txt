@@ -1,3 +1,13 @@
+v1.3.0
+
+new feature! post finder
+
+- indexes posts you've seen before in your browser storage and turns them into a searchable database!
+- you can search multiple keywords, with the option to split keywords with either commas or spaces (replace spaces inside keywords with underscores)
+- you can also filter _out_ keywords by prefixing them with a hyphen (-)
+- in advanced mode, you can keep track of keywords easier with multiple search categories, and strict mode limits keyword results to only the specified categories
+- still a work in progress, report bugs to the github repository or @dragongirlsnout on tumblr!
+
 v1.2.4
 
 general
