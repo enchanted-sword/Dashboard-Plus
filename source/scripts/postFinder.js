@@ -241,7 +241,7 @@ async function onAdvancedSearch() {
 function showDialog(event) {
   event.preventDefault();
   searchWindow.setAttribute('open', '');
-};
+}
 function closeDialog(event) { if (!('key' in event) || (event.key === 'Escape' && searchWindow.hasAttribute('open'))) searchWindow.removeAttribute('open'); }
 
 function toggleAdvanced() {
