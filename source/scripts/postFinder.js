@@ -1,13 +1,17 @@
 import { openDatabase, updateData, updateNeeded, getIndexedPosts } from './utility/database.js';
-import { unique, debounce } from './utility/jsTools.js';
+import { unique, debounce, getOptions } from './utility/jsTools.js';
 import { noact } from './utility/noact.js';
 import { svgIcon } from './utility/dashboardElements.js';
 import { navigate } from './utility/tumblr.js';
 
 const customClass = 'dbplus-postFinder';
 
-let db, postIndices, searchableIndices, splitMode = 'comma';
+let db, postIndices, searchableIndices, splitMode;
 const textSeparator = 'φ(,)';
+const querySeparators = {
+  comma: ',',
+  space: ' '
+};
 
 const unstringifyHits = hit => {
   const parsedInfo = JSON.parse(hit.quickInfo);
@@ -18,42 +22,44 @@ const unstringifyHits = hit => {
   parsedInfo.tags && (parsedInfo.tags = parsedInfo.tags.split(','));
 
   return Object.assign(hit, { quickInfo: parsedInfo });
-}
+};
 
 const keywordSearch = async (...keywords) => {
+  keywords = keywords.filter(isDefined).map(v => v.toLowerCase());
   const tx = db.transaction('searchStore', 'readonly');
   const hits = [];
   let cursor = await tx.store.openCursor(), searchable;
 
   while (cursor) {
     searchable = cursor.value;
-    if (keywords.every(keyword => searchable.quickInfo.includes(keyword))) hits.push(searchable);
+    if (keywords.every(keyword => {
+      if ((keyword[0] === '-' && !(searchable.quickInfo.toLowerCase().includes(keyword.substring(1))))
+        || searchable.quickInfo.includes(keyword)) return true;
+      else return false;
+    })) hits.push(searchable);
     cursor = await cursor.continue();
   }
 
   return hits.map(unstringifyHits).sort((a, b) => (new Date(b.quickInfo.date)) - (new Date(a.quickInfo.date)));
 };
-const categorySearch = async ({ blogs, types, texts, tags, date }) => {
-  const checks = [blogs, types, texts, tags, date].filter(isDefined);
-  return keywordSearch(...checks);
-};
-const strictCategorySearch = async ({ blogs, types, texts, tags, date }) => categorySearch({ blogs, types, texts, tags, date }).then(hits => {
-  const threshold = [blogs, types, texts, tags, date].filter(isDefined).length;
+const categorySearch = async ({ blogs, types, texts, tags, date }) => keywordSearch(...[blogs, types, texts, tags, date].flat());
+const strictCategorySearch = async ({ blogs, types, texts, tags, date }) => categorySearch({ blogs, types, texts, tags, dates: date }).then(hits => {
+  const threshold = [blogs, types, texts, tags, date].filter(v => v.length).length;
   const matches = [];
 
   hits.forEach(postInfo => {
     const { quickInfo } = postInfo;
     let n = 0;
 
-    if (quickInfo.blogs?.length && blogs
-      && blogs.split(',').every(searchedBlog => quickInfo.blogs.includes(searchedBlog))) ++n;
-    if (quickInfo.types?.length && types
-      && types.split(',').every(searchedType => quickInfo.types.includes(searchedType))) ++n;
-    if (quickInfo.texts?.length && texts
+    if (quickInfo.blogs?.length && blogs.length
+      && blogs.every(searchedBlog => quickInfo.blogs.includes(searchedBlog))) ++n;
+    if (quickInfo.types?.length && types.length
+      && types.every(searchedType => quickInfo.types.includes(searchedType))) ++n;
+    if (quickInfo.texts?.length && texts.length
       && quickInfo.texts.some(postText => postText.includes(texts))) ++n;
-    if (quickInfo.tags?.length && tags
-      && tags.split(',').every(searchedTag => quickInfo.tags.includes(searchedTag))) ++n;
-    if (date && quickInfo.date?.includes(date)) ++n;
+    if (quickInfo.tags?.length && tags.length
+      && tags.every(searchedTag => quickInfo.tags.includes(searchedTag))) ++n;
+    if (date.length && date.some(date => quickInfo.date?.includes(date))) ++n;
 
     if (n === threshold) matches.push(postInfo);
   });
@@ -82,7 +88,7 @@ const quickInfo = ({ id, blog, content, trail, tags, date }) => {
     tags: tagStr,
     date
   });
-}
+};
 const indexPosts = async (force = false) => {
   const tx = db.transaction('postStore', 'readonly');
   let cursor = await tx.store.openCursor(), post;
@@ -181,28 +187,54 @@ const renderResult = (post, hit) => {
     ]
   });
 };
+const renderResults = async hits => {
+  console.info(hits);
+
+  if (!hits.length) {
+    document.getElementById('postFinder-results').replaceChildren([]);
+    return;
+  }
+
+  const posts = await getIndexedPosts(hits.map(({ id }) => id));
+  const results = posts.map((post, i) => renderResult(post, hits[i]));
+
+  document.getElementById('postFinder-results').replaceChildren(...results);
+};
 
 async function onKeywordSearch({ target }) {
   let keywords = target.value;
 
-  if (splitMode === 'comma') keywords = keywords.split(',').map(v => v.trim()).filter(isDefined);
+  keywords = keywords.split(querySeparators[splitMode]).map(v => v.trim()).filter(isDefined);
+  if (splitMode === 'space') keywords = keywords.map(v => v.replace(/_/g, ' '));
 
   if (!(keywords.length)) {
     document.getElementById('postFinder-results').replaceChildren([]);
     return;
   }
 
-  const hits = await keywordSearch(...keywords);
-  console.info(hits);
+  keywordSearch(...keywords).then(renderResults);
+}
 
-  if (!hits.length) return;
+async function onAdvancedSearch() {
+  const date = document.getElementById('postFinder-advanced-date').value;
+  let keywordCategories = ['blogs', 'types', 'text', 'tags'].map(v => document.getElementById(`postFinder-advanced-${v}`).value);
 
-  const posts = await getIndexedPosts(hits.map(({ id }) => id));
-  const results = posts.map((post, i) => renderResult(post, hits[i]));
+  keywordCategories = keywordCategories.map(keywords => keywords.split(querySeparators[splitMode]).map(v => v.trim()).filter(isDefined));
 
-  console.info(posts);
+  if (splitMode === 'space') keywordCategories = keywordCategories.map(keywords => keywords.map(v => v.replace(/_/g, ' ')));
 
-  document.getElementById('postFinder-results').replaceChildren(...results);
+  if (keywordCategories.every(keywords => !keywords.length) && !date) {
+    document.getElementById('postFinder-results').replaceChildren([]);
+    return;
+  }
+
+  const [blogs, types, texts, tags] = keywordCategories;
+
+  const strict = document.getElementById('postFinder-advanced-strict').checked;
+  let hits;
+
+  if (strict) hits = strictCategorySearch({ blogs, types, texts, tags, date }).then(renderResults);
+  else hits = categorySearch({ blogs, types, texts, tags, date }).then(renderResults);
 }
 
 function showDialog(event) {
@@ -210,6 +242,24 @@ function showDialog(event) {
   searchWindow.setAttribute('open', '');
 };
 function closeDialog(event) { if (!('key' in event) || (event.key === 'Escape' && searchWindow.hasAttribute('open'))) searchWindow.removeAttribute('open'); }
+
+function toggleAdvanced() {
+  const def = document.getElementById('postFinder-defaultSearch');
+
+  if (this.dataset.state) {
+    this.dataset.state = '';
+    document.getElementById('postFinder-advanced').style.display = 'none';
+
+    def.removeAttribute('disabled');
+  } else {
+    this.dataset.state = 'open';
+    document.getElementById('postFinder-advanced').style.display = 'flex';
+
+    def.value = '';
+    def.setAttribute('disabled', '');
+    document.getElementById('postFinder-results').replaceChildren([]);
+  }
+}
 
 const button = noact({
   className: 'postFinder-button',
@@ -223,6 +273,7 @@ const button = noact({
     svgIcon('search', 24, 24, 'postFinder-icon', 'rgb(var(--white-on-dark))')
   ]
 });
+
 const searchWindow = noact({
   tag: 'dialog',
   className: `${customClass} postFinder-dialog`,
@@ -259,28 +310,147 @@ const searchWindow = noact({
         ]
       },
       {
-        tag: 'input',
-        className: 'w-full',
-        type: 'text',
-        name: 'q1',
-        placeholder: 'search cached posts',
-        oninput: debounce(onKeywordSearch)
+        className: 'postFinder-searchRow',
+        children: [
+          {
+            tag: 'input',
+            id: 'postFinder-defaultSearch',
+            className: 'postFinder-search',
+            type: 'text',
+            name: 'q1',
+            placeholder: 'search cached posts',
+            oninput: debounce(onKeywordSearch)
+          },
+          {
+            onclick: toggleAdvanced,
+            dataset: { state: '' },
+            children: svgIcon('filter', 24, 24, '', 'rgba(var(--black), .6)')
+          }
+        ]
+      },
+      {
+        id: 'postFinder-advanced',
+        children: [
+          {
+            tag: 'h3',
+            style: 'margin-bottom:.5rem',
+            children: 'advanced search'
+          },
+          {
+            children: [
+              {
+                tag: 'label',
+                for: 'postFinder-advanced-blogs',
+                children: 'blogs'
+              },
+              {
+                tag: 'input',
+                type: 'text',
+                id: 'postFinder-advanced-blogs',
+                className: 'postFinder-search',
+                placeholder: 'blogs'
+              }
+            ]
+          },
+          {
+            children: [
+              {
+                tag: 'label',
+                for: 'postFinder-advanced-types',
+                children: 'types'
+              },
+              {
+                tag: 'input',
+                type: 'text',
+                id: 'postFinder-advanced-types',
+                className: 'postFinder-search',
+                placeholder: 'types (e.g. text, image)'
+              }
+            ]
+          },
+          {
+            children: [
+              {
+                tag: 'label',
+                for: 'postFinder-advanced-text',
+                children: 'text'
+              },
+              {
+                tag: 'input',
+                type: 'text',
+                id: 'postFinder-advanced-text',
+                className: 'postFinder-search',
+                placeholder: 'text'
+              }
+            ]
+          },
+          {
+            children: [
+              {
+                tag: 'label',
+                for: 'postFinder-advanced-tags',
+                children: 'tags'
+              },
+              {
+                tag: 'input',
+                type: 'text',
+                id: 'postFinder-advanced-tags',
+                className: 'postFinder-search',
+                placeholder: 'tags'
+              }
+            ]
+          },
+          {
+            children: [
+              {
+                tag: 'label',
+                for: 'postFinder-advanced-date',
+                children: 'date'
+              },
+              {
+                tag: 'input',
+                type: 'date',
+                id: 'postFinder-advanced-date',
+                className: 'postFinder-search',
+              }
+            ]
+          },
+          {
+            children: [
+              {
+                tag: 'label',
+                for: '',
+                children: 'strict mode'
+              },
+              {
+                tag: 'input',
+                type: 'checkbox',
+                id: 'postFinder-advanced-strict'
+              }
+            ]
+          },
+          {
+            id: 'postFinder-advanced-submit',
+            onclick: onAdvancedSearch,
+            children: 'search',
+          }
+        ]
       },
       {
         className: 'postFinder-placeholder',
-        children: ['enter a query to see results!']
+        children: 'enter a query to see results!'
       },
       {
         id: 'postFinder-results',
         tag: 'ul',
-        children: [
-        ]
+        children: []
       }
     ]
   }]
 });
 
 export const main = async () => {
+  ({ splitMode } = await getOptions('postFinder'));
   db = await openDatabase();
   postIndices = await db.getAllKeys('postStore');
   searchableIndices = await db.getAllKeys('searchStore');
@@ -291,6 +461,8 @@ export const main = async () => {
   document.body.append(button);
   document.body.append(searchWindow);
   document.addEventListener('keydown', closeDialog);
+
+  document.getElementById('postFinder-defaultSearch').title = `${splitMode}-separated`;
 };
 
 export const clean = async () => {
