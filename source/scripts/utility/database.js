@@ -1,10 +1,6 @@
 const { openDB, wrap } = idb;
 
-<<<<<<< HEAD
-const DB_VERSION = 3; // database version
-=======
 const DB_VERSION = 7; // database version
->>>>>>> e68fc26 (Fix UUID clashes from blog url changes throwing ConstraintErrors)
 const EXPIRY_TIME = 86400000; // period after which data is considered expired
 
 const updateEvent = 'dbplus-database-update';
