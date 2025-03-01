@@ -1,6 +1,10 @@
 const { openDB, wrap } = idb;
 
+<<<<<<< HEAD
 const DB_VERSION = 3; // database version
+=======
+const DB_VERSION = 7; // database version
+>>>>>>> e68fc26 (Fix UUID clashes from blog url changes throwing ConstraintErrors)
 const EXPIRY_TIME = 86400000; // period after which data is considered expired
 
 const updateEvent = 'dbplus-database-update';
@@ -19,6 +23,9 @@ const conditionalCreateIndex = (store, indexName, keyPath, options) => {
     store.createIndex(indexName, keyPath, options);
   }
 };
+const conditionalDeleteIndex = (store, indexName, condition) => {
+  if (condition) store.deleteIndex(indexName);
+}
 
 export const openDatabase = async () => openDB('dbplus', DB_VERSION, {
   upgrade: (db, oldVersion, newVersion, transaction) => {
@@ -31,7 +38,17 @@ export const openDatabase = async () => openDB('dbplus', DB_VERSION, {
 
     const blogStore = conditionalCreateStore(transaction, 'blogStore', { keyPath: 'name' });
     conditionalCreateIndex(blogStore, 'name', 'name', { unique: true });
-    conditionalCreateIndex(blogStore, 'uuid', 'uuid', { unique: true });
+    conditionalDeleteIndex(blogStore, 'uuid', blogStore.index('uuid').unique); // need to delete old version of uuid index so we can recreate it as non-unique
+    conditionalCreateIndex(blogStore, 'uuid', 'uuid', { unique: false });
+    /* 
+      uuids ARE unique, but blog urls can be changed.
+      so if we're using the blog url as a key path and it changes, suddenly the uuid is no longer unique from IDB's point of view.
+      it isn't *optimal* that uuids aren't a unique index, but they're not the primary key and it's possible we'll never even need to access them.
+      although the issue there would be that it could potentially fetch the previous url's blog and not the newer one,
+      but still, a niche case regardless
+
+      consider this message preventation for any future headaches related to mysteriously getting the wrong blog from a uuid cursor.
+    */
     conditionalCreateIndex(blogStore, 'storedAt', 'storedAt', { unique: false });
 
     const searchStore = conditionalCreateStore(transaction, 'searchStore', { keyPath: 'id' });
