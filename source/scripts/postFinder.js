@@ -44,8 +44,8 @@ const keywordSearch = async (...keywords) => {
 };
 const categorySearch = async ({ blogs, types, texts, tags, date }) => keywordSearch(...[blogs, types, texts, tags, date].flat());
 const strictCategorySearch = async ({ blogs, types, texts, tags, date }) => categorySearch({ blogs, types, texts, tags, date }).then(hits => {
+  [blogs, types, texts, tags] = [blogs, types, texts, tags].map(v => v.filter(k => k[0] !== '-').map(k => k.toLowerCase()));
   const threshold = [blogs, types, texts, tags, date].filter(v => v.length).length;
-  [blogs, types, texts, tags] = [blogs, types, texts, tags].map(v => v.map(k => k.toLowerCase()));
   const matches = [];
 
   hits.forEach(postInfo => {
