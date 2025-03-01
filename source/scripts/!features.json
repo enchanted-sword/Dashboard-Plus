@@ -33,5 +33,6 @@
   "mutuals",
   "emptyInbox",
   "customColors",
-  "followingAsDefault"
+  "followingAsDefault",
+  "postFinder"
 ]
