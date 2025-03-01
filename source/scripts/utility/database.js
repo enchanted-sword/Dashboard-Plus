@@ -194,6 +194,8 @@ export const clearData = (dataObj, options = null) => {
   return tx.done
 };
 
+const resourceQueue = new WeakMap();
+
 /**
  * @param {string} store - single object store to access 
  * @param {Number|string|Array} keys - keys to retrieve from that store
@@ -202,10 +204,18 @@ export const clearData = (dataObj, options = null) => {
  * @returns {Promise <object>}
  */
 export const getIndexedResources = async (store, keys, options = null) => {
-  const isArray = Array.isArray(keys);
+  const isArray = Array.isArray(keys); // need to save the initial key state before arrayifying it
   keys = [keys].flat();
-  const indexedResources = await getData(Object.fromEntries([[store, keys]]), Object.fromEntries([[store, options]]));
-  return isArray ? indexedResources[store] : indexedResources[store][0];
+  const mapKey = [store, keys, options];
+
+  if (!resourceQueue.has(mapKey)) {
+    const indexedResources = await getData(Object.fromEntries([[store, keys]]), Object.fromEntries([[store, options]]));
+    const data = isArray ? indexedResources[store] : indexedResources[store][0];
+
+    resourceQueue.set(mapKey, data);
+  }
+
+  return resourceQueue.get(mapKey);
 };
 
 /**
