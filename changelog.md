@@ -1,3 +1,19 @@
+# v1.2.4
+
+## general
+
+- fixed an edge case where blogs changing their urls would result in a uuid clash leading to an idb ConstraintError. thanks charlotte!
+- indexedResource calls are now queued, although performance increase are likely negligible
+
+## hide in stream content
+
+- fixed carousel titles AGAIN
+
+## new feature! following tab as default
+
+- always defaults your dashboard to the "following" tab.
+- otherwise, tumblr will randomly switch it to "for you"
+
 # v1.2.3
 
 ## general

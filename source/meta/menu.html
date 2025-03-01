@@ -162,26 +162,33 @@
             >support my work!</a
           >
           <div class="ui-aboutLink ui-changelog">
-            <h1 style="text-align: center">v1.2.3</h1>
+            <h1 style="text-align: center">v1.2.4</h1>
             <h2 style="text-align: center">general</h2>
             <ul>
-              <li>correctly implemented diff updates</li>
-            </ul>
-            <h2 style="text-align: center">hide filtered</h2>
-            <ul>
-              <li>added the option to filter keywords</li>
-            </ul>
-            <h2 style="text-align: center">content wizard</h2>
-            <ul>
-              <li>fixed justification for vertical nav layout</li>
               <li>
-                fixed justification breaking long posts in the editor when in
-                horizontal nav layout
+                fixed an edge case where blogs changing their urls would result
+                in a uuid clash leading to an idb ConstraintError. thanks
+                charlotte!
+              </li>
+              <li>
+                indexedResource calls are now queued, although performance
+                increase are likely negligible
               </li>
             </ul>
             <h2 style="text-align: center">hide in stream content</h2>
             <ul>
-              <li>fixed carousels and carousel titles not being hidden</li>
+              <li>fixed carousel titles AGAIN</li>
+            </ul>
+            <h2 style="text-align: center">
+              <span class="ui-new">new feature!</span> following tab as default
+            </h2>
+            <ul>
+              <li>
+                always defaults your dashboard to the &quot;following&quot; tab.
+              </li>
+              <li>
+                otherwise, tumblr will randomly switch it to &quot;for you&quot;
+              </li>
             </ul>
           </div>
         </ul>
