@@ -43,8 +43,9 @@ const keywordSearch = async (...keywords) => {
   return hits.map(unstringifyHits).sort((a, b) => (new Date(b.quickInfo.date)) - (new Date(a.quickInfo.date)));
 };
 const categorySearch = async ({ blogs, types, texts, tags, date }) => keywordSearch(...[blogs, types, texts, tags, date].flat());
-const strictCategorySearch = async ({ blogs, types, texts, tags, date }) => categorySearch({ blogs, types, texts, tags, dates: date }).then(hits => {
+const strictCategorySearch = async ({ blogs, types, texts, tags, date }) => categorySearch({ blogs, types, texts, tags, date }).then(hits => {
   const threshold = [blogs, types, texts, tags, date].filter(v => v.length).length;
+  [blogs, types, texts, tags] = [blogs, types, texts, tags].map(v => v.map(k => k.toLowerCase()));
   const matches = [];
 
   hits.forEach(postInfo => {
@@ -56,7 +57,7 @@ const strictCategorySearch = async ({ blogs, types, texts, tags, date }) => cate
     if (quickInfo.types?.length && types.length
       && types.every(searchedType => quickInfo.types.includes(searchedType))) ++n;
     if (quickInfo.texts?.length && texts.length
-      && quickInfo.texts.some(postText => postText.includes(texts))) ++n;
+      && quickInfo.texts.some(postText => texts.some(text => postText.includes(text)))) ++n;
     if (quickInfo.tags?.length && tags.length
       && tags.every(searchedTag => quickInfo.tags.includes(searchedTag))) ++n;
     if (date.length && date.some(date => quickInfo.date?.includes(date))) ++n;
@@ -71,14 +72,14 @@ const isDefined = x => !!x;
 const quickInfo = ({ id, blog, content, trail, tags, date }) => {
   const blogs = [blog, ...trail.map(({ blog }) => blog)].filter(isDefined);
   const contents = unique([...content, ...trail.flatMap(({ content }) => content)].filter(isDefined));
-  const tagStr = unique([...tags, ...trail.flatMap(({ tags }) => tags)]).filter(isDefined).join(',');
+  const tagStr = unique([...tags, ...trail.flatMap(({ tags }) => tags)]).filter(isDefined).join(',').toLowerCase();
   const texts = unique(contents.map(({ question, answers, text }) => {
     const returnArr = [];
     question && returnArr.push(question);
     answers && returnArr.push(...answers.map(({ answerText }) => answerText));
     text && returnArr.push(text);
     return returnArr;
-  }).flat(Infinity)).filter(isDefined).join(textSeparator);
+  }).flat(Infinity)).filter(isDefined).join(textSeparator).toLowerCase();
 
   return JSON.stringify({
     id,
