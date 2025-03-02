@@ -1,6 +1,6 @@
 const { openDB, wrap } = idb;
 
-const DB_VERSION = 7; // database version
+const DB_VERSION = 9; // database version
 const EXPIRY_TIME = 86400000; // period after which data is considered expired
 
 const updateEvent = 'dbplus-database-update';
@@ -31,6 +31,7 @@ export const openDatabase = async () => openDB('dbplus', DB_VERSION, {
     conditionalCreateIndex(postStore, 'id', 'id', { unique: true });
     conditionalCreateIndex(postStore, 'date', 'date', { unique: false });
     conditionalCreateIndex(postStore, 'storedAt', 'storedAt', { unique: false });
+    conditionalDeleteIndex(postStore, 'quickInfo', postStore.index('quickInfo'));
 
     const blogStore = conditionalCreateStore(transaction, 'blogStore', { keyPath: 'name' });
     conditionalCreateIndex(blogStore, 'name', 'name', { unique: true });
@@ -49,7 +50,8 @@ export const openDatabase = async () => openDB('dbplus', DB_VERSION, {
 
     const searchStore = conditionalCreateStore(transaction, 'searchStore', { keyPath: 'id' });
     conditionalCreateIndex(searchStore, 'id', 'id', { unique: true });
-    conditionalCreateIndex(postStore, 'quickInfo', 'quickInfo', { unique: false });
+    conditionalCreateIndex(searchStore, 'quickInfo', 'quickInfo', { unique: false });
+    conditionalCreateIndex(searchStore, 'storedAt', 'storedAt', { unique: false });
   }
 });
 
