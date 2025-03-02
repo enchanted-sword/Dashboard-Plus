@@ -6,11 +6,59 @@ import { navigate } from './utility/tumblr.js';
 
 const customClass = 'dbplus-postFinder';
 
-let db, postIndices, searchableIndices, splitMode;
+let db, postIndices, searchableIndices, splitMode, maxResults;
 const textSeparator = 'φ(,)';
 const querySeparators = {
   comma: ',',
   space: ' '
+};
+
+const updateFrequency = 100;
+const cursorStatus = { // silly little react-esque state var
+  _index: 0,
+  _remaining: 0,
+  _hits: 0,
+
+  get index() {
+    return this._index;
+  },
+  set index(n) {
+    this._index = n;
+    if (!(n % updateFrequency)) document.querySelectorAll('.postFinder-status-cursorIndex')?.forEach(e => e.textContent = n);
+  },
+  get remaining() {
+    return this._remaining;
+  },
+  set remaining(n) {
+    this._remaining = n;
+    if (!(n % updateFrequency)) document.querySelectorAll('.postFinder-status-cursorRemaining')?.forEach(e => e.textContent = n);
+  },
+  get hits() {
+    return this._hits;
+  },
+  set hits(n) {
+    this._hits = n;
+    if (!(n % updateFrequency)) document.querySelectorAll('.postFinder-status-cursorHits')?.forEach(e => e.textContent = n);
+  },
+};
+const indexProgress = {
+  _progress: 0,
+  _total: 0,
+
+  get progress() {
+    return this._progress;
+  },
+  set progress(n) {
+    this._progress = n;
+    if (!(n % updateFrequency)) document.querySelectorAll('.postFinder-status-indexProgress')?.forEach(e => e.textContent = n);
+  },
+  get total() {
+    return this._total;
+  },
+  set total(n) {
+    this._total = n;
+    document.querySelectorAll('.postFinder-status-indexTotal')?.forEach(e => e.textContent = n);
+  },
 };
 
 const unstringifyHits = hit => {
@@ -24,25 +72,65 @@ const unstringifyHits = hit => {
   return Object.assign(hit, { quickInfo: parsedInfo });
 };
 
-const keywordSearch = async (...keywords) => {
+const newSearchProgress = () => noact({
+  className: 'postFinder-status-cursor',
+  children: [
+    'checked ',
+    {
+      tag: 'span',
+      className: 'postFinder-status-cursorIndex',
+      children: cursorStatus.index || '?'
+    },
+    ' of ',
+    {
+      tag: 'span',
+      className: 'postFinder-status-cursorRemaining',
+      children: cursorStatus.remaining || '?'
+    },
+    ' posts (',
+    {
+      tag: 'span',
+      className: 'postFinder-status-cursorHits',
+      children: cursorStatus.hits || '?'
+    },
+    ' matches)'
+  ]
+});
+
+const keywordSearch = async (keywords, start = 0) => {
   keywords = keywords.filter(isDefined).map(v => v.toLowerCase());
   const tx = db.transaction('searchStore', 'readonly');
   const hits = [];
-  let cursor = await tx.store.openCursor(), searchable;
+  let cursor = await tx.store.openCursor(), searchable, i = 0;
 
-  while (cursor) {
+  cursorStatus.index = start; cursorStatus.hits = 0;
+
+  document.getElementById('postFinder-results').replaceChildren(newSearchProgress());
+
+  if (start) cursor.advance(start);
+
+  const t0 = Date.now();
+
+  while (cursor && i < maxResults) {
     searchable = cursor.value;
     if (keywords.every(keyword => {
       if ((keyword[0] === '-' && !(searchable.quickInfo.toLowerCase().includes(keyword.substring(1))))
         || searchable.quickInfo.includes(keyword)) return true;
       else return false;
-    })) hits.push(searchable);
+    })) {
+      hits.push(searchable);
+      ++cursorStatus.hits;
+      ++i;
+    }
+    ++cursorStatus.index;
     cursor = await cursor.continue();
   }
 
+  console.log(`searched ${cursorStatus.index} indices in ${Date.now() - t0}ms`);
+
   return hits.map(unstringifyHits).sort((a, b) => (new Date(b.quickInfo.date)) - (new Date(a.quickInfo.date)));
 };
-const categorySearch = async ({ blogs, types, texts, tags, date }) => keywordSearch(...[blogs, types, texts, tags, date].flat());
+const categorySearch = async ({ blogs, types, texts, tags, date }) => keywordSearch([blogs, types, texts, tags, date].flat());
 const strictCategorySearch = async ({ blogs, types, texts, tags, date }) => categorySearch({ blogs, types, texts, tags, date }).then(hits => {
   [blogs, types, texts, tags] = [blogs, types, texts, tags].map(v => v.filter(k => k[0] !== '-').map(k => k.toLowerCase()));
   const threshold = [blogs, types, texts, tags, date].filter(v => v.length).length;
@@ -92,30 +180,47 @@ const quickInfo = ({ id, blog, content, trail, tags, date }) => {
 };
 const indexPosts = async (force = false) => {
   const tx = db.transaction('postStore', 'readonly');
-  let cursor = await tx.store.openCursor(), post;
+  let cursor = await tx.store.openCursor(), post, i = 0;
+  tx.store.getAllKeys().then(keys => indexProgress.total = keys.length);
+
+  const t0 = Date.now();
 
   while (cursor) {
     post = cursor.value;
-    if (!searchableIndices.includes(post.id) || updateNeeded(post) || force) {
-      const searchable = { id: post.id, summary: post.summary, postUrl: post.postUrl, quickInfo: quickInfo(post) };
+    if (!searchableIndices.includes(post.id) || force) {
+      const searchable = { id: post.id, summary: post.summary, postUrl: post.postUrl, quickInfo: quickInfo(post), storedAt: Date.now() };
       updateData({ searchStore: searchable }).then(() => {
-        if (searchableIndices.includes(post.id)) searchableIndices.push(post.id);
+        if (!searchableIndices.includes(post.id)) {
+          searchableIndices.push(post.id);
+          ++indexProgress.progress;
+        }
       });
+      ++i;
     }
+
     cursor = await cursor.continue();
   }
+
+  console.log(`indexed ${i} posts in ${Date.now() - t0}ms`);
+
+  cursorStatus.remaining = searchableIndices.length;
+  indexProgress.progress = cursorStatus.remaining;
+
+  document.getElementById('postFinder-status-index')?.remove();
 };
 const indexFromUpdate = async ({ detail: { targets } }) => { // take advantage of dispatched events to index new posts for free without opening extra cursors
   if ('postStore' in targets) {
     [targets.postStore].flat().map(post => {
       if (postIndices.includes(post.id)) postIndices.push(post.id);
-      if (!searchableIndices.includes(post.id) || updateNeeded(post)) {
+      if (!searchableIndices.includes(post.id)) {
         const searchable = { id: post.id, summary: post.summary, postUrl: post.postUrl, quickInfo: quickInfo(post) };
         updateData({ searchStore: searchable }).then(() => {
           if (searchableIndices.includes(post.id)) searchableIndices.push(post.id);
         });
       }
     });
+
+    cursorStatus.remaining = searchableIndices.length;
   }
 };
 
@@ -192,14 +297,14 @@ const renderResults = async hits => {
   console.info(hits);
 
   if (!hits.length) {
-    document.getElementById('postFinder-results').replaceChildren([]);
+    document.getElementById('postFinder-results').replaceChildren('zero results found');
     return;
   }
 
   const posts = await getIndexedPosts(hits.map(({ id }) => id));
   const results = posts.map((post, i) => renderResult(post, hits[i]));
 
-  document.getElementById('postFinder-results').replaceChildren(...results);
+  document.getElementById('postFinder-results').replaceChildren(`${hits.length} result${hits.length > 1 ? 's' : ''} found`, ...results);
 };
 
 async function onKeywordSearch({ target }) {
@@ -213,7 +318,7 @@ async function onKeywordSearch({ target }) {
     return;
   }
 
-  keywordSearch(...keywords).then(renderResults);
+  keywordSearch(keywords).then(renderResults);
 }
 
 async function onAdvancedSearch() {
@@ -232,10 +337,15 @@ async function onAdvancedSearch() {
   const [blogs, types, texts, tags] = keywordCategories;
 
   const strict = document.getElementById('postFinder-advanced-strict').checked;
-  let hits;
 
-  if (strict) hits = strictCategorySearch({ blogs, types, texts, tags, date }).then(renderResults);
-  else hits = categorySearch({ blogs, types, texts, tags, date }).then(renderResults);
+  this.setAttribute('disabled', '');
+  let px;
+
+  if (strict) px = strictCategorySearch({ blogs, types, texts, tags, date }).then(renderResults);
+  else px = categorySearch({ blogs, types, texts, tags, date }).then(renderResults);
+
+  await px;
+  this.removeAttribute('disabled');
 }
 
 function showDialog(event) {
@@ -271,7 +381,25 @@ const button = noact({
       className: 'postFinder-title',
       children: 'post finder'
     },
-    svgIcon('search', 24, 24, 'postFinder-icon', 'rgb(var(--white-on-dark))')
+    svgIcon('search', 24, 24, 'postFinder-icon', 'rgb(var(--white-on-dark))'),
+    {
+      id: 'postFinder-status-index',
+      children: [
+        'indexed ',
+        {
+          tag: 'span',
+          className: 'postFinder-status-indexProgress',
+          children: indexProgress.progress || '?'
+        },
+        ' of ',
+        {
+          tag: 'span',
+          className: 'postFinder-status-indexTotal',
+          children: indexProgress.total || '?'
+        },
+        ' posts'
+      ]
+    }
   ]
 });
 
@@ -451,19 +579,23 @@ const searchWindow = noact({
 });
 
 export const main = async () => {
-  ({ splitMode } = await getOptions('postFinder'));
+  ({ splitMode, maxResults } = await getOptions('postFinder'));
   db = await openDatabase();
   postIndices = await db.getAllKeys('postStore');
   searchableIndices = await db.getAllKeys('searchStore');
 
-  indexPosts();
-  window.addEventListener('dbplus-database-update', indexFromUpdate);
-
   document.body.append(button);
   document.body.append(searchWindow);
   document.addEventListener('keydown', closeDialog);
-
   document.getElementById('postFinder-defaultSearch').title = `${splitMode}-separated`;
+
+  indexProgress.progress = searchableIndices.length;
+  indexProgress.total = postIndices.length;
+
+  if (indexProgress.progress === indexProgress.total) document.getElementById('postFinder-status-index').remove();
+
+  indexPosts();
+  window.addEventListener('dbplus-database-update', indexFromUpdate);
 };
 
 export const clean = async () => {

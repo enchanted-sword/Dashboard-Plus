@@ -23,6 +23,25 @@
             "name": "space (replace spaces in queries with \"_\")"
           }
         ]
+      },
+      "maxResults": {
+        "title": "results per page",
+        "type": "range",
+        "min": 50,
+        "max": 1000,
+        "value": 200,
+        "step": 10,
+        "unit": "",
+        "list": [
+          {
+            "value": 50,
+            "label": "50"
+          },
+          {
+            "value": 1000,
+            "label": "1000"
+          }
+        ]
       }
     }
   },

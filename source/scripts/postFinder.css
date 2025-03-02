@@ -140,6 +140,10 @@
   filter: brightness(0.9);
 }
 
+#postFinder-advanced-submit:disabled {
+  filter: grayscale(0.6);
+}
+
 .postFinder-placeholder {
   display: none;
 }
