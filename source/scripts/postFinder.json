@@ -26,6 +26,7 @@
       },
       "maxResults": {
         "title": "results per page",
+        "tooltip": "larger numbers will take longer to find/render",
         "type": "range",
         "min": 50,
         "max": 1000,

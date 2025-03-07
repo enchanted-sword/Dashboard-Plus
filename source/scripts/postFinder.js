@@ -18,6 +18,7 @@ const cursorStatus = { // silly little react-esque state var
   _index: 0,
   _remaining: 0,
   _hits: 0,
+  keywords: [],
 
   get index() {
     return this._index;
@@ -103,7 +104,9 @@ const keywordSearch = async (keywords, start = 0) => {
   const hits = [];
   let cursor = await tx.store.openCursor(), searchable, i = 0;
 
-  cursorStatus.index = start; cursorStatus.hits = 0;
+  cursorStatus.index = start;
+  cursorStatus.hits = 0;
+  cursorStatus.keywords = keywords;
 
   document.getElementById('postFinder-results').replaceChildren(newSearchProgress());
 
@@ -303,8 +306,24 @@ const renderResults = async hits => {
 
   const posts = await getIndexedPosts(hits.map(({ id }) => id));
   const results = posts.map((post, i) => renderResult(post, hits[i]));
+  let resultLabel;
+  if (hits.length === maxResults) resultLabel = `showing the first ${maxResults} results`;
+  else resultLabel = `${hits.length} result${hits.length > 1 ? 's' : ''} found`;
 
-  document.getElementById('postFinder-results').replaceChildren(`${hits.length} result${hits.length > 1 ? 's' : ''} found`, ...results);
+  resultSection.replaceChildren(resultLabel, ...results);
+};
+
+const paginationFunction = page => async function () {
+  keywordSearch(cursorStatus.keywords, cursorStatus.index).then(hits => {
+    paginationManager(hits, page + 1);
+  });
+};
+const newPaginationMenu = page => noact({});
+
+const paginationManager = async (hits, page = 1) => {
+  if (cursorStatus.index < cursorStatus.remaining) {
+
+  }
 };
 
 async function onKeywordSearch({ target }) {
@@ -318,7 +337,10 @@ async function onKeywordSearch({ target }) {
     return;
   }
 
-  keywordSearch(keywords).then(renderResults);
+  keywordSearch(keywords).then(hits => {
+
+    renderResults(hits);
+  });
 }
 
 async function onAdvancedSearch() {
