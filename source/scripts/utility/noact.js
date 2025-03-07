@@ -25,6 +25,7 @@ const isArrow = fn => !fn.toString().replace('async', '').trim().startsWith('fun
  */
 export const noact = (obj = {}) => {
   if (!obj) return '';
+  if (typeof obj === 'string') return obj;
   let el, tag;
 
   try {
