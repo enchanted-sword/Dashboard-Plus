@@ -80,6 +80,17 @@ const indexProgress = {
 
   sync() {
     document.querySelectorAll('.postFinder-status-indexProgress')?.forEach(e => e.textContent = this._progress);
+  },
+  syncInterval: 0,
+  enableAutoSync() {
+    if (this.syncInterval === 0) this.syncInterval = window.setInterval(() => this.sync(), 1000);
+  },
+  disableAutoSync() {
+    if (this.syncInterval) {
+      clearInterval(this.syncInterval);
+      this.sync();
+      this.syncInterval = 0;
+    }
   }
 };
 
@@ -210,6 +221,7 @@ const indexPosts = async (force = false) => {
   tx.store.getAllKeys().then(keys => indexProgress.total = keys.length);
 
   const t0 = Date.now();
+  indexProgress.enableAutoSync();
 
   while (cursor) {
     post = cursor.value;
@@ -227,12 +239,14 @@ const indexPosts = async (force = false) => {
     cursor = await cursor.continue();
   }
 
+  indexProgress.disableAutoSync();
   console.log(`indexed ${i} posts in ${Date.now() - t0}ms`);
 
   cursorStatus.remaining = searchableIndices.length;
   indexProgress.progress = cursorStatus.remaining;
 
   document.getElementById('postFinder-status-index')?.remove();
+  console.log(indexProgress);
 };
 const indexFromUpdate = async ({ detail: { targets } }) => { // take advantage of dispatched events to index new posts for free without opening extra cursors
   if ('postStore' in targets) {
