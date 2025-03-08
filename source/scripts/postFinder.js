@@ -46,6 +46,17 @@ const cursorStatus = { // silly little react-esque state var
     document.querySelectorAll('.postFinder-status-cursorIndex')?.forEach(e => e.textContent = this._index);
     document.querySelectorAll('.postFinder-status-cursorRemaining')?.forEach(e => e.textContent = this._remaining);
     document.querySelectorAll('.postFinder-status-cursorHits')?.forEach(e => e.textContent = this._hits);
+  },
+  syncInterval: 0,
+  enableAutoSync() {
+    if (this.syncInterval === 0) this.syncInterval = window.setInterval(() => this.sync(), 1000);
+  },
+  disableAutoSync() {
+    if (this.syncInterval) {
+      clearInterval(this.syncInterval);
+      this.sync();
+      this.syncInterval = 0;
+    }
   }
 };
 const indexProgress = {
@@ -123,6 +134,7 @@ const keywordSearch = async (keywords, start = 0) => {
   if (start) await cursor.advance(start);
 
   const t0 = Date.now();
+  cursorStatus.enableAutoSync();
 
   while (cursor && i < maxResults) {
     searchable = cursor.value;
@@ -139,7 +151,7 @@ const keywordSearch = async (keywords, start = 0) => {
     cursor = await cursor.continue();
   }
 
-  cursorStatus.sync();
+  cursorStatus.disableAutoSync();
   console.log(`searched ${cursorStatus.index - start} indices in ${Date.now() - t0}ms`);
 
   return hits.map(unstringifyHits).sort((a, b) => (new Date(b.quickInfo.date)) - (new Date(a.quickInfo.date)));
@@ -640,6 +652,7 @@ export const main = async () => {
 
   indexProgress.progress = searchableIndices.length;
   indexProgress.total = postIndices.length;
+  indexProgress.sync();
 
   if (indexProgress.progress === indexProgress.total) document.getElementById('postFinder-status-index').remove();
 
