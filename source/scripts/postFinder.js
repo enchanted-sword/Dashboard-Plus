@@ -6,7 +6,7 @@ import { navigate } from './utility/tumblr.js';
 
 const customClass = 'dbplus-postFinder';
 
-let db, postIndices, searchableIndices, splitMode, maxResults;
+let db, postIndices, searchableIndices, splitMode, maxResults, resultSection;
 const textSeparator = 'φ(,)';
 const querySeparators = {
   comma: ',',
@@ -41,6 +41,12 @@ const cursorStatus = { // silly little react-esque state var
     this._hits = n;
     if (!(n % updateFrequency)) document.querySelectorAll('.postFinder-status-cursorHits')?.forEach(e => e.textContent = n);
   },
+
+  sync() {
+    document.querySelectorAll('.postFinder-status-cursorIndex')?.forEach(e => e.textContent = this._index);
+    document.querySelectorAll('.postFinder-status-cursorRemaining')?.forEach(e => e.textContent = this._remaining);
+    document.querySelectorAll('.postFinder-status-cursorHits')?.forEach(e => e.textContent = this._hits);
+  }
 };
 const indexProgress = {
   _progress: 0,
@@ -60,6 +66,10 @@ const indexProgress = {
     this._total = n;
     document.querySelectorAll('.postFinder-status-indexTotal')?.forEach(e => e.textContent = n);
   },
+
+  sync() {
+    document.querySelectorAll('.postFinder-status-indexProgress')?.forEach(e => e.textContent = this._progress);
+  }
 };
 
 const unstringifyHits = hit => {
@@ -108,9 +118,9 @@ const keywordSearch = async (keywords, start = 0) => {
   cursorStatus.hits = 0;
   cursorStatus.keywords = keywords;
 
-  document.getElementById('postFinder-results').replaceChildren(newSearchProgress());
+  resultSection.append(newSearchProgress());
 
-  if (start) cursor.advance(start);
+  if (start) await cursor.advance(start);
 
   const t0 = Date.now();
 
@@ -129,7 +139,8 @@ const keywordSearch = async (keywords, start = 0) => {
     cursor = await cursor.continue();
   }
 
-  console.log(`searched ${cursorStatus.index} indices in ${Date.now() - t0}ms`);
+  cursorStatus.sync();
+  console.log(`searched ${cursorStatus.index - start} indices in ${Date.now() - t0}ms`);
 
   return hits.map(unstringifyHits).sort((a, b) => (new Date(b.quickInfo.date)) - (new Date(a.quickInfo.date)));
 };
@@ -240,6 +251,16 @@ const typeIconColour = {
   ask: 'blue'
 };
 
+const newResultCounter = () => {
+  const r = {
+    tag: 'b',
+    children: cursorStatus.hits
+  }
+  let l;
+  if (cursorStatus.index < cursorStatus.remaining) l = ['showing the first ', r, ' results'];
+  else l = [r, ` result${cursorStatus.hits > 1 ? 's' : ''} found`];
+  return noact({ className: 'postFinder-resultCounter', children: l });
+};
 const renderResult = (post, hit) => {
   const d = new Date(post.date);
 
@@ -296,33 +317,41 @@ const renderResult = (post, hit) => {
     ]
   });
 };
-const renderResults = async hits => {
+const renderResults = async (hits, replace = true) => {
   console.info(hits);
 
+
   if (!hits.length) {
-    document.getElementById('postFinder-results').replaceChildren('zero results found');
+    if (replace) resultSection.replaceChildren('zero results found');
     return;
   }
 
   const posts = await getIndexedPosts(hits.map(({ id }) => id));
   const results = posts.map((post, i) => renderResult(post, hits[i]));
-  let resultLabel;
-  if (hits.length === maxResults) resultLabel = `showing the first ${maxResults} results`;
-  else resultLabel = `${hits.length} result${hits.length > 1 ? 's' : ''} found`;
+  let resultLabel = newResultCounter();
 
-  resultSection.replaceChildren(resultLabel, ...results);
+  if (replace) resultSection.replaceChildren(resultLabel, ...results);
+  else resultSection.append(...results)
 };
 
 const paginationFunction = page => async function () {
+  this.remove(); // remove pagination button
+  document.querySelector('.postFinder-resultCounter')?.remove();
   keywordSearch(cursorStatus.keywords, cursorStatus.index).then(hits => {
     paginationManager(hits, page + 1);
   });
 };
-const newPaginationMenu = page => noact({});
+const newPaginationMenu = page => noact({
+  className: 'postFinder-pagination',
+  onclick: paginationFunction(page),
+  children: `load next ${maxResults} results`
+});
 
 const paginationManager = async (hits, page = 1) => {
-  if (cursorStatus.index < cursorStatus.remaining) {
+  await renderResults(hits, page === 1);
 
+  if (cursorStatus.index < cursorStatus.remaining) {
+    resultSection.append(newPaginationMenu(page));
   }
 };
 
@@ -333,16 +362,12 @@ async function onKeywordSearch({ target }) {
   if (splitMode === 'space') keywords = keywords.map(v => v.replace(/_/g, ' '));
 
   if (!(keywords.length)) {
-    document.getElementById('postFinder-results').replaceChildren([]);
+    resultSection.replaceChildren([]);
     return;
   }
 
-  keywordSearch(keywords).then(hits => {
-
-    renderResults(hits);
-  });
+  keywordSearch(keywords).then(paginationManager);
 }
-
 async function onAdvancedSearch() {
   const date = document.getElementById('postFinder-advanced-date').value;
   let keywordCategories = ['blogs', 'types', 'text', 'tags'].map(v => document.getElementById(`postFinder-advanced-${v}`).value);
@@ -352,7 +377,7 @@ async function onAdvancedSearch() {
   if (splitMode === 'space') keywordCategories = keywordCategories.map(keywords => keywords.map(v => v.replace(/_/g, ' ')));
 
   if (keywordCategories.every(keywords => !keywords.length) && !date) {
-    document.getElementById('postFinder-results').replaceChildren([]);
+    resultSection.replaceChildren([]);
     return;
   }
 
@@ -363,8 +388,8 @@ async function onAdvancedSearch() {
   this.setAttribute('disabled', '');
   let px;
 
-  if (strict) px = strictCategorySearch({ blogs, types, texts, tags, date }).then(renderResults);
-  else px = categorySearch({ blogs, types, texts, tags, date }).then(renderResults);
+  if (strict) px = strictCategorySearch({ blogs, types, texts, tags, date }).then(paginationManager);
+  else px = categorySearch({ blogs, types, texts, tags, date }).then(paginationManager);
 
   await px;
   this.removeAttribute('disabled');
@@ -390,7 +415,7 @@ function toggleAdvanced() {
 
     def.value = '';
     def.setAttribute('disabled', '');
-    document.getElementById('postFinder-results').replaceChildren([]);
+    resultSection.replaceChildren([]);
   }
 }
 
@@ -610,6 +635,8 @@ export const main = async () => {
   document.body.append(searchWindow);
   document.addEventListener('keydown', closeDialog);
   document.getElementById('postFinder-defaultSearch').title = `${splitMode}-separated`;
+
+  resultSection = document.getElementById('postFinder-results');
 
   indexProgress.progress = searchableIndices.length;
   indexProgress.total = postIndices.length;
