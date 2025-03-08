@@ -112,7 +112,7 @@ const keywordSearch = async (keywords, start = 0) => {
   keywords = keywords.filter(isDefined).map(v => v.toLowerCase());
   const tx = db.transaction('searchStore', 'readonly');
   const hits = [];
-  let cursor = await tx.store.openCursor(), searchable, i = 0;
+  let cursor = await tx.store.openCursor(null, 'prev'), searchable, i = 0;
 
   cursorStatus.index = start;
   cursorStatus.hits = 0;
