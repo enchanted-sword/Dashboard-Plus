@@ -1,3 +1,14 @@
+<h1 style="text-align:center;">v1.3.1</h1><h2 style="text-align:center;">general</h2><ul>
+<li>added a fallback for noact parsing plain strings</li>
+<li>fixed quickInfo being registered on postStore</li>
+</ul>
+<h2 style="text-align:center;">post finder</h2><ul>
+<li>fixed searchStore not indexing quickInfo, add storedAt index</li>
+<li>major performance improvements, including adding a max result limit and pagination</li>
+<li>now shows info about indexing progress and searching progress</li>
+<li>results are now displayed in reverse chronological order</li>
+<li>search dialogue window size is now capped to prevent scrolling outside of the bounds of the window</li>
+</ul>
 <h1 style="text-align:center;">v1.3.0</h1><h2 style="text-align:center;"><span class="ui-new">new feature!</span> post finder</h2><ul>
 <li>indexes posts you&#39;ve seen before in your browser storage and turns them into a searchable database!</li>
 <li>you can search multiple keywords, with the option to split keywords with either commas or spaces (replace spaces inside keywords with underscores)</li>

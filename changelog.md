@@ -1,3 +1,18 @@
+# v1.3.1
+
+## general
+
+- added a fallback for noact parsing plain strings
+- fixed quickInfo being registered on postStore
+
+## post finder
+
+- fixed searchStore not indexing quickInfo, add storedAt index
+- major performance improvements, including adding a max result limit and pagination
+- now shows info about indexing progress and searching progress
+- results are now displayed in reverse chronological order
+- search dialogue window size is now capped to prevent scrolling outside of the bounds of the window
+
 # v1.3.0
 
 ## new feature! post finder
