@@ -288,6 +288,11 @@ const newResultCounter = () => {
   return noact({ className: 'postFinder-resultCounter', children: l });
 };
 const renderResult = (post, hit) => {
+  if (!post) {
+    console.warn('postFinder: undefined post in results!', hit);
+    return ''
+  }
+
   const d = new Date(post.date);
 
   return noact({
