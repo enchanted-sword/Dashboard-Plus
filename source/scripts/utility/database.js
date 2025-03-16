@@ -79,6 +79,15 @@ const dispatchUpdate = (type, targets) => {
   window.dispatchEvent(event);
 };
 
+const newTransactionError = (txDone, i) => new Promise((resolve, reject) => txDone.then(resolve, e => {
+  try {
+    console.error(`database cache transaction error originating from module ${import.meta.url}: `, e, 'relevant info: ', i);
+  } catch { // in the case we ever copy this module verbatim to a non-module environment and get annoyed when error logging breaks
+    console.error('database cache transaction error: ', e, 'relevant info: ', i);
+  }
+  reject(e);
+}));
+
 /** caches data into stores, overwriting any existing data tied to those keys (if not an autoincremented store)
  * @param {object} data - object containing key-value pairs of object stores and data to enter into those stores
  * @returns {Promise <void>} fulfils with completion of the transaction
@@ -94,7 +103,7 @@ export const cacheData = async dataObj => {
     });
   });
   dispatchUpdate('cache', dataObj);
-  return tx.done;
+  return newTransactionError(tx.done, dataObj);
 };
 
 /** updates cached data in stores. stores data by default if it doesn't already exist
@@ -125,7 +134,7 @@ export const updateData = (dataObj, options = null) => {
   });
 
   dispatchUpdate('update', dataObj);
-  return tx.done;
+  return newTransactionError(tx.done, dataObj);
 };
 
 /**
@@ -206,7 +215,7 @@ export const clearData = (dataObj, options = null) => {
   });
 
   dispatchUpdate('clear', dataObj);
-  return tx.done
+  return newTransactionError(tx.done, dataObj);
 };
 
 const resourceQueue = new WeakMap();
