@@ -7,10 +7,12 @@ import { s } from './utility/style.js';
 import { timelineObject } from './utility/reactProps.js';
 import { getOptions } from './utility/jsTools.js';
 
-let color;
+let color, isStarlight;
 
 const customClass = 'dbplus-mutuals';
 const customAttribute = 'data-dbplus-mutual-checked';
+
+const specialBlogs = ['flareonfloof', 'dragongirlsweetie']; // 't:aDl2YGxBEH35TQzCQwV9Jw', 't:GAwg8_aNiWfq2ad5OAtLJg'
 
 const mutualCache = new Map();
 
@@ -22,6 +24,14 @@ const mutualsIcon = () => noact({
   title: translate('Mutuals'),
   style: 'display:inline',
   children: svgIcon('following', 16, 16, '', `var(--color-${color})`)
+});
+
+const specialIcon = () => noact({ // silliness
+  className: keyToString('blogFollowing') + ' ' + customClass,
+  ariaLabel: translate('Beloved'),
+  title: translate('Beloved'),
+  style: 'display:inline',
+  children: svgIcon('like-filled', 16, 16, '', 'var(--color-green)')
 });
 
 const markMutuals = posts => posts.forEach(async post => {
@@ -43,6 +53,8 @@ const markMutuals = posts => posts.forEach(async post => {
     if (mutuals) {
       blog.append(mutualsIcon());
     }
+
+    if (isStarlight && specialBlogs.includes(blogName)) blog.append(specialIcon());
   });
 
   post.setAttribute(customAttribute, 'true');
@@ -51,6 +63,7 @@ const markMutuals = posts => posts.forEach(async post => {
 export const main = async () => {
   ({ color } = await getOptions('mutuals'));
   postFunction.start(markMutuals, `:not([${customAttribute}])`);
+  isStarlight = ['t:jV55GGYsP29aaIPEFFLg0g', 't:izBfO_EjJqelJ2F07XEgYg'].includes(userInfo.userUuid) // APR, CSS
 };
 
 export const clean = async () => {
