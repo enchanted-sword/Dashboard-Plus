@@ -23,7 +23,7 @@ const mutualsIcon = () => noact({
   ariaLabel: translate('Mutuals'),
   title: translate('Mutuals'),
   style: 'display:inline',
-  children: svgIcon('following', 16, 16, '', `var(--color-${color})`)
+  children: svgIcon('following', 16, 16, '', `var(--color-${color}, inherit)`)
 });
 
 const specialIcon = () => noact({ // silliness
@@ -37,17 +37,24 @@ const specialIcon = () => noact({ // silliness
 const markMutuals = posts => posts.forEach(async post => {
   const postObject = await timelineObject(post);
   const map = followedMap(postObject);
-  const blogs = post.querySelectorAll(`${s('blogLink author')}, ${s('blogLink')}:has(${s('attribution')})`);
+  const blogs = post.querySelectorAll(`${s('blogLink author')}, ${s('blogLink')}:has(${s('attribution')}), ${s('rebloggedFromName')} ${s('blogLink')}`);
+
+  if (postObject.rebloggedFromName) {
+    map[postObject.rebloggedFromName] = postObject.rebloggedFromFollowing;
+  }
 
   blogs.forEach(async blog => {
     const blogName = blog.textContent;
     if (blogName === userInfo.name) return;
+
     let mutuals;
+
     if (mutualCache.has(blogName)) mutuals = mutualCache.get(blogName);
     else {
       const following = await isFollowing(blogName);
       mutuals = following && map[blogName];
       mutualCache.set(blogName, mutuals);
+      console.log(blogName, following, map[blogName]);
     }
 
     if (mutuals) {
