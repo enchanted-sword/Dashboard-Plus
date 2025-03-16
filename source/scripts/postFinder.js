@@ -6,7 +6,7 @@ import { navigate } from './utility/tumblr.js';
 
 const customClass = 'dbplus-postFinder';
 
-let db, postIndices, searchableIndices, splitMode, maxResults, resultSection;
+let db, splitMode, maxResults, resultSection, postIndices, searchableIndices;
 const textSeparator = 'φ(,)';
 const querySeparators = {
   comma: ',',
@@ -225,11 +225,11 @@ const indexPosts = async (force = false) => {
 
   while (cursor) {
     post = cursor.value;
-    if (!searchableIndices.includes(post.id) || force) {
+    if (!searchableIndices.has(post.id) || force) {
       const searchable = { id: post.id, summary: post.summary, postUrl: post.postUrl, quickInfo: quickInfo(post), storedAt: Date.now() };
       updateData({ searchStore: searchable }).then(() => {
-        if (!searchableIndices.includes(post.id)) {
-          searchableIndices.push(post.id);
+        if (!searchableIndices.has(post.id)) {
+          searchableIndices.add(post.id);
           ++indexProgress.progress;
         }
       });
@@ -242,7 +242,7 @@ const indexPosts = async (force = false) => {
   const dt = Date.now() - t0;
 
   indexProgress.disableAutoSync();
-  console.log(`indexed ${i} posts in ${dt}ms (${(i * 1000) / dt} posts/s)`);
+  console.log(`indexed ${i} posts in ${dt}ms\ncursor seek speed: ${((indexProgress.progress * 1000) / dt).toFixed(3)} keys/s`);
 
   cursorStatus.remaining = searchableIndices.length;
   indexProgress.progress = cursorStatus.remaining;
@@ -253,16 +253,16 @@ const indexPosts = async (force = false) => {
 const indexFromUpdate = async ({ detail: { targets } }) => { // take advantage of dispatched events to index new posts for free without opening extra cursors
   if ('postStore' in targets) {
     [targets.postStore].flat().map(post => {
-      if (postIndices.includes(post.id)) postIndices.push(post.id);
-      if (!searchableIndices.includes(post.id)) {
+      if (postIndices.has(post.id)) postIndices.add(post.id);
+      if (!searchableIndices.has(post.id)) {
         const searchable = { id: post.id, summary: post.summary, postUrl: post.postUrl, quickInfo: quickInfo(post) };
         updateData({ searchStore: searchable }).then(() => {
-          if (searchableIndices.includes(post.id)) searchableIndices.push(post.id);
+          if (searchableIndices.has(post.id)) searchableIndices.add(post.id);
         });
       }
     });
 
-    cursorStatus.remaining = searchableIndices.length;
+    cursorStatus.remaining = searchableIndices.size;
   }
 };
 
@@ -661,8 +661,8 @@ const searchWindow = noact({
 export const main = async () => {
   ({ splitMode, maxResults } = await getOptions('postFinder'));
   db = await openDatabase();
-  postIndices = await db.getAllKeys('postStore');
-  searchableIndices = await db.getAllKeys('searchStore');
+  postIndices = new Set(await db.getAllKeys('postStore'));
+  searchableIndices = new Set(await db.getAllKeys('searchStore'));
 
   document.body.append(button);
   document.body.append(searchWindow);
@@ -671,8 +671,8 @@ export const main = async () => {
 
   resultSection = document.getElementById('postFinder-results');
 
-  indexProgress.progress = searchableIndices.length;
-  indexProgress.total = postIndices.length;
+  indexProgress.progress = searchableIndices.size;
+  indexProgress.total = postIndices.size;
   indexProgress.sync();
 
   if (indexProgress.progress === indexProgress.total) document.getElementById('postFinder-status-index').remove();
