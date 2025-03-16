@@ -54,7 +54,6 @@ const markMutuals = posts => posts.forEach(async post => {
       const following = await isFollowing(blogName);
       mutuals = following && map[blogName];
       mutualCache.set(blogName, mutuals);
-      console.log(blogName, following, map[blogName]);
     }
 
     if (mutuals) {
