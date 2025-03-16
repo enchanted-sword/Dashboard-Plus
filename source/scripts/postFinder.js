@@ -239,8 +239,10 @@ const indexPosts = async (force = false) => {
     cursor = await cursor.continue();
   }
 
+  const dt = Date.now() - t0;
+
   indexProgress.disableAutoSync();
-  console.log(`indexed ${i} posts in ${Date.now() - t0}ms`);
+  console.log(`indexed ${i} posts in ${dt}ms (${(i * 1000) / dt} posts/s)`);
 
   cursorStatus.remaining = searchableIndices.length;
   indexProgress.progress = cursorStatus.remaining;
