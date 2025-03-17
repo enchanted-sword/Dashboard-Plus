@@ -19,8 +19,8 @@ const conditionalCreateIndex = (store, indexName, keyPath, options) => {
     store.createIndex(indexName, keyPath, options);
   }
 };
-const conditionalDeleteIndex = (store, indexName, condition) => {
-  if (condition) store.deleteIndex(indexName);
+const conditionalDeleteIndex = (store, indexName, condition = true) => {
+  if (store.indexNames.contains(indexName) && condition) store.deleteIndex(indexName);
 }
 
 export const openDatabase = async () => openDB('dbplus', DB_VERSION, {
@@ -29,11 +29,11 @@ export const openDatabase = async () => openDB('dbplus', DB_VERSION, {
     conditionalCreateIndex(postStore, 'id', 'id', { unique: true });
     conditionalCreateIndex(postStore, 'date', 'date', { unique: false });
     conditionalCreateIndex(postStore, 'storedAt', 'storedAt', { unique: false });
-    conditionalDeleteIndex(postStore, 'quickInfo', postStore.indexNames.contains('quickInfo'));
+    conditionalDeleteIndex(postStore, 'quickInfo');
 
     const blogStore = conditionalCreateStore(transaction, 'blogStore', { keyPath: 'name' });
     conditionalCreateIndex(blogStore, 'name', 'name', { unique: true });
-    conditionalDeleteIndex(blogStore, 'uuid', blogStore.index('uuid').unique); // need to delete old version of uuid index so we can recreate it as non-unique
+    conditionalDeleteIndex(blogStore, 'uuid', (blogStore.indexNames.contains('uuid') && blogStore.index('uuid').unique)); // need to delete old version of uuid index so we can recreate it as non-unique
     conditionalCreateIndex(blogStore, 'uuid', 'uuid', { unique: false });
     /* 
       uuids ARE unique, but blog urls can be changed.
