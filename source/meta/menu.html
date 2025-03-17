@@ -1,273 +1,187 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>configure dashboard plus!</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=360, initial-scale=1" />
-    <script src="../libraries/jquery.min.js"></script>
-    <script src="../libraries/culori.min.js"></script>
-    <script src="../libraries/poline.min.js"></script>
-    <link rel="stylesheet" href="menu.css" />
-    <link rel="stylesheet" href="picker.css" />
-    <style id="ui-theme">
-      :root {
-        --white: 255 255 255;
-        --white: 250 245 255;
-        --primary: 0 25 53;
-        --accent: 0 148 255;
-        --black: 0 0 12;
-        --purple: 124 92 255;
-      }
-    </style>
-  </head>
 
-  <body>
-    <aside id="icons-container">
-      <svg
-        version="1.1"
-        id="icons-caret"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        x="0px"
-        y="0px"
-        viewBox="0 0 180 180"
-        style="enable-background: new 0 0 180 180"
-        xml:space="preserve"
-        ,
-        fill="rgb(var(--black))"
-      >
-        <path
-          class="st0"
-          d="M100.27,65.06c0.01,0.01,0.02,0.03,0.04,0.04c-0.07-0.07-0.17-0.17-0.32-0.31c0.08,0.07,0.14,0.14,0.21,0.2
-          C100.22,65.02,100.25,65.04,100.27,65.06z"
-        />
-        <path
-          class="st1"
-          d="M166.43,132.43c-2.35,2.34-5.42,3.51-8.49,3.51s-6.14-1.17-8.48-3.51l-48.6-48.6c0,0-0.01-0.02-0.41-0.41
+<head>
+  <title>configure dashboard plus!</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=360, initial-scale=1" />
+  <script src="../libraries/jquery.min.js"></script>
+  <script src="../libraries/culori.min.js"></script>
+  <script src="../libraries/poline.min.js"></script>
+  <link rel="stylesheet" href="menu.css" />
+  <link rel="stylesheet" href="picker.css" />
+  <style id="ui-theme">
+    :root {
+      --white: 255 255 255;
+      --white: 250 245 255;
+      --primary: 0 25 53;
+      --accent: 0 148 255;
+      --black: 0 0 12;
+      --purple: 124 92 255;
+    }
+  </style>
+</head>
+
+<body>
+  <aside id="icons-container">
+    <svg version="1.1" id="icons-caret" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+      x="0px" y="0px" viewBox="0 0 180 180" style="enable-background: new 0 0 180 180" xml:space="preserve" ,
+      fill="rgb(var(--black))">
+      <path class="st0" d="M100.27,65.06c0.01,0.01,0.02,0.03,0.04,0.04c-0.07-0.07-0.17-0.17-0.32-0.31c0.08,0.07,0.14,0.14,0.21,0.2
+          C100.22,65.02,100.25,65.04,100.27,65.06z" />
+      <path class="st1" d="M166.43,132.43c-2.35,2.34-5.42,3.51-8.49,3.51s-6.14-1.17-8.48-3.51l-48.6-48.6c0,0-0.01-0.02-0.41-0.41
           c-0.04-0.05-0.09-0.1-0.14-0.15c0.12,0.12,0.11,0.11-0.04-0.04c-0.02-0.02-0.05-0.05-0.07-0.07c-0.13-0.13-0.33-0.32-0.61-0.6
           c-0.3-0.3-0.65-0.66-1.07-1.08c-0.06-0.06-0.12-0.12-0.18-0.17c-7.48-7.27-15.08-1.39-16.59-0.08c-0.03,0.04-0.07,0.06-0.1,0.09
           c-0.02,0.02-0.05,0.05-0.07,0.07l-51.04,51.04c-4.68,4.68-12.28,4.68-16.97,0c-2.34-2.35-3.51-5.42-3.51-8.49s1.17-6.14,3.51-8.48
           l67.89-67.89c2.22-2.22,5.11-3.39,8.02-3.5l0.58-0.01c0.15,0,0.3,0,0.46,0.01c2.91,0.11,5.8,1.28,8.02,3.5l67.89,67.89
-          C171.11,120.14,171.11,127.74,166.43,132.43z"
-        />
-        <path class="st0" d="M92.5,59.5" />
-      </svg>
-    </aside>
-    <main id="ui-menu">
-      <nav id="ui-tabs">
-        <button class="ui-tab" target="features" active="true">features</button>
-        <button class="ui-tab" target="manage">manage</button>
-        <button class="ui-tab" target="about">about</button>
+          C171.11,120.14,171.11,127.74,166.43,132.43z" />
+      <path class="st0" d="M92.5,59.5" />
+    </svg>
+  </aside>
+  <main id="ui-menu">
+    <nav id="ui-tabs">
+      <button class="ui-tab" target="features" active="true">features</button>
+      <button class="ui-tab" target="manage">manage</button>
+      <button class="ui-tab" target="about">about</button>
+    </nav>
+    <section class="ui-section" id="ui-features" active="true">
+      <nav id="ui-featureTabs">
+        <div class="ui-row">
+          <button class="ui-featureTab" target="all" active="true">
+            all features
+          </button>
+          <button class="ui-featureTab" target="search" active="false">
+            <input id="ui-featureSearch" type="text" placeholder="search" />
+          </button>
+        </div>
+        <div class="ui-row">
+          <button class="ui-featureTab" target="dashboard">dashboard</button>
+          <button class="ui-featureTab" target="navigation">
+            navigation
+          </button>
+          <button class="ui-featureTab" target="activity">activity</button>
+          <button class="ui-featureTab" target="sidebar">sidebar</button>
+        </div>
+        <div class="ui-row">
+          <button class="ui-featureTab" target="posts">posts</button>
+          <button class="ui-featureTab" target="messaging">messaging</button>
+          <button class="ui-featureTab" target="appearance">
+            appearance
+          </button>
+          <button class="ui-featureTab" target="utility">utility</button>
+        </div>
       </nav>
-      <section class="ui-section" id="ui-features" active="true">
-        <nav id="ui-featureTabs">
-          <div class="ui-row">
-            <button class="ui-featureTab" target="all" active="true">
-              all features
-            </button>
-            <button class="ui-featureTab" target="search" active="false">
-              <input id="ui-featureSearch" type="text" placeholder="search" />
-            </button>
-          </div>
-          <div class="ui-row">
-            <button class="ui-featureTab" target="dashboard">dashboard</button>
-            <button class="ui-featureTab" target="navigation">
-              navigation
-            </button>
-            <button class="ui-featureTab" target="activity">activity</button>
-            <button class="ui-featureTab" target="sidebar">sidebar</button>
-          </div>
-          <div class="ui-row">
-            <button class="ui-featureTab" target="posts">posts</button>
-            <button class="ui-featureTab" target="messaging">messaging</button>
-            <button class="ui-featureTab" target="appearance">
-              appearance
-            </button>
-            <button class="ui-featureTab" target="utility">utility</button>
-          </div>
-        </nav>
-        <div class="ui-featureCategory" id="ui-all" active="true"></div>
-        <div class="ui-featureCategory" id="ui-search"></div>
-        <div class="ui-featureCategory" id="ui-dashboard"></div>
-        <div class="ui-featureCategory" id="ui-navigation"></div>
-        <div class="ui-featureCategory" id="ui-activity"></div>
-        <div class="ui-featureCategory" id="ui-sidebar"></div>
-        <div class="ui-featureCategory" id="ui-posts"></div>
-        <div class="ui-featureCategory" id="ui-messaging"></div>
-        <div class="ui-featureCategory" id="ui-appearance"></div>
-        <div class="ui-featureCategory" id="ui-utility"></div>
-        <ul id="ui-featureContainer">
-          <style id="ui-searchFilter"></style>
-          <div
-            style="
+      <div class="ui-featureCategory" id="ui-all" active="true"></div>
+      <div class="ui-featureCategory" id="ui-search"></div>
+      <div class="ui-featureCategory" id="ui-dashboard"></div>
+      <div class="ui-featureCategory" id="ui-navigation"></div>
+      <div class="ui-featureCategory" id="ui-activity"></div>
+      <div class="ui-featureCategory" id="ui-sidebar"></div>
+      <div class="ui-featureCategory" id="ui-posts"></div>
+      <div class="ui-featureCategory" id="ui-messaging"></div>
+      <div class="ui-featureCategory" id="ui-appearance"></div>
+      <div class="ui-featureCategory" id="ui-utility"></div>
+      <ul id="ui-featureContainer">
+        <style id="ui-searchFilter"></style>
+        <div style="
               position: sticky;
               top: 0;
               z-index: 100;
               border-top: 12px solid rgb(var(--white));
-            "
-          ></div>
-        </ul>
-      </section>
-      <section class="ui-section" id="ui-manage">
-        <ul class="ui-card">
-          <li id="version"></li>
-          <li class="ui-preferenceIo">
-            <button id="ui-import">import preferences</button>
-            <button id="ui-export">export preferences</button>
-            <textarea
-              id="ui-preferenceText"
-              class="ui-textInput"
-              autocomplete="off"
-              autocapitalize="off"
-              autocorrect="off"
-              spellcheck="false"
-            ></textarea>
-            <button id="ui-reset">reset preferences</button>
-          </li>
-          <li>
-            <a target="_blank" href="menu.html">open menu in a separate tab</a>
-          </li>
-        </ul>
-      </section>
-      <section class="ui-section" id="ui-about">
-        <ul class="ui-card">
-          <a
-            href="https://github.com/enchanted-sword/dashboard-plus"
-            target="_blank"
-            class="ui-aboutLink"
-            >github</a
-          >
-          <a
-            href="https://github.com/enchanted-sword/dashboard-plus/blob/main/changelog.md"
-            target="_blank"
-            class="ui-aboutLink"
-            >changelog</a
-          >
-          <a
-            href="https://github.com/enchanted-sword/dashboard-plus/issues/"
-            target="_blank"
-            class="ui-aboutLink"
-            >report a bug</a
-          >
-          <a
-            href="https://tumblr.com/dragongirlsnout"
-            target="_blank"
-            class="ui-aboutLink"
-            >my tumblr!</a
-          >
-          <a
-            href="https://www.paypal.com/paypalme/dragongirled"
-            target="_blank"
-            class="ui-aboutLink"
-            >support my work!</a
-          >
-          <div class="ui-aboutLink ui-changelog">
-            <h1 style="text-align: center">v1.3.1</h1>
-            <h2 style="text-align: center">general</h2>
-            <ul>
-              <li>added a fallback for noact parsing plain strings</li>
-              <li>fixed quickInfo being registered on postStore</li>
-            </ul>
-            <h2 style="text-align: center">post finder</h2>
-            <ul>
-              <li>
-                fixed searchStore not indexing quickInfo, add storedAt index
-              </li>
-              <li>
-                major performance improvements, including adding a max result
-                limit and pagination
-              </li>
-              <li>
-                now shows info about indexing progress and searching progress
-              </li>
-              <li>results are now displayed in reverse chronological order</li>
-              <li>
-                search dialogue window size is now capped to prevent scrolling
-                outside of the bounds of the window
-              </li>
-            </ul>
-            <h1 style="text-align: center">v1.3.0</h1>
-            <h2 style="text-align: center">
-              <span class="ui-new">new feature!</span> post finder
-            </h2>
-            <ul>
-              <li>
-                indexes posts you&#39;ve seen before in your browser storage and
-                turns them into a searchable database!
-              </li>
-              <li>
-                you can search multiple keywords, with the option to split
-                keywords with either commas or spaces (replace spaces inside
-                keywords with underscores)
-              </li>
-              <li>
-                you can also filter <em>out</em> keywords by prefixing them with
-                a hyphen (-)
-              </li>
-              <li>
-                in advanced mode, you can keep track of keywords easier with
-                multiple search categories, and strict mode limits keyword
-                results to only the specified categories
-              </li>
-              <li>
-                still a work in progress, report bugs to the github repository
-                or @dragongirlsnout on tumblr!
-              </li>
-            </ul>
-          </div>
-        </ul>
-      </section>
-    </main>
-    <div id="ui-picker">
-      <section>
-        <figure id="display" width="320" height="128"></figure>
-        <input id="oklch" type="text" />
-        <input id="rgb" type="text" />
-      </section>
-      <section>
-        <header>
-          <h1>lightness</h1>
-          <input
-            id="lightness-value"
-            type="number"
-            min="0"
-            max="100"
-            step="1"
-          />
-        </header>
-        <div class="range">
-          <figure id="lightness-display"></figure>
-          <input id="lightness" type="range" min="0" max="100" step="0.01" />
+            "></div>
+      </ul>
+    </section>
+    <section class="ui-section" id="ui-manage">
+      <ul class="ui-card">
+        <li id="version"></li>
+        <li class="ui-preferenceIo">
+          <button id="ui-import">import preferences</button>
+          <button id="ui-export">export preferences</button>
+          <textarea id="ui-preferenceText" class="ui-textInput" autocomplete="off" autocapitalize="off"
+            autocorrect="off" spellcheck="false"></textarea>
+          <button id="ui-reset">reset preferences</button>
+        </li>
+        <li>
+          <a target="_blank" href="menu.html">open menu in a separate tab</a>
+        </li>
+      </ul>
+    </section>
+    <section class="ui-section" id="ui-about">
+      <ul class="ui-card">
+        <a href="https://github.com/enchanted-sword/dashboard-plus" target="_blank" class="ui-aboutLink">github</a>
+        <a href="https://github.com/enchanted-sword/dashboard-plus/blob/main/changelog.md" target="_blank"
+          class="ui-aboutLink">changelog</a>
+        <a href="https://github.com/enchanted-sword/dashboard-plus/issues/" target="_blank" class="ui-aboutLink">report
+          a bug</a>
+        <a href="https://tumblr.com/dragongirlsnout" target="_blank" class="ui-aboutLink">my tumblr!</a>
+        <a href="https://www.paypal.com/paypalme/dragongirled" target="_blank" class="ui-aboutLink">support my work!</a>
+        <div class="ui-aboutLink ui-changelog">
+          <h1 style="text-align:center;">v1.3.2</h1>
+          <h2 style="text-align:center;">general</h2>
+          <ul>
+            <li>added a fallback for the fallback for root node race conditions so the mutuation observer shouldn&#39;t
+              fail to init in rare cases</li>
+            <li>fixed the IDB upgrade routine checking <code>IDBObjectStore.index()</code> as a index deletion condition
+              and throwing <code>NotFoundErrors</code> when attempting to upgrade</li>
+          </ul>
+          <h2 style="text-align:center;">show mutuals</h2>
+          <ul>
+            <li>added an &quot;uncoloured&quot; option that inherits the default blog link text colour</li>
+            <li>fixed mutual icons not being shown on link of the blog being reblogged from</li>
+          </ul>
+          <h2 style="text-align:center;">post finder</h2>
+          <ul>
+            <li>replaced the slow post index arrays with much faster sets, which greatly increases cursor seek times (up
+              to 4000 keys/second)</li>
+            <li>added an &quot;autosync&quot; feature which automatically propagates updates to the live index
+              progress/search progress counters every few seconds so they don&#39;t seem frozen during slow operations
+              (as they normally only update once for every 100 increments)</li>
+            <li>added better post renderer error handling so a single dubiously indexed post will no longer cause an
+              entire page of search results to fail to display</li>
+          </ul>
         </div>
-      </section>
-      <section>
-        <header>
-          <h1>chroma</h1>
-          <input
-            id="chroma-value"
-            type="number"
-            min="0"
-            max="0.4"
-            step="0.01"
-          />
-        </header>
-        <div class="range">
-          <figure id="chroma-display"></figure>
-          <input id="chroma" type="range" min="0" max="0.4" step="0.0001" />
-        </div>
-      </section>
-      <section>
-        <header>
-          <h1>hue</h1>
-          <input id="hue-value" type="number" min="0" max="360" step="1" />
-        </header>
-        <div class="range">
-          <figure id="hue-display"></figure>
-          <input id="hue" type="range" min="0" max="360" step="0.01" />
-        </div>
-      </section>
-    </div>
-    <script src="menu.js"></script>
-    <script src="picker.js"></script>
-  </body>
+      </ul>
+    </section>
+  </main>
+  <div id="ui-picker">
+    <section>
+      <figure id="display" width="320" height="128"></figure>
+      <input id="oklch" type="text" />
+      <input id="rgb" type="text" />
+    </section>
+    <section>
+      <header>
+        <h1>lightness</h1>
+        <input id="lightness-value" type="number" min="0" max="100" step="1" />
+      </header>
+      <div class="range">
+        <figure id="lightness-display"></figure>
+        <input id="lightness" type="range" min="0" max="100" step="0.01" />
+      </div>
+    </section>
+    <section>
+      <header>
+        <h1>chroma</h1>
+        <input id="chroma-value" type="number" min="0" max="0.4" step="0.01" />
+      </header>
+      <div class="range">
+        <figure id="chroma-display"></figure>
+        <input id="chroma" type="range" min="0" max="0.4" step="0.0001" />
+      </div>
+    </section>
+    <section>
+      <header>
+        <h1>hue</h1>
+        <input id="hue-value" type="number" min="0" max="360" step="1" />
+      </header>
+      <div class="range">
+        <figure id="hue-display"></figure>
+        <input id="hue" type="range" min="0" max="360" step="0.01" />
+      </div>
+    </section>
+  </div>
+  <script src="menu.js"></script>
+  <script src="picker.js"></script>
+</body>
+
 </html>
