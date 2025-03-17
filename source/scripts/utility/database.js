@@ -31,7 +31,7 @@ export const openDatabase = async () => openDB('dbplus', DB_VERSION, {
     conditionalCreateIndex(postStore, 'id', 'id', { unique: true });
     conditionalCreateIndex(postStore, 'date', 'date', { unique: false });
     conditionalCreateIndex(postStore, 'storedAt', 'storedAt', { unique: false });
-    conditionalDeleteIndex(postStore, 'quickInfo', postStore.index('quickInfo'));
+    conditionalDeleteIndex(postStore, 'quickInfo', postStore.indexNames.contains('quickInfo'));
 
     const blogStore = conditionalCreateStore(transaction, 'blogStore', { keyPath: 'name' });
     conditionalCreateIndex(blogStore, 'name', 'name', { unique: true });
