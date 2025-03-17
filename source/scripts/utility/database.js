@@ -25,8 +25,6 @@ const conditionalDeleteIndex = (store, indexName, condition) => {
 
 export const openDatabase = async () => openDB('dbplus', DB_VERSION, {
   upgrade: (db, oldVersion, newVersion, transaction) => {
-    console.info(`database upgraded from v${oldVersion} to v${newVersion}`);
-
     const postStore = conditionalCreateStore(transaction, 'postStore', { keyPath: 'id' });
     conditionalCreateIndex(postStore, 'id', 'id', { unique: true });
     conditionalCreateIndex(postStore, 'date', 'date', { unique: false });
@@ -52,6 +50,8 @@ export const openDatabase = async () => openDB('dbplus', DB_VERSION, {
     conditionalCreateIndex(searchStore, 'id', 'id', { unique: true });
     conditionalCreateIndex(searchStore, 'quickInfo', 'quickInfo', { unique: false });
     conditionalCreateIndex(searchStore, 'storedAt', 'storedAt', { unique: false });
+
+    console.info(`database upgraded from v${oldVersion} to v${newVersion}`);
   }
 });
 
