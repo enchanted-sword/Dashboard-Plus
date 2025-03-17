@@ -4,6 +4,8 @@ import { noact } from './utility/noact.js';
 import { svgIcon } from './utility/dashboardElements.js';
 import { navigate } from './utility/tumblr.js';
 
+import { fillDb } from './utility/dbTest.js';
+
 const customClass = 'dbplus-postFinder';
 
 let db, splitMode, maxResults, resultSection, postIndices, searchableIndices;
@@ -290,65 +292,65 @@ const newResultCounter = () => {
   return noact({ className: 'postFinder-resultCounter', children: l });
 };
 const renderResult = (post, hit) => {
-  if (!post) {
-    console.warn('postFinder: undefined post in results!', hit);
-    return ''
+  try {
+    const d = new Date(post.date);
+
+    return noact({
+      tag: 'li',
+      onclick: function (event) {
+        closeDialog(event);
+        navigate(`/${post.blogName}/${post.id}`)
+      },
+      className: 'postFinder-result',
+      children: [
+        {
+          className: 'postFinder-info',
+          children: [
+            {
+              className: 'postFinder-blog',
+              children: [
+                {
+                  children: [
+                    {
+                      src: post.blog.avatar ? post.blog.avatar[2].url : 'https://assets.tumblr.com/pop/src/assets/images/avatar/anonymous_avatar_40-3af33dc0.png',
+                      alt: post.blogName
+                    },
+                    post.blogName,
+                  ]
+                },
+                `${d.getDate()} ${months[d.getMonth()]}, ${d.getFullYear()}`
+              ]
+            },
+            {
+              className: 'postFinder-types',
+              children: hit.quickInfo.types.map(type => {
+                type === 'image' && (type = 'photo');
+                return svgIcon(`posts-${type}`, 24, 24, '', `rgb(var(--${typeIconColour[type]}))`);
+              })
+            }
+          ]
+        },
+        {
+          className: 'postFinder-post',
+          children: [
+            post.summary ? post.summary : null
+          ]
+        },
+        post.tags.length ? {
+          className: 'postFinder-tags',
+          children: post.tags.map(t => ({ children: '#' + t }))
+        } : null,
+        {
+          className: 'postFinder-link',
+          href: post.postUrl,
+          children: post.postUrl
+        }
+      ]
+    });
+  } catch (e) {
+    console.error('postFinder renderResult error:', e, post, hit);
+    return '';
   }
-
-  const d = new Date(post.date);
-
-  return noact({
-    tag: 'li',
-    onclick: function (event) {
-      closeDialog(event);
-      navigate(`/${post.blogName}/${post.id}`)
-    },
-    className: 'postFinder-result',
-    children: [
-      {
-        className: 'postFinder-info',
-        children: [
-          {
-            className: 'postFinder-blog',
-            children: [
-              {
-                children: [
-                  {
-                    src: post.blog.avatar[2].url,
-                    alt: post.blogName
-                  },
-                  post.blogName,
-                ]
-              },
-              `${d.getDate()} ${months[d.getMonth()]}, ${d.getFullYear()}`
-            ]
-          },
-          {
-            className: 'postFinder-types',
-            children: hit.quickInfo.types.map(type => {
-              type === 'image' && (type = 'photo');
-              return svgIcon(`posts-${type}`, 24, 24, '', `rgb(var(--${typeIconColour[type]}))`);
-            })
-          }
-        ]
-      },
-      {
-        className: 'postFinder-post',
-        children: [
-          post.summary ? post.summary : null
-        ]
-      },
-      post.tags.length ? {
-        className: 'postFinder-tags',
-        children: post.tags.map(t => ({ children: '#' + t }))
-      } : null,
-      {
-        className: 'postFinder-link',
-        href: post.postUrl,
-        children: post.postUrl
-      }
-    ]
-  });
 };
 const renderResults = async (hits, replace = true) => {
   console.info(hits);
@@ -679,6 +681,8 @@ export const main = async () => {
 
   indexPosts();
   window.addEventListener('dbplus-database-update', indexFromUpdate);
+
+  //fillDb(0, 4000);
 };
 
 export const clean = async () => {
