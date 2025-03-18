@@ -200,7 +200,7 @@
 
         window.addEventListener('resize', onResized);
 
-        console.info(`running ${enabledFeatures.length} of ${Object.keys(installedFeatures).length} features`)
+        console.info(`running ${enabledFeatures.length} of ${Object.keys(installedFeatures).length} features`);
       };
 
       initFeatures();
