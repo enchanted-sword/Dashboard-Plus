@@ -1,0 +1,10 @@
+{
+  "name": "gamepad",
+  "title": "enable controller support",
+  "description": "adds controller support to tumblr",
+  "category": "utility",
+  "preferences": {
+    "enabled": false
+  },
+  "js": true
+}
