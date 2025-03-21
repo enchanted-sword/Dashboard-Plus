@@ -1,3 +1,18 @@
+# v1.3.3
+
+## hide sidebar content
+
+- fixed update/clean methods being switched
+
+## revert activity feed popup
+
+- fixed style bugs related to the new activity update
+
+## activity popup filter
+
+- updated for new activity api
+- preferences for tab contents were reset, so make sure to update your preferences
+
 # v1.3.2
 
 ## general
