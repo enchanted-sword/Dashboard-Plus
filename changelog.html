@@ -1,3 +1,16 @@
+<h1 style="text-align:center;">v1.3.2</h1><h2 style="text-align:center;">general</h2><ul>
+<li>added a fallback for the fallback for root node race conditions so the mutuation observer shouldn&#39;t fail to init in rare cases</li>
+<li>fixed the IDB upgrade routine checking <code>IDBObjectStore.index()</code> as a index deletion condition and throwing <code>NotFoundErrors</code> when attempting to upgrade</li>
+</ul>
+<h2 style="text-align:center;">show mutuals</h2><ul>
+<li>added an &quot;uncoloured&quot; option that inherits the default blog link text colour</li>
+<li>fixed mutual icons not being shown on link of the blog being reblogged from</li>
+</ul>
+<h2 style="text-align:center;">post finder</h2><ul>
+<li>replaced the slow post index arrays with much faster sets, which greatly increases cursor seek times (up to 4000 keys/second)</li>
+<li>added an &quot;autosync&quot; feature which automatically propagates updates to the live index progress/search progress counters every few seconds so they don&#39;t seem frozen during slow operations (as they normally only update once for every 100 increments)</li>
+<li>added better post renderer error handling so a single dubiously indexed post will no longer cause an entire page of search results to fail to display</li>
+</ul>
 <h1 style="text-align:center;">v1.3.1</h1><h2 style="text-align:center;">general</h2><ul>
 <li>added a fallback for noact parsing plain strings</li>
 <li>fixed quickInfo being registered on postStore</li>

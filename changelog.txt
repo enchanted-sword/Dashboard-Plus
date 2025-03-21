@@ -1,3 +1,21 @@
+v1.3.2
+
+general
+
+- added a fallback for the fallback for root node race conditions so the mutuation observer shouldn't fail to init in rare cases
+- fixed the IDB upgrade routine checking `IDBObjectStore.index()` as a index deletion condition and throwing `NotFoundErrors` when attempting to upgrade
+
+show mutuals
+
+- added an "uncoloured" option that inherits the default blog link text colour
+- fixed mutual icons not being shown on link of the blog being reblogged from
+
+post finder
+
+- replaced the slow post index arrays with much faster sets, which greatly increases cursor seek times (up to 4000 keys/second)
+- added an "autosync" feature which automatically propagates updates to the live index progress/search progress counters every few seconds so they don't seem frozen during slow operations (as they normally only update once for every 100 increments)
+- added better post renderer error handling so a single dubiously indexed post will no longer cause an entire page of search results to fail to display
+
 v1.3.1
 
 general
