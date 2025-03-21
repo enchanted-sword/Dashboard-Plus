@@ -28,4 +28,6 @@ export const main = async () => {
   document.body.append(styleElement);
 };
 
-export const clean = async preferences => run(preferences);
+export const clean = async () => styleElement.remove();
+
+export const update = async preferences => run(preferences);
