@@ -29,95 +29,41 @@ const filterNotifications = notifications => {
 const removeRuleIds = ['APF:all', 'APF:mentions', 'APF:reblogs', 'APF:replies'];
 const regexFilter = { // it's simply joyous that this is possible
   // eslint-disable-next-line no-useless-escape
-  all: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog/[\\w\\d-]*\/notifications\\?rollups=true$',
+  allTab: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog\/[\\w\\d-]*\/notifications$',
   // eslint-disable-next-line no-useless-escape
-  mentions: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog\/[\\w\\d-]*\/notifications.*mention_in_reply$',
+  mentionsTab: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog\/[\\w\\d-]*\/notifications.*mentions$',
   // eslint-disable-next-line no-useless-escape
-  reblogs: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog\/[\\w\\d-]*\/notifications.*tags$',
+  reblogsTab: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog\/[\\w\\d-]*\/notifications.*reblogs_no_content$',
   // eslint-disable-next-line no-useless-escape
-  replies: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog\/[\\w\\d-]*\/notifications.*reply_to_comment$'
+  repliesTab: '^https?:\/\/www\.tumblr\.com\/api\/v2\/blog\/[\\w\\d-]*\/notifications.*replies$'
 };
-const map = {
-  "rollups": ["rollups"],
-  "asks": [
-    "answered_ask",
-    "ask"
-  ],
-  "replies": ['reply'],
-  "blaze": [
-    "blaze_approved",
-    "blaze_completed",
-    "blaze_rejected",
-    "blaze_golden_buzzed",
-    "blaze_blazee_created",
-    "blaze_blazer_canceled",
-    "blaze_blazee_canceled",
-    "blaze_blazer_approved",
-    "blaze_blazee_approved",
-    "blaze_blazer_golden_buzzed",
-    "blaze_blazee_golden_buzzed",
-    "blaze_blazer_rejected",
-    "blaze_blazee_rejected",
-    "blaze_blazer_extinguished",
-    "blaze_blazee_extinguished",
-    "blaze_blazer_completed",
-    "blaze_blazee_completed"
-  ],
-  "mentions": [
-    "mention_in_post",
-    "mention_in_reply"
-  ],
-  "tips": [
-    "tip",
-    "tip_blog"
-  ],
-  "community labels": [
-    "post_community_label_flagged",
-    "post_community_label_accepted",
-    "post_community_label_rejected"
-  ],
-  "conversational notes": ["conversational_note"],
-  "follows": ["follow"],
-  "gifts": ["gift"],
-  "likes": ["like"],
-  "milestones": [
-    "milestone_like",
-    "milestone_like_received",
-    "milestone_post",
-    "milestone_reblog_received",
-    "milestone_birthday"
-  ],
-  "new group blog members": ["new_group_blog_member"],
-  "post flagged": [
-    "post_appeal_accepted",
-    "post_appeal_rejected",
-    "post_flagged"
-  ],
-  "post attribution": ["post_attribution"],
-  "posting prompts": ["posting_prompt",],
-  "reblogs without comments": ["reblog_naked"],
-  "reblogs with comments": ["reblog_with_content"],
-  "reblogs with tags": ["tags"],
-  "badges": ["earned_badge",],
-  "what you missed": ["what_you_missed"],
-  "back in town": ["back_in_town"],
-  "spam reported": ["spam_reported"],
-  "boops": ["boop"],
-  "communities moderation": ['community_admin_promoted', 'community_member_kicked', 'community_moderator_demoted', 'community_moderator_promoted', 'community_post_removed', 'community_reply_removed', 'community_request_approved'],
-  "communities": ['community_invitation', 'community_membership_request_accepted', 'community_membership_request_declined', 'community_reaction_count']
+const filters = {
+  "followers": "followers",
+  "likes": "likes",
+  "replies": "replies",
+  "mentions": "mentions",
+  "asks": "asks",
+  "reblogs with content": "reblogs_with_content",
+  "reblogs without content": "reblogs_no_content",
+  "blaze": "blaze",
+  "gifts": "gifts",
+  "communities": "communities",
+  "conversational notes": "conversational_notes",
+  "content labels": "content_labels_flags",
+  "gifs": "gifs",
+  "posts you missed": "posts_you_missed",
+  "new group blog members": "new_group_blog_member"
 };
 
 const urlQueryFromArray = (arr = []) => {
-  const rollups = arr.includes('rollups');
-  arr = arr.flatMap(category => map[category]).map((type, index) => `types[${index}]=${type}`);
-  return `?rollups=${rollups}&${arr.join('&')}`;
+  arr = arr.filter(type => type in filters).map(type => `filters[${filters[type]}]=${filters[type]}`);
+  return `?${arr.join('&')}`;
 };
 
-/* 
+/*
   this feature amazingly doesn't interfere with the activity page itself because:
   a) any notifications loaded when the page is loaded are part of the initial state and aren't fetched via XHP
-  b) all other activity page fetches end with type[n]=earned_badge and can be filtered out
-  d) any new notifications loaded in afterwards have an additional query param for the timestamp
+  b) any new notifications loaded in afterwards have an additional query param for the timestamp
  */
 
 export const main = async () => {
@@ -126,11 +72,7 @@ export const main = async () => {
   ({ showFrom } = preferences);
   mutationManager.start(notificationSelector + `:not([${customAttribute}])`, filterNotifications);
 
-  if (!showFrom.all) ['all', 'mentions', 'reblogs', 'replies'].forEach(key =>
-    preferences[key] = preferences[key].filter(item => item !== 'rollups')
-  );
-
-  const enabled = ['all', 'mentions', 'reblogs', 'replies'].filter(key => feature.preferences.options[key].value.sort().join('') !== preferences[key].sort().join(''));
+  const enabled = ['allTab', 'mentionsTab', 'reblogsTab', 'repliesTab'].filter(key => feature.preferences.options[key].value.sort().join('') !== preferences[key].sort().join(''));
   if (enabled.length === 0) return;
 
   const newRules = enabled.map(key => declarativeNetRequest.newRule(`APF:${key}`, regexFilter[key], {

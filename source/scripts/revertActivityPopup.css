@@ -1,53 +1,68 @@
-[role="tablist"] {
+[data-css="activityPopover"] :is([data-css~="tabsContainer"],
+  [data-css~="root"][data-css~="scrollable"],
+  [role="tablist"]) {
   padding: 0 !important;
+}
 
-  [data-css~="button"][data-css~="tab"] {
-    font-size: 1rem !important;
-    line-height: 1.5 !important;
-    padding: 8px !important;
-    border-radius: unset !important;
-    background: none !important;
+[data-css="activityPopover"] [role="tablist"] [data-css~="tab"] {
+  flex-grow: 1;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+  padding: 8px !important;
+  border-radius: unset !important;
+  background: none !important;
+}
 
-    &[aria-selected="true"] {
-      color: var(--accent) !important;
-      box-shadow: inset 0px -2px 0px var(--accent);
-    }
-    &:first-of-type [tabindex] {
-      font-size: 0;
-    }
-    &:first-of-type [tabindex]:after {
-      content: "All";
-      font-size: 1rem;
-    }
-  }
+[data-css="activityPopover"] [role="tablist"] [data-css~="tab"][aria-selected="true"] {
+  color: var(--accent) !important;
+  box-shadow: inset 0px -2px 0px var(--accent);
+}
+
+[data-css="activityPopover"] [role="tablist"] [data-css~="tab"]:first-of-type [tabindex] {
+  font-size: 0;
+}
+
+[data-css="activityPopover"] [role="tablist"] [data-css~="tab"]:first-of-type [tabindex]:after {
+  content: "All";
+  font-size: 1rem;
+}
+
+[data-css="activityPopover"] [data-css~="scrollableContent"]::after {
+  content: none;
 }
 
 [role="tabpanel"] {
   [data-css~="dateSeparator"] {
     background: rgba(var(--black), 0.07) !important;
-    padding: 8px 16px important;
+    padding: 8px 16px !important;
   }
+
   [data-css~="backgroundColor"] {
     border-top: 1px solid rgba(var(--black), 0.13);
   }
+
   [data-css~="avatarWrapper"] [data-css~="avatar"],
   [data-css~="anonymousAvatar"],
   [data-css~="avatar"] img {
     height: 25px !important;
     width: 25px !important;
   }
+
   [data-css~="verticallyCentered"] {
     align-self: start !important;
   }
+
   [data-css~="avatarWrapperInner"],
   [data-css~="circleAvatar"] {
     border-radius: 3px !important;
   }
+
   [data-css~="badge"] [data-css~="border"],
   [data-css~="rollupBadge"] [data-css~="border"],
   [data-css~="rollupAvatar"] {
     border: none !important;
   }
+
   [data-css~="underlined"] span {
     text-decoration: none !important;
   }
@@ -56,14 +71,22 @@
     font-weight: 500;
   }
 }
+
 [role="tabpanel"] [data-css~="backgroundColor"] {
   border-top: 1px solid rgba(var(--black), 0.13);
 }
-[data-css~="linkToActivity"] {
+
+[data-css~="buttonToActivity"] {
+  border-top: 1px var(--content-tint-strong) solid;
   padding: 0 !important;
   height: 30px !important;
+  display: flex;
+  align-items: center;
+}
 
-  a {
-    color: rgba(var(--black), 0.65) !important;
-  }
+[data-css~="buttonToActivity"] a {
+  background: none !important;
+  border-radius: 0;
+  color: rgba(var(--black), 0.65) !important;
+  padding: 0;
 }
