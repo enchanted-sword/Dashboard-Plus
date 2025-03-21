@@ -54,9 +54,3 @@ export const declarativeNetRequest = Object.freeze({
     postData({ removeRuleIds: uniqueIdentifiers.map(id => encodeId(id)) });
   }
 });
-
-/**
- * Updates the extension's dynamic declarativeNetRequest rules
- * @param {Array} newRules - Array of declarativeNetRequest rules
- * @param {number[]} removeRuleIds - Array of rule ids to remove
- */
