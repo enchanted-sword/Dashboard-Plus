@@ -18,7 +18,7 @@
 
     document.documentElement.append(style);
     console.info(`preloaded stylesheets in ${Date.now() - t0}ms`);
-  }
+  };
   preloadStyles();
 
   const cacheExtensionStyles = () => {
@@ -37,7 +37,7 @@
       .join('\n');
 
     browser.storage.local.set({ extensionStyles });
-  }
+  };
   const styleObserver = new MutationObserver(mutations => {
     const changedNodes = mutations
       .flatMap(({ addedNodes, removedNodes }) => [...addedNodes, ...removedNodes])
