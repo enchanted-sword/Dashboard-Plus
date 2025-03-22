@@ -34,5 +34,6 @@
   "emptyInbox",
   "customColors",
   "followingAsDefault",
-  "postFinder"
+  "postFinder",
+  "quickReblog"
 ]
