@@ -6,7 +6,7 @@ import { noact } from './utility/noact.js';
 import { getOptions } from './utility/jsTools.js';
 import { onLongPress } from './utility/touch.js';
 
-const customClass = 'dbplus-quickReblog';
+const cc = 'dbplus-quickReblog';
 const customAttribute = 'data-quick-reblog';
 const linkSelector = `[aria-label="${translate('Reblog')}"]`;
 
@@ -69,7 +69,7 @@ const selectableBlog = (blog, index, parent_post_id) => {
 
   return {
     tag: 'li',
-    className: 'dbplus-quickReblog-selector',
+    className: `${cc}-selector`,
     selectorId: `qrc-selector-${index}`,
     role: 'option',
     tabindex: -1,
@@ -86,12 +86,9 @@ const selectableBlog = (blog, index, parent_post_id) => {
     },
     children: [
       {
-        className: 'flex-0 mask relative aspect-square h-8 w-8',
-        children: [{
-          className: 'mask mask-roundrect h-full w-full object-cover',
-          src: avatar[1].url,
-          alt: name
-        }]
+        className: `${cc}-avatar`,
+        src: avatar[1].url,
+        alt: name
       },
       {
         tag: 'span',
@@ -102,19 +99,19 @@ const selectableBlog = (blog, index, parent_post_id) => {
 };
 const newMenu = async (parent_post_id, parent_tumblelog_uuid, reblog_key) => {
   return noact({
-    className: `${customClass} co-themed-box co-comment-box cohost-shadow-light dark:cohost-shadow-dark rounded-lg p-2 lg:max-w-prose`,
+    className: cc,
     id: `qrc-menu-${parent_post_id}`,
     onmouseleave: menuSelfHide,
     children: [{
-      className: 'flex flex-col gap-2',
+      className: `${cc}-flexRow`,
       children: [
         addContent ? textInput('content', parent_post_id, 'content (markdown)') : '',
         addTags ? textInput('tags', parent_post_id, 'tags (comma-separated)') : '',
         {
-          className: 'flex flex-row relative items-center justify-between gap-4',
+          className: `${cc}-flexRow ${cc}-actionRow`,
           children: [
             {
-              className: 'group flex flex-row items-center gap-1',
+              className: `${cc}-flexRow ${cc}-selector`,
               id: `qrc-selector-${parent_post_id}`,
               'aria-haspopup': 'listbox',
               'aria-expanded': false,
@@ -123,14 +120,11 @@ const newMenu = async (parent_post_id, parent_tumblelog_uuid, reblog_key) => {
               onclick: toggleState,
               children: [
                 {
-                  className: 'flex-row items-center gap-3 rounded-l-lg px-2 py-1 group-hover:bg-foreground-600 ui-open:bg-foreground-700 lg:flex',
+                  className: `${cc}-selector`,
                   children: [{
-                    className: 'flex-0 mask relative aspect-square h-8 w-8',
-                    children: [{
-                      className: 'mask mask-roundrect h-full w-full object-cover',
-                      src: primaryBlog.avatar[1].url,
-                      alt: primaryBlog.name
-                    }]
+                    className: `${cc}-avatar`,
+                    src: primaryBlog.avatar[1].url,
+                    alt: primaryBlog.name
                   }]
                 },
                 {
@@ -272,7 +266,7 @@ const hideMenu = event => {
 };
 const hideMenuOnTouch = event => {
   try {
-    if (!event.originalTarget.matches(`.${customClass},.${customClass} *,${linkSelector},${linkSelector} svg`)) document.querySelectorAll(`.${customClass}`).forEach(function (menu) { menu.style = null });
+    if (!event.originalTarget.matches(`.${cc},.${cc} *,${linkSelector},${linkSelector} svg`)) document.querySelectorAll(`.${cc}`).forEach(function (menu) { menu.style = null });
   } catch { null } // can't check .matches() on some inputs so this keeps the console free of extra errors
 };
 const menuSelfHide = function (event) {
@@ -311,7 +305,7 @@ export const clean = async () => {
   postFunction.stop(addMenus);
 
   $(linkSelector).off('mouseenter', showMenu);
-  $(`.${customClass}`).remove();
+  $(`.${cc}`).remove();
   $(`[${customAttribute}]`).removeAttr(customAttribute);
   document.removeEventListener('touchstart', hideMenuOnTouch);
 };
