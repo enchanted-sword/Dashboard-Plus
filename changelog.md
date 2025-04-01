@@ -1,3 +1,13 @@
+# v1.4.0
+
+## general
+
+- unscrongled all of staff's newest attempts at """ui design"""
+
+## new feature! square avatars
+
+- round isn't always better, yknow?
+
 # v1.3.3
 
 ## hide sidebar content
