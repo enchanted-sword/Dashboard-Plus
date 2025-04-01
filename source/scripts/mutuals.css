@@ -2,3 +2,10 @@
   display: inline-flex;
   align-items: flex-start;
 }
+
+[data-css~="userBlock"] .dbplus-mutuals {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 1.5rem;
+}

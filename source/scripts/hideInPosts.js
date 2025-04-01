@@ -5,7 +5,7 @@ import { translate } from './utility/tumblr.js';
 const badgeSelector = `${s('badgesContainer')},${s('peeprHeaderBadgesWrapper')}`;
 const tipSelector = `${s('targetWrapperFlex')}:has(button[aria-label='${translate('Tip')}']),button[aria-label='${translate('Tip button')}']`;
 const blazeSelector = `${s('controlIcon')}:has(button[aria-label='${translate('Blaze')}'])`;
-const followSelector = `button[aria-label='${translate('Follow')}']`;
+const followSelector = `button[aria-label='${translate('Follow')}'],${s('userRow')}>${s('rightContent')}>${s('button')}`;
 const styleElement = style('');
 
 const run = ({ badges, tips, blaze, follow }) => {

@@ -6,6 +6,8 @@ import { translate } from './utility/tumblr.js';
 import { s, style } from './utility/style.js';
 import { addUrlPopover } from './utility/dashboardElements.js';
 
+const NEWDASH = () => !!document.querySelector(s('userBlock')); // Quick 'n dirty check
+
 let scroll, showOwnAvatar;
 const staticStyleElement = style(`.dbplus-stickyContainer > ${s('avatar')} { position: static !important; }`);
 const customClass = 'dbplus-floatingAvatars';
@@ -57,7 +59,7 @@ const addScrollingAvatars = posts => {
   for (const post of posts) {
     if (post.matches(s('masonryTimelineObject'))) return;
 
-    const avatar = post.querySelector(`header > ${s('avatar')}`);
+    const avatar = NEWDASH() ? post.querySelector(`header  ${s('avatarContainer')}`) : post.querySelector(`header > ${s('avatar')}`);
     const stickyContainer = noact({ className: 'dbplus-stickyContainer' });
 
     post.prepend(stickyContainer);

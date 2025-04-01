@@ -1,0 +1,9 @@
+[data-css~="avatarContainer"] [data-css~="circle"],
+[data-css~="avatarImage"],
+[data-css~="subAvatarImage"] {
+  border-radius: 3px !important;
+}
+
+[data-css~="avatarContainer"]:has([data-css~="subAvatar"]) [data-css~="size44"]>[data-css~="avatar"] {
+  mask-image: none;
+}

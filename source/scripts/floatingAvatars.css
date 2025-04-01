@@ -3,10 +3,12 @@
     [data-css~="navigationWrapper"] {
       margin: 0 !important;
     }
+
     [data-css~="tabsHeader"] {
-      margin-left: -93px !important ;
+      margin-left: -93px !important;
     }
   }
+
   #base-container:not([data-route*="peepr"]) {
     [data-css~="mainContentWrapper"]:not([data-css~="mainContentIsMasonry"]) {
       flex-basis: 982px;
@@ -14,6 +16,7 @@
       [data-css~="main"]:not([data-css~="sidebar"] [data-css~="main"]) {
         margin-left: 93px !important;
       }
+
       [data-css~="container"] {
         max-width: none !important;
       }
@@ -25,7 +28,7 @@
     position: absolute;
     left: -84px;
 
-    > [data-css~="avatar"] {
+    >[data-css~="avatar"] {
       position: absolute !important;
       top: 0 !important;
     }
@@ -38,56 +41,88 @@
     left: -85px;
     padding: 0;
 
-    > [data-css~="avatar"] {
+    >[data-css~="avatar"] {
       position: sticky;
       top: 69px;
       transition: top 0.25s;
     }
-    [data-css~="blogLink"] > [data-css~="avatar"],
-    [data-css~="blogLink"] > [data-css~="avatar"] [data-css~="image"],
+
+    /* LEGACY STYLES (REMOVE LATER) */
+
+    [data-css~="blogLink"]>[data-css~="avatar"],
+    [data-css~="blogLink"]>[data-css~="avatar"] [data-css~="image"],
     [data-css~="anonymous"] {
       width: 64px !important;
       height: 64px !important;
     }
-    [data-css~="blogLink"] > [data-css~="subavatar"],
-    [data-css~="blogLink"] > [data-css~="subavatar"] [data-css~="image"] {
+
+    [data-css~="blogLink"]>[data-css~="subavatar"],
+    [data-css~="blogLink"]>[data-css~="subavatar"] [data-css~="image"] {
       width: 32px !important;
       height: 32px !important;
     }
-    [data-css~="badge"] {
+
+    /* LEGACY STYLES (REMOVE LATER) */
+
+    [data-css~="avatarWrapper"],
+    [data-css~="avatarWrapper"] [data-css~="image"],
+    [data-css~="anonymous"] {
+      width: 64px !important;
+      height: 64px !important;
+    }
+
+    [data-css~="subAvatar"],
+    [data-css~="subAvatar"] [data-css~="image"] {
+      width: 32px !important;
+      height: 32px !important;
+      border-radius: 3px !important;
+    }
+
+    [data-css~="size44"]>[data-css~="avatar"] {
+      mask-image: none;
+    }
+
+    [data-css~="badge"]:not(:has([data-css~="subAvatar"])) {
       display: none;
     }
   }
+
   .dbplus-avatarWrapper {
     position: relative;
   }
+
   .dbplus-blogLink {
     cursor: pointer;
     word-break: break-word;
     text-decoration: none;
   }
+
   .dbplus-targetWrapper {
     width: inherit;
     vertical-align: top;
     display: inline-block;
   }
+
   .dbplus-avatarInner {
     width: 64px;
     height: 64px;
     position: relative;
   }
+
   .dbplus-avatarWrapperInner {
     border-radius: var(--border-radius-small);
     width: 100%;
     height: 100%;
     overflow: hidden;
   }
+
   .dbplus-placeholder {
     width: 100%;
     line-height: 0;
     position: relative;
     padding-bottom: 100%;
   }
+
   .dbplus-avatarImage {
     position: absolute;
     top: 0;

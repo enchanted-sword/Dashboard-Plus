@@ -1,28 +1,58 @@
 import { noact } from './utility/noact.js';
 import { postFunction } from './utility/mutations.js';
 import { timelineObject } from './utility/reactProps.js';
-import { s, style } from './utility/style.js';
-import { keyToClasses, translate } from './utility/tumblr.js';
+import { s } from './utility/style.js';
 import { addUrlPopover, svgIcon } from './utility/dashboardElements.js';
+import { keyToClasses, navigate, translate } from './utility/tumblr.js';
+
+const NEWDASH = () => !!document.querySelector(s('userBlock')); // Quick 'n dirty check
 
 const customClass = 'dbplus-revertHeaders'
 const postSelector = `[data-timeline-id]:not([data-route="user/inbox"]) [data-id] article:not(.${customClass})`;
+
+function navigateWrapper(event) {
+  event.preventDefault();
+  event.stopPropagation();
+
+  const postUrl = new URL(event.target.href);
+
+  navigate(postUrl.pathname);
+}
+
 const reblogIcon = () => noact({
   tag: 'span',
   className: 'dbplus-reblogIcon',
   children: svgIcon('reblog-compact', 15, 15)
 });
-const styleElement = style(`
-  ${s('attribution')} ${s('targetWrapperInline')} + ${s('badgeContainer')} { margin-left: 5px; }
-  .dbplus-reblogIcon {
-    height: 14px;
-    display: inline-block;
-    transform: translateY(3px);
-    margin: 0 5px;
-  }
-`);
+const newRebloggedFrom = parentPostUrl => noact({
+  tag: 'a',
+  href: parentPostUrl,
+  onclick: navigateWrapper,
+  title: translate('View previous reblog'),
+  className: 'dbplus-rebloggedFrom',
+  children: parentPostUrl.split('/')[3]
+});
 
 const revertHeaders = async posts => {
+  for (const post of posts) {
+    const { parentPostUrl } = await timelineObject(post);
+    const header = post.querySelector('header');
+
+    if (parentPostUrl)
+
+      if (parentPostUrl) {
+        const rebloggedFrom = newRebloggedFrom(parentPostUrl);
+        addUrlPopover(rebloggedFrom);
+        const title = header.querySelector(`${s('headline')}>${s('title')}`);
+        title.insertAdjacentElement('afterend', rebloggedFrom);
+        rebloggedFrom.before(reblogIcon());
+      }
+
+    post.classList.add(customClass);
+  }
+};
+
+const legacyRevertHeaders = async posts => {
   for (const post of posts) {
     const { parentPostUrl } = await timelineObject(post);
     const header = post.querySelector('header');
@@ -58,15 +88,15 @@ const revertHeaders = async posts => {
 };
 
 export const main = async () => {
-  postFunction.start(revertHeaders, postSelector);
-  document.body.append(styleElement)
+  const revertFunction = NEWDASH() ? revertHeaders : legacyRevertHeaders;
+  postFunction.start(revertFunction, postSelector);
 }
 
 export const clean = async () => {
-  postFunction.stop(revertHeaders);
+  const revertFunction = NEWDASH() ? revertHeaders : legacyRevertHeaders;
+  postFunction.stop(revertFunction);
 
   $('.dbplus-rebloggedFrom').remove();
-  $('.dbplus-reblogIcon').replaceWith(` ${translate('reblogged')} `);
+  NEWDASH() ? $('.dbplus-reblogIcon').remove() : $('.dbplus-reblogIcon').replaceWith(`${translate('reblogged')}`);
   $(`.${customClass}`).removeClass(customClass);
-  styleElement.remove();
 }

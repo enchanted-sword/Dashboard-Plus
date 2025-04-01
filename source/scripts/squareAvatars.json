@@ -1,0 +1,10 @@
+{
+  "name": "squareAvatars",
+  "title": "square avatars",
+  "category": "posts",
+  "description": "reverts avatars to their uncropped appearance",
+  "preferences": {
+    "enabled": false
+  },
+  "css": true
+}

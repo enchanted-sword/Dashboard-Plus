@@ -7,6 +7,8 @@ import { s } from './utility/style.js';
 import { timelineObject } from './utility/reactProps.js';
 import { getOptions } from './utility/jsTools.js';
 
+const NEWDASH = () => !!document.querySelector(s('userBlock')); // Quick 'n dirty check
+
 let color, isStarlight;
 
 const customClass = 'dbplus-mutuals';
@@ -22,7 +24,7 @@ const mutualsIcon = () => noact({
   className: keyToString('blogFollowing') + ' ' + customClass,
   ariaLabel: translate('Mutuals'),
   title: translate('Mutuals'),
-  style: 'display:inline',
+  style: NEWDASH() ? '' : 'display:inline',
   children: svgIcon('following', 16, 16, '', `var(--color-${color}, inherit)`)
 });
 
@@ -30,14 +32,14 @@ const specialIcon = () => noact({ // silliness
   className: keyToString('blogFollowing') + ' ' + customClass,
   ariaLabel: translate('Beloved'),
   title: translate('Beloved'),
-  style: 'display:inline',
+  style: NEWDASH() ? '' : 'display:inline',
   children: svgIcon('like-filled', 16, 16, '', 'var(--color-green)')
 });
 
 const markMutuals = posts => posts.forEach(async post => {
   const postObject = await timelineObject(post);
   const map = followedMap(postObject);
-  const blogs = post.querySelectorAll(`${s('blogLink author')}, ${s('blogLink')}:has(${s('attribution')}), ${s('rebloggedFromName')} ${s('blogLink')}`);
+  const blogs = post.querySelectorAll(NEWDASH() ? `${s('title')} ${s('blogLink')}, ${s('title')} .dbplus-rebloggedFrom,${s('subheading')} ${s('blogLink')}` : `${s('blogLink author')}, ${s('blogLink')}:has(${s('attribution')}), ${s('rebloggedFromName')} ${s('blogLink')}`);
 
   if (postObject.rebloggedFromName) {
     map[postObject.rebloggedFromName] = postObject.rebloggedFromFollowing;

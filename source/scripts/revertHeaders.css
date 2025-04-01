@@ -1,1 +1,77 @@
-[data-css~="attribution"] > [data-css~="badgeContainer"] { margin-left: 5px; }
+[data-css~="attribution"]>[data-css~="badgeContainer"] {
+  margin-left: 5px;
+}
+
+[data-css~="trailHeader"] [data-css~="size44"]>[data-css~="avatar"] {
+  mask-image: none;
+}
+
+[data-css~="trailHeader"] [data-css~="size44"] [data-css~="badge"] {
+  display: none;
+}
+
+[data-css~="userBlock"],
+[data-css~="userBlock"]>*,
+[data-css~="trailHeader"] [data-css~="rightContent"] {
+  min-height: 32px !important;
+}
+
+[data-css~="userBlock"],
+[data-css~="trailHeader"] [data-css~="rightContent"] {
+  align-items: center;
+}
+
+[data-css~="userBlock"] [data-css~="headline"] {
+  column-gap: 2px;
+}
+
+[data-css~="userBlock"] [data-css~="subheader"] :is([data-css~="info"], [data-css~="separator"]) {
+  display: none;
+}
+
+[data-css~="trailHeader"] [data-css~="rightContent"] {
+  gap: 1rem;
+}
+
+[data-css~="trailHeader"] [data-css~="rightContent"]>[data-css~="button"] {
+  background: none;
+  font-size: .875rem;
+  line-height: 1rem;
+  color: var(--accent);
+}
+
+[data-css~="trailHeader"] [data-css~="rightContent"]>[data-css~="button"]:hover {
+  background: none;
+}
+
+[data-css~="trailHeader"] [data-css~="rightContent"] [data-css~="button"] {
+  padding: 0;
+}
+
+[data-css~="trailHeader"] [data-css~="avatarWrapper"],
+[data-css~="trailHeader"] [data-css~="avatarWrapper"] [data-css~="image"],
+[data-css~="trailHeader"] [data-css~="anonymous"] {
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.dbplus-reblogIcon {
+  height: 18px;
+  display: inline-block;
+  transform: translateY(3px);
+  margin: 0 5px;
+}
+
+.dbplus-rebloggedFrom {
+  color: rgba(var(--black), .65);
+  cursor: pointer;
+  word-break: break-word;
+  text-decoration: none;
+  word-wrap: break-word;
+  hyphens: auto;
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: var(--font-family-modern);
+  font-weight: 500;
+  line-height: 1.5rem;
+}
