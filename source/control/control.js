@@ -60,6 +60,8 @@ window.addEventListener('message', (event) => {
       const timelineTargetSelector = '[data-timeline-id]:not([data-route])';
       const body = (document.body || document);
 
+      let mutateContainerLabel = true;
+
       const labelCss = elements => {
         elements.forEach(element => {
           const classes = [];
@@ -75,17 +77,16 @@ window.addEventListener('message', (event) => {
           const title = reverseTranslations[element.title] || element.title;
           element.dataset.title = title;
         });
-      }
+      };
       const labelTimelines = elements => {
-        console.log(elements);
         elements.forEach(element => {
-          console.log(element);
           let route = element.getAttribute('data-timeline-id').split('/v2/').pop();
           if (route.includes('blog/') && route.split('/')[1] === window.location.pathname.split('/')[1]) route = `peepr/${route}`;
-          document.getElementById('base-container').setAttribute('data-route', route);
+          if (mutateContainerLabel) document.getElementById('base-container').setAttribute('data-route', route);
+          mutateContainerLabel = false;
           element.setAttribute('data-route', route);
         });
-      }
+      };
       const label = () => {
         labelCss(document.querySelectorAll(cssTargetSelector));
         labelTitles(document.querySelectorAll(titleTargetSelector));
