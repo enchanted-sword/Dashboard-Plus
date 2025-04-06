@@ -41,13 +41,19 @@
     left: -85px;
     padding: 0;
 
-    >[data-css~="avatar"] {
+    >[data-css~="avatarContainer"] {
       position: sticky;
       top: 69px;
       transition: top 0.25s;
     }
 
     /* LEGACY STYLES (REMOVE LATER) */
+
+    >[data-css~="avatar"] {
+      position: sticky;
+      top: 69px;
+      transition: top 0.25s;
+    }
 
     [data-css~="blogLink"]>[data-css~="avatar"],
     [data-css~="blogLink"]>[data-css~="avatar"] [data-css~="image"],
