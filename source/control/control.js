@@ -60,6 +60,8 @@ window.addEventListener('message', (event) => {
       const timelineTargetSelector = '[data-timeline-id]:not([data-route])';
       const body = (document.body || document);
 
+      let mutateContainerLabel = true;
+
       const labelCss = elements => {
         elements.forEach(element => {
           const classes = [];
@@ -75,19 +77,20 @@ window.addEventListener('message', (event) => {
           const title = reverseTranslations[element.title] || element.title;
           element.dataset.title = title;
         });
-      }
+      };
       const labelTimelines = elements => {
         elements.forEach(element => {
           let route = element.getAttribute('data-timeline-id').split('/v2/').pop();
           if (route.includes('blog/') && route.split('/')[1] === window.location.pathname.split('/')[1]) route = `peepr/${route}`;
-          document.getElementById('base-container').setAttribute('data-route', route);
+          if (mutateContainerLabel) document.getElementById('base-container').setAttribute('data-route', route);
+          mutateContainerLabel = false;
           element.setAttribute('data-route', route);
         });
-      }
+      };
       const label = () => {
         labelCss(document.querySelectorAll(cssTargetSelector));
         labelTitles(document.querySelectorAll(titleTargetSelector));
-        labelTimelines(document.querySelectorAll(timelineTargetSelector))
+        labelTimelines(document.querySelectorAll(timelineTargetSelector));
       };
 
       label();
@@ -99,16 +102,8 @@ window.addEventListener('message', (event) => {
         subtree: true,
       });
 
-      const updateRoute = mutations => {
-        const elements = mutations.flatMap(({ target }) => target);
-        labelTimelines(elements);
-      }
-      const attributeObserver = new MutationObserver(updateRoute);
-
-      attributeObserver.observe(body, {
-        attributes: true,
-        attributeFilter: ['data-timeline-id'],
-        subtree: true
+      window.tumblr.on('navigation', () => {
+        document.querySelectorAll('[data-timeline-id][data-route]').forEach(e => e.removeAttribute('data-route'));
       });
       init = true;
     } else if (!init) console.info('resources not cached, skipping first run');
