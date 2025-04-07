@@ -3,6 +3,7 @@ a[href*="/settings/ad-free-browsing"],
 [data-css~="navItem"][data-title="Go Ad-Free"],
 button[data-css~="expandOnHover"]:has([data-css~="accentText"]),
 [data-css~="premiumTooltip"],
-[data-css~="sidebarItem"]:has([data-css~="diamond"]) {
+[data-css~="sidebarItem"]:has([data-css~="diamond"]),
+[data-css~="navButtonContainer"]:has([data-css~="premiumButton"]) {
   display: none !important;
 }

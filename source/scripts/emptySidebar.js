@@ -12,6 +12,8 @@ export const main = async () => {
   const sidebar = document.querySelector(s('sidebar'));
   let empty = true;
 
+  if (!sidebar) return;
+
   Array.from(sidebar.children[0].children).forEach(elem => {
     if (elem.style.display !== 'none' && elem.getBoundingClientRect().height > 0) empty = false;
   });

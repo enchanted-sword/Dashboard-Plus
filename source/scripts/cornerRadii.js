@@ -5,6 +5,7 @@ const styleElement = style('');
 
 const run = ({ radius }) => {
   styleElement.innerText = `
+    :root { --dbplus-cornerRadius: ${radius}px; }
     ${s('postColumn')} > ${s('bar')}, 
     ${s('activityPopover')} ${s('selectorPopover')},
     article${s('post')}, ${s('tabManagement')},

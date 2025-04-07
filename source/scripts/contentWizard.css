@@ -1,16 +1,25 @@
-[data-css~="mainContentWrapper"] {
-  flex-basis: unset !important;
-  max-width: none !important;
-}
-[data-css~="main"] {
-  [data-css~="post"], [data-css~="post"] > * { max-width: 100%; }
-}
-[data-css~="container"],
-[data-css~="cell"], [data-css~="post"] [data-css~="link"],
-[data-css~="reblog"], [data-css~="videoBlock"],
-[data-css~="videoBlock"] iframe,
-[data-css~="audioBlock"] { max-width: none !important; }
-[data-css~="queueSettings"] {
-  width: calc(100% - 85px);
-  box-sizing: border-box;
+@media (min-width: 990px) {
+  [data-css~="mainContentWrapper"] {
+    flex-basis: unset !important;
+    max-width: none !important;
+  }
+  [data-css~="main"] {
+    [data-css~="post"],
+    [data-css~="post"] > * {
+      max-width: 100%;
+    }
+  }
+  [data-css~="container"],
+  [data-css~="cell"],
+  [data-css~="post"] [data-css~="link"],
+  [data-css~="reblog"],
+  [data-css~="videoBlock"],
+  [data-css~="videoBlock"] iframe,
+  [data-css~="audioBlock"] {
+    max-width: none !important;
+  }
+  [data-css~="queueSettings"] {
+    width: calc(100% - 85px);
+    box-sizing: border-box;
+  }
 }

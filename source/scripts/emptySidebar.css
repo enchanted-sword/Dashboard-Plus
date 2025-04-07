@@ -1,15 +1,17 @@
-[data-css~="sidebarTopContainer"] {
-  height: fit-content;
-}
-[data-css~="sidebarTopContainer"] > div:not([data-css]) {
-  width: 320px;
-}
-[data-css~="layout"],
-[data-route*="peepr"]
-  [data-css~="mainContentWrapper"]
-  > [data-css="container newDesktopLayout"] {
-  width: fit-content !important;
-}
-[data-route*="peepr"] [data-css~="mainContentWrapper"] {
-  justify-content: center !important;
+@media (min-width: 990px) {
+  [data-css~="sidebarTopContainer"] {
+    height: fit-content;
+  }
+  [data-css~="sidebarTopContainer"] > div:not([data-css]) {
+    width: 320px;
+  }
+  [data-css~="layout"],
+  [data-route*="peepr"]
+    [data-css~="mainContentWrapper"]
+    > [data-css="container newDesktopLayout"] {
+    width: fit-content !important;
+  }
+  [data-route*="peepr"] [data-css~="mainContentWrapper"] {
+    justify-content: center !important;
+  }
 }

@@ -28,5 +28,6 @@
     }
   },
   "js": true,
-  "css": true
+  "css": true,
+  "desktopOnly": true
 }

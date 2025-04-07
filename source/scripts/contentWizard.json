@@ -41,6 +41,7 @@
   },
   "js": true,
   "css": true,
+  "desktopOnly": true,
   "recieveUpdates": [
     "horizontalNavigation",
     "floatingAvatars"

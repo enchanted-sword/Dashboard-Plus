@@ -139,7 +139,7 @@
         const feature = installedFeatures[name];
 
         try {
-          if (feature.css) document.querySelector(`link[href='${getURL(`/scripts/${name}.css`)}']`).remove();
+          if (feature.css) document.querySelector(`link[href='${getURL(`/scripts/${name}.css`)}']`)?.remove();
           if (feature.js) {
             const { clean } = await import(browser.runtime.getURL(`/scripts/${name}.js`)); // browser.runtime.getURL is only a valid escape when written in full
 
@@ -173,7 +173,7 @@
       const onResized = () => {
         if (window.innerWidth < 990) {
           resizeListeners.forEach(feature => {
-            if (enabledFeatures.includes(feature)) destroyFeature(feature);
+            if (installedFeatures[feature]?.desktopOnly && enabledFeatures.includes(feature)) destroyFeature(feature);
           });
         } else resizeListeners.forEach(feature => {
           if (!enabledFeatures.includes(feature)) {
