@@ -1,3 +1,14 @@
+# v1.4.1
+
+## general
+
+- fixed routeset watchdog not updating the routeset on some navigations, shifting the dashboard over to the left slightly
+- added base compatibility for mobile-sized screens (more firefox android compatibility to come!)
+
+## floating avatars
+
+- fixed position not being set as sticky
+
 # v1.4.0
 
 ## general
