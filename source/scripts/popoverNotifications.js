@@ -1,7 +1,7 @@
 import { noact } from './utility/noact.js';
 import { primaryBlog } from './utility/user.js';
 import { mutationManager } from './utility/mutations.js';
-import { apiFetch } from './utility/tumblr.js';
+import { apiFetch, translate } from './utility/tumblr.js';
 //import { getOptions } from './utility/jsTools.js';
 
 // eslint-disable-next-line no-undef
@@ -13,13 +13,11 @@ const app = document.getElementById('tumblr');
 
 const dateFormat = { weekday: 'long', month: 'long', day: 'numeric' };
 
-/* const getTransformedNotifications = async () => {
-  let comments, posts, projects, notifications;
-  let count = 0;
-  numFetch = Number(numFetch);
+const getTransformedNotifications = async () => {
+  const notifications = await apiFetch(`/v2/blog/${primaryBlog.name}/notifications`).then(({ response }) => structuredClone(response?.notifications));
   const sortedNotifications = {};
 
-  if (true) {
+  /* if (true) {
     ([{ count }] = await batchTrpc(['notifications.count'], { 0: { projectHandle: activeProject.handle } }));
     count = Math.min(count, numFetch);
     const remainder = numFetch - count;
@@ -148,10 +146,25 @@ const dateFormat = { weekday: 'long', month: 'long', day: 'numeric' };
     const date = time.toISODate({ format: 'basic' });
     if (!(date in sortedNotifications)) sortedNotifications[date] = [];
     sortedNotifications[date].push(notification);
+  }); */
+
+  notifications = notifications.map(notification => {
+    notification.preview = null;
+
+    if (notification.type !== "follow") notification.preview = newBodyPreview(notification);
+  });
+
+  notifications.forEach(notification => {
+    const time = DateTime.fromSeconds(notification.timestamp);
+    const date = time.toISODate({ format: 'basic ' })
+    console.log(date);
+
+    sortedNotifications[date] ??= [];
+    sortedNotifications[date].push(notification);
   });
 
   return sortedNotifications;
-}; */
+};
 
 const pathMap = {
   like: {
@@ -344,52 +357,33 @@ const newAvatar = project => {
     ]
   };
 };
-const newBodyPreview = (post, replyTo = null) => { // PREVIEW LINE
-  let body, htmlBody, previewImage, previewLine;
+const newBodyPreview = ({ type, mediaUrl, targetTumblelogName, fromTumblelogName, targetPostSummary, targetPostId, postId }) => { // PREVIEW LINE
+  let url, previewImage, previewLine;
   let { headline, plainTextBody } = post;
   headline && (headline = headline.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'));
 
-  if (post.blocks.some(block => block?.attachment?.kind === 'image')) { // generate preview image from attachment
-    const { attachment } = post.blocks.find(block => block?.attachment?.kind === 'image');
+  if (mediaUrl) { // generate preview image from attachment
     previewImage = {
       className: 'cohost-shadow-light aspect-square h-8 w-8 rounded-lg object-cover',
-      src: attachment.previewURL,
-      alt: attachment.altText,
-      filename: attachment.previewURL.split('/').pop()
+      src: mediaUrl
     };
   }
-  if (replyTo) ({ body } = replyTo);
-  else {
-    if (!previewImage && plainTextBody) {
-      const extractedString = imageRegex.exec(parseMdNoBr(plainTextBody));
-      if (extractedString && extractedString.length) { // generate preview image from markdown
-        const extractedImage = $(extractedString[0])[0];
-        previewImage = {
-          className: 'cohost-shadow-light aspect-square h-8 w-8 rounded-lg object-cover',
-          src: extractedImage.src,
-          alt: extractedImage.alt,
-          filename: extractedImage.src.split('/').pop()
-        };
-        plainTextBody = parseMdNoBr(plainTextBody).replaceAll(imageRegex, '');
-      }
-    }
 
-    body = plainTextBody;
+  switch (type) {
+    case 'reblog_naked':
+    case 'reblog': url = `/${fromTumblelogName}/${postId}`;
+    case 'follow': url = `/${fromTumblelogName}`;
+    default: url = `/${targetTumblelogName}/${targetPostId}`
   }
-  htmlBody = headline || parseMdNoBr(body);
 
   previewLine = noact({
     className: "co-inline-quote max-h-60 flex-1 truncate before:content-['“'] after:content-['”']",
     children: [{
       className: 'inline-children hover:underline',
-      href: `${post.singlePostPageUrl}${replyTo ? `#comment-${replyTo.commentId}` : ''}`,
-      innerHTML: htmlBody
+      href: url,
+      children: targetPostSummary
     }]
   });
-  if (!previewLine.querySelector('.inline-children').textContent) {
-    if (previewImage) previewLine.querySelector('.inline-children').textContent = `[image: ${previewImage.alt || previewImage.filename}]`;
-    else previewLine.querySelector('.inline-children').textContent = '[no text]';
-  }
 
   return { previewImage, previewLine };
 };
@@ -525,7 +519,7 @@ const onNotificationButtonClick = async function (event) {
       smList.insertBefore(popover, beforeItem);
     } else app.append(popover);
 
-    const notifications = await apiFetch(`/v2/blog/${primaryBlog.name}/notifications`).then(({ response }) => response?.notifications);
+    const notifications = await getTransformedNotifications();
     console.log(notifications);
 
     popover.querySelector('.loader').replaceWith(noact({

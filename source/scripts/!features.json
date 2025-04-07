@@ -35,5 +35,6 @@
   "emptyInbox",
   "customColors",
   "followingAsDefault",
-  "postFinder"
+  "postFinder",
+  "popoverNotifications"
 ]
