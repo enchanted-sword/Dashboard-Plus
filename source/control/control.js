@@ -102,7 +102,7 @@ window.addEventListener('message', (event) => {
         subtree: true,
       });
 
-      window.tumblr.on('navigation', () => {
+      window.tumblr.on?.('navigation', () => {
         document.querySelectorAll('[data-timeline-id][data-route]').forEach(e => e.removeAttribute('data-route'));
       });
       init = true;
