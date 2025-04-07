@@ -1,0 +1,11 @@
+{
+  "name": "popoverNotifications",
+  "title": "open notifications in popover view",
+  "description": "allows viewing notifications from the dashboard",
+  "category": "activity",
+  "preferences": {
+    "enabled": false
+  },
+  "js": true,
+  "css": true
+}

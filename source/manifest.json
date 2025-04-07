@@ -44,7 +44,8 @@
       "js": [
         "control/contentScript.js",
         "libraries/jquery.min.js",
-        "libraries/umd.js"
+        "libraries/umd.js",
+        "libraries/luxon.min.js"
       ],
       "css": [
         "scripts/utility/dashboardElements.css"

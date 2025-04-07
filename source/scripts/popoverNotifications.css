@@ -1,0 +1,134 @@
+[href="https://cohost.org/rc/project/notifications"][data-notification-popover-state="open"] { position: relative; }
+[href="https://cohost.org/rc/project/notifications"][data-notification-popover-state="open"] svg.inline-block { fill: currentColor; }
+
+.ch-utils-popover {
+  position: fixed;
+  z-index: 100;
+  width: 28rem;
+  border-radius: .5rem;
+  border: none;
+  overflow: hidden;
+  color: rgb(var(--color-notBlack));
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  overscroll-behavior: contain;
+
+  .co-block-quote { margin: 0; }
+  
+  > section {
+    max-height: 32rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-color: rgb(var(--color-mango)) rgb(var(--color-background) / .4);
+  }
+
+  > header {
+    padding: .5rem;
+    background-color: rgb(var(--color-notWhite) / var(--tw-bg-opacity));
+    color: rgb(var(--color-notBlack));
+  }
+
+  .co-notification-card[data-unread="true"] {
+    background-color: rgb(var(--color-tertiary-200));
+  
+    &:hover { background-color: rgb(var(--color-tertiary-300)) !important; }
+  }
+
+  &:has([data-theme="dark"]) {
+    color: rgb(var(--color-notWhite));
+    background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+
+    > header {
+      background-color: rgb(var(--color-notBlack) / var(--tw-bg-opacity));
+      color: rgb(var(--color-notWhite));
+    }
+
+    .co-notification-card[data-unread="true"] {
+      background-color: rgb(var(--color-foreground-500));
+    
+      &:hover { background-color: rgb(var(--color-foreground-600)) !important; }
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .ch-utils-popover:has([data-theme="both"]) {
+    color: rgb(var(--color-notWhite));
+    background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+
+    > header {
+      background-color: rgb(var(--color-notBlack) / var(--tw-bg-opacity));
+      color: rgb(var(--color-notWhite));
+    }
+
+    .inline-children * { color: rgb(160 156 152) !important; }
+
+    .co-notification-card[data-unread="true"] {
+      background-color: rgb(var(--color-foreground-500));
+    
+      &:hover { background-color: rgb(var(--color-foreground-600)) !important; }
+    }
+  }
+}
+
+
+.header-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 101;
+}
+.max-23 { max-width: 23rem; }
+.flex-0 + .max-23 { max-width: 20.5rem; }
+.gap-space { gap: 0 .3em; }
+.inline-children {
+  overflow: hidden;
+
+  * {
+    color: rgb(130 127 124) !important;
+    display: inline !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: inherit !important;
+    white-space: nowrap !important;
+    position: relative !important;
+  }
+  [style*="-webkit-text-stroke"], [style*="-webkit-text-stroke"] * {
+    -webkit-text-stroke-width: .5px !important;
+  }
+  details { width: fit-content !important; } /* https://bugzilla.mozilla.org/show_bug.cgi?id=1896299 */
+  h1, h2, h3, h4, h5, h6 { font-weight: bold; }
+  ul, img, audio, video { display: none !important; }
+}
+.block-children { img, video { max-width: 100% !important; }; }
+
+.ch-utils-popoverNotifications-handle { display: none; }
+.co-notification-card .ch-utils-popoverNotifications-notifier:has([data-active="true"]) ~ .ch-utils-popoverNotifications-groupAvatars .ch-utils-popoverNotifications-groupAvatarsInner {
+  flex-flow: column nowrap;
+
+  .ch-utils-popoverNotifications-handle { display: block; }
+}
+
+.lg\:hidden .ch-utils-popover {
+  overflow: clip;
+  position: static;
+  width: 58vw;
+}
+
+.loader { /*adapted from https://cssloaders.github.io/*/
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 2rem;
+  position: relative;
+  color: rgb(var(--color-notBlack));
+  box-sizing: border-box;
+  animation: load-animation 1s linear infinite alternate;
+}
+@keyframes load-animation {
+  0% {box-shadow: -24px -6px, -8px 0, 8px 0, 24px 0; }
+  33% { box-shadow: -24px 0px, -8px -6px, 8px 0, 24px 0; }
+  66% { box-shadow: -24px 0px, -8px 0, 8px -6px, 24px 0; }
+  100% { box-shadow: -24px 0, -8px 0, 8px 0, 24px -6px; }
+}

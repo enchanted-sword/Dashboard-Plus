@@ -3,6 +3,7 @@
     "culori": "^4.0.1",
     "idb": "^8.0.1",
     "jquery": "^3.7.1",
+    "luxon": "^3.6.1",
     "poline": "^0.7.0"
   },
   "devDependencies": {
