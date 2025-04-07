@@ -9,7 +9,7 @@ import { addUrlPopover } from './utility/dashboardElements.js';
 const NEWDASH = () => !!document.querySelector(s('userBlock')); // Quick 'n dirty check
 
 let scroll, showOwnAvatar;
-const staticStyleElement = style(`.dbplus-stickyContainer > ${s('avatar')} { position: static !important; }`);
+const staticStyleElement = style(`.dbplus-stickyContainer > ${s('avatarContainer')} { position: static !important; }`);
 const customClass = 'dbplus-floatingAvatars';
 const postSelector = `${s('main')} > :not(${s('blogTimeline')}) [data-timeline-id]:not([data-timeline-id*='posts/'],${s('masonry')}) [tabindex='-1']:not([data-css*='masonryTimelineObject']) article:not(.${customClass})`;
 const userAvatar = noact({
