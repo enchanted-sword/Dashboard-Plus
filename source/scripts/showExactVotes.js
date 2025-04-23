@@ -20,11 +20,14 @@ const styleElement = style(`
 const detailPolls = async polls => {
   for (const poll of polls) {
     const answers = Array.from(poll.querySelectorAll(`:scope ${s('pollAnswer results')}`));
-    const totalCount = Number(poll.querySelector(s('pollSummary')).innerText.replace(/,/, '').match(/\d+/)[0]);
-    await Promise.all(answers.map(async answer => {
-      const { percentage } = await percentageNumber(answer);
-      $(answer).append($(`<span class="dbplus-answerVoteCount">(${Math.round(totalCount * percentage / 100)})</span>`));
-    }));
+    const totalCount = Number(poll.querySelector(s('pollSummary')).innerText.replace(/,/g, '').replace(/\s/g, '').match(/\d+/)[0]);
+    console.log(answers, totalCount);
+    if (answers.length) {
+      await Promise.all(answers.map(async answer => {
+        const { percentage } = await percentageNumber(answer);
+        $(answer).append($(`<span class="dbplus-answerVoteCount">(${Math.round(totalCount * percentage / 100)})</span>`));
+      }));
+    }
     poll.classList.add(customClass);
   }
 };
@@ -32,11 +35,11 @@ const detailPolls = async polls => {
 export const main = async () => {
   document.body.append(styleElement);
   mutationManager.start(pollSelector, detailPolls);
-}
+};
 
 export const clean = async () => {
   mutationManager.stop(detailPolls);
   $(`.${customClass}`).removeClass(customClass);
   $('.dbplus-answerVoteCount').remove();
   styleElement.remove();
-}
+};
