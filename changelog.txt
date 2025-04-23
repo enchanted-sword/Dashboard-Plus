@@ -1,3 +1,13 @@
+v1.4.2
+
+general
+
+- fixed a strange sporadic issue with a strict mode error being thrown
+
+show exact poll votes
+
+- potentially? fixed an untracable error with polls being skipped in processing
+
 v1.4.1
 
 general
