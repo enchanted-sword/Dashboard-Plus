@@ -21,7 +21,6 @@ const detailPolls = async polls => {
   for (const poll of polls) {
     const answers = Array.from(poll.querySelectorAll(`:scope ${s('pollAnswer results')}`));
     const totalCount = Number(poll.querySelector(s('pollSummary')).innerText.replace(/,/g, '').replace(/\s/g, '').match(/\d+/)[0]);
-    console.log(answers, totalCount);
     if (answers.length) {
       await Promise.all(answers.map(async answer => {
         const { percentage } = await percentageNumber(answer);
