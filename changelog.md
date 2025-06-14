@@ -1,3 +1,13 @@
+# v1.4.3
+
+## hide content in posts
+
+- fixed follow buttons being hidden outside of posts
+
+## content width
+
+- fixed content width modifications being applied on masonry-styled pages
+
 # v1.4.2
 
 ## general
