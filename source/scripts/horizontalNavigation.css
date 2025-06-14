@@ -1,7 +1,8 @@
 @media (min-width: 990px) {
-  [data-css~="bluespaceLayout"] > [data-css~="newDesktopLayout"] {
+  [data-css~="bluespaceLayout"]>[data-css~="newDesktopLayout"] {
     margin-top: 55px;
   }
+
   [data-css~="navSubHeader"] {
     position: sticky;
     top: 0;
@@ -29,6 +30,7 @@
       left: 0;
       pointer-events: none;
     }
+
     a {
       color: rgba(var(--black), 0.65) !important;
     }
@@ -41,6 +43,7 @@
   [data-css~="popoverHolder"]:has([data-css~="homeMenu"]) {
     transform: translatex(-20px) !important;
   }
+
   [data-css~="homeMenu"],
   #account_subnav,
   #collections_subnav {
@@ -58,33 +61,40 @@
     border-radius: var(--border-radius-small);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   }
+
   #glass-container [data-css~="arrow"] {
     display: none;
   }
 
   [data-css~="subNav"] {
+
     [data-css~="childWrapper"],
     [data-css~="blogName"],
     [data-css~="collectionName"] {
       color: RGB(var(--black)) !important;
     }
+
     [data-css~="endChildWrapper"],
     [data-css~="reorderButton"],
     [data-css~="blogTitle"],
     [data-css~="collectionDescription"] {
       color: rgba(var(--black), 0.65) !important;
     }
-    > [data-css~="navItem"],
+
+    >[data-css~="navItem"],
     [data-css~="accountStats"] li {
       list-style-type: none;
     }
-    > [data-css~="navItem"]:hover,
+
+    >[data-css~="navItem"]:hover,
     [data-css~="accountStats"] li:hover {
       background-color: rgb(var(--seccondary-accent));
     }
+
     [data-css~="navItem"] {
       font-weight: 500;
     }
+
     [data-css~="navItem"] [data-css~="navLink"] {
       min-height: 41px;
       column-gap: 12px;
@@ -95,6 +105,7 @@
   [data-css~="blogTile"] {
     border-top: 1px solid rgba(var(--black), 0.13);
   }
+
   button.dbplus-hnav {
     transform: rotate(0deg);
     display: flex;
@@ -104,6 +115,7 @@
       --icon-color-primary: rgba(var(--black), 0.65);
     }
   }
+
   span.dbplus-hnav-count {
     color: rgba(var(--black), 0.65);
   }
@@ -112,20 +124,21 @@
     display: flex;
     align-items: center;
   }
-  [data-css~="childWrapper"] > svg {
+
+  [data-css~="childWrapper"]>svg {
     margin-right: 10px;
   }
-  [data-css~="startChildWrapper"] > svg {
+
+  [data-css~="startChildWrapper"]>svg {
     width: 21px !important;
     height: 21px !important;
   }
-  [data-css~="startChildWrapper"]
-    + [data-css~="navInfo"]:not(
-      [data-css~="homeMenu"] div,
-      #account_subnav div
-    ) {
+
+  [data-css~="startChildWrapper"]+[data-css~="navInfo"]:not([data-css~="homeMenu"] div,
+    #account_subnav div) {
     display: none !important;
   }
+
   [data-css~="badge"][data-css~="notificationBadge"] {
     visibility: visible !important;
     min-width: 11px !important;
@@ -136,13 +149,16 @@
     top: -48% !important;
     left: 65% !important;
   }
+
   [data-css~="unreadCount"][data-css~="default"] {
     border: 2px solid var(--chrome);
   }
+
   .dbplus-hnav [data-css~="headingLink"] {
     text-decoration: none;
     color: rgba(var(--black), 0.65);
   }
+
   [data-css~="searchSidebarItem"] {
     max-width: 480px;
     width: 100%;
@@ -154,15 +170,19 @@
     padding: 0 !important;
     margin-top: 0 !important;
   }
+
   [data-css~="searchShadow"] {
     display: none;
   }
+
   .dbplus-hnav [data-css~="searchIcon"] svg use {
     --icon-color-primary: rgba(var(--white-on-dark), 0.65);
   }
+
   .dbplus-hnav:focus-within [data-css~="searchIcon"] svg use {
     --icon-color-primary: rgba(var(--black), 0.65);
   }
+
   [data-css~="logoContainer"] {
     justify-content: center;
     padding: 0px;
@@ -170,6 +190,7 @@
     position: fixed;
     left: 24px;
   }
+
   [data-css~="navigationWrapper"] {
     height: 55px;
     display: flex;
@@ -184,6 +205,7 @@
     border-bottom: 1px solid rgba(var(--white-on-dark), 0.13);
     box-sizing: border-box;
   }
+
   [data-css~="navigation"] {
     max-width: 1716px !important;
     width: 100% !important;
@@ -191,15 +213,17 @@
     border: none;
     position: absolute !important;
 
-    > [data-css~="aboutLinks"] {
+    >[data-css~="aboutLinks"] {
       display: none;
     }
   }
+
   [data-css~="primaryNavigation"] {
     height: 55px;
     padding: 0;
     justify-content: center;
   }
+
   [data-css~="navigationLinks"] {
     display: flex;
     justify-content: flex-end;
@@ -216,55 +240,62 @@
       display: none;
     }
   }
+
   [data-css~="notificationBadgeIn"] {
     font-size: 0.8rem !important;
     height: 21px !important;
     top: -40% !important;
     visibility: visible !important;
   }
+
   [data-css~="navItem"][data-css~="open"] {
     border: none !important;
   }
+
   [data-css~="navigationLinks"] {
-    > [data-css~="targetPopoverWrapper"],
-    > [data-css~="navItem"] {
+
+    >[data-css~="targetPopoverWrapper"],
+    >[data-css~="navItem"] {
       width: 20px;
       margin: 0 16px;
     }
 
-    > [data-css~="targetPopoverWrapper"]
-      [data-css~="navLink"]
-      > [data-css~="navItem"]
-      [data-css~="navLink"] {
+    >[data-css~="targetPopoverWrapper"] [data-css~="navLink"]>[data-css~="navItem"] [data-css~="navLink"] {
       padding: 0;
       gap: 0;
       justify-content: center;
     }
 
-    > [data-css~="targetPopoverWrapper"] [data-css~="navItem"]:hover,
-    > [data-css~="navItem"]:hover {
+    >[data-css~="targetPopoverWrapper"] [data-css~="navItem"]:hover,
+    >[data-css~="navItem"]:hover {
       background-color: transparent;
     }
 
     [data-css~="navItem"][data-title="Home"] {
       order: -8;
     }
+
     [data-css~="navItem"][data-title="Explore"] {
       order: -7;
     }
-    > [data-css~="targetPopoverWrapper"]:has([data-title="TumblrMart"]) {
+
+    >[data-css~="targetPopoverWrapper"]:has([data-title="TumblrMart"]) {
       order: -6;
     }
+
     [data-css~="navItem"][data-title="Inbox"] {
       order: -5;
     }
-    > [data-css~="targetPopoverWrapper"]:has([data-title="Messages"]) {
+
+    >[data-css~="targetPopoverWrapper"]:has([data-title="Messages"]) {
       order: -4;
     }
-    > [data-css~="targetPopoverWrapper"]:has([data-title="Activity"]) {
+
+    >[data-css~="targetPopoverWrapper"]:has([data-title="Activity"]) {
       order: -3;
     }
-    > [data-css~="targetPopoverWrapper"]:has([data-title="Account"]) {
+
+    >[data-css~="targetPopoverWrapper"]:has([data-title="Account"]) {
       order: -2;
     }
   }
@@ -273,9 +304,11 @@
     flex-basis: 976px;
     margin-top: 86px;
   }
+
   [data-css~="container"]:not(#glass-container div) {
     margin: 0;
   }
+
   [data-css~="main"]:not([data-css~="sidebar"] [data-css~="main"]) {
     border: none !important;
 
@@ -283,12 +316,13 @@
       padding: 0 !important;
     }
   }
+
   [data-css~="sidebar"] {
     min-width: 320px !important;
     margin-left: 29px !important;
   }
-  [data-css~="sidebarTopContainer"]
-    [data-css~="about"][data-css~="withLoggedOutImprovementsCTAs"] {
+
+  [data-css~="sidebarTopContainer"] [data-css~="about"][data-css~="withLoggedOutImprovementsCTAs"] {
     top: calc(100vh - 39px);
     gap: 3px 12px;
     margin-bottom: 20px;
@@ -296,19 +330,23 @@
     position: -webkit-sticky;
     position: sticky;
   }
+
   [data-css~="tabsHeader"] {
     position: static;
     margin: 0 !important;
   }
-  [data-css~="stickyContainer"] > [data-css~="avatar"] {
+
+  [data-css~="stickyContainer"]>[data-css~="avatar"] {
     top: calc(70px + var(--dashboard-tabs-header-height, 0px)) !important;
   }
+
   [data-css~="createPost"] {
     height: 55px;
     padding: 12px 20px;
     position: absolute;
     justify-content: flex-end !important;
   }
+
   [data-css~="createPostButton"] {
     gap: 0 !important;
     border-radius: var(--border-radius-small) !important;
@@ -318,11 +356,14 @@
     align-items: center !important;
     font-size: 0px !important;
   }
-  [data-css~="navigation"] > [data-css~="patioFeedback"] {
+
+  [data-css~="navigation"]>[data-css~="patioFeedback"] {
     display: none;
   }
+
   [data-css~="container"][data-css~="mainContentIs4ColumnMasonry"] {
     margin: 0 auto !important;
+    justify-content: center;
   }
 
   [data-css~="premiumTooltip"] {
@@ -331,6 +372,7 @@
     bottom: 20px;
     left: 20px;
   }
+
   [data-css~="navFooter"] {
     /* create post button wrapper */
     position: absolute;
@@ -344,10 +386,12 @@
       width: 320px;
     }
   }
+
   @media (min-width: 1716px) {
     [data-css~="searchSidebarItem"] {
       left: 240px;
     }
+
     [data-css~="logoContainer"] {
       left: 110px;
     }
