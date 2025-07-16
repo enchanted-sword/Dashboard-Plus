@@ -22,7 +22,8 @@
         },
         "value": {
           "content": false,
-          "blocked": false
+          "blocked": false,
+          "blockedTerms": false
         }
       },
       "blockedStyle": {

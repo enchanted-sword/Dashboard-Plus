@@ -1,0 +1,31 @@
+{
+  "name": "linkToTheme",
+  "title": "link to custom theme pages",
+  "category": [
+    "dashboard",
+    "posts"
+  ],
+  "description": "links to the custom theme page for blogs instead of the mobile view for blogs that have a custom theme",
+  "preferences": {
+    "enabled": false,
+    "options": {
+      "linkOptions": {
+        "name": "replace links in:",
+        "type": "multiSelect",
+        "options": {
+          "avatars": {
+            "name": "blog avatars"
+          },
+          "headers": {
+            "name": "post headers"
+          }
+        },
+        "value": {
+          "avatars": false,
+          "headers": false
+        }
+      }
+    }
+  },
+  "js": true
+}

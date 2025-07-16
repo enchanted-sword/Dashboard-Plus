@@ -48,6 +48,13 @@
   });
   styleObserver.observe(document.documentElement, { childList: true, subtree: true });
 
+  const runContextScript = () => {
+    const script = document.createElement('script');
+    script.src = getURL('control/control.js');
+    (document.head || document.documentElement).append(script);
+    script.onload = () => script.remove();
+  };
+
   const scriptManager = async () =>
     import(browser.runtime.getURL('/scripts/utility/jsTools.js')).then(({ deepEquals, importFeatures, featureify }) => {  // browser.runtime.getURL is only a valid escape when written in full
       let installedFeatures = {};
@@ -171,12 +178,6 @@
       console.info(browser.storage.local.get());
     });
 
-  const runContextScript = () => {
-    const script = document.createElement('script');
-    script.src = getURL('control/control.js');
-    (document.head || document.documentElement).append(script);
-    script.onload = () => script.remove();
-  };
   const reactObserver = new MutationObserver(() => {
     if (document.querySelector('[data-rh]') === null) {
       reactObserver.disconnect();
