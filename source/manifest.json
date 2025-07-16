@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Dashboard Plus",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Take control of your Tumblr dashboard!",
   "icons": {
     "48": "icons/icon.svg",

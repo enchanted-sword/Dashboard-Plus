@@ -1,3 +1,14 @@
+# v1.4.4
+
+## horizontal navigation
+
+- fixed the create post button being cut off horizontally
+
+## new feature! link to theme
+
+- allows changing avatar or post header links to link to a blog's custom theme page instead of the soft navigation mobile/peepr view, where possible
+- based on the legacy dashboard unfucker standalone iconfix script
+
 # v1.4.3
 
 ## hide content in posts
