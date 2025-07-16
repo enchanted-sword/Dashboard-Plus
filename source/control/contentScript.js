@@ -54,37 +54,6 @@
     (document.head || document.documentElement).append(script);
     script.onload = () => script.remove();
   };
-  const reactObserver = new MutationObserver(() => {
-    if (document.querySelector('[data-rh]') === null) {
-      reactObserver.disconnect();
-      scriptManager();
-    }
-  });
-
-  reactObserver.observe(document.documentElement, { childList: true, subtree: true });
-  runContextScript();
-
-  const sendCachedData = async () => {
-    ({ cssMap } = await browser.storage.local.get('cssMap') || '');
-    ({ languageData } = await browser.storage.local.get('languageData') || '');
-
-    window.postMessage({ text: 'db+sendCachedData', cssMap: cssMap, languageData: languageData }, 'https://www.tumblr.com');
-  };
-
-  window.addEventListener('message', (event) => {
-    if (event.origin !== 'https://www.tumblr.com') return;
-    if (event.data?.text === 'db+controlInitMessage') sendCachedData(); //recive control init message and respond with helper functions
-    else if (event.data?.text === 'db+helperLoadMessage') { //recieve helper functions and update storage
-      ({ cssMap, languageData } = event.data);
-
-      browser.storage.local.set({ cssMap, languageData });
-
-      window.postMessage({ text: 'db+sendCachedData', cssMap, languageData }, 'https://www.tumblr.com'); //send helper functions back to control script for alternate load case
-    } else if (event.data?.text === 'db+themeColorUpdateMessage') {
-      ({ themeColors } = event.data);
-      browser.storage.local.set({ themeColors });
-    }
-  });
 
   const scriptManager = async () =>
     import(browser.runtime.getURL('/scripts/utility/jsTools.js')).then(({ deepEquals, importFeatures, featureify }) => {  // browser.runtime.getURL is only a valid escape when written in full
@@ -208,4 +177,38 @@
       console.info('loaded!');
       console.info(browser.storage.local.get());
     });
+
+  const reactObserver = new MutationObserver(() => {
+    if (document.querySelector('[data-rh]') === null) {
+      reactObserver.disconnect();
+      scriptManager();
+    }
+  });
+
+  reactObserver.observe(document.documentElement, { childList: true, subtree: true });
+  runContextScript();
+
+  const sendCachedData = async () => {
+    ({ cssMap } = await browser.storage.local.get('cssMap') || '');
+    ({ languageData } = await browser.storage.local.get('languageData') || '');
+
+    window.postMessage({ text: 'db+sendCachedData', cssMap: cssMap, languageData: languageData }, 'https://www.tumblr.com');
+  };
+
+  window.addEventListener('message', (event) => {
+    if (event.origin !== 'https://www.tumblr.com') return;
+    if (event.data?.text === 'db+controlInitMessage') sendCachedData(); //recive control init message and respond with helper functions
+    else if (event.data?.text === 'db+helperLoadMessage') { //recieve helper functions and update storage
+      ({ cssMap, languageData } = event.data);
+
+      browser.storage.local.set({ cssMap, languageData });
+
+      window.postMessage({ text: 'db+sendCachedData', cssMap, languageData }, 'https://www.tumblr.com'); //send helper functions back to control script for alternate load case
+    } else if (event.data?.text === 'db+themeColorUpdateMessage') {
+      ({ themeColors } = event.data);
+      browser.storage.local.set({ themeColors });
+    }
+  });
+
+
 }
