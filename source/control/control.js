@@ -49,7 +49,7 @@ const parseAndModifyState = () => {
   ___INITIAL_STATE___ = JSON.parse(initialStateScript.textContent);
 
   (async () => { // blast from the past
-    const featureSet = [{ name: 'postFooterSplitNotesCount', value: true }];
+    const featureSet = [{ name: 'postFooterSplitNotesCount', value: false }];
     const modifiedState = Object.assign(___INITIAL_STATE___, {
       obfuscatedFeatures: modifyObfuscatedFeatures(___INITIAL_STATE___.obfuscatedFeatures, featureSet)
     });
