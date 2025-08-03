@@ -1,3 +1,15 @@
+v1.5.0
+
+general
+
+- made use of some nifty features that tumblr's "developers" still can't patch to serve as a bonus implementation of a feature 😎
+- added the dragon
+
+new feature! better post footers
+
+- makes post footers less ugly and fixes the button order
+- `postFooterSplitNotesCount` has gotta be a new all-time low for beta feature quality. if i was getting paid to develop this garbage i would be miserable
+
 v1.4.4
 
 horizontal navigation
