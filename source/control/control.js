@@ -1,3 +1,5 @@
+import { getStorage } from '../scripts/utility/jsTools.js';
+
 window.postMessage({ text: 'db+controlInitMessage' }, 'https://www.tumblr.com');
 
 let cssMap, languageData, init = false;
@@ -36,6 +38,33 @@ const updateThemeColors = () => {
 
   window.postMessage({ text: 'db+themeColorUpdateMessage', themeColors }, 'https://www.tumblr.com');
 }
+
+const modifyObfuscatedFeatures = (obfuscatedFeatures, featureSet) => {
+  const obf = JSON.parse(atob(obfuscatedFeatures));
+  for (const x of featureSet) {
+    obf[x.name] = x.value;
+  }
+  return btoa(JSON.stringify(obf));
+};
+const parseAndModifyState = () => {
+  const initialStateScript = document.getElementById('___INITIAL_STATE___');
+  const initialState = JSON.parse(initialStateScript.textContent);
+
+  (async () => { // blast from the past
+    const { preferences } = await getStorage(['preferences']);
+    const featureSet = [];
+
+    if (preferences.betterFooters?.value) featureSet.push({ name: 'postFooterSplitNotesCount', value: true });
+
+    const modifiedState = Object.assign(initialState, {
+      obfuscatedFeatures: modifyObfuscatedFeatures(initialState.obfuscatedFeatures, featureSet)
+    });
+
+    initialStateScript.textContent = JSON.stringify(modifiedState);
+  })(); // now that's a sneaky move
+
+  return initialState;
+};
 
 window.addEventListener('message', (event) => {
   if (event.origin !== 'https://www.tumblr.com') return;
@@ -111,8 +140,7 @@ window.addEventListener('message', (event) => {
 });
 
 waitForWindow().then(async function () {
-  const initialState = JSON.parse(document.getElementById('___INITIAL_STATE___').innerText);
-  window.initialState = initialState;
+  const initialState = parseAndModifyState();
   window.apiKey = initialState?.apiFetchStore?.API_TOKEN;
   updateThemeColors();
   cssMap = await window.tumblr.getCssMap();
