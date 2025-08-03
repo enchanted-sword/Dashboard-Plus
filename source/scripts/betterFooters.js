@@ -164,6 +164,8 @@ const newNotes = (action, actionR, actionL, count, rCount, lCount) => {
 };
 
 const fixFooters = posts => posts.forEach(async post => {
+  if (post.querySelector(`:is(${s('footerRow')},.${customClass})`)) return;
+
   try {
     const footer = post.querySelector(footerSelector);
     const replyButton = footer.querySelector(replySelector);

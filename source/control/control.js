@@ -1,8 +1,6 @@
-import { getStorage } from '../scripts/utility/jsTools.js';
-
 window.postMessage({ text: 'db+controlInitMessage' }, 'https://www.tumblr.com');
 
-let cssMap, languageData, init = false;
+let ___INITIAL_STATE___, cssMap, languageData, init = false;
 const themeColors = {};
 
 const waitForWindow = () => new Promise(resolve => {
@@ -48,22 +46,16 @@ const modifyObfuscatedFeatures = (obfuscatedFeatures, featureSet) => {
 };
 const parseAndModifyState = () => {
   const initialStateScript = document.getElementById('___INITIAL_STATE___');
-  const initialState = JSON.parse(initialStateScript.textContent);
+  ___INITIAL_STATE___ = JSON.parse(initialStateScript.textContent);
 
   (async () => { // blast from the past
-    const { preferences } = await getStorage(['preferences']);
-    const featureSet = [];
-
-    if (preferences.betterFooters?.value) featureSet.push({ name: 'postFooterSplitNotesCount', value: true });
-
-    const modifiedState = Object.assign(initialState, {
-      obfuscatedFeatures: modifyObfuscatedFeatures(initialState.obfuscatedFeatures, featureSet)
+    const featureSet = [{ name: 'postFooterSplitNotesCount', value: true }];
+    const modifiedState = Object.assign(___INITIAL_STATE___, {
+      obfuscatedFeatures: modifyObfuscatedFeatures(___INITIAL_STATE___.obfuscatedFeatures, featureSet)
     });
 
     initialStateScript.textContent = JSON.stringify(modifiedState);
   })(); // now that's a sneaky move
-
-  return initialState;
 };
 
 window.addEventListener('message', (event) => {
@@ -139,9 +131,27 @@ window.addEventListener('message', (event) => {
   }
 });
 
+if (!document.getElementById('___INITIAL_STATE___')) {
+  const newNodes = [];
+  const findState = () => {
+    const nodes = newNodes.splice(0);
+    if (nodes.length !== 0 && (nodes.some(node => node.matches('#___INITIAL_STATE___') || node.querySelector('#___INITIAL_STATE___') !== null))) {
+      parseAndModifyState();
+    }
+  };
+  const observer = new MutationObserver(mutations => {
+    const nodes = mutations
+      .flatMap(({ addedNodes }) => [...addedNodes])
+      .filter(node => node instanceof Element)
+      .filter(node => node.isConnected);
+    newNodes.push(...nodes);
+    findState();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+} else parseAndModifyState();
+
 waitForWindow().then(async function () {
-  const initialState = parseAndModifyState();
-  window.apiKey = initialState?.apiFetchStore?.API_TOKEN;
+  window.apiKey = ___INITIAL_STATE___?.apiFetchStore?.API_TOKEN;
   updateThemeColors();
   cssMap = await window.tumblr.getCssMap();
   languageData = window.tumblr.languageData;
