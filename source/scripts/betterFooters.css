@@ -1,0 +1,78 @@
+[data-css~="footerContent"] {
+  margin: 0 var(--post-padding);
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 0;
+  display: flex;
+}
+
+[data-css~="engagementControls"],
+[data-css~="footerControl"],
+[data-css~='header2025'] [data-css~='button']:has([data-css~='truncate']):first-of-type {
+  display: none;
+}
+
+.bf-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3rem;
+  height: 3rem;
+}
+
+.bf-notesIcon {
+  font-weight: bold;
+  color: rgba(var(--black), .65);
+  margin: 1rem 0;
+
+  :hover {
+    color: rgb(var(--black));
+  }
+}
+
+.bf-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.bf-notes {
+  display: none;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 12px var(--post-padding);
+  border-top: 1px solid rgba(var(--black), .13);
+  overflow-x: auto;
+}
+
+.bf-notesSelector {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  color: rgba(var(--black), .65);
+  font-weight: bold;
+}
+
+.bf-notesSelector.bf-reply[data-selected="selected"] {
+  color: var(--brand-blue);
+
+  .bf-reply {
+    --icon-color-primary: var(--brand-blue) !important;
+  }
+}
+
+.bf-notesSelector.bf-reblog[data-selected="selected"] {
+  color: var(--brand-green);
+
+  .bf-reblog {
+    --icon-color-primary: var(--brand-green) !important;
+  }
+}
+
+.bf-notesSelector.bf-like[data-selected="selected"] {
+  color: var(--brand-red);
+
+  .bf-like {
+    --icon-color-primary: var(--brand-red) !important;
+  }
+}

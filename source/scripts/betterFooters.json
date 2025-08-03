@@ -1,0 +1,11 @@
+{
+  "name": "betterFooters",
+  "title": "better post footers",
+  "category": "posts",
+  "description": "makes post footers less ugly and fixes the button order",
+  "preferences": {
+    "enabled": false
+  },
+  "js": true,
+  "css": true
+}

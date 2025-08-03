@@ -68,29 +68,29 @@ const urlPopover = async (url, xPos, yPos) => {
     class: k('baseContainer'),
     id: `dbplus-customPopover-${url.replaceAll('/', '')}`,
     tabindex: 0,
-    role: 'group' 
+    role: 'group'
   }, null, [
     elem('div', {
       class: k('popoverHolder'),
       style: `position: absolute; inset: 0px auto auto 0px; width: 280px; max-height: 370px; transform: translate(${xPos - 140}px, ${yPos + 10}px);`
     }, { mouseover: setPopoverHoverFlag, mouseleave: popoverSelfRemove }, [
       elem('div', {
-          class: k('blogCard'),
-          style: `
+        class: k('blogCard'),
+        style: `
           --blog-title-color: ${blog.theme.titleColor};
           --blog-link-color: ${blog.theme.linkColor};
           --blog-background-color: ${blog.theme.backgroundColor};
           --blog-title-color-15: rgba(${hexToRgbString(blog.theme.titleColor)}, 0.15);
           --blog-link-color-15: rgba(${hexToRgbString(blog.theme.linkColor)}, 0.15);
           `
-        }, null, null)
+      }, null, null)
     ])
   ]);
   const blogCard = popover.querySelector('.dbplus-customPopover-blogCard');
 
   const blogHeader = elem('div', { class: k('blogHeader') }, null, [
     elem('div', { class: k(`bottomHalf smallBottom ${blog.theme.showAvatar ? 'withAvatar' : ''} ${blog.theme.showHeaderImage ? 'withStretchedHeaderImage' : 'withoutHeader'}`) }, null, [
-      elem('div', { class: k('headerBar')}, null, [
+      elem('div', { class: k('headerBar') }, null, [
         elem('div', { class: k(`headerContainer ${blog.theme.showHeaderImage ? 'withStretchedHeaderImage' : ''} blogCardHeaderBar`) }, null, [
           elem('header', {
             class: k(`headerBar ${blog.theme.showHeaderImage ? 'withStretchedHeaderImage' : ''} blogCardHeaderBar`),
@@ -235,12 +235,12 @@ const urlPopover = async (url, xPos, yPos) => {
  */
 export const addUrlPopover = async anchor => {
   if (!anchor) return;
-  
+
   anchor.addEventListener('mouseenter', displayPopover);
   anchor.addEventListener('mouseleave', removePopover);
 }
 
-const controlTargetSelector = `[tabindex="-1"][data-id] article ${s('footerRow')}:has(${s('noteCount')}) ${s('controls')}`;
+const controlTargetSelector = `[tabindex="-1"][data-id] article :is(${s('footerRow')}:has(${s('noteCount')}) ${s('controls')},${s('footerContent')})`;
 const newControlIcon = (icon, func, tooltip) => elem('div', { class: 'dbplus-controlIcon' }, null, [
   elem('span', { class: 'dbplus-controlIconWrapper' }, null, [
     elem('button', { class: 'dbplus-controlIconButton', 'aria-label': tooltip }, { 'click': func }, `
@@ -259,6 +259,7 @@ const newControlIcon = (icon, func, tooltip) => elem('div', { class: 'dbplus-con
 
 export const controlIcons = Object.freeze({
   collection: new Map(),
+  advancedCollection: new Map(),
 
   /**
    * Register a new control icon in post footers
@@ -266,18 +267,24 @@ export const controlIcons = Object.freeze({
    * @param {string} tooltip - Tooltip displayed on hovering over the icon
    * @param {Function} func - Function to run when the icon is clicked
    */
-  register (icon, tooltip, func) {
+  register(icon, tooltip, func) {
     if (this.collection.has(func)) this.collection.delete(func);
     this.collection.set(func, { icon, tooltip });
+    if (mutationManager.listeners.has(onNewControlElement)) mutationManager.trigger(onNewControlElement);
+    else mutationManager.start(controlTargetSelector, onNewControlElement)
+  },
+  registerAdvanced(noactIcon, className) {
+    if (this.advancedCollection.has(className)) this.collection.delete(className);
+    this.advancedCollection.set(className, noactIcon);
     if (mutationManager.listeners.has(onNewControlElement)) mutationManager.trigger(onNewControlElement);
     else mutationManager.start(controlTargetSelector, onNewControlElement)
   },
 
   /**
    * Removes a custom control icon
-   * @param {Fcuntion} func - function associated with icon to be removed
+   * @param {Function} func - function associated with icon to be removed
    */
-  unregister (func) {
+  unregister(func) {
     if (this.collection.has(func)) {
       $(`.dbplus-controlIcon`).has(`[href="#managed-icon__${this.collection.get(func).icon}"]`).remove();
       this.collection.delete(func);
@@ -288,6 +295,9 @@ const onNewControlElement = controlElements => {
   for (const controlElement of controlElements) {
     for (const [func, { icon, tooltip }] of controlIcons.collection) {
       if (!controlElement.querySelector(`[href="#managed-icon__${icon}"]`)) controlElement.prepend(newControlIcon(icon, func, tooltip));
+    }
+    for (const [className, noactIcon] of controlIcons.advancedCollection) {
+      if (!controlElement.querySelector(className)) controlElement.prepend(noact(noactIcon));
     }
   }
 }
