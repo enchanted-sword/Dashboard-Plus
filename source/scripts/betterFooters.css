@@ -2,7 +2,7 @@
   margin: 0 var(--post-padding);
   justify-content: space-between;
   align-items: center;
-  padding: 3px 0;
+  padding: 12px 0;
   display: flex;
 }
 
@@ -16,24 +16,38 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 3rem;
-  height: 3rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  transition: all .3s;
 }
 
 .bf-notesIcon {
   font-weight: bold;
   color: rgba(var(--black), .65);
-  margin: 1rem 0;
+}
 
-  :hover {
-    color: rgb(var(--black));
-  }
+.bf-notesPill {
+  box-sizing: border-box;
+  border: 1px solid rgba(var(--black), .15);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  gap: .3em;
+  width: 100%;
+  height: 36px;
+  padding: 6px 16px;
+}
+
+.bf-notesPill span {
+  color: rgb(var(--black));
 }
 
 .bf-container {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  gap: 1.25rem;
 }
 
 .bf-notes {

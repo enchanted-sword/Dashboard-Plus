@@ -4,6 +4,7 @@ import { hexToRgbString } from './color.js';
 import { formatTextBlock } from './npfTools.js';
 import { mutationManager } from './mutations.js';
 import { s } from './style.js';
+import { noact } from './noact.js';
 
 export const svgIconString = (icon, h, w, className = '', primary = 'rgba(var(--black),.65)') => `<svg class='${className}' xmlns='http://www.w3.org/2000/svg' height='${h}' width='${w}' role='presentation' style='--icon-color-primary: ${primary};'><use href='#managed-icon__${icon}'></use></svg>`;
 export const svgIcon = (icon, h, w, className = '', primary = 'rgba(var(--black),.65)') => $(svgIconString(icon, h, w, className, primary))[0];

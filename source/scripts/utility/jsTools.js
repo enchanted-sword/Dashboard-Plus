@@ -184,3 +184,17 @@ export const featureify = (installedFeatures, preferences) => {
 
   return preferences;
 };
+
+export const numFormat = num => {
+  let str = String(num);
+  if (str.length > 3) {
+    str = str.split('');
+    const str2 = [];
+    while (str.length > 3) {
+      str2.unshift(str.splice(-3, 3).join(''));
+    }
+    str2.unshift(str.join(''));
+    return str2.join(',');
+  }
+  return str;
+}

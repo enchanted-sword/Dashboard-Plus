@@ -1,8 +1,10 @@
 import { s } from './utility/style.js';
-import { postFunction } from './utility/mutations.js';
+import { mutationManager } from './utility/mutations.js';
 import { timelineObject } from './utility/reactProps.js';
-import { svgIcon, controlIcons } from './utility/dashboardElements.js';
+import { svgIcon } from './utility/dashboardElements.js';
 import { noact } from './utility/noact.js';
+import { postSelector } from './utility/document.js';
+import { numFormat } from './utility/jsTools.js';
 
 const customClass = 'dbplus-betterFooters';
 
@@ -22,12 +24,12 @@ const newLikeIcon = (action, state) => ({
     if (this.dataset.state) {
       this.dataset.state = '';
       this.ariaLabel = 'Like';
-      this.querySelector('.bf-like').replaceWith(svgIcon('like-empty', 24, 24, 'bf-like'));
+      this.querySelector('.bf-like').replaceWith(svgIcon('like-empty', 21, 23, 'bf-like'));
     }
     else {
       this.dataset.state = 'liked';
       this.ariaLabel = 'Unlike';
-      this.querySelector('.bf-like').replaceWith(svgIcon('like-filled', 24, 24, 'bf-like', 'var(--brand-red)'));
+      this.querySelector('.bf-like').replaceWith(svgIcon('like-filled', 21, 23, 'bf-like', 'var(--brand-red)'));
     }
 
     action.click();
@@ -40,7 +42,7 @@ const newReblogIcon = (action) => ({
   onclick: function () {
     action.click();
   },
-  children: svgIcon('reblog', 24, 24, 'bf-reblog'),
+  children: svgIcon('reblog', 21, 21, 'bf-reblog'),
 });
 const newReplyIcon = (action, actionR, actionL) => ({
   className: customClass + ' bf-icon',
@@ -73,7 +75,7 @@ const newReplyIcon = (action, actionR, actionL) => ({
 
     action.click();
   },
-  children: svgIcon('reply-empty', 24, 24, 'bf-reply'),
+  children: svgIcon('reply-empty', 21, 21, 'bf-reply'),
 });
 const newNotesButton = (action, actionR, actionL, count) => ({
   className: customClass + ' bf-notesIcon',
@@ -98,8 +100,27 @@ const newNotesButton = (action, actionR, actionL, count) => ({
       }
     }
   },
-  children: count + (count === 1 ? ' note' : ' notes')
+  children: {
+    className: 'bf-notesPill',
+    children: [
+      {
+        tag: 'span',
+        children: numFormat(count),
+      },
+      (count === 1 ? 'note' : 'notes')
+    ]
+  }
 });
+const newShareIcon = (action, url) => ({
+  className: customClass + ' bf-icon',
+  ariaLabel: action.ariaLabel,
+  onclick: function () {
+    navigator.clipboard.writeText(url).then((function () {
+      this.firstChild.style = '--icon-color-primary:var(--brand-green)';
+    }).bind(this))
+  },
+  children: svgIcon('share-icon-proper', 24, 24, 'bf-share'),
+})
 const newNotes = (action, actionR, actionL, count, rCount, lCount) => {
   let selected = 'reply';
 
@@ -163,11 +184,11 @@ const newNotes = (action, actionR, actionL, count, rCount, lCount) => {
   };
 };
 
-const fixFooters = posts => posts.forEach(async post => {
-  if (post.querySelector(`:is(${s('footerRow')},.${customClass})`)) return;
+const fixFooters = footers => footers.forEach(async footer => {
+  const post = footer.closest(postSelector);
+  if (!post || post.querySelector(`:is(${s('footerRow')},.${customClass})`)) return;
 
   try {
-    const footer = post.querySelector(footerSelector);
     const replyButton = footer.querySelector(replySelector);
     const reblogButton = footer.querySelector(reblogSelector);
     const likeButton = footer.querySelector(likeSelector);
@@ -175,11 +196,11 @@ const fixFooters = posts => posts.forEach(async post => {
     const notesButtonL = footer.querySelector(notesSelectorL);
     const shareButton = footer.querySelector(shareSelector);
 
-    timelineObject(post).then(({ liked, replyCount, likeCount, reblogCount, noteCount }) => {
+    timelineObject(post).then(({ liked, replyCount, likeCount, reblogCount, noteCount, postUrl }) => {
       const buttonContainer = {
         className: 'bf-container',
         children: [
-
+          newShareIcon(shareButton, postUrl),
           newReplyIcon(replyButton, notesButtonR, notesButtonL),
           newReblogIcon(reblogButton),
           newLikeIcon(likeButton, liked),
@@ -195,9 +216,9 @@ const fixFooters = posts => posts.forEach(async post => {
 });
 
 export const main = async () => {
-  postFunction.start(fixFooters);
+  mutationManager.start(footerSelector, fixFooters);
 };
 export const clean = async () => {
-  postFunction.stop(fixFooters);
+  mutationManager.stop(footerSelector, fixFooters);
   document.querySelectorAll(`.${customClass}`).forEach(s => s.remove());
 };

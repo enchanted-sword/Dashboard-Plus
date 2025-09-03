@@ -1,3 +1,17 @@
+v1.5.2
+
+better post footers
+
+- improved functionality somewhat
+- re-added share button for backup fix
+- will probably fully replace this in the future with the Dashboard Next custom notes component if tumblr continues to cause headaches with this
+
+v1.5.1
+
+general
+
+- corrected a minor mistake
+
 v1.5.0
 
 general
