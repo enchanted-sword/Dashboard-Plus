@@ -224,23 +224,6 @@
     justify-content: center;
   }
 
-  [data-css~="navigationLinks"] {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    width: 100%;
-    height: 55px;
-    position: absolute;
-    z-index: 100;
-    right: 90px;
-
-    [data-css~="navItem"][data-title="Settings"]:not(.dbplus-hnav),
-    [data-css~="navItem"][data-title="Get a domain"],
-    [data-css~="navItem"][data-title="Go Ad-Free"] {
-      display: none;
-    }
-  }
-
   [data-css~="notificationBadgeIn"] {
     font-size: 0.8rem !important;
     height: 21px !important;
@@ -253,6 +236,20 @@
   }
 
   [data-css~="navigationLinks"] {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    height: 55px;
+    position: absolute;
+    z-index: 100;
+    right: 120px;
+
+    [data-css~="navItem"][data-title="Settings"]:not(.dbplus-hnav),
+    [data-css~="navItem"][data-title="Get a domain"],
+    [data-css~="navItem"][data-title="Go Ad-Free"] {
+      display: none;
+    }
 
     >[data-css~="targetPopoverWrapper"],
     >[data-css~="navItem"] {
@@ -342,6 +339,7 @@
 
   [data-css~="createPost"] {
     height: 55px;
+    width: fit-content;
     padding: 12px 20px;
     position: absolute;
     justify-content: flex-end !important;
@@ -377,7 +375,7 @@
     /* create post button wrapper */
     position: absolute;
     top: 0;
-    right: 16px;
+    right: 90px;
   }
 
   @media (max-width: 1150px) {

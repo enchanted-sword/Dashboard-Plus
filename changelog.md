@@ -1,3 +1,9 @@
+# v1.5.3
+
+## horizontal navigation
+
+- fixed the create post button being cut off by the right edge of the navbar
+
 # v1.5.2
 
 ## better post footers
