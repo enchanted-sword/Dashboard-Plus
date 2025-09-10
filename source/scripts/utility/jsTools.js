@@ -155,15 +155,7 @@ export const featureify = (installedFeatures, preferences) => {
             if ('inherit' in installedFeatures[feature].preferences.options[option]) {
               const [inheritFeature, inheritOption] = installedFeatures[feature].preferences.options[option].inherit.inheritFrom.split('.');
               if (typeof preferences[inheritFeature].options[inheritOption] !== 'undefined') {
-                switch (typeof preferences[inheritFeature].options[inheritOption]) {
-                  case 'boolean':
-                  case 'string':
-                    preferences[feature].options[option] = installedFeatures[feature].preferences.options[option].inherit[String(preferences[inheritFeature].options[inheritOption])];
-                    break;
-                  case 'number':
-                    preferences[feature].options[option] = preferences[inheritFeature].options[inheritOption];
-                    break;
-                }
+                preferences[feature].options[option] = preferences[inheritFeature].options[inheritOption];
               }
             } else preferences[feature].options[option] = installedFeatures[feature].preferences.options[option].value;
             preferences[feature].new = true;
