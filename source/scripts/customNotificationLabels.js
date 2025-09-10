@@ -6,6 +6,8 @@ import { notificationObject } from './utility/reactProps.js';
 import { notificationSelector } from './utility/document.js';
 import { svgIconString } from './utility/dashboardElements.js';
 
+let labelFollowers, labelBots;
+
 const untitledStrings = [
   'Untitled', // en
   'Sans titre', // fr
@@ -42,20 +44,16 @@ const potentialBotLabel = () => $(`
   </div>
 `);
 
-const addFollowingYouLabels = async notifications => {
-  for (const notification of notifications) {
-    const { followingYou, mutuals } = await notificationObject(notification);
-    if (followingYou && !mutuals && !notification.querySelector('.dbplus-customLabelContainer')) {
+const customizeNotifications = async notifications => notifications.forEach(notification => {
+  notificationObject(notification).then(obj => {
+    if (!obj) return;
+    const { followingYou, mutuals, type, fromTumblelogUuid } = obj
+    if (labelFollowers && followingYou && !mutuals && !notification.querySelector('.dbplus-customLabelContainer')) {
       $(notification).find(`:is(${s('tumblelogName')},${s('npfTitleMention')})`).append(followingYouLabel());
     }
-  }
-};
-const addPotentialBotLabels = async notifications => {
-  for (const notification of notifications) {
-    const { type, fromTumblelogUuid } = await notificationObject(notification);
-    if (type === 'follower') {
+    if (labelBots && type === 'follower') {
       apiFetch(`/v2/blog/${fromTumblelogUuid}/info`).then(response => {
-        const { title, name, posts, likes } = response.response.blog;
+        const { title, name, posts, likes } = response.response.blog || {};
         if ((posts === 0 && untitledStrings.includes(title))
           || (likes === 0 && untitledStrings.includes(title))
           || (name === title && posts === 1)) {
@@ -65,19 +63,19 @@ const addPotentialBotLabels = async notifications => {
         }
       });
     }
-  }
-};
+  });
+});
 
 export const main = async () => {
-  const { followingYou, potentialBot } = await getOptions('customNotificationLabels');
+  ({ labelFollowers, labelBots } = await getOptions('customNotificationLabels'));
 
-  if (followingYou) mutationManager.start(notificationSelector, addFollowingYouLabels);
-  if (potentialBot) mutationManager.start(notificationSelector, addPotentialBotLabels);
+  if (!labelFollowers && !labelBots) return;
+
+  mutationManager.start(notificationSelector, customizeNotifications);
 };
 
 export const clean = async () => {
-  mutationManager.stop(addFollowingYouLabels);
-  mutationManager.stop(addPotentialBotLabels);
+  mutationManager.stop(customizeNotifications);
 
   $('.dbplus-followingYou, .dbplus-potentialBot').remove();
 };
