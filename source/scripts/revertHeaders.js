@@ -87,13 +87,15 @@ const legacyRevertHeaders = async posts => {
   }
 };
 
+const revertFunction = async posts => {
+  NEWDASH() ? revertHeaders(posts) : legacyRevertHeaders(posts);
+};
+
 export const main = async () => {
-  const revertFunction = NEWDASH() ? revertHeaders : legacyRevertHeaders;
   postFunction.start(revertFunction, postSelector);
 }
 
 export const clean = async () => {
-  const revertFunction = NEWDASH() ? revertHeaders : legacyRevertHeaders;
   postFunction.stop(revertFunction);
 
   $('.dbplus-rebloggedFrom').remove();
