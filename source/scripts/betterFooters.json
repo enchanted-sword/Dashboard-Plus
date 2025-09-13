@@ -1,6 +1,6 @@
 {
   "name": "betterFooters",
-  "title": "better post footers",
+  "title": "revert post footer appearance",
   "category": "posts",
   "description": "makes post footers less ugly and fixes the button order",
   "preferences": {
