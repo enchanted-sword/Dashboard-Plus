@@ -1,3 +1,15 @@
+v1.6.0
+
+better post footers
+
+- much cleaner implementation
+- now re-adds edit and delete buttons
+- should also be compatible with xkit rewritten's quick reblog
+
+hide content in posts
+
+- fixed blaze selector not working on new footer content
+
 v1.5.3
 
 horizontal navigation
