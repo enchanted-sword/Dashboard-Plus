@@ -3,7 +3,7 @@ import { mutationManager } from './utility/mutations.js';
 import { s } from './utility/style.js';
 
 const customClass = 'dbplus-customTheme';
-const avatarSelector = `${s('avatar')} ${s('blogLink')}:has(${s('avatarImage')}):not(.${customClass})`;
+const avatarSelector = `${s('avatar')} ${s('blogLink')}:has(${s('avatarImage')}):not(.${customClass}):not(:has(${s('hasGradient')}))`;
 const headerSelector = `:is(${s('postHeader')},${s('trailHeader')}) :is(${s('blogLink')},${s('permalink')},.dbplus-rebloggedFrom):not(.${customClass},:has(${s('avatarImage')}))`;
 
 const blogRegex = /\/([\w\d-]+)(?:\/(\d+)(?:\/[\w\d-]+)?)?$/;
@@ -29,7 +29,6 @@ export const main = async () => {
 
   const selector = (linkOptions.avatars ? avatarSelector : '') + (linkOptions.avatars && linkOptions.headers ? ' , ' : '') + (linkOptions.headers ? headerSelector : '');
   mutationManager.start(selector, fixLinks);
-  console.log(selector);
 };
 export const clean = async () => {
   mutationManager.stop(fixLinks);
