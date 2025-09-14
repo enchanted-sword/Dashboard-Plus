@@ -146,7 +146,6 @@
               .then(() => resizeListeners.push(feature)); // destroying a feature removes its resize listener, so we re-add it here
           });
         } else resizeListeners.forEach(feature => {
-          console.log(feature);
           if (!enabledFeatures.includes(feature)) {
             enabledFeatures.push(feature);
             executeFeature(feature);

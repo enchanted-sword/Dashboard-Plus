@@ -1,4 +1,4 @@
-import { postFunction } from './utility/mutations.js';
+import { mutationManager, postFunction } from './utility/mutations.js';
 import { getOptions } from './utility/jsTools.js';
 import { noact } from './utility/noact.js';
 import { primaryBlogName } from './utility/user.js';
@@ -6,12 +6,11 @@ import { translate } from './utility/tumblr.js';
 import { s, style } from './utility/style.js';
 import { addUrlPopover } from './utility/dashboardElements.js';
 
-const NEWDASH = () => !!document.querySelector(s('userBlock')); // Quick 'n dirty check
-
 let scroll, showOwnAvatar;
 const staticStyleElement = style(`.dbplus-stickyContainer > ${s('avatarContainer')} { position: static !important; }`);
 const customClass = 'dbplus-floatingAvatars';
 const postSelector = `${s('main')} > :not(${s('blogTimeline')}) [data-timeline-id]:not([data-timeline-id*='posts/'],${s('masonry')}) [tabindex='-1']:not([data-css*='masonryTimelineObject']) article:not(.${customClass})`;
+const avatarSelector = postSelector + ` :is(${s('postHeader')} ${s('avatarContainer')},header > ${s('avatar')})`;
 const userAvatar = noact({
   className: 'dbplus-avatarWrapperOuter dbplus-userAvatarWrapper',
   children: {
@@ -49,17 +48,18 @@ const userAvatar = noact({
   }
 });
 const addUserPortrait = () => {
-  const bar = $(`${s('postColumn')} > ${s('bar')}`);
+  const bar = document.querySelector(`${s('postColumn')} > ${s('bar')}`);
   if (bar) {
     bar.prepend(userAvatar);
     addUrlPopover(userAvatar.querySelector('a'));
   }
 };
-const addScrollingAvatars = posts => {
-  for (const post of posts) {
-    if (post.matches(s('masonryTimelineObject'))) return;
+const addScrollingAvatars = avatars => {
+  for (const avatar of avatars) {
+    console.log(avatar);
+    const post = avatar.closest(postSelector);
+    if (!post || post.matches(s('masonryTimelineObject'))) return;
 
-    const avatar = NEWDASH() ? post.querySelector(`header  ${s('avatarContainer')}`) : post.querySelector(`header > ${s('avatar')}`);
     const stickyContainer = noact({ className: 'dbplus-stickyContainer' });
 
     post.prepend(stickyContainer);
@@ -73,24 +73,25 @@ const addScrollingAvatars = posts => {
 export const main = async () => {
   if (window.innerWidth < 990) return;
 
+  mutationManager.start(avatarSelector, addScrollingAvatars);
+
   ({ scroll, showOwnAvatar } = await getOptions('floatingAvatars'));
-  postFunction.start(addScrollingAvatars, postSelector);
 
   if (!scroll) document.body.append(staticStyleElement);
   if (showOwnAvatar) addUserPortrait();
-}
+};
 
 export const clean = async () => {
-  postFunction.stop(addScrollingAvatars);
+  mutationManager.stop(addScrollingAvatars);
 
-  $(`.dbplus-stickyContainer > ${s('avatar')} ${s('targetWrapper')} img`).each(function () { this.sizes = "32px" });
-  $(`.dbplus-stickyContainer > ${s('avatar')} ${s('subAvatarTargetWrapper')} img`).each(function () { this.sizes = "16px" });
-  $(`.${customClass}`).removeClass(customClass);
-  $('.dbplus-userAvatarWrapper').remove()
+  document.querySelectorAll(`.dbplus-stickyContainer > ${s('avatar')} ${s('targetWrapper')} img`)?.forEach(img => img.sizes = '32px');
+  document.querySelectorAll(`.dbplus-stickyContainer > ${s('avatar')} ${s('subAvatarTargetWrapper')} img`).forEach(img => img.sizes = '16px');
+  document.querySelectorAll(`.${customClass}`).classList.remove(customClass);
+  document.querySelectorAll('.dbplus-userAvatarWrapper').forEach(e => e.remove());
   document.querySelectorAll(`.dbplus-stickyContainer > ${s('avatar')}`).forEach(avatar => avatar.closest('article').querySelector('header').prepend(avatar));
-  $('.dbplus-stickyContainer').remove();
+  document.querySelectorAll('.dbplus-stickyContainer').forEach(e => e.remove());
   staticStyleElement.remove();
-}
+};
 
 export const update = async preferences => {
   ({ scroll, showOwnAvatar } = preferences);
