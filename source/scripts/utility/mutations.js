@@ -127,10 +127,7 @@ const observer = new MutationObserver(mutations => {
 
   requestAnimationFrame(nodeManager);
 
-  if (addedNodes.some(addedNode => addedNode.parentElement?.matches(cellSelector))) {
-    cancelAnimationFrame(timerId);
-    nodeManager();
-  } else if (updateQueued === false) {
+  if (updateQueued === false) {
     timerId = requestAnimationFrame(nodeManager);
     updateQueued = true;
   }
