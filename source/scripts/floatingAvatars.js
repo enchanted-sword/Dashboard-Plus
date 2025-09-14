@@ -56,7 +56,6 @@ const addUserPortrait = () => {
 };
 const addScrollingAvatars = avatars => {
   for (const avatar of avatars) {
-    console.log(avatar);
     const post = avatar.closest(postSelector);
     if (!post || post.matches(s('masonryTimelineObject'))) return;
 
