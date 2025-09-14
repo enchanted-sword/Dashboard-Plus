@@ -3,13 +3,17 @@ browser.runtime.onInstalled.addListener(async details => {
 
   /* await browser.tabs.query({ url: '*://*.tumblr.com/*' }).then(async tabs => {
     tabs.forEach(tab => browser.tabs.reload(tab.id));
+  }); */
+
+  const { themeColors } = await browser.storage.local.get('themeColors');
+  browser.action.setBadgeBackgroundColor({ color: `rgb(${themeColors ? themeColors.accent : '0 184 255'})` });
+  browser.action.setBadgeText({
+    text: '+'
   });
+
   if (details.reason === 'update') {
     console.log('updated!');
-
-    browser.tabs.create({ url: '../meta/menu.html' });
-  } */
-  if (details.reason === 'install') {
+  } else if (details.reason === 'install') {
     import(browser.runtime.getURL('/scripts/utility/jsTools.js')).then(({ importFeatures, featureify }) => {
       let installedFeatures, preferences;
 
@@ -39,8 +43,9 @@ const connected = p => {
   connectionPort = p;
   connectionPort.onMessage.addListener(m => {
     if (m.action === 'dynamicDnr') dynamicDnr(m.data);
+    if (m.action === 'clearBadge') browser.action.setBadgeText({ text: null });
   });
-}
+};
 
 browser.runtime.onConnect.addListener(connected);
 

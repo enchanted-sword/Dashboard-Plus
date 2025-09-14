@@ -9,6 +9,19 @@
 
       let picker;
 
+      let connectionPort;
+      let connected = false
+
+      const postData = action => {
+        if (!connected) {
+          connectionPort = browser.runtime.connect({ name: "menuPort" });
+          connected = true;
+
+          connectionPort.onDisconnect.addListener(() => connected = false)
+        }
+        connectionPort.postMessage({ action });
+      };
+
       const onToggleFeature = async function () {
         const name = this.getAttribute('name');
         const checked = this.checked ? true : false;
@@ -34,6 +47,22 @@
       };
 
       const updateTheme = colors => {
+        colors ??= {
+          "black": "0 0 0",
+          "white": "255 255 255",
+          "whiteOnDark": "255 255 255",
+          "navy": "0 25 53",
+          "red": "255 73 48",
+          "orange": "255 138 0",
+          "yellow": "232 215 56",
+          "green": "0 207 53",
+          "blue": "0 184 255",
+          "purple": "124 92 255",
+          "pink": "255 98 206",
+          "accent": "0 184 255 / 1",
+          "deprecatedAccent": "0 184 255",
+          "follow": "243 248 251"
+        };
         document.getElementById('ui-theme').innerText = `
           :root {
             --white: ${colors.white};
@@ -525,6 +554,7 @@
       };
 
       const init = async () => {
+        postData('clearBadge');
         if (location.search === '?popup=true') {
           document.body.style.minHeight = '6000px';
           document.body.style.overflow = 'hidden';
