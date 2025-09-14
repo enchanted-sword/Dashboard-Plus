@@ -1,14 +1,14 @@
 browser.runtime.onInstalled.addListener(async details => {
   console.info(details);
 
-  await browser.tabs.query({ url: '*://*.tumblr.com/*' }).then(async tabs => {
+  /* await browser.tabs.query({ url: '*://*.tumblr.com/*' }).then(async tabs => {
     tabs.forEach(tab => browser.tabs.reload(tab.id));
   });
   if (details.reason === 'update') {
     console.log('updated!');
 
     browser.tabs.create({ url: '../meta/menu.html' });
-  }
+  } */
   if (details.reason === 'install') {
     import(browser.runtime.getURL('/scripts/utility/jsTools.js')).then(({ importFeatures, featureify }) => {
       let installedFeatures, preferences;
