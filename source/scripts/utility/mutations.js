@@ -106,6 +106,7 @@ const funcManager = (funcMap, testNodes) => {
     }
   }
 };
+
 const nodeManager = () => {
   updateQueued = false;
 
@@ -120,7 +121,7 @@ const nodeManager = () => {
 
 const observer = new MutationObserver(mutations => {
   const addedNodes = mutations
-    .flatMap(({ addedNodes }) => [...addedNodes])
+    .flatMap(({ target, addedNodes }) => [target, ...addedNodes])
     .filter(addedNode => addedNode instanceof Element);
 
   addedNodesQueue.push(...addedNodes);
