@@ -691,7 +691,7 @@
 
         if (location.search === '?importFromFile=true') {
           document.querySelector('.ui-tab[target="manage"]').click();
-          document.getElementById('ui-import').click();
+          //document.getElementById('ui-import').click();
         }
       };
 
