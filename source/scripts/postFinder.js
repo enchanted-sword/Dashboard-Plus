@@ -4,8 +4,6 @@ import { noact } from './utility/noact.js';
 import { svgIcon } from './utility/dashboardElements.js';
 import { navigate } from './utility/tumblr.js';
 
-import { fillDb } from './utility/dbTest.js';
-
 const customClass = 'dbplus-postFinder';
 
 let db, splitMode, maxResults, resultSection, postIndices, searchableIndices;
@@ -132,11 +130,13 @@ const newSearchProgress = () => noact({
   ]
 });
 
-const keywordSearch = async (keywords, start = 0) => {
+const keywordSearch = async (keywords, start = -1) => {
   keywords = keywords.filter(isDefined).map(v => v.toLowerCase());
   const tx = db.transaction('searchStore', 'readonly');
   const hits = [];
-  let cursor = await tx.store.openCursor(null, 'prev'), searchable, i = 0;
+  let i = 0;
+
+  const storeEntries = new Set(await tx.store.getAll());
 
   cursorStatus.index = start;
   cursorStatus.hits = 0;
@@ -144,24 +144,22 @@ const keywordSearch = async (keywords, start = 0) => {
 
   resultSection.append(newSearchProgress());
 
-  if (start) await cursor.advance(start);
-
   const t0 = Date.now();
   cursorStatus.enableAutoSync();
 
-  while (cursor && i < maxResults) {
-    searchable = cursor.value;
-    if (keywords.every(keyword => {
-      if ((keyword[0] === '-' && !(searchable.quickInfo.toLowerCase().includes(keyword.substring(1))))
-        || searchable.quickInfo.includes(keyword)) return true;
-      else return false;
-    })) {
+  for (const searchable of storeEntries.values()) {
+    if (i > maxResults) break;
+    if (cursorStatus.index > start
+      && keywords.every(keyword => {
+        if ((keyword[0] === '-' && !(searchable.quickInfo.toLowerCase().includes(keyword.substring(1))))
+          || searchable.quickInfo.includes(keyword)) return true;
+        else return false;
+      })) {
       hits.push(searchable);
       ++cursorStatus.hits;
       ++i;
     }
     ++cursorStatus.index;
-    cursor = await cursor.continue();
   }
 
   cursorStatus.disableAutoSync();
@@ -219,14 +217,15 @@ const quickInfo = ({ id, blog, content, trail, tags, date }) => {
 };
 const indexPosts = async (force = false) => {
   const tx = db.transaction('postStore', 'readonly');
-  let cursor = await tx.store.openCursor(), post, i = 0;
-  tx.store.getAllKeys().then(keys => indexProgress.total = keys.length);
+  let i = 0;
+
+  const storeEntries = new Set(await tx.store.getAll()); // dumping the store into a set is VASTLY more performant than using a cursor
+  indexProgress.total = storeEntries.size;
 
   const t0 = Date.now();
   indexProgress.enableAutoSync();
 
-  while (cursor) {
-    post = cursor.value;
+  storeEntries.forEach(post => {
     if (!searchableIndices.has(post.id) || force) {
       const searchable = { id: post.id, summary: post.summary, postUrl: post.postUrl, quickInfo: quickInfo(post), storedAt: Date.now() };
       updateData({ searchStore: searchable }).then(() => {
@@ -237,22 +236,19 @@ const indexPosts = async (force = false) => {
       });
       ++i;
     }
-
-    cursor = await cursor.continue();
-  }
+  });
 
   const dt = Date.now() - t0;
 
   indexProgress.disableAutoSync();
-  console.log(`indexed ${i} posts in ${dt}ms\ncursor seek speed: ${((indexProgress.progress * 1000) / dt).toFixed(3)} keys/s`);
+  console.log(`indexed ${i} posts in ${dt}ms\nstore seek speed: ${((indexProgress.progress * 1000) / dt).toFixed(3)} keys/s`);
 
   cursorStatus.remaining = searchableIndices.length;
   indexProgress.progress = cursorStatus.remaining;
 
   document.getElementById('postFinder-status-index')?.remove();
-  console.log(indexProgress);
 };
-const indexFromUpdate = async ({ detail: { targets } }) => { // take advantage of dispatched events to index new posts for free without opening extra cursors
+const indexFromUpdate = async ({ detail: { targets } }) => { // take advantage of dispatched events to index new posts for free without opening extra transactions
   if ('postStore' in targets) {
     [targets.postStore].flat().map(post => {
       if (postIndices.has(post.id)) postIndices.add(post.id);
