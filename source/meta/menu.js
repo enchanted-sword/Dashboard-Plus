@@ -555,7 +555,12 @@
 
       const init = async () => {
         postData('clearBadge');
-        if (location.search === '?popup=true') {
+
+        const [contextKey, contextValue] = location.search.replace('?', '').split('=');
+        console.log(contextKey, contextValue)
+        if (contextKey) document.documentElement.setAttribute(`data-${contextKey}`, contextValue);
+
+        if (contextKey === 'popup') {
           document.body.style.minHeight = '6000px';
           document.body.style.overflow = 'hidden';
         }
@@ -618,7 +623,7 @@
             this.textContent = 'import failed!';
             this.style.backgroundColor = 'rgb(var(--red))';
             setTimeout(() => {
-              this.textContent = 'import preferences from file';
+              this.textContent = 'import from textarea';
               this.style.backgroundColor = 'rgb(var(--white))';
             }, 2000);
           }
@@ -626,7 +631,8 @@
           createFeatures(installedFeatures, preferences);
         })
         document.getElementById('ui-import').addEventListener('click', function () {
-          document.getElementById('ui-fileImport').click();
+          if (contextKey === 'popup') window.open(window.location.href.split('?')[0] + '?importFromFile=true');
+          else document.getElementById('ui-fileImport').click();
         });
         document.getElementById('ui-fileImport').addEventListener('change', function () {
           if (this.files.length) {
@@ -641,7 +647,7 @@
                 button.textContent = 'import failed!';
                 button.style.backgroundColor = 'rgb(var(--red))';
                 setTimeout(() => {
-                  button.textContent = 'import preferences from file';
+                  button.textContent = 'import from file';
                   button.style.backgroundColor = 'rgb(var(--white))';
                 }, 2000);
               }
@@ -682,6 +688,11 @@
         browser.storage.local.set({ preferences });
 
         browser.storage.onChanged.addListener(onStorageChanged);
+
+        if (location.search === '?importFromFile=true') {
+          document.querySelector('.ui-tab[target="manage"]').click();
+          document.getElementById('ui-import').click();
+        }
       };
 
       init();

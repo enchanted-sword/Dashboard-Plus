@@ -60,6 +60,12 @@
   --accent-primary-30: color-mix(in srgb,
       rgb(var(--accent)),
       rgb(var(--primary)) 30%);
+  --purple-primary-10: color-mix(in srgb,
+      rgb(var(--purple)),
+      rgb(var(--primary)) 10%);
+  --purple-primary-30: color-mix(in srgb,
+      rgb(var(--purple)),
+      rgb(var(--primary)) 30%);
 
   --border-radius-sm: 3px;
   --border-thickness-sm: 2px;
@@ -268,6 +274,10 @@ h3 {
 
 .ui-filterWidgets button[data-state="active"] {
   background-color: rgb(var(--accent));
+}
+
+.ui-filterWidgets button[data-state="active"] {
+  background-color: var(--accent-primary-10);
 }
 
 #ui-featureSearch {
@@ -862,18 +872,33 @@ select+.ui-tooltip {
 
 .ui-preferenceIo button {
   flex: 1;
-  font-size: 20px;
   text-align: center;
   border: var(--border-thickness-lg) solid var(--accent-primary-30);
   border-radius: var(--border-radius-sm);
   text-decoration: none;
+  font-weight: bold;
+  font-size: 1.25rem;
   position: relative;
   color: rgb(var(--white));
   background-color: rgb(var(--accent));
+  padding: .25rem;
+}
+
+[data-popup="true"] .ui-preferenceIo button {
+  font-size: .875rem;
 }
 
 .ui-preferenceIo button:hover {
   background-color: var(--accent-primary-10);
+}
+
+[data-importfromfile="true"] #ui-import {
+  border-color: var(--purple-primary-30);
+  background-color: rgb(var(--purple));
+}
+
+[data-importfromfile="true"] #ui-import:hover {
+  background-color: var(--purple-primary-10);
 }
 
 #ui-fileImport {
