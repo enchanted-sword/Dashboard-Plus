@@ -3,39 +3,6 @@
     margin-top: 55px;
   }
 
-  [data-css~="navSubHeader"] {
-    position: sticky;
-    top: 0;
-    height: 36px;
-    width: 240px !important;
-    background: RGB(var(--white));
-    z-index: 1;
-    margin: 0 !important;
-    padding: 5px 20px 5px 10px !important;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 0.875rem;
-    color: rgba(var(--black), 0.65) !important;
-    line-height: 1.5;
-    box-sizing: border-box;
-
-    &::before {
-      background: rgba(var(--black), 0.07);
-      content: "";
-      width: 100%;
-      height: 36px;
-      position: absolute;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-    }
-
-    a {
-      color: rgba(var(--black), 0.65) !important;
-    }
-  }
-
   [data-css~="summaryInfo"][data-css~="sticky"] {
     top: 75px;
   }
@@ -68,7 +35,6 @@
 
   [data-css~="subNav"] {
 
-    [data-css~="childWrapper"],
     [data-css~="blogName"],
     [data-css~="collectionName"] {
       color: RGB(var(--black)) !important;
@@ -80,53 +46,10 @@
     [data-css~="collectionDescription"] {
       color: rgba(var(--black), 0.65) !important;
     }
-
-    >[data-css~="navItem"],
-    [data-css~="accountStats"] li {
-      list-style-type: none;
-    }
-
-    >[data-css~="navItem"]:hover,
-    [data-css~="accountStats"] li:hover {
-      background-color: rgb(var(--seccondary-accent));
-    }
-
-    [data-css~="navItem"] {
-      font-weight: 500;
-    }
-
-    [data-css~="navItem"] [data-css~="navLink"] {
-      min-height: 41px;
-      column-gap: 12px;
-      padding: 0 20px 0 10px;
-    }
   }
 
   [data-css~="blogTile"] {
     border-top: 1px solid rgba(var(--black), 0.13);
-  }
-
-  button.dbplus-hnav {
-    transform: rotate(0deg);
-    display: flex;
-    transition: transform 200ms ease-in-out 0s;
-
-    use {
-      --icon-color-primary: rgba(var(--black), 0.65);
-    }
-  }
-
-  span.dbplus-hnav-count {
-    color: rgba(var(--black), 0.65);
-  }
-
-  [data-css~="navInfo"] [data-css~="childWrapper"] {
-    display: flex;
-    align-items: center;
-  }
-
-  [data-css~="childWrapper"]>svg {
-    margin-right: 10px;
   }
 
   [data-css~="startChildWrapper"]>svg {
@@ -376,6 +299,114 @@
     position: absolute;
     top: 0;
     right: 90px;
+  }
+
+  [data-css~="navSubHeader"],
+  .hnav-navSubHeader {
+    position: sticky;
+    top: 0;
+    height: 36px;
+    width: 240px !important;
+    background: RGB(var(--white));
+    z-index: 1;
+    margin: 0 !important;
+    padding: 5px 20px 5px 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: rgba(var(--black), 0.65) !important;
+    line-height: 1.5;
+    box-sizing: border-box;
+  }
+
+  :is([data-css~="navSubHeader"], .hnav-navSubHeader)::before {
+    background: rgba(var(--black), 0.07);
+    content: "";
+    width: 100%;
+    height: 36px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+  }
+
+  :is([data-css~="navSubHeader"], .hnav-navSubHeader) a {
+    color: rgba(var(--black), 0.65) !important;
+  }
+
+  [data-css~="subNav"] :is([data-css~="navItem"],
+    [data-css~="accountStats"] li, .hnav-subNavItem) {
+    font-weight: 500;
+    list-style-type: none;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  [data-css~="subNav"] :is([data-css~="navItem"] [data-css~="navLink"], .hnav-subNavItem a) {
+    text-decoration: none;
+    min-height: 41px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .75rem;
+    padding: 0 20px 0 10px;
+    color: rgba(var(--black), 0.65);
+  }
+
+  [data-css~="subNav"] :is([data-css~="childWrapper"],
+    .hnav-subNavItem a span) {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgb(var(--black));
+  }
+
+  .hnav-caret {
+    display: flex;
+    transition: transform 200ms ease-in-out 0s;
+    color: rgba(var(--black), 0.65);
+  }
+
+  .hnav-caret[data-state="open"] {
+    transform: rotate(180deg);
+  }
+
+  .hnav-blogStats {
+    display: none;
+    flex-direction: column;
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.42857;
+    font-family: var(--font-family);
+    margin: 0 20px 0 55px;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  [data-css~="blogTile"]:has(.hnav-caret[data-state="open"])+.hnav-blogStats {
+    display: flex;
+  }
+
+  .hnav-blogStats li {
+    padding: .25rem 0;
+  }
+
+  :is([data-css~="subNav"] [data-css~="navItem"],
+    .hnav-blogStats li, .hnav-subNavItem):hover {
+    background: var(--content-tint);
+  }
+
+  .hnav-blogStats a {
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgba(var(--black), 0.65);
+  }
+
+  .hnav-blogStats a span {
+    color: rgb(var(--black));
   }
 
   @media (max-width: 1150px) {

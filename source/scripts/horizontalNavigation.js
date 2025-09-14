@@ -1,229 +1,245 @@
-import { keyToCss, keyToClasses, translate } from './utility/tumblr.js';
+import { translate } from './utility/tumblr.js';
 import { userBlogs } from './utility/user.js';
 import { mutationManager } from './utility/mutations.js';
-import { elem } from './utility/jsTools.js';
+import { debounce } from './utility/jsTools.js';
 import { s } from './utility/style.js';
-import { svgIcon, svgIconString } from './utility/dashboardElements.js';
+import { svgIcon } from './utility/dashboardElements.js';
+import { noact } from './utility/noact.js';
 
-const match = [
-  '',
-  'dashboard',
-  'settings',
-  'blog',
-  'domains',
-  'search',
-  'likes',
-  'following',
-  'inbox',
-  'tagged',
-  'explore',
-  'reblog'
-];
-const pathname = location.pathname.split('/')[1];
+let ENGAGED = false;
+
 const customClass = 'dbplus-hnav';
 const menuSelector = `${s('homeMenu')},#account_subnav`;
-const tileSelector = `${s('blogTile')},${s('accountBlogItem')}`
+const tileSelector = `${s('blogTile')},${s('accountBlogItem')}`;
 
-const newCaret = i => elem('button', { class: `${keyToClass('button')} ${customClass}`, index: i, 'aria-label': translate('Show Blog Statistics') }, {
-  'click': function () {
-    if ($(s('accountStats')).eq(i).is(':hidden')) {
-      $(this).css('transform', 'rotate(180deg)');
-    } else { $(this).css('transform', 'rotate(0deg)'); }
-    $(s('accountStats')).eq(i).toggle();
+const newCaret = i => noact({
+  className: customClass + ' hnav-caret',
+  dataset: { state: i === 0 ? 'open' : '' },
+  ariaLabel: translate('Show Blog Statistics'),
+  onclick: function () {
+    if (this.dataset.state === 'open') this.dataset.state = '';
+    else this.dataset.state = 'open';
+  },
+  children: {
+    tag: 'span',
+    tabindex: -1,
+    children: svgIcon('caret-thin', 12, 12, '', 'currentcolor')
   }
-},
-  `<span class='${keyToClass('buttonInner')} ${keyToClass('menuTarget')}' tabindex='-1'>
-    ${svgIconString('caret-thin', 12, 12, customClass)}
-  </span>`
-);
-const newStats = blog => $(`
-  <ul class='${keyToClass('accountStats')} ${customClass}'>
-    <li>
-        <a class='${customClass}' href='/blog/${blog}'>
-            <span>${translate('Posts')}</span>
-        </a>
-    </li>
-    <li>
-        <a class='${customClass}' href='/blog/${blog}/followers'>
-            <span>${translate('Followers')}</span>
-        </a>
-    </li>
-    <li id='${customClass}-${blog}-activity'>
-        <a class='${customClass}' href='/blog/${blog}/activity'>
-            <span>${translate('Activity')}</span>
-        </a>
-    </li>
-    <li>
-        <a class='${customClass}' href='/blog/${blog}/drafts'>
-            <span>${translate('Drafts')}</span>
-        </a>
-    </li>
-    <li>
-        <a class='${customClass}' href='/blog/${blog}/queue'>
-            <span>${translate('Queue')}</span>
-        </a>
-    </li>
-    <li>
-        <a class='${customClass}' href='/blog/${blog}/post-plus'>
-            <span>${translate('Post+')}</span>
-        </a>
-    </li>
-    <li>
-        <a class='${customClass}' href='/blog/${blog}/blaze'>
-            <span>${translate('Tumblr Blaze')}</span>
-        </a>
-    </li>
-    <li>
-        <a class='${customClass}' href='/settings/blog/${blog}'>
-            <span>${translate('Blog settings')}</span>
-        </a>
-    </li>
-    <li>
-        <a class='${customClass}' href='/mega-editor/published/${blog}' target='_blank'>
-            <span>${translate('Mass Post Editor')}</span>
-        </a>
-    </li>
-  </ul>
-`);
-const newSubnavItem = (title, href, icon, h, w) => {
-  const navItem = elem('li', { class: `${keyToClass('navItem')} ${keyToClass('desktop')} ${customClass}`, 'data-title': title, title: translate(title) }, null,
-    `<a class='${keyToClasses('navLink').join(' ')}' href='${href}'>
-      <div class='${keyToClasses('navInfo').join(' ')}'>
-        <span class='${keyToClasses('childWrapper').join(' ')}'>${translate(title)}</span>
-        <span class='${keyToClasses('endChildWrapper').join(' ')}'></span>
-      </div>
-    </a>`
-  );
-  $(navItem).find(keyToCss('childWrapper')).prepend(svgIcon(icon, h, w, customClass));
-  return navItem;
-};
-const keyToClass = key => keyToClasses(key)[0];
+});
 
-const fetchStats = async () => {
-  for (const blog of userBlogs) {
-    for (const key of ['posts', 'followers', 'drafts', 'queue']) {
-      if (blog[key]) {
-        const count = $(elem('span', { class: `${customClass}-count` }, null, [blog[key]]));
-        if (key === 'posts') {
-          $(`.${customClass}[href='/blog/${blog.name}']`).append(count);
-        } else { $(`.${customClass}[href='/blog/${blog.name}/${key}']`).append(count); }
+const newStats = blog => noact({
+  tag: 'ul',
+  className: customClass + ' hnav-blogStats',
+  children: [
+    {
+      tag: 'li',
+      children: {
+        href: `/blog/${blog.name}`,
+        children: [
+          {
+            tag: 'span',
+            children: translate('Posts')
+          },
+          blog.posts || ''
+        ]
+      },
+    },
+    {
+      tag: 'li',
+      children: {
+        href: `/blog/${blog.name}/followers`,
+        children: [
+          {
+            tag: 'span',
+            children: translate('Followers')
+          },
+          blog.followers || ''
+        ]
+      },
+    },
+    {
+      tag: 'li',
+      children: {
+        href: `/blog/${blog.name}/activity`,
+        children: [
+          {
+            tag: 'span',
+            children: translate('Activity')
+          }
+        ]
+      },
+    },
+    blog.isGroupChannel ? {
+      tag: 'li',
+      children: {
+        href: `/blog/${blog.name}/members`,
+        children: [
+          {
+            tag: 'span',
+            children: translate('Members')
+          }
+        ]
       }
-    }
-    if (blog.isGroupChannel) {
-      try {
-        const members = elem('li', null, null,
-          `<a class='${customClass}' href='/blog/${blog.name}/members' target='_blank'>
-            <span>${translate('Members')}</span>
-          </a>`
-        );
-        $(`#${customClass}-${blog.name}-activity`)[0].after(members);
-      } catch (e) { console.warn(e); }
-    }
-  }
-};
-const addStats = async () => {
-  const blogTiles = $(tileSelector);
-  for (let i = 0; i < blogTiles.length; ++i) {
-    const tile = blogTiles.eq(i);
-    const blog = tile.find(s('displayName')).text();
+    } : null,
+    {
+      tag: 'li',
+      children: {
+        href: `/blog/${blog.name}/drafts`,
+        children: [
+          {
+            tag: 'span',
+            children: translate('Drafts')
+          },
+          blog.drafts || ''
+        ]
+      }
+    },
+    {
+      tag: 'li',
+      children: {
+        href: `/blog/${blog.name}queue`,
+        children: [
+          {
+            tag: 'span',
+            children: translate('Queue')
+          },
+          blog.queue || ''
+        ]
+      }
+    },
+    {
+      tag: 'li',
+      children: {
+        href: `settings/blog/${blog.name}`,
+        children: [
+          {
+            tag: 'span',
+            children: translate('Blog settings')
+          }
+        ]
+      }
+    },
+    {
+      tag: 'li',
+      children: {
+        href: `/mega-editor/published/${blog.name}`,
+        target: '_blank',
+        children: [
+          {
+            tag: 'span',
+            children: translate('Mass Post Editor')
+          }
+        ]
+      }
+    },
+  ]
+});
+
+const addStats = () => {
+  const blogTiles = Array.from(document.querySelectorAll(tileSelector));
+  blogTiles.forEach((tile, i) => {
+    const blogName = tile.querySelector(s('displayName')).textContent;
+    const blog = userBlogs.find(({ name }) => name === blogName);
     const caret = newCaret(i);
 
-    tile.find(s('actionButtons')).append(caret);
-    const stats = $(newStats(blog));
-    stats.insertAfter(tile);
-    stats.hide();
-  }
-  fetchStats().then(() => { $(`button.${customClass}`).eq(0).trigger('click'); });
+    if (blog) {
+      tile.querySelector(s('actionButtons'))?.append(caret);
+      const stats = newStats(blog);
+      tile.insertAdjacentElement('afterend', stats);
+    }
+  });
 };
 
-const bar = $(`${s('postColumn')} > ${s('bar')}`);
-const search = $(s('searchSidebarItem'));
-const accountHeader = elem('div', { class: `${keyToClass('navSubHeader')} ${customClass}` }, null, `<h3>Account</h3>`);
+const newSubNavItem = (title, href, icon, h, w) => noact({
+  tag: 'li',
+  className: customClass + ' hnav-subNavItem',
+  dataset: { title },
+  title: translate(title),
+  children: {
+    href,
+    children: [
+      {
+        tag: 'span',
+        children: [
+          svgIcon(icon, h, w, '', 'rgba(var(--black), 0.65);'),
+          translate(title)
+        ]
+      },
+    ]
+  }
+});
+
+const newAccountHeader = () => noact({
+  id: 'dbplus-accountHeader',
+  className: customClass + ' hnav-navSubHeader',
+  children: {
+    tag: 'h3',
+    children: translate('Account')
+  }
+});
 
 const shuffleIcons = () => {
-  const settings = newSubnavItem('Settings', '/settings/account', 'settings', 20, 20);
-  const domains = newSubnavItem('Domains', '/domains', 'earth', 20, 20);
-  const adFree = newSubnavItem('Go Ad-Free', '/settings/ad-free-browsing', 'sparkle', 21, 20);
-  const purchases = newSubnavItem('Payment & Purchases', '/settings/purchases', 'payment-purchases', 21, 20);
-  const gifts = newSubnavItem('Gifts', '/settings/gifts', 'gift', 21, 20);
+  const settings = newSubNavItem('Settings', '/settings/account', 'settings', 20, 20);
+  const domains = newSubNavItem('Domains', '/domains', 'earth', 20, 20);
+  const adFree = newSubNavItem('Go Ad-Free', '/settings/ad-free-browsing', 'sparkle', 21, 20);
+  const purchases = newSubNavItem('Payment & Purchases', '/settings/purchases', 'payment-purchases', 21, 20);
+  const gifts = newSubNavItem('Gifts', '/settings/gifts', 'gift', 21, 20);
 
-  $(settings).insertAfter($(s('navItem')).has('[href="/following"]'));
-  settings.after(domains);
-  domains.after(adFree);
-  adFree.after(purchases);
-  purchases.after(gifts);
+  document.querySelector(`${s('navItem')}:has([href="/following"])`)?.insertAdjacentElement('afterend', settings);
+  settings.insertAdjacentElement('afterend', domains);
+  domains.insertAdjacentElement('afterend', adFree);
+  adFree.insertAdjacentElement('afterend', purchases);
+  purchases.insertAdjacentElement('afterend', gifts);
 };
+
 const menuModfifcations = menu => {
   menu = menu[0];
   shuffleIcons();
   addStats();
 
   if (menu.matches('#account_subnav')) {
-    menu.prepend(accountHeader);
+    const header = newAccountHeader();
+    menu.prepend(header);
+    header.append(document.querySelector(s('logoutButton')));
 
-    $(`[href="/likes"] ${s('childWrapper')}`).prepend(svgIcon('like-filled', 18, 20, customClass));
-    $(`[href="/following"] ${s('childWrapper')}`).prepend(svgIcon('following', 20, 21, customClass));
-    $(document).on('click', () => {
-      if (!$('#account_subnav:hover').length && !$('#account_subnav').attr('hidden') && $('#account_button').length) { document.getElementById('account_button').click(); }
-    });
+    document.querySelector(`[href="/likes"] ${s('childWrapper')}`).prepend(svgIcon('like-filled', 18, 20, customClass));
+    document.querySelector(`[href="/following"] ${s('childWrapper')}`).prepend(svgIcon('following', 20, 21, customClass));
+    window.addEventListener('click', function () {
+      const accountSubnav = document.getElementById('account_subnav');
+      if (!accountSubnav?.matches(':hover') && !accountSubnav.hasAttribute('hidden')) document.getElementById('account_button')?.click();
+    })
   }
 };
 
+const reorientNav = () => requestAnimationFrame(() => {
+  if (document.getElementById('base-container').dataset.navigation === 'horizontal') return;
+  document.getElementById('base-container').dataset.navigation = 'horizontal';
+
+  document.querySelector(s('tabsHeader'))?.insertAdjacentElement('afterend', document.querySelector(`${s('postColumn')} > ${s('bar')}`));
+  document.querySelector(s('navigation'))?.append(document.querySelector(s('searchSidebarItem')));
+
+  mutationManager.start(menuSelector, menuModfifcations);
+  ENGAGED = true;
+});
+
 
 export const main = async function () {
-  if (window.innerWidth < 990) return;
-
-  requestAnimationFrame(() => {
-    if ($('#base-container').attr('data-navigation') === 'horizontal') return;
-    else $('#base-container').attr('data-navigation', 'horizontal');
-
-    if (bar.length) $(s('tabsHeader')).insertAfter(bar);
-    if (search.length) $(s('navigation')).append(search);
-
-    if (!match.includes(pathname)) {
-      $(s('layout')).prepend($(elem('div', { class: `${customClass} ${keyToClass('searchSidebarItem')}` }, null,
-        `<div class='${keyToClass('formContainer')}'>
-          <span data-testid='controlled-popover-wrapper' class='${keyToClass('targetWrapper')}'>
-            <span class='${keyToClass('targetWrapper')}'>
-              <form method='GET' action='/search' role='search' class='${keyToClass('form')}'>
-                <div class='${keyToClasses('searchbarContainer')[0]} ${keyToClass('chromeContext')}'>
-                  <div class='${keyToClasses('searchIcon')[4]} ${keyToClass('chromeContext')}'>
-                    ${svgIconString('search', 18, 18, customClass)}
-                  </div>
-                  <input
-                    name='q'
-                    type='text'
-                    autocomplete='off'
-                    aria-label='${translate('Search')}'
-                    class='${keyToClass('searchInput')} ${keyToClass('chromeContext')}'
-                    placeholder='${translate('Search Tumblr')}'
-                    autocapitalize='sentences'
-                    value=''
-                  />
-                </div>
-              </form>
-            </span>
-          </span>
-        </div>`
-      )));
-      $(s('about withLoggedOutImprovementsCTAs')).appendTo($(s('sidebarTopContainer')));
-    }
-
-    $(accountHeader).append($(s('logoutButton')));
-    mutationManager.start(menuSelector, menuModfifcations);
-  });
+  window.addEventListener('resize', debounce(function (event) {
+    if (window.innerWidth >= 990 && !ENGAGED) reorientNav();
+    else if (window.innerWidth < 990 && ENGAGED) clean();
+  }));
+  if (window.innerWidth >= 990) reorientNav();
 };
 
 export const clean = async function () {
   requestAnimationFrame(() => {
-    if (bar.length) bar.insertAfter($(s('tabsHeader')));
-    if (search.length) search.prependTo($(`${s('sidebar')} aside`));
-    $('[data-navigation]').removeAttr('data-navigation');
+    document.querySelector(`${s('postColumn')} > ${s('bar')}`)?.insertAdjacentElement('afterend', document.querySelector(s('tabsHeader')));
+    document.querySelector(`${s('sidebar')} aside`)?.append(document.querySelector(s('searchSidebarItem')));
+    document.querySelector('[data-navigation]')?.removeAttribute('data-navigation');
+    document.querySelector('#account_subnav li:has([href="/following"])')?.insertAdjacentElement(document.querySelector(s('logoutButton')));
 
-    $(s('nagivationWrapper')).removeClass(keyToClasses('headerWrapper').join(' '));
-    $(s('logoutButton')).insertAfter($('#account_subnav li').has('[href="/following"]'));
-
-    $(`.${customClass}`).remove();
+    document.querySelectorAll(`.${customClass}`).forEach(e => e.remove());
     mutationManager.stop(menuModfifcations);
+    ENGAGED = false;
   });
 };

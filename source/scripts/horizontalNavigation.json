@@ -11,6 +11,5 @@
     "enabled": false
   },
   "css": "fast",
-  "desktopOnly": true,
   "js": true
 }
