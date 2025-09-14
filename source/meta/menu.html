@@ -86,6 +86,27 @@
             <button class="ui-featureTab" target="utility">utility</button>
           </div>
         </nav>
+        <div class="ui-filterWidgets">
+          <button
+            id="ui-filterAlphabetical"
+            title="sort features in alphabetical order"
+            data-state="active"
+          >
+            ABC
+          </button>
+          <button
+            id="ui-filterReverseAlphabetical"
+            title="sort features in reverse alphabetical order"
+          >
+            ZXY
+          </button>
+          <button id="ui-filterEnabled" title="sort features enabled-first">
+            ✅
+          </button>
+          <button id="ui-filterDisabled" title="sort features disabled-first">
+            ❎
+          </button>
+        </div>
         <div class="ui-featureCategory" id="ui-all" active="true"></div>
         <div class="ui-featureCategory" id="ui-search"></div>
         <div class="ui-featureCategory" id="ui-dashboard"></div>
@@ -98,22 +119,25 @@
         <div class="ui-featureCategory" id="ui-utility"></div>
         <ul id="ui-featureContainer">
           <style id="ui-searchFilter"></style>
-          <div
-            style="
-              position: sticky;
-              top: 0;
-              z-index: 100;
-              border-top: 12px solid rgb(var(--white));
-            "
-          ></div>
         </ul>
       </section>
       <section class="ui-section" id="ui-manage">
         <ul class="ui-card">
           <li id="version"></li>
           <li class="ui-preferenceIo">
-            <button id="ui-import">import preferences from textarea</button>
-            <button id="ui-export">export preferences</button>
+            <div class="ui-importRow">
+              <button id="ui-import">import preferences from file</button>
+              <button id="ui-textImport">
+                import preferences from textarea
+              </button>
+              <input
+                id="ui-fileImport"
+                type="file"
+                name="fileImport"
+                accept="application/json"
+              />
+              <button id="ui-export">export preferences</button>
+            </div>
             <textarea
               id="ui-preferenceText"
               class="ui-textInput"

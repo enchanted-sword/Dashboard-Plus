@@ -437,6 +437,35 @@
             $(`#ui-featureContainer`).append(featureItem);
           }
         });
+
+        filterAlphabetical();
+      };
+
+      const filterAlphabetical = (reverse = false) => {
+        const container = document.getElementById('ui-featureContainer');
+        const indexMap = reverse ? [1, -1] : [-1, 1];
+        container.replaceChildren(...Array.from(container.children).sort((a, b) => {
+          if (!a.dataset.searchable) return -1;
+          else if (!b.dataset.searchable) return 1;
+          const dataA = JSON.parse(a.dataset.searchable);
+          const dataB = JSON.parse(b.dataset.searchable);
+
+          return indexMap[[dataA.title, dataB.title].sort().indexOf(dataA.title)];
+        }));
+      };
+
+      const enabledSelector = ':has(input:checked:not([dummy], .ui-options input)),:has(input[active="true"])';
+      const filterEnabled = (reverse = false) => {
+        const container = document.getElementById('ui-featureContainer');
+        const indexMap = reverse ? [1, -1] : [-1, 1];
+        container.replaceChildren(...Array.from(container.children).sort((a, b) => {
+          if (!a.dataset.searchable) return -1;
+          else if (!b.dataset.searchable) return 1;
+
+          if (a.matches(enabledSelector) && !b.matches(enabledSelector)) return indexMap[0];
+          else if (!a.matches(enabledSelector) && b.matches(enabledSelector)) return indexMap[1];
+          else return 0;
+        }));
       };
 
       const onSearch = ({ target }) => {
@@ -490,6 +519,11 @@
         updateThemeColors(themeColors?.newValue, preferences.newValue);
       };
 
+      const changeWidgetState = widget => {
+        document.querySelectorAll('.ui-filterWidgets button').forEach(b => b.dataset.state = '');
+        widget.dataset.state = 'active';
+      };
+
       const init = async () => {
         if (location.search === '?popup=true') {
           document.body.style.minHeight = '6000px';
@@ -509,6 +543,18 @@
         updateThemeColors(themeColors, preferences);
 
         createFeatures(installedFeatures, preferences);
+
+        const parsePreferenceText = text => {
+          preferences = JSON.parse(text);
+
+          if (typeof preferences === 'object') {
+            browser.storage.local.set({ preferences });
+            console.log('successfully imported preferences!');
+          } else throw 'invalid data type';
+
+          createFeatures(installedFeatures, preferences);
+          document.getElementById('ui-preferenceText').value = JSON.stringify(preferences, null, 2);
+        };
 
         setupButtons('ui-tab');
         setupButtons('ui-featureTab');
@@ -531,32 +577,68 @@
           exportLink.remove();
           URL.revokeObjectURL(url);
         });
-        document.getElementById('ui-import').addEventListener('click', function () {
-          let preferences;
+        document.getElementById('ui-textImport').addEventListener('click', function () {
           const input = document.getElementById('ui-preferenceText');
           if (!input.value) return;
 
-          preferences = JSON.parse(input.value);
           try {
-            if (typeof preferences === 'object') {
-              browser.storage.local.set({ preferences });
-              console.log('successfully imported preferences!');
-            } else throw 'invalid data type';
+            parsePreferenceText(input.value);
           } catch (e) {
-            console.error('failed to import preferences!', e);
-            $('#ui-import').text('import failed!').css('background-color', 'rgb(var(--red))');
+            console.error('failed to import preferences from text!', e);
+            this.textContent = 'import failed!';
+            this.style.backgroundColor = 'rgb(var(--red))';
             setTimeout(() => {
-              $('#ui-import').text('import preferences').css('background-color', 'rgb(var(--white))');
+              this.textContent = 'import preferences from file';
+              this.style.backgroundColor = 'rgb(var(--white))';
             }, 2000);
           }
 
           createFeatures(installedFeatures, preferences);
+        })
+        document.getElementById('ui-import').addEventListener('click', function () {
+          document.getElementById('ui-fileImport').click();
+        });
+        document.getElementById('ui-fileImport').addEventListener('change', function () {
+          if (this.files.length) {
+            const reader = new FileReader();
+            reader.readAsText(this.files[0]);
+            reader.addEventListener('load', () => {
+              try {
+                parsePreferenceText(reader.result);
+              } catch (e) {
+                const button = document.getElementById('ui-import');
+                console.error('failed to import preferences from file!', e);
+                button.textContent = 'import failed!';
+                button.style.backgroundColor = 'rgb(var(--red))';
+                setTimeout(() => {
+                  button.textContent = 'import preferences from file';
+                  button.style.backgroundColor = 'rgb(var(--white))';
+                }, 2000);
+              }
+            });
+          }
         });
         document.getElementById('ui-reset').addEventListener('click', function () {
           const preferences = {};
 
           browser.storage.local.set({ preferences });
           createFeatures(installedFeatures, preferences);
+        });
+        document.getElementById('ui-filterAlphabetical').addEventListener('click', function () {
+          changeWidgetState(this);
+          filterAlphabetical();
+        });
+        document.getElementById('ui-filterReverseAlphabetical').addEventListener('click', function () {
+          changeWidgetState(this);
+          filterAlphabetical(true);
+        });
+        document.getElementById('ui-filterEnabled').addEventListener('click', function () {
+          changeWidgetState(this);
+          filterEnabled();
+        });
+        document.getElementById('ui-filterDisabled').addEventListener('click', function () {
+          changeWidgetState(this);
+          filterEnabled(true);
         });
         document.querySelector('.ui-featureTab[target="search"]').addEventListener('click', function () {
           document.getElementById('ui-featureSearch').focus();
