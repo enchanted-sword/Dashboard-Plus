@@ -33,7 +33,7 @@ const detailPolls = async polls => {
 
 export const main = async () => {
   document.body.append(styleElement);
-  mutationManager.start(pollSelector, detailPolls);
+  mutationManager.startUnstable(pollSelector, detailPolls);
 };
 
 export const clean = async () => {

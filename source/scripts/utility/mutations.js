@@ -2,12 +2,14 @@ import { cellSelector, postSelector } from './document.js';
 
 const root = document.getElementById('root') || document.body || document.documentElement; // fallback for some early loads
 const addedNodesQueue = [];
+const targetNodesQueue = [];
 
 let updateQueued = false;
 let timerId;
 
 export const mutationManager = Object.freeze({
   listeners: new Map(),
+  targetListeners: new Map(),
 
   /**
    * Start a mutation callback
@@ -21,11 +23,25 @@ export const mutationManager = Object.freeze({
   },
 
   /**
+   * Start a mutation callback, but processing only childList mutation *targets*.
+   * 
+   * If your mutation selector does not exclude already-processed elements, you may run into problems.
+   * @param {string} selector - CSS selector for elements to target, excluding all elements already processed
+   * @param {Function} func - Callback function for matching elements
+   */
+  startUnstable(selector, func) {
+    if (this.targetListeners.has(func)) this.targetListeners.delete(func);
+    this.targetListeners.set(func, selector);
+    this.trigger(func);
+  },
+
+  /**
    * Stop a mutation callback
    * @param {Function} func - Function to remove
    */
   stop(func) {
     if (this.listeners.has(func)) this.listeners.delete(func);
+    if (this.targetListeners.has(func)) this.listeners.delete(func);
   },
 
   /**
@@ -33,8 +49,10 @@ export const mutationManager = Object.freeze({
    * @param {Function} func - Function to run
    */
   trigger(func) {
-    const selector = this.listeners.get(func);
-    if (!selector) return;
+    let selector;
+    if (this.listeners.has(func)) selector = this.listeners.get(func);
+    else if (this.targetListeners.has(func)) selector = this.targetListeners.get(func);
+    else return;
 
     if (func.length === 0) {
       const shouldRun = root.querySelector(selector) !== null;
@@ -114,17 +132,26 @@ const nodeManager = () => {
     .splice(0)
     .filter(addedNode => addedNode.isConnected);
 
-  if (addedNodes.length === 0) return;
+  const targetNodes = targetNodesQueue
+    .splice(0)
+    .filter(targetNode => targetNode.isConnected);
 
-  funcManager(mutationManager.listeners, addedNodes);
+  if (addedNodes.length > 0) funcManager(mutationManager.listeners, addedNodes);
+  if (targetNodes.length > 0) funcManager(mutationManager.targetListeners, targetNodes);
 };
 
 const observer = new MutationObserver(mutations => {
   const addedNodes = mutations
-    .flatMap(({ target, addedNodes }) => [target, ...addedNodes])
+    .flatMap(({ addedNodes }) => [...addedNodes])
     .filter(addedNode => addedNode instanceof Element);
 
   addedNodesQueue.push(...addedNodes);
+
+  const targetNodes = mutations
+    .flatMap(({ target }) => target)
+    .filter(target => target instanceof Element);
+
+  targetNodesQueue.push(...targetNodes);
 
   requestAnimationFrame(nodeManager);
 
