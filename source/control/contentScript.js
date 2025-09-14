@@ -56,7 +56,7 @@
   };
 
   const scriptManager = async () =>
-    import(browser.runtime.getURL('/scripts/utility/jsTools.js')).then(({ deepEquals, importFeatures, featureify }) => {  // browser.runtime.getURL is only a valid escape when written in full
+    import(browser.runtime.getURL('/scripts/utility/jsTools.js')).then(({ debounce, deepEquals, importFeatures, featureify }) => {  // browser.runtime.getURL is only a valid escape when written in full
       let installedFeatures = {};
       let enabledFeatures = [];
       let resizeListeners = [];
@@ -136,15 +136,17 @@
         const newlyEnabled = Object.keys(newValue).filter(feature => !oldValue[feature]?.enabled && newValue[feature]?.enabled);
         const newlyDisabled = Object.keys(oldValue).filter(feature => oldValue[feature]?.enabled && !newValue[feature]?.enabled);
 
-        Promise.all([...newlyEnabled.map(executeFeature), ...newlyDisabled.map(destroyFeature)]).then(cacheExtensionStyles)
+        Promise.all([...newlyEnabled.map(executeFeature), ...newlyDisabled.map(destroyFeature)]).then(cacheExtensionStyles);
         enabledFeatures.push(newlyEnabled);
       };
-      const onResized = () => {
+      const onResized = function () {
         if (window.innerWidth < 990) {
           resizeListeners.forEach(feature => {
-            if (installedFeatures[feature]?.desktopOnly && enabledFeatures.includes(feature)) destroyFeature(feature);
+            if (installedFeatures[feature]?.desktopOnly && enabledFeatures.includes(feature)) destroyFeature(feature)
+              .then(() => resizeListeners.push(feature)); // destroying a feature removes its resize listener, so we re-add it here
           });
         } else resizeListeners.forEach(feature => {
+          console.log(feature);
           if (!enabledFeatures.includes(feature)) {
             enabledFeatures.push(feature);
             executeFeature(feature);
@@ -167,7 +169,7 @@
 
         browser.storage.onChanged.addListener(onStorageChanged);
 
-        window.addEventListener('resize', onResized);
+        window.addEventListener('resize', debounce(onResized));
 
         console.info(`running ${enabledFeatures.length} of ${Object.keys(installedFeatures).length} features`);
       };
