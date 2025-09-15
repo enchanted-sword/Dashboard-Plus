@@ -234,12 +234,12 @@ const indexPosts = async (force = false) => {
   const tx = db.transaction(['postStore', 'searchStore'], 'readwrite', txOptions);
   const postStore = tx.objectStore('postStore');
   const searchStore = tx.objectStore('searchStore');
-  let i = 0, lowerBound = 0, dumped = indexProgress.progress;
+  let i = 0, lowerBound = 0;
 
   const t0 = Date.now();
   indexProgress.enableAutoSync();
 
-  while (dumped < indexProgress.total) {
+  while (indexProgress.progress < indexProgress.total) {
     const storeEntries = new Set(await promisifyIDBRequest(postStore.getAll(IDBKeyRange.lowerBound(lowerBound, true), BATCH_SIZE))); // dumping the store into a set is VASTLY more performant than using a cursor
 
     storeEntries.forEach(post => {
@@ -253,7 +253,6 @@ const indexPosts = async (force = false) => {
       lowerBound = post.id;
     });
 
-    dumped += BATCH_SIZE;
     indexProgress.progress += storeEntries.size;
   }
 
