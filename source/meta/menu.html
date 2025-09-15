@@ -184,6 +184,68 @@
             >support my work!</a
           >
           <div class="ui-aboutLink ui-changelog">
+            <h1 style="text-align: center">v1.7.0</h1>
+            <h2 style="text-align: center">general</h2>
+            <ul>
+              <li>
+                extension preferences can now be imported directly from
+                compatible .json files
+              </li>
+              <li>changed extension update behaviour</li>
+              <li>
+                <ul>
+                  <li>
+                    active tumblr tabs are now only reloaded on first install
+                  </li>
+                </ul>
+              </li>
+              <li>
+                menu theme now defaults to true blue if no theme is stored
+              </li>
+              <li>added filter widgets to the menu</li>
+              <li>
+                fixed some mutation issues that led to mutation-based features
+                being skipped on later pages
+              </li>
+              <li>
+                page world script is now run in an anonymous function in strict
+                mode to allow for smoothly be re-initialisation on
+                install/update
+              </li>
+              <li>added <span class="ui-new">the dragon</span></li>
+            </ul>
+            <h2 style="text-align: center">horizontal navigation</h2>
+            <ul>
+              <li>
+                now automatically stops/restarts when the browser window is
+                resized below/above the 990px mobile view breakpoint
+              </li>
+              <li>general cleanup and improvements</li>
+            </ul>
+            <h2 style="text-align: center">floating avatars</h2>
+            <ul>
+              <li>fixed mutation-based issues</li>
+            </ul>
+            <h2 style="text-align: center">link to custom theme pages</h2>
+            <ul>
+              <li>
+                fixed hydration bugs (stuck placeholder gradient) when adding
+                theme page links to avatars
+              </li>
+            </ul>
+            <h2 style="text-align: center">
+              show exact poll votes, show poll results without voting
+            </h2>
+            <ul>
+              <li>
+                fixed mutation-based issues wrt poll features sporadically not
+                running on new posts, especially on masonry pages
+              </li>
+            </ul>
+            <h2 style="text-align: center">post finder</h2>
+            <ul>
+              <li>major performance improvements to all database operations</li>
+            </ul>
             <h1 style="text-align: center">v1.6.0</h1>
             <h2 style="text-align: center">better post footers</h2>
             <ul>
