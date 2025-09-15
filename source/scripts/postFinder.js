@@ -693,7 +693,7 @@ export const main = async () => {
 
   if (indexProgress.progress === indexProgress.total) document.getElementById('postFinder-status-index').remove();
 
-  indexPosts(true);
+  indexPosts();
   window.addEventListener('dbplus-database-update', indexFromUpdate);
 
   //fillDb(0, 4000);
