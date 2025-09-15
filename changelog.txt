@@ -1,3 +1,14 @@
+v1.7.1
+
+general
+
+- rewrote the database utilities to drop an external library in favour of a faster custom implementation
+
+post finder
+
+- re-implemented feature in native IDB to fix issues with large operations
+- additional performance improvements
+
 v1.7.0
 
 general
