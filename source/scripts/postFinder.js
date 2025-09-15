@@ -95,14 +95,15 @@ const indexProgress = {
 };
 
 const unstringifyHits = hit => {
-  const parsedInfo = JSON.parse(hit.quickInfo);
+  const opaqueHit = structuredClone(hit); // de-xraying
+  const parsedInfo = JSON.parse(opaqueHit.quickInfo);
 
   parsedInfo.texts && (parsedInfo.texts = parsedInfo.texts.split(textSeparator));
   parsedInfo.blogs && (parsedInfo.blogs = parsedInfo.blogs.split(','));
   parsedInfo.types && (parsedInfo.types = parsedInfo.types.split(','));
   parsedInfo.tags && (parsedInfo.tags = parsedInfo.tags.split(','));
 
-  return Object.assign(hit, { quickInfo: parsedInfo });
+  return Object.assign(opaqueHit, { quickInfo: parsedInfo });
 };
 
 const newSearchProgress = () => noact({
