@@ -4,6 +4,8 @@ import { noact } from './utility/noact.js';
 import { svgIcon } from './utility/dashboardElements.js';
 import { navigate } from './utility/tumblr.js';
 
+import { fillDb } from './utility/dbTest.js';
+
 const customClass = 'dbplus-postFinder';
 
 let db, splitMode, maxResults, resultSection, postIndices, searchableIndices;
@@ -232,12 +234,12 @@ const indexPosts = async (force = false) => {
   const tx = db.transaction(['postStore', 'searchStore'], 'readwrite', txOptions);
   const postStore = tx.objectStore('postStore');
   const searchStore = tx.objectStore('searchStore');
-  let i = 0, lowerBound = 0, dumped = 0;
+  let i = 0, lowerBound = 0, dumped = indexProgress.progress;
 
   const t0 = Date.now();
   indexProgress.enableAutoSync();
 
-  while (dumped < postIndices.size) {
+  while (dumped < indexProgress.total) {
     const storeEntries = new Set(await promisifyIDBRequest(postStore.getAll(IDBKeyRange.lowerBound(lowerBound, true), BATCH_SIZE))); // dumping the store into a set is VASTLY more performant than using a cursor
 
     storeEntries.forEach(post => {
@@ -673,7 +675,7 @@ const searchWindow = noact({
 
 export const main = async () => {
   ({ splitMode, maxResults } = await getOptions('postFinder'));
-  // await fillDb(0, 20000);
+  //await fillDb(0, 20000);
   db = await openDatabase();
   const tx = db.transaction(['postStore', 'searchStore'], 'readonly', txOptions);
 
@@ -691,7 +693,7 @@ export const main = async () => {
   indexProgress.total = postIndices.size;
   indexProgress.sync();
 
-  if (indexProgress.progress === indexProgress.total) document.getElementById('postFinder-status-index').remove();
+  if (indexProgress.progress >= indexProgress.total) document.getElementById('postFinder-status-index').remove();
 
   indexPosts();
   window.addEventListener('dbplus-database-update', indexFromUpdate);
