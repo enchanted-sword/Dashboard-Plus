@@ -41,25 +41,20 @@ export const elem = (tag, attributes = {}, events = {}, children) => {
  * @param {string} keys - Array of strings corresponding to storage keys to fetch
  * @returns {object} Object of key-value pairs ({ version: 'X' })
  */
-export const getStorage = async (keys = []) => {
-  const storage = await browser.storage.local.get();
+export const getStorage = async (keys = []) => browser.storage.local.get().then(storage => {
   const returnObj = {};
   for (const key of keys) {
     returnObj[key] = storage[key];
   }
   return returnObj;
-};
+});
 
 /**
  * Fetches feature options
  * @param {string} feature - Feature name
  * @returns {object} options
  */
-export const getOptions = async (feature = '') => {
-  const { preferences } = await getStorage(['preferences']);
-
-  return preferences[feature]?.options;
-};
+export const getOptions = async (feature = '') => getStorage(['preferences']).then(({ preferences }) => preferences[feature]?.options);
 
 /**
  * Recursively compares two objects; returns true if they are identical and false otherwise
