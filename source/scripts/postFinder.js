@@ -149,7 +149,7 @@ const keywordSearch = async (keywords, start = -1) => {
   cursorStatus.enableAutoSync();
 
   for (const searchable of storeEntries.values()) {
-    if (i > maxResults) break;
+    if (i >= maxResults) break;
     if (cursorStatus.index > start
       && keywords.every(keyword => {
         if ((keyword[0] === '-' && !(searchable.quickInfo.toLowerCase().includes(keyword.substring(1))))
