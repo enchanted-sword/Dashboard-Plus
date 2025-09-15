@@ -43,8 +43,7 @@
       "run_at": "document_start",
       "js": [
         "control/contentScript.js",
-        "libraries/jquery.min.js",
-        "libraries/umd.js"
+        "libraries/jquery.min.js"
       ],
       "css": [
         "scripts/utility/dashboardElements.css"
