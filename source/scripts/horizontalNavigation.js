@@ -202,8 +202,8 @@ const menuModfifcations = menu => {
     menu.prepend(header);
     header.append(document.querySelector(s('logoutButton')));
 
-    document.querySelector(`[href="/likes"] ${s('childWrapper')}`).prepend(svgIcon('like-filled', 18, 20, customClass));
-    document.querySelector(`[href="/following"] ${s('childWrapper')}`).prepend(svgIcon('following', 20, 21, customClass));
+    document.querySelector(`[href="/likes"] ${s('childWrapper')}`)?.prepend(svgIcon('like-filled', 18, 20, customClass));
+    document.querySelector(`[href="/following"] ${s('childWrapper')}`)?.prepend(svgIcon('following', 20, 21, customClass));
     window.addEventListener('click', function () {
       const accountSubnav = document.getElementById('account_subnav');
       if (!accountSubnav?.matches(':hover') && !accountSubnav.hasAttribute('hidden')) document.getElementById('account_button')?.click();
