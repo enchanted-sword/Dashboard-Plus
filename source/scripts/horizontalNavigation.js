@@ -97,7 +97,7 @@ const newStats = blog => noact({
     {
       tag: 'li',
       children: {
-        href: `/blog/${blog.name}queue`,
+        href: `/blog/${blog.name}/queue`,
         children: [
           {
             tag: 'span',
