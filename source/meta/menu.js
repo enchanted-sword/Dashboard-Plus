@@ -602,7 +602,7 @@
           const exportLink = document.createElement('a');
           const date = new Date();
           const yy = date.getFullYear().toString();
-          const mm = (date.getMonth()).toString();
+          const mm = date.getMonth().toString() + 1; // zero-based
           const dd = date.getDate().toString();
           exportLink.href = url;
           exportLink.download = `dashboard plus preference export ${mm}-${dd}-${yy}`;
