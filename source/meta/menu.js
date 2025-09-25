@@ -557,9 +557,8 @@
         postData('clearBadge');
 
         const [contextKey, contextValue] = location.search.replace('?', '').split('=');
-        console.log(contextKey, contextValue)
-        if (contextKey) document.documentElement.setAttribute(`data-${contextKey}`, contextValue);
 
+        if (contextKey) document.documentElement.setAttribute(`data-${contextKey}`, contextValue);
         if (contextKey === 'popup') {
           document.body.style.minHeight = '6000px';
           document.body.style.overflow = 'hidden';
