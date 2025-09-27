@@ -41,25 +41,20 @@ export const elem = (tag, attributes = {}, events = {}, children) => {
  * @param {string} keys - Array of strings corresponding to storage keys to fetch
  * @returns {object} Object of key-value pairs ({ version: 'X' })
  */
-export const getStorage = async (keys = []) => {
-  const storage = await browser.storage.local.get();
+export const getStorage = async (keys = []) => browser.storage.local.get().then(storage => {
   const returnObj = {};
   for (const key of keys) {
     returnObj[key] = storage[key];
   }
   return returnObj;
-};
+});
 
 /**
  * Fetches feature options
  * @param {string} feature - Feature name
  * @returns {object} options
  */
-export const getOptions = async (feature = '') => {
-  const { preferences } = await getStorage(['preferences']);
-
-  return preferences[feature]?.options;
-};
+export const getOptions = async (feature = '') => getStorage(['preferences']).then(({ preferences }) => preferences[feature]?.options);
 
 /**
  * Recursively compares two objects; returns true if they are identical and false otherwise
@@ -155,15 +150,7 @@ export const featureify = (installedFeatures, preferences) => {
             if ('inherit' in installedFeatures[feature].preferences.options[option]) {
               const [inheritFeature, inheritOption] = installedFeatures[feature].preferences.options[option].inherit.inheritFrom.split('.');
               if (typeof preferences[inheritFeature].options[inheritOption] !== 'undefined') {
-                switch (typeof preferences[inheritFeature].options[inheritOption]) {
-                  case 'boolean':
-                  case 'string':
-                    preferences[feature].options[option] = installedFeatures[feature].preferences.options[option].inherit[String(preferences[inheritFeature].options[inheritOption])];
-                    break;
-                  case 'number':
-                    preferences[feature].options[option] = preferences[inheritFeature].options[inheritOption];
-                    break;
-                }
+                preferences[feature].options[option] = preferences[inheritFeature].options[inheritOption];
               }
             } else preferences[feature].options[option] = installedFeatures[feature].preferences.options[option].value;
             preferences[feature].new = true;
@@ -184,3 +171,17 @@ export const featureify = (installedFeatures, preferences) => {
 
   return preferences;
 };
+
+export const numFormat = num => {
+  let str = String(num);
+  if (str.length > 3) {
+    str = str.split('');
+    const str2 = [];
+    while (str.length > 3) {
+      str2.unshift(str.splice(-3, 3).join(''));
+    }
+    str2.unshift(str.join(''));
+    return str2.join(',');
+  }
+  return str;
+}

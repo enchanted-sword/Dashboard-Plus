@@ -3,7 +3,8 @@ import { apiFetch, navigate, translate, replaceTranslate, keyToString } from './
 import { hexToRgbString } from './color.js';
 import { formatTextBlock } from './npfTools.js';
 import { mutationManager } from './mutations.js';
-import { s } from './style.js';
+import { s, style } from './style.js';
+import { noact } from './noact.js';
 
 export const svgIconString = (icon, h, w, className = '', primary = 'rgba(var(--black),.65)') => `<svg class='${className}' xmlns='http://www.w3.org/2000/svg' height='${h}' width='${w}' role='presentation' style='--icon-color-primary: ${primary};'><use href='#managed-icon__${icon}'></use></svg>`;
 export const svgIcon = (icon, h, w, className = '', primary = 'rgba(var(--black),.65)') => $(svgIconString(icon, h, w, className, primary))[0];
@@ -64,167 +65,232 @@ const urlPopover = async (url, xPos, yPos) => {
   const { response } = await fetchedUrlInfo(apiUrl);
   const { blog, posts } = response.content;
 
-  const popover = elem('div', {
-    class: k('baseContainer'),
+  if (!blog) return;
+
+  const popover = noact({
+    className: k('baseContainer'),
     id: `dbplus-customPopover-${url.replaceAll('/', '')}`,
     tabindex: 0,
-    role: 'group' 
-  }, null, [
-    elem('div', {
-      class: k('popoverHolder'),
-      style: `position: absolute; inset: 0px auto auto 0px; width: 280px; max-height: 370px; transform: translate(${xPos - 140}px, ${yPos + 10}px);`
-    }, { mouseover: setPopoverHoverFlag, mouseleave: popoverSelfRemove }, [
-      elem('div', {
-          class: k('blogCard'),
-          style: `
+    role: 'group',
+    children: {
+      className: k('popoverHolder'),
+      style: `position: absolute; inset: 0px auto auto 0px; width: 280px; max-height: 370px; transform: translate(${xPos - 140}px, ${yPos + 10}px);`,
+      onmouseenter: setPopoverHoverFlag,
+      onmouseleave: popoverSelfRemove,
+      children: {
+        className: k('blogCard'),
+        style: `
           --blog-title-color: ${blog.theme.titleColor};
           --blog-link-color: ${blog.theme.linkColor};
           --blog-background-color: ${blog.theme.backgroundColor};
           --blog-title-color-15: rgba(${hexToRgbString(blog.theme.titleColor)}, 0.15);
           --blog-link-color-15: rgba(${hexToRgbString(blog.theme.linkColor)}, 0.15);
-          `
-        }, null, null)
-    ])
-  ]);
-  const blogCard = popover.querySelector('.dbplus-customPopover-blogCard');
+          `,
+        children: [
+          {
+            className: k('blogHeader'),
+            children: [
+              blog.theme.showHeaderImage ? {
+                className: k('headerImage small stretched blogLink'),
+                target: '_blank',
+                rel: 'noopener',
+                href: `/${blog.name}`,
+                role: 'link',
+                tabindex: 0,
+                onclick: blogViewNavigate,
+                children: {
+                  className: k('image'),
+                  src: blog.theme.headerImageFocused,
+                  alt: blog.title,
+                  loading: 'lazy'
+                }
+              } : null,
+              {
+                className: k(`bottomHalf smallBottom ${blog.theme.showAvatar ? 'withAvatar' : ''} ${blog.theme.showHeaderImage ? 'withStretchedHeaderImage' : 'withoutHeader'} ${(
+                  !(blog.theme.showTitle || blog.theme.showDescription)
+                  && !blog.theme.showHeaderImage && blog.theme.showAvatar) ? 'empty' : ''
+                  }`),
+                children: [
+                  {
+                    className: k('headerBar'),
+                    children: {
+                      className: k(`headerContainer ${blog.theme.showHeaderImage ? 'withStretchedHeaderImage' : ''} blogCardHeaderBar`),
+                      children: {
+                        className: k(`headerBar ${blog.theme.showHeaderImage ? 'withStretchedHeaderImage' : ''} blogCardHeaderBar`),
+                        'aria-label': replaceTranslate(`%1$s's blog header`, blog.name),
+                        role: 'banner',
+                        children: {
+                          className: k('blogLinkRecommendationWrapper'),
+                          children: {
+                            className: k('blogLinkWrapper blogCardBlogLink'),
+                            children: {
+                              className: k('blogLink'),
+                              style: 'color: rgb(255, 255, 255);',
+                              target: '_blank',
+                              rel: 'noopener',
+                              href: blog.url,
+                              role: 'link',
+                              tabindex: 0,
+                              children: {
+                                className: k('blogLinkShort'),
+                                children: blog.name
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    className: k('avatarBlock blogLink'),
+                    target: '_blank',
+                    rel: 'noopener',
+                    href: `/${blog.name}`,
+                    role: 'link',
+                    tabindex: 0,
+                    onclick: blogViewNavigate,
+                    children: {
+                      className: k('avatarPositioner smallAvatarPositioner atopHeaderImage'),
+                      children: {
+                        className: k(`avatarWrapper animateAvatar smallAvatar ${blog.theme.avatarShape}`),
+                        children: {
+                          className: k('avatarWrapper'),
+                          role: 'figure',
+                          ariaLabel: translate('avatar'),
+                          children: {
+                            className: k('avatar'),
+                            style: 'width:64px;height:64px',
+                            children: {
+                              className: k(`avatarWrapperInner ${blog.theme.avatarShape}`),
+                              children: {
+                                className: k('placeholder'),
+                                style: 'padding-bottom:100%;',
+                                children: {
+                                  className: k('image visible'),
+                                  srcset: `${blog.avatar[3].url} 64w, ${blog.avatar[2].url} 96w, ${blog.avatar[1].url} 128w, ${blog.avatar[0].url} 512w`,
+                                  sizes: '64px',
+                                  alt: translate('Avatar'),
+                                  style: 'width:64px;height:64px',
+                                  loading: 'eager'
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  blog.theme.showTitle || blog.theme.showDescription ? {
+                    className: k('textContainer'),
+                    children: [
+                      blog.theme.showTitle ? {
+                        tag: 'h1',
+                        className: k('title'),
+                        style: `font-family: "${blog.theme.titleFont}"; font-weight: bold; color: var(--blog-title-color);`,
+                        children: blog.title
+                      } : null,
+                      blog.theme.showDescription ? {
+                        className: k('description'),
+                        children: {
+                          className: k('description small gradient'),
+                          innerHtml: HTMLDescription(blog.descriptionNpf)
+                        }
+                      } : null
+                    ]
+                  } : null
+                ]
+              }
+            ]
+          },
+          posts.length ? {
+            className: k('posts'),
+            children: posts.map(post => {
+              let postElement;
 
-  const blogHeader = elem('div', { class: k('blogHeader') }, null, [
-    elem('div', { class: k(`bottomHalf smallBottom ${blog.theme.showAvatar ? 'withAvatar' : ''} ${blog.theme.showHeaderImage ? 'withStretchedHeaderImage' : 'withoutHeader'}`) }, null, [
-      elem('div', { class: k('headerBar')}, null, [
-        elem('div', { class: k(`headerContainer ${blog.theme.showHeaderImage ? 'withStretchedHeaderImage' : ''} blogCardHeaderBar`) }, null, [
-          elem('header', {
-            class: k(`headerBar ${blog.theme.showHeaderImage ? 'withStretchedHeaderImage' : ''} blogCardHeaderBar`),
-            'aria-label': replaceTranslate(`%1$s's blog header`, blog.name),
-            role: 'banner'
-          }, null, [
-            elem('div', { class: k('blogLinkRecommendationWrapper') }, null, [
-              elem('div', { class: k('blogLinkWrapper blogCardBlogLink') }, null, [
-                elem('a', {
-                  class: k('blogLink'),
-                  style: 'color: rgb(255, 255, 255);',
-                  target: '_blank',
-                  rel: 'noopener',
-                  href: blog.url,
-                  role: 'link',
-                  tabindex: 0
-                }, null, `<div class="${k('blogLinkShort')}">${blog.name}</div>`)
-              ])
-            ])
-          ])
-        ]),
-      ])
-    ])
-  ]);
+              switch (post.objectData.displayStyle) {
+                case 'regular':
+                  postElement = {
+                    className: k('text'),
+                    children: {
+                      className: k('textBlock textBlockMicro'),
+                      children: post.objectData.body
+                    }
+                  };
+                  break;
+                case 'photo':
+                  postElement = {
+                    tag: 'figure',
+                    className: k('image'),
+                    children: {
+                      className: k('placeholder foreground'),
+                      style: 'padding-bottom:100%;',
+                      srcset: `${post.objectData.backgroundImage} 100w`,
+                      sizes: '80px',
+                      alt: translate('Image'),
+                      loading: 'lazy'
+                    }
+                  };
+                  break;
+                case 'video':
+                  postElement = {
+                    className: k('video'),
+                    children: [
+                      {
+                        className: k('placeholder foreground'),
+                        children: {
+                          className: k('image visible blankBackground'),
+                          srcset: `${post.objectData.backgroundImage} 100w`,
+                          sizes: '80px',
+                          alt: translate('Image'),
+                          loading: 'lazy'
+                        }
+                      },
+                      {
+                        className: k('playButton'),
+                        children: svgIcon('play-circle', 46, 46)
+                      }
+                    ]
+                  };
+                  break;
+                case 'audio':
+                  postElement = noact({
+                    className: k('audio'),
+                    children: [
+                      {
+                        className: k('placeholder foreground'),
+                        children: {
+                          className: k('image visible blankBackground'),
+                          srcset: `${post.objectData.backgroundImage} 100w`,
+                          sizes: '80px',
+                          alt: translate('Image'),
+                          loading: 'lazy'
+                        }
+                      },
+                      {
+                        className: k('audioPlayButton'),
+                        children: svgIcon('play', 46, 46)
+                      }
+                    ]
+                  });
+                  break;
+              }
 
-  if (blog.theme.showHeaderImage) {
-    const headerImage = elem('a', {
-      class: k('headerImage small stretched blogLink'),
-      target: '_blank',
-      rel: 'noopener',
-      href: `/${blog.name}`,
-      role: 'link',
-      tabindex: 0
-    }, { click: blogViewNavigate }, [
-      elem('img', { class: k('image'), src: blog.theme.headerImageFocused, alt: blog.title, loading: 'lazy' }, null, null)
-    ]);
-    blogHeader.prepend(headerImage);
-  }
-
-  const bottomHalf = blogHeader.querySelector('.dbplus-customPopover-bottomHalf');
-  if (blog.theme.showAvatar) {
-    const blogAvatar = elem('a', {
-      class: k('avatarBlock blogLink'),
-      target: '_blank',
-      rel: 'noopener',
-      href: `/${blog.name}`,
-      role: 'link',
-      tabindex: 0
-    }, { click: blogViewNavigate }, `
-      <div class="${k('avatarPositioner smallAvatarPositioner atopHeaderImage')}">
-        <div class="${k(`avatarWrapper animateAvatar smallAvatar ${blog.theme.avatarShape}`)}">
-          <div class="${k('avatarWrapper')}" role="figure" aria-label="${translate('avatar')}">
-            <div class="${k('avatar')}" style="width: 64px; height: 64px;">
-              <div class="${k(`avatarWrapperInner ${blog.theme.avatarShape}`)}">
-                <div class="${k('placeholder')}" style="padding-bottom: 100%;">
-                  <img
-                    class="${k('image visible')}"
-                    srcset="${blog.avatar[3].url} 64w, ${blog.avatar[2].url} 96w, ${blog.avatar[1].url} 128w, ${blog.avatar[0].url} 512w"
-                    sizes="64px" alt="${translate('Avatar')}" style="width: 64px; height: 64px;" loading="eager">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `);
-    bottomHalf.firstElementChild.after(blogAvatar);
-  }
-  if (blog.theme.showTitle || blog.theme.showDescription) {
-    const textContainer = elem('div', { class: k('textContainer') }, null, null);
-    if (blog.theme.showTitle) textContainer.append(elem('h1', {
-      class: k('title'),
-      style: 'font-family: "${blog.theme.titleFont}"; font-weight: bold; color: var(--blog-title-color);'
-    }, null, [blog.title]));
-    if (blog.theme.showDescription) textContainer.append(elem('div', { class: k('description') }, null, `
-      <div class="${k('description small gradient')}">
-        ${HTMLDescription(blog.descriptionNpf)}
-      </div>`));
-    bottomHalf.append(textContainer);
-  } else if (!blog.theme.showHeaderImage && blog.theme.showAvatar) bottomHalf.classList.add(k('empty'));
-
-  const postsWrapper = elem('div', { class: k('posts') }, null, null);
-  posts.forEach(post => {
-    let postElement;
-    const postWrapper = elem('a', { class: k('chicletHolder blogLink'), blogname: blog.name, href: post.links.tap.href, target: '_blank', rel: 'noopener', tabindex: 0 }, { click: blogViewNavigate }, null)
-
-    switch (post.objectData.displayStyle) {
-      case 'regular':
-        postElement = elem('div', { class: k('text') }, null, `
-          <div class="${k('textBlock textBlockMicro')}">
-            <p>${post.objectData.body}</p>
-          </div>
-        `);
-        break;
-      case 'photo':
-        postElement = elem('figure', { class: k('image') }, null, `
-          <div class="${k('placeholder foreground')}" style="padding-bottom: 100%;">
-            <img class="${k('image visible blankBackground')}"
-              srcset="${post.objectData.backgroundImage} 100w"
-              sizes="80px" alt="${translate('Image')}" loading="lazy">
-          </div>
-        `);
-        break;
-      case 'video':
-        postElement = elem('div', { class: k('video') }, null, `
-          <div class="${k('placeholder foreground')}" style="padding-bottom: 100%;">
-            <img class="${k('image visible blankBackground')}"
-              srcset="${post.objectData.backgroundImage} 100w"
-              sizes="80px" alt="${translate('Image')}" loading="lazy">
-          </div>
-          <em class="${k('playButton')}">
-            ${svgIconString('play-circle', 46, 46)}
-          </em>
-        `);
-        break;
-      case 'audio':
-        postElement = elem('div', { class: k('audio') }, null, `
-          <div class="${k('placeholder foreground')}" style="padding-bottom: 100%;">
-            <img class="${k('image visible blankBackground')}"
-              srcset="${post.objectData.backgroundImage} 100w"
-              sizes="80px" alt="${translate('Image')}" loading="lazy">
-          </div>
-          <em class="${k('audioPlayButton')}">
-            ${svgIconString('play', 46, 46)}
-          </em>
-        `);
-        break;
+              return {
+                className: k('chicletHolder blogLink'),
+                blogname: blog.name,
+                href: post.links.tap.href,
+                target: '_blank',
+                rel: 'noopener',
+                tabindex: 0,
+                onclick: blogViewNavigate,
+                children: postElement
+              };
+            })
+          } : null
+        ]
+      }
     }
-    postWrapper.append(postElement);
-    postsWrapper.append(postWrapper);
   });
-
-  blogCard.append(blogHeader);
-  blogCard.append(postsWrapper);
 
   return popover;
 };
@@ -235,12 +301,12 @@ const urlPopover = async (url, xPos, yPos) => {
  */
 export const addUrlPopover = async anchor => {
   if (!anchor) return;
-  
+
   anchor.addEventListener('mouseenter', displayPopover);
   anchor.addEventListener('mouseleave', removePopover);
 }
 
-const controlTargetSelector = `[tabindex="-1"][data-id] article ${s('footerRow')}:has(${s('noteCount')}) ${s('controls')}`;
+const controlTargetSelector = `[tabindex="-1"][data-id] article :is(${s('footerRow')}:has(${s('noteCount')}) ${s('controls')},${s('footerContent')})`;
 const newControlIcon = (icon, func, tooltip) => elem('div', { class: 'dbplus-controlIcon' }, null, [
   elem('span', { class: 'dbplus-controlIconWrapper' }, null, [
     elem('button', { class: 'dbplus-controlIconButton', 'aria-label': tooltip }, { 'click': func }, `
@@ -259,6 +325,7 @@ const newControlIcon = (icon, func, tooltip) => elem('div', { class: 'dbplus-con
 
 export const controlIcons = Object.freeze({
   collection: new Map(),
+  advancedCollection: new Map(),
 
   /**
    * Register a new control icon in post footers
@@ -266,18 +333,24 @@ export const controlIcons = Object.freeze({
    * @param {string} tooltip - Tooltip displayed on hovering over the icon
    * @param {Function} func - Function to run when the icon is clicked
    */
-  register (icon, tooltip, func) {
+  register(icon, tooltip, func) {
     if (this.collection.has(func)) this.collection.delete(func);
     this.collection.set(func, { icon, tooltip });
+    if (mutationManager.listeners.has(onNewControlElement)) mutationManager.trigger(onNewControlElement);
+    else mutationManager.start(controlTargetSelector, onNewControlElement)
+  },
+  registerAdvanced(noactIcon, className) {
+    if (this.advancedCollection.has(className)) this.collection.delete(className);
+    this.advancedCollection.set(className, noactIcon);
     if (mutationManager.listeners.has(onNewControlElement)) mutationManager.trigger(onNewControlElement);
     else mutationManager.start(controlTargetSelector, onNewControlElement)
   },
 
   /**
    * Removes a custom control icon
-   * @param {Fcuntion} func - function associated with icon to be removed
+   * @param {Function} func - function associated with icon to be removed
    */
-  unregister (func) {
+  unregister(func) {
     if (this.collection.has(func)) {
       $(`.dbplus-controlIcon`).has(`[href="#managed-icon__${this.collection.get(func).icon}"]`).remove();
       this.collection.delete(func);
@@ -288,6 +361,9 @@ const onNewControlElement = controlElements => {
   for (const controlElement of controlElements) {
     for (const [func, { icon, tooltip }] of controlIcons.collection) {
       if (!controlElement.querySelector(`[href="#managed-icon__${icon}"]`)) controlElement.prepend(newControlIcon(icon, func, tooltip));
+    }
+    for (const [className, noactIcon] of controlIcons.advancedCollection) {
+      if (!controlElement.querySelector(className)) controlElement.prepend(noact(noactIcon));
     }
   }
 }

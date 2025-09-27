@@ -9,6 +9,19 @@
 
       let picker;
 
+      let connectionPort;
+      let connected = false
+
+      const postData = action => {
+        if (!connected) {
+          connectionPort = browser.runtime.connect({ name: "menuPort" });
+          connected = true;
+
+          connectionPort.onDisconnect.addListener(() => connected = false)
+        }
+        connectionPort.postMessage({ action });
+      };
+
       const onToggleFeature = async function () {
         const name = this.getAttribute('name');
         const checked = this.checked ? true : false;
@@ -34,6 +47,22 @@
       };
 
       const updateTheme = colors => {
+        colors ??= {
+          "black": "0 0 0",
+          "white": "255 255 255",
+          "whiteOnDark": "255 255 255",
+          "navy": "0 25 53",
+          "red": "255 73 48",
+          "orange": "255 138 0",
+          "yellow": "232 215 56",
+          "green": "0 207 53",
+          "blue": "0 184 255",
+          "purple": "124 92 255",
+          "pink": "255 98 206",
+          "accent": "0 184 255 / 1",
+          "deprecatedAccent": "0 184 255",
+          "follow": "243 248 251"
+        };
         document.getElementById('ui-theme').innerText = `
           :root {
             --white: ${colors.white};
@@ -437,6 +466,35 @@
             $(`#ui-featureContainer`).append(featureItem);
           }
         });
+
+        filterAlphabetical();
+      };
+
+      const filterAlphabetical = (reverse = false) => {
+        const container = document.getElementById('ui-featureContainer');
+        const indexMap = reverse ? [1, -1] : [-1, 1];
+        container.replaceChildren(...Array.from(container.children).sort((a, b) => {
+          if (!a.dataset.searchable) return -1;
+          else if (!b.dataset.searchable) return 1;
+          const dataA = JSON.parse(a.dataset.searchable);
+          const dataB = JSON.parse(b.dataset.searchable);
+
+          return indexMap[[dataA.title, dataB.title].sort().indexOf(dataA.title)];
+        }));
+      };
+
+      const enabledSelector = ':has(input:checked:not([dummy], .ui-options input)),:has(input[active="true"])';
+      const filterEnabled = (reverse = false) => {
+        const container = document.getElementById('ui-featureContainer');
+        const indexMap = reverse ? [1, -1] : [-1, 1];
+        container.replaceChildren(...Array.from(container.children).sort((a, b) => {
+          if (!a.dataset.searchable) return -1;
+          else if (!b.dataset.searchable) return 1;
+
+          if (a.matches(enabledSelector) && !b.matches(enabledSelector)) return indexMap[0];
+          else if (!a.matches(enabledSelector) && b.matches(enabledSelector)) return indexMap[1];
+          else return 0;
+        }));
       };
 
       const onSearch = ({ target }) => {
@@ -490,8 +548,18 @@
         updateThemeColors(themeColors?.newValue, preferences.newValue);
       };
 
+      const changeWidgetState = widget => {
+        document.querySelectorAll('.ui-filterWidgets button').forEach(b => b.dataset.state = '');
+        widget.dataset.state = 'active';
+      };
+
       const init = async () => {
-        if (location.search === '?popup=true') {
+        postData('clearBadge');
+
+        const [contextKey, contextValue] = location.search.replace('?', '').split('=');
+
+        if (contextKey) document.documentElement.setAttribute(`data-${contextKey}`, contextValue);
+        if (contextKey === 'popup') {
           document.body.style.minHeight = '6000px';
           document.body.style.overflow = 'hidden';
         }
@@ -510,6 +578,18 @@
 
         createFeatures(installedFeatures, preferences);
 
+        const parsePreferenceText = text => {
+          preferences = JSON.parse(text);
+
+          if (typeof preferences === 'object') {
+            browser.storage.local.set({ preferences });
+            console.log('successfully imported preferences!');
+          } else throw 'invalid data type';
+
+          createFeatures(installedFeatures, preferences);
+          document.getElementById('ui-preferenceText').value = JSON.stringify(preferences, null, 2);
+        };
+
         setupButtons('ui-tab');
         setupButtons('ui-featureTab');
         document.getElementById('ui-preferenceText').value = JSON.stringify(preferences, null, 2);
@@ -521,7 +601,7 @@
           const exportLink = document.createElement('a');
           const date = new Date();
           const yy = date.getFullYear().toString();
-          const mm = (date.getMonth()).toString();
+          const mm = date.getMonth().toString() + 1; // zero-based
           const dd = date.getDate().toString();
           exportLink.href = url;
           exportLink.download = `dashboard plus preference export ${mm}-${dd}-${yy}`;
@@ -531,32 +611,69 @@
           exportLink.remove();
           URL.revokeObjectURL(url);
         });
-        document.getElementById('ui-import').addEventListener('click', function () {
-          let preferences;
+        document.getElementById('ui-textImport').addEventListener('click', function () {
           const input = document.getElementById('ui-preferenceText');
           if (!input.value) return;
 
-          preferences = JSON.parse(input.value);
           try {
-            if (typeof preferences === 'object') {
-              browser.storage.local.set({ preferences });
-              console.log('successfully imported preferences!');
-            } else throw 'invalid data type';
+            parsePreferenceText(input.value);
           } catch (e) {
-            console.error('failed to import preferences!', e);
-            $('#ui-import').text('import failed!').css('background-color', 'rgb(var(--red))');
+            console.error('failed to import preferences from text!', e);
+            this.textContent = 'import failed!';
+            this.style.backgroundColor = 'rgb(var(--red))';
             setTimeout(() => {
-              $('#ui-import').text('import preferences').css('background-color', 'rgb(var(--white))');
+              this.textContent = 'import from textarea';
+              this.style.backgroundColor = 'rgb(var(--white))';
             }, 2000);
           }
 
           createFeatures(installedFeatures, preferences);
+        })
+        document.getElementById('ui-import').addEventListener('click', function () {
+          if (contextKey === 'popup') window.open(window.location.href.split('?')[0] + '?importFromFile=true');
+          else document.getElementById('ui-fileImport').click();
+        });
+        document.getElementById('ui-fileImport').addEventListener('change', function () {
+          if (this.files.length) {
+            const reader = new FileReader();
+            reader.readAsText(this.files[0]);
+            reader.addEventListener('load', () => {
+              try {
+                parsePreferenceText(reader.result);
+              } catch (e) {
+                const button = document.getElementById('ui-import');
+                console.error('failed to import preferences from file!', e);
+                button.textContent = 'import failed!';
+                button.style.backgroundColor = 'rgb(var(--red))';
+                setTimeout(() => {
+                  button.textContent = 'import from file';
+                  button.style.backgroundColor = 'rgb(var(--white))';
+                }, 2000);
+              }
+            });
+          }
         });
         document.getElementById('ui-reset').addEventListener('click', function () {
           const preferences = {};
 
           browser.storage.local.set({ preferences });
           createFeatures(installedFeatures, preferences);
+        });
+        document.getElementById('ui-filterAlphabetical').addEventListener('click', function () {
+          changeWidgetState(this);
+          filterAlphabetical();
+        });
+        document.getElementById('ui-filterReverseAlphabetical').addEventListener('click', function () {
+          changeWidgetState(this);
+          filterAlphabetical(true);
+        });
+        document.getElementById('ui-filterEnabled').addEventListener('click', function () {
+          changeWidgetState(this);
+          filterEnabled();
+        });
+        document.getElementById('ui-filterDisabled').addEventListener('click', function () {
+          changeWidgetState(this);
+          filterEnabled(true);
         });
         document.querySelector('.ui-featureTab[target="search"]').addEventListener('click', function () {
           document.getElementById('ui-featureSearch').focus();
@@ -570,6 +687,11 @@
         browser.storage.local.set({ preferences });
 
         browser.storage.onChanged.addListener(onStorageChanged);
+
+        if (location.search === '?importFromFile=true') {
+          document.querySelector('.ui-tab[target="manage"]').click();
+          //document.getElementById('ui-import').click();
+        }
       };
 
       init();

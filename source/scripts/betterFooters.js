@@ -1,0 +1,238 @@
+import { s } from './utility/style.js';
+import { mutationManager } from './utility/mutations.js';
+import { timelineObject } from './utility/reactProps.js';
+import { svgIcon } from './utility/dashboardElements.js';
+import { noact } from './utility/noact.js';
+import { cellSelector, postSelector } from './utility/document.js';
+import { numFormat } from './utility/jsTools.js';
+import { apiFetch, navigate, translate } from './utility/tumblr.js';
+
+const customClass = 'dbplus-betterFooters';
+
+const footerSelector = s('footerContent');
+const replySelector = s('button brandBlue');
+const notesSelectorR = s('reblogsControl');
+const notesSelectorL = s('likesControl');
+const activitySelector = `${s('postActivity')} ${s('root')}`;
+
+const deletePostButton = (uuid, id) => ({
+  title: translate('Delete'),
+  ariaLabel: translate('Delete'),
+  onclick: function () {
+    let modal;
+
+    function removeModal(e) {
+      const { type, key } = (e || {});
+      if (!e || (type === 'keydown' && key === 'Escape') || type === 'click') {
+        modal.remove();
+        window.removeEventListener('keydown', removeModal);
+      }
+    }
+
+    modal = noact({
+      tag: 'dialogue',
+      className: 'bf-modal',
+      dataset: { role: 'modal' },
+      children: {
+        className: 'bf-modalContent',
+        children: [
+          {
+            className: 'bf-modalDialogue',
+            children: translate('Are you sure you want to delete this post?')
+          },
+          {
+            className: 'bf-modalControls',
+            children: [
+              {
+                className: 'bf-modalControl bf-modalCancel',
+                onclick: removeModal,
+                children: translate('Cancel')
+              },
+              {
+                className: 'bf-modalControl bf-modalConfirm',
+                onclick: function () {
+                  try {
+                    apiFetch(`/v2/blog/${uuid}/post/delete`, { method: 'POST', body: { id } }).then(({ response: { idString } }) => {
+                      const cell = document.querySelector(`[data-id="${idString}"]`).closest(cellSelector);
+                      if (cell) cell.style.display = 'none';
+                    }, e => {
+                      console.error(e);
+                    }).finally(removeModal);
+                  } catch (e) {
+                    console.error(e);
+                    removeModal
+                  }
+                },
+                children: translate('OK')
+              }
+            ]
+          }
+        ]
+      }
+    });
+
+    document.body.append(modal);
+    window.addEventListener('keydown', removeModal);
+  },
+  children: svgIcon('delete', 21, 21, 'black')
+});
+
+const fixFooters = footers => footers.forEach(async footer => {
+  const post = footer.closest(postSelector);
+  if (!post || post.querySelector(`:is(${s('footerRow')},.${customClass})`)) return;
+
+  try {
+    const repliesActivityButton = footer.querySelector(replySelector);
+    const reblogsActivityButton = footer.querySelector(notesSelectorR);
+    const likesActivityButton = footer.querySelector(notesSelectorL);
+    let activityState = !!post.querySelector(activitySelector);
+    let selected = 'replies';
+
+    const replaceIcon = (icon, replacement) => {
+      const wrapper = footer.querySelector(`${s('truncate')}:has([href="#managed-icon__${icon}"])`);
+      if (wrapper) {
+        wrapper.firstElementChild.style.display = 'none';
+        wrapper.append(replacement);
+      }
+    };
+
+    replaceIcon('ds-reply-outline-24', svgIcon('reply-empty', 21, 21, '', 'currentColor'));
+    replaceIcon('ds-reblog-24', svgIcon('reblog', 21, 21, '', 'currentColor'));
+    replaceIcon('ds-ui-upload-24', svgIcon('share-icon-proper', 24, 24, '', 'currentColor'));
+
+    timelineObject(post).then(({ blog, replyCount, likeCount, reblogCount, noteCount, blogName, id, canEdit, canDelete, state }) => {
+      const canManage = canEdit || canDelete;
+      const unpublished = ['draft', 'queued', 'submission'].includes(state);
+      const showTopRow = !unpublished && canManage; // && !isQueue && !isInbox
+      let notesButton, notesFooterControl;
+
+      function toggleActivityState() {
+        if (activityState) {
+          notesButton.dataset.state = '';
+          notesFooterControl.style.display = 'none';
+        } else {
+          notesButton.dataset.state = 'open';
+          notesFooterControl.style.display = 'flex';
+        }
+
+        activityState = !activityState;
+      }
+
+      notesButton = noact({
+        className: customClass + ' bf-notesWrapper',
+        dataset: { state: activityState ? 'open' : '' },
+        children: {
+          className: 'bf-notesIcon',
+          onclick: function () {
+            toggleActivityState();
+
+            if (selected === 'replies') repliesActivityButton.click();
+            else if (selected === 'reblogs') reblogsActivityButton.click();
+            else likesActivityButton.click();
+          },
+          children: [
+            {
+              className: 'bf-notesPill',
+              children: [
+                {
+                  tag: 'span',
+                  children: numFormat(noteCount),
+                },
+                (noteCount === 1 ? 'note' : 'notes')
+              ]
+            },
+            {
+              className: 'bf-notesPillOpen',
+              children: [
+                svgIcon('close-medium', 12, 12),
+                'Close notes'
+              ]
+            }
+          ]
+        }
+      });
+
+      const selectType = type => {
+        selected = type;
+        Array.from(notesFooterControl.children).forEach(s => s.dataset.selected = '');
+        notesFooterControl.querySelector(`.bf-${type}`).dataset.selected = 'selected';
+        notesFooterControl.dataset.selected = type;
+      };
+
+      const notesSelector = (type, action, children) => ({
+        className: customClass + ` bf-notesSelector bf-${type}`,
+        dataset: { selected: selected === type ? 'selected' : '' },
+        onclick: function () {
+          if (selected !== type) {
+            selectType(type);
+            action.click();
+          }
+        },
+        children
+      });
+
+      notesFooterControl = noact({
+        className: customClass + ' bf-notes',
+        style: 'display:none',
+        dataset: { selected },
+        children: [
+          notesSelector('replies', repliesActivityButton, [
+            svgIcon('reply-empty', 20, 20, 'bf-replies'),
+            replyCount || '0'
+          ]),
+          notesSelector('reblogs', reblogsActivityButton, [
+            svgIcon('reblog', 20, 20, 'bf-reblogs'),
+            reblogCount || '0'
+          ]),
+          notesSelector('likes', likesActivityButton, [
+            svgIcon('like-empty', 20, 20, 'bf-likes'),
+            likeCount || '0'
+          ])
+        ]
+      });
+
+      repliesActivityButton.addEventListener('click', function ({ pointerId }) {
+        // !activityState => opening
+        // (activityState && selected === 'replies') => closing when selected
+        if ((!activityState || (activityState && selected === 'replies')) && pointerId >= 0) {
+          toggleActivityState(); // skips over .click() method triggering
+        }
+        selectType('replies');
+      });
+
+      if (showTopRow) {
+        const editUrl = `/edit/${blogName}/${id}`;
+        const topRow = noact({
+          className: customClass + ' bf-topRow',
+          children: [
+            canDelete ? deletePostButton(blog.uuid, id) : null,
+            (canEdit && state !== 'submission') ? {
+              title: translate('Edit'),
+              ariaLabel: translate('Edit'),
+              tabindex: -1,
+              href: editUrl,
+              onclick: function () {
+                navigate(editUrl);
+              },
+              children: svgIcon('edit', 21, 21)
+            } : null
+          ]
+        });
+
+        footer.parentElement.prepend(topRow);
+      }
+
+      footer.append(notesButton);
+      footer.parentElement.insertBefore(notesFooterControl, footer.nextElementSibling);
+    });
+  } catch (e) { console.error(e, post); }
+
+});
+
+export const main = async () => {
+  mutationManager.start(footerSelector, fixFooters);
+};
+export const clean = async () => {
+  mutationManager.stop(footerSelector, fixFooters);
+  document.querySelectorAll(`.${customClass}`).forEach(s => s.remove());
+};

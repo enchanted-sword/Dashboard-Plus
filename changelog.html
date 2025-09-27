@@ -1,5 +1,94 @@
+<h1 style="text-align:center;">v1.7.1</h1><h2 style="text-align:center;">general</h2><ul>
+<li>rewrote the database utilities to drop an external library in favour of a faster custom implementation</li>
+</ul>
+<h2 style="text-align:center;">post finder</h2><ul>
+<li>re-implemented feature in native IDB to fix issues with large operations</li>
+<li>additional performance improvements</li>
+</ul>
+<h1 style="text-align:center;">v1.7.0</h1><h2 style="text-align:center;">general</h2><ul>
+<li>extension preferences can now be imported directly from compatible .json files</li>
+<li>changed extension update behaviour</li>
+<li><ul>
+<li>active tumblr tabs are now only reloaded on first install</li>
+</ul>
+</li>
+<li>menu theme now defaults to true blue if no theme is stored</li>
+<li>added filter widgets to the menu</li>
+<li>fixed some mutation issues that led to mutation-based features being skipped on later pages</li>
+<li>page world script is now run in an anonymous function in strict mode to allow for smoothly be re-initialisation on install/update</li>
+<li>added <span class="ui-new">the dragon</span></li>
+</ul>
+<h2 style="text-align:center;">horizontal navigation</h2><ul>
+<li>now automatically stops/restarts when the browser window is resized below/above the 990px mobile view breakpoint</li>
+<li>general cleanup and improvements</li>
+</ul>
+<h2 style="text-align:center;">floating avatars</h2><ul>
+<li>fixed mutation-based issues</li>
+</ul>
+<h2 style="text-align:center;">link to custom theme pages</h2><ul>
+<li>fixed hydration bugs (stuck placeholder gradient) when adding theme page links to avatars</li>
+</ul>
+<h2 style="text-align:center;">show exact poll votes, show poll results without voting</h2><ul>
+<li>fixed mutation-based issues wrt poll features sporadically not running on new posts, especially on masonry pages</li>
+</ul>
+<h2 style="text-align:center;">post finder</h2><ul>
+<li>major performance improvements to all database operations</li>
+</ul>
+<h1 style="text-align:center;">v1.6.0</h1><h2 style="text-align:center;">better post footers</h2><ul>
+<li>much cleaner implementation</li>
+<li>now re-adds edit and delete buttons</li>
+<li>should also be compatible with xkit rewritten&#39;s quick reblog</li>
+</ul>
+<h2 style="text-align:center;">hide content in posts</h2><ul>
+<li>fixed blaze selector not working on new footer content</li>
+</ul>
+<h1 style="text-align:center;">v1.5.3</h1><h2 style="text-align:center;">horizontal navigation</h2><ul>
+<li>fixed the create post button being cut off by the right edge of the navbar</li>
+</ul>
+<h1 style="text-align:center;">v1.5.2</h1><h2 style="text-align:center;">better post footers</h2><ul>
+<li>improved functionality somewhat</li>
+<li>re-added share button for backup fix</li>
+<li>will probably fully replace this in the future with the Dashboard Next custom notes component if tumblr continues to cause headaches with this</li>
+</ul>
+<h1 style="text-align:center;">v1.5.1</h1><h2 style="text-align:center;">general</h2><ul>
+<li>corrected a minor mistake</li>
+</ul>
+<h1 style="text-align:center;">v1.5.0</h1><h2 style="text-align:center;">general</h2><ul>
+<li>made use of some nifty features that tumblr&#39;s &quot;developers&quot; still can&#39;t patch to serve as a bonus implementation of a feature 😎</li>
+<li>added <span class="ui-new">the dragon</span></li>
+</ul>
+<h2 style="text-align:center;"><span class="ui-new">new feature!</span> better post footers</h2><ul>
+<li>makes post footers less ugly and fixes the button order</li>
+<li><code>postFooterSplitNotesCount</code> has gotta be a new all-time low for beta feature quality. if i was getting paid to develop this garbage i would be miserable</li>
+</ul>
+<h1 style="text-align:center;">v1.4.4</h1><h2 style="text-align:center;">horizontal navigation</h2><ul>
+<li>fixed the create post button being cut off horizontally</li>
+</ul>
+<h2 style="text-align:center;"><span class="ui-new">new feature!</span> link to theme</h2><ul>
+<li>allows changing avatar or post header links to link to a blog&#39;s custom theme page instead of the soft navigation mobile/peepr view, where possible</li>
+<li>based on the legacy dashboard unfucker standalone iconfix script</li>
+</ul>
+<h1 style="text-align:center;">v1.4.3</h1><h2 style="text-align:center;">hide content in posts</h2><ul>
+<li>fixed follow buttons being hidden outside of posts</li>
+</ul>
+<h2 style="text-align:center;">content width</h2><ul>
+<li>fixed content width modifications being applied on masonry-styled pages</li>
+</ul>
+<h1 style="text-align:center;">v1.4.2</h1><h2 style="text-align:center;">general</h2><ul>
+<li>fixed a strange sporadic issue with a strict mode error being thrown</li>
+</ul>
+<h2 style="text-align:center;">show exact poll votes</h2><ul>
+<li>potentially? fixed an untracable error with polls being skipped in processing</li>
+</ul>
+<h1 style="text-align:center;">v1.4.1</h1><h2 style="text-align:center;">general</h2><ul>
+<li>fixed routeset watchdog not updating the routeset on some navigations, shifting the dashboard over to the left slightly</li>
+<li>added base compatibility for mobile-sized screens (more firefox android compatibility to come!)</li>
+</ul>
+<h2 style="text-align:center;">floating avatars</h2><ul>
+<li>fixed position not being set as sticky</li>
+</ul>
 <h1 style="text-align:center;">v1.4.0</h1><h2 style="text-align:center;">general</h2><ul>
-<li>unscrongled all of staff&#39;s newest attempts at &quot;&quot;&quot;ui design&quot;&quot;&quot; in existing features (the dash should look pretty much the same as twelve hours ago)</li>
+<li>unscrongled all of staff&#39;s newest attempts at &quot;&quot;&quot;ui design&quot;&quot;&quot;</li>
 </ul>
 <h2 style="text-align:center;"><span class="ui-new">new feature!</span> square avatars</h2><ul>
 <li>round isn&#39;t always better, yknow?</li>

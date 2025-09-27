@@ -1,51 +1,74 @@
 [data-css~="conversationWindow"] {
   --dbplus-messagingScale: 1;
   border-radius: 5px;
-  width: calc(280px * var(--dbplus-messagingScale)); 
+  width: calc(280px * var(--dbplus-messagingScale));
   height: calc(500px * var(--dbplus-messagingScale));
   max-height: calc(100vh - 80px);
 
   [data-css~="headerDesktop"] {
-    border-radius: 5px 5px 0 0 ;
-    background: rgba(255,255,255,.1);
+    border-radius: 5px 5px 0 0;
+    background: rgba(255, 255, 255, .1);
     backdrop-filter: blur(6px);
     padding: 8px;
   }
+
   [data-css~="footer"] {
     padding: 4px;
     border-radius: 0 0 5px 5px;
   }
+
   [data-css~="timestamp"] {
-    text-align: center ;
+    text-align: center;
     margin: 14px 0;
     font-size: 14px;
   }
+
   [data-css~="participant"] {
     padding-left: 8px;
   }
 }
 
 [data-css~="message"] {
-  img { width: 100% !important; }
-  [data-css~="messagePost"] [data-css~="header"] { border-radius: 5px  }
-  [data-css~="messagePost hasMediaPreview"] [data-css~="header"] { border-radius: 5px 5px 0 0; }
-  [data-css~="messageText"] { border-radius: 5px; }
-  [data-css~="thumbnail"] { border-radius: 0 0 5px 5px; }
+  img {
+    width: 100% !important;
+  }
+
+  [data-css~="messagePost"] [data-css~="header"] {
+    border-radius: 5px
+  }
+
+  [data-css~="messagePost hasMediaPreview"] [data-css~="header"] {
+    border-radius: 5px 5px 0 0;
+  }
+
+  [data-css~="messageText"] {
+    border-radius: 5px;
+  }
+
+  [data-css~="thumbnail"] {
+    border-radius: 0 0 5px 5px;
+  }
+
   [data-css~="bubble"] {
     position: relative;
     padding-right: 0 !important;
     padding-left: 36px !important;
     margin-left: 0 !important;
-    margin-right: auto;
   }
 }
-[data-css~="conversation"] [data-css~="textareaContainer"] { border-radius: 3px; }
+
+[data-css~="conversation"] [data-css~="textareaContainer"] {
+  border-radius: 3px;
+}
+
 [data-css~="minimizedConversation"] {
   [data-css~="avatarWrapper"] {
     background: transparent !important;
     padding: 0 !important;
   }
-  [data-css~="avatar"], img {
+
+  [data-css~="avatar"],
+  img {
     width: 48px !important;
     height: 48px !important;
   }

@@ -6,13 +6,13 @@ const styleElement = style('');
 const run = ({ width, justify }) => {
   styleElement.innerText = `
     @media (min-width: 990px) {
-      ${s('main')} { max-width: ${width}px !important; }
-      ${s('postColumn')} { max-width: ${width}px !important; }
-      #base-container[data-navigation="horizontal"] {
+      :is(${s('main')}:not(:has(${s('masonry')})), :is(${s('postColumn')},${s('postsColumn')}):not(:has(${s('masonry')})))
+        { max-width: ${width}px !important; }
+      #base-container[data-navigation="horizontal"]:not(:has(${s('masonry')})) {
         ${s('mainContentWrapper')} { width: 100%; }
         ${s('mainContentWrapper')} > ${s('container')} { justify-content: ${justify}; }
       }
-      #base-container:not([data-navigation="horizontal"]) {
+      #base-container:not([data-navigation="horizontal"]):not(:has(${s('masonry')})) {
         ${s('mainContentWrapper')} { width: ${width + 370}px; }
         ${s('bluespaceLayout')} > div { justify-content: ${justify}; }
       }

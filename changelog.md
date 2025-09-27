@@ -1,3 +1,134 @@
+# v1.7.1
+
+## general
+
+- rewrote the database utilities to drop an external library in favour of a faster custom implementation
+
+## post finder
+
+- re-implemented feature in native IDB to fix issues with large operations
+- additional performance improvements
+
+# v1.7.0
+
+## general
+
+- extension preferences can now be imported directly from compatible .json files
+- changed extension update behaviour
+- - active tumblr tabs are now only reloaded on first install
+- menu theme now defaults to true blue if no theme is stored
+- added filter widgets to the menu
+- fixed some mutation issues that led to mutation-based features being skipped on later pages
+- page world script is now run in an anonymous function in strict mode to allow for smoothly be re-initialisation on install/update
+- added the dragon
+
+## horizontal navigation
+
+- now automatically stops/restarts when the browser window is resized below/above the 990px mobile view breakpoint
+- general cleanup and improvements
+
+## floating avatars
+
+- fixed mutation-based issues
+
+## link to custom theme pages
+
+- fixed hydration bugs (stuck placeholder gradient) when adding theme page links to avatars
+
+## show exact poll votes, show poll results without voting
+
+- fixed mutation-based issues wrt poll features sporadically not running on new posts, especially on masonry pages
+
+## post finder
+
+- major performance improvements to all database operations
+
+# v1.6.0
+
+## better post footers
+
+- much cleaner implementation
+- now re-adds edit and delete buttons
+- should also be compatible with xkit rewritten's quick reblog
+
+## hide content in posts
+
+- fixed blaze selector not working on new footer content
+
+# v1.5.3
+
+## horizontal navigation
+
+- fixed the create post button being cut off by the right edge of the navbar
+
+# v1.5.2
+
+## better post footers
+
+- improved functionality somewhat
+- re-added share button for backup fix
+- will probably fully replace this in the future with the Dashboard Next custom notes component if tumblr continues to cause headaches with this
+
+# v1.5.1
+
+## general
+
+- corrected a minor mistake
+
+# v1.5.0
+
+## general
+
+- made use of some nifty features that tumblr's "developers" still can't patch to serve as a bonus implementation of a feature 😎
+- added the dragon
+
+## new feature! better post footers
+
+- makes post footers less ugly and fixes the button order
+- `postFooterSplitNotesCount` has gotta be a new all-time low for beta feature quality. if i was getting paid to develop this garbage i would be miserable
+
+# v1.4.4
+
+## horizontal navigation
+
+- fixed the create post button being cut off horizontally
+
+## new feature! link to theme
+
+- allows changing avatar or post header links to link to a blog's custom theme page instead of the soft navigation mobile/peepr view, where possible
+- based on the legacy dashboard unfucker standalone iconfix script
+
+# v1.4.3
+
+## hide content in posts
+
+- fixed follow buttons being hidden outside of posts
+
+## content width
+
+- fixed content width modifications being applied on masonry-styled pages
+
+# v1.4.2
+
+## general
+
+- fixed a strange sporadic issue with a strict mode error being thrown
+
+## show exact poll votes
+
+- potentially? fixed an untracable error with polls being skipped in processing
+
+# v1.4.1
+
+## general
+
+- fixed routeset watchdog not updating the routeset on some navigations, shifting the dashboard over to the left slightly
+- added base compatibility for mobile-sized screens (more firefox android compatibility to come!)
+
+## floating avatars
+
+- fixed position not being set as sticky
+
 # v1.4.0
 
 ## general

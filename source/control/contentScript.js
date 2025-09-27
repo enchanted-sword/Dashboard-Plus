@@ -54,40 +54,9 @@
     (document.head || document.documentElement).append(script);
     script.onload = () => script.remove();
   };
-  const reactObserver = new MutationObserver(() => {
-    if (document.querySelector('[data-rh]') === null) {
-      reactObserver.disconnect();
-      scriptManager();
-    }
-  });
-
-  reactObserver.observe(document.documentElement, { childList: true, subtree: true });
-  runContextScript();
-
-  const sendCachedData = async () => {
-    ({ cssMap } = await browser.storage.local.get('cssMap') || '');
-    ({ languageData } = await browser.storage.local.get('languageData') || '');
-
-    window.postMessage({ text: 'db+sendCachedData', cssMap: cssMap, languageData: languageData }, 'https://www.tumblr.com');
-  };
-
-  window.addEventListener('message', (event) => {
-    if (event.origin !== 'https://www.tumblr.com') return;
-    if (event.data?.text === 'db+controlInitMessage') sendCachedData(); //recive control init message and respond with helper functions
-    else if (event.data?.text === 'db+helperLoadMessage') { //recieve helper functions and update storage
-      ({ cssMap, languageData } = event.data);
-
-      browser.storage.local.set({ cssMap, languageData });
-
-      window.postMessage({ text: 'db+sendCachedData', cssMap, languageData }, 'https://www.tumblr.com'); //send helper functions back to control script for alternate load case
-    } else if (event.data?.text === 'db+themeColorUpdateMessage') {
-      ({ themeColors } = event.data);
-      browser.storage.local.set({ themeColors });
-    }
-  });
 
   const scriptManager = async () =>
-    import(browser.runtime.getURL('/scripts/utility/jsTools.js')).then(({ deepEquals, importFeatures, featureify }) => {  // browser.runtime.getURL is only a valid escape when written in full
+    import(browser.runtime.getURL('/scripts/utility/jsTools.js')).then(({ debounce, deepEquals, importFeatures, featureify }) => {  // browser.runtime.getURL is only a valid escape when written in full
       let installedFeatures = {};
       let enabledFeatures = [];
       let resizeListeners = [];
@@ -167,13 +136,14 @@
         const newlyEnabled = Object.keys(newValue).filter(feature => !oldValue[feature]?.enabled && newValue[feature]?.enabled);
         const newlyDisabled = Object.keys(oldValue).filter(feature => oldValue[feature]?.enabled && !newValue[feature]?.enabled);
 
-        Promise.all([...newlyEnabled.map(executeFeature), ...newlyDisabled.map(destroyFeature)]).then(cacheExtensionStyles)
+        Promise.all([...newlyEnabled.map(executeFeature), ...newlyDisabled.map(destroyFeature)]).then(cacheExtensionStyles);
         enabledFeatures.push(newlyEnabled);
       };
-      const onResized = () => {
+      const onResized = function () {
         if (window.innerWidth < 990) {
           resizeListeners.forEach(feature => {
-            if (installedFeatures[feature]?.desktopOnly && enabledFeatures.includes(feature)) destroyFeature(feature);
+            if (installedFeatures[feature]?.desktopOnly && enabledFeatures.includes(feature)) destroyFeature(feature)
+              .then(() => resizeListeners.push(feature)); // destroying a feature removes its resize listener, so we re-add it here
           });
         } else resizeListeners.forEach(feature => {
           if (!enabledFeatures.includes(feature)) {
@@ -198,7 +168,7 @@
 
         browser.storage.onChanged.addListener(onStorageChanged);
 
-        window.addEventListener('resize', onResized);
+        window.addEventListener('resize', debounce(onResized));
 
         console.info(`running ${enabledFeatures.length} of ${Object.keys(installedFeatures).length} features`);
       };
@@ -208,4 +178,36 @@
       console.info('loaded!');
       console.info(browser.storage.local.get());
     });
+
+  const reactObserver = new MutationObserver(() => {
+    if (document.querySelector('[data-rh]') === null) {
+      reactObserver.disconnect();
+      scriptManager();
+    }
+  });
+
+  reactObserver.observe(document.documentElement, { childList: true, subtree: true });
+  runContextScript();
+
+  const sendCachedData = async () => {
+    ({ cssMap } = await browser.storage.local.get('cssMap') || '');
+    ({ languageData } = await browser.storage.local.get('languageData') || '');
+
+    window.postMessage({ text: 'db+sendCachedData', cssMap: cssMap, languageData: languageData }, 'https://www.tumblr.com');
+  };
+
+  window.addEventListener('message', (event) => {
+    if (event.origin !== 'https://www.tumblr.com') return;
+    if (event.data?.text === 'db+controlInitMessage') sendCachedData(); //recive control init message and respond with helper functions
+    else if (event.data?.text === 'db+helperLoadMessage') { //recieve helper functions and update storage
+      ({ cssMap, languageData } = event.data);
+
+      browser.storage.local.set({ cssMap, languageData });
+
+      window.postMessage({ text: 'db+sendCachedData', cssMap, languageData }, 'https://www.tumblr.com'); //send helper functions back to control script for alternate load case
+    } else if (event.data?.text === 'db+themeColorUpdateMessage') {
+      ({ themeColors } = event.data);
+      browser.storage.local.set({ themeColors });
+    }
+  });
 }

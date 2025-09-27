@@ -86,6 +86,27 @@
             <button class="ui-featureTab" target="utility">utility</button>
           </div>
         </nav>
+        <div class="ui-filterWidgets">
+          <button
+            id="ui-filterAlphabetical"
+            title="sort features in alphabetical order"
+            data-state="active"
+          >
+            ABC
+          </button>
+          <button
+            id="ui-filterReverseAlphabetical"
+            title="sort features in reverse alphabetical order"
+          >
+            ZXY
+          </button>
+          <button id="ui-filterEnabled" title="sort features enabled-first">
+            ✅
+          </button>
+          <button id="ui-filterDisabled" title="sort features disabled-first">
+            ❎
+          </button>
+        </div>
         <div class="ui-featureCategory" id="ui-all" active="true"></div>
         <div class="ui-featureCategory" id="ui-search"></div>
         <div class="ui-featureCategory" id="ui-dashboard"></div>
@@ -98,22 +119,23 @@
         <div class="ui-featureCategory" id="ui-utility"></div>
         <ul id="ui-featureContainer">
           <style id="ui-searchFilter"></style>
-          <div
-            style="
-              position: sticky;
-              top: 0;
-              z-index: 100;
-              border-top: 12px solid rgb(var(--white));
-            "
-          ></div>
         </ul>
       </section>
       <section class="ui-section" id="ui-manage">
         <ul class="ui-card">
           <li id="version"></li>
           <li class="ui-preferenceIo">
-            <button id="ui-import">import preferences</button>
-            <button id="ui-export">export preferences</button>
+            <div class="ui-importRow">
+              <button id="ui-import">import from file</button>
+              <button id="ui-textImport">import from textarea</button>
+              <input
+                id="ui-fileImport"
+                type="file"
+                name="fileImport"
+                accept="application/json"
+              />
+              <button id="ui-export">export preferences</button>
+            </div>
             <textarea
               id="ui-preferenceText"
               class="ui-textInput"
@@ -162,81 +184,96 @@
             >support my work!</a
           >
           <div class="ui-aboutLink ui-changelog">
-            <h1 style="text-align: center">v1.4.0</h1>
+            <h1 style="text-align: center">v1.7.1</h1>
             <h2 style="text-align: center">general</h2>
             <ul>
               <li>
-                unscrongled all of staff&#39;s newest attempts at
-                &quot;&quot;&quot;ui design&quot;&quot;&quot;
-              </li>
-            </ul>
-            <h2 style="text-align: center">
-              <span class="ui-new">new feature!</span> square avatars
-            </h2>
-            <ul>
-              <li>round isn&#39;t always better, yknow?</li>
-            </ul>
-            <h1 style="text-align: center">v1.3.3</h1>
-            <h2 style="text-align: center">hide sidebar content</h2>
-            <ul>
-              <li>fixed update/clean methods being switched</li>
-            </ul>
-            <h2 style="text-align: center">revert activity feed popup</h2>
-            <ul>
-              <li>fixed style bugs related to the new activity update</li>
-            </ul>
-            <h2 style="text-align: center">activity popup filter</h2>
-            <ul>
-              <li>updated for new activity api</li>
-              <li>
-                preferences for tab contents were reset, so make sure to update
-                your preferences
-              </li>
-            </ul>
-            <h1 style="text-align: center">v1.3.2</h1>
-            <h2 style="text-align: center">general</h2>
-            <ul>
-              <li>
-                added a fallback for the fallback for root node race conditions
-                so the mutuation observer shouldn&#39;t fail to init in rare
-                cases
-              </li>
-              <li>
-                fixed the IDB upgrade routine checking
-                <code>IDBObjectStore.index()</code> as a index deletion
-                condition and throwing <code>NotFoundErrors</code> when
-                attempting to upgrade
-              </li>
-            </ul>
-            <h2 style="text-align: center">show mutuals</h2>
-            <ul>
-              <li>
-                added an &quot;uncoloured&quot; option that inherits the default
-                blog link text colour
-              </li>
-              <li>
-                fixed mutual icons not being shown on link of the blog being
-                reblogged from
+                rewrote the database utilities to drop an external library in
+                favour of a faster custom implementation
               </li>
             </ul>
             <h2 style="text-align: center">post finder</h2>
             <ul>
               <li>
-                replaced the slow post index arrays with much faster sets, which
-                greatly increases cursor seek times (up to 4000 keys/second)
+                re-implemented feature in native IDB to fix issues with large
+                operations
+              </li>
+              <li>additional performance improvements</li>
+            </ul>
+            <h1 style="text-align: center">v1.7.0</h1>
+            <h2 style="text-align: center">general</h2>
+            <ul>
+              <li>
+                extension preferences can now be imported directly from
+                compatible .json files
+              </li>
+              <li>changed extension update behaviour</li>
+              <li>
+                <ul>
+                  <li>
+                    active tumblr tabs are now only reloaded on first install
+                  </li>
+                </ul>
               </li>
               <li>
-                added an &quot;autosync&quot; feature which automatically
-                propagates updates to the live index progress/search progress
-                counters every few seconds so they don&#39;t seem frozen during
-                slow operations (as they normally only update once for every 100
-                increments)
+                menu theme now defaults to true blue if no theme is stored
+              </li>
+              <li>added filter widgets to the menu</li>
+              <li>
+                fixed some mutation issues that led to mutation-based features
+                being skipped on later pages
               </li>
               <li>
-                added better post renderer error handling so a single dubiously
-                indexed post will no longer cause an entire page of search
-                results to fail to display
+                page world script is now run in an anonymous function in strict
+                mode to allow for smoothly be re-initialisation on
+                install/update
               </li>
+              <li>added <span class="ui-new">the dragon</span></li>
+            </ul>
+            <h2 style="text-align: center">horizontal navigation</h2>
+            <ul>
+              <li>
+                now automatically stops/restarts when the browser window is
+                resized below/above the 990px mobile view breakpoint
+              </li>
+              <li>general cleanup and improvements</li>
+            </ul>
+            <h2 style="text-align: center">floating avatars</h2>
+            <ul>
+              <li>fixed mutation-based issues</li>
+            </ul>
+            <h2 style="text-align: center">link to custom theme pages</h2>
+            <ul>
+              <li>
+                fixed hydration bugs (stuck placeholder gradient) when adding
+                theme page links to avatars
+              </li>
+            </ul>
+            <h2 style="text-align: center">
+              show exact poll votes, show poll results without voting
+            </h2>
+            <ul>
+              <li>
+                fixed mutation-based issues wrt poll features sporadically not
+                running on new posts, especially on masonry pages
+              </li>
+            </ul>
+            <h2 style="text-align: center">post finder</h2>
+            <ul>
+              <li>major performance improvements to all database operations</li>
+            </ul>
+            <h1 style="text-align: center">v1.6.0</h1>
+            <h2 style="text-align: center">better post footers</h2>
+            <ul>
+              <li>much cleaner implementation</li>
+              <li>now re-adds edit and delete buttons</li>
+              <li>
+                should also be compatible with xkit rewritten&#39;s quick reblog
+              </li>
+            </ul>
+            <h2 style="text-align: center">hide content in posts</h2>
+            <ul>
+              <li>fixed blaze selector not working on new footer content</li>
             </ul>
           </div>
         </ul>

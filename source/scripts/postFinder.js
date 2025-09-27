@@ -1,4 +1,4 @@
-import { openDatabase, updateData, updateNeeded, getIndexedPosts } from './utility/database.js';
+import { promisifyIDBRequest, openDatabase, updateData, getIndexedPosts, txOptions } from './utility/database.js';
 import { unique, debounce, getOptions } from './utility/jsTools.js';
 import { noact } from './utility/noact.js';
 import { svgIcon } from './utility/dashboardElements.js';
@@ -14,8 +14,9 @@ const querySeparators = {
   comma: ',',
   space: ' '
 };
+const BATCH_SIZE = 10000;
 
-const updateFrequency = 100;
+const updateFrequency = 1000;
 const cursorStatus = { // silly little react-esque state var
   _index: 0,
   _remaining: 0,
@@ -72,6 +73,11 @@ const indexProgress = {
     this._progress = n;
     if (!(n % updateFrequency)) document.querySelectorAll('.postFinder-status-indexProgress')?.forEach(e => e.textContent = n);
   },
+  incrementProgress() {
+    this._progress += 1;
+
+    if (!(this._progress % updateFrequency)) document.querySelectorAll('.postFinder-status-indexProgress')?.forEach(e => e.textContent = this._progress);
+  },
   get total() {
     return this._total;
   },
@@ -97,14 +103,15 @@ const indexProgress = {
 };
 
 const unstringifyHits = hit => {
-  const parsedInfo = JSON.parse(hit.quickInfo);
+  const opaqueHit = structuredClone(hit); // de-xraying
+  const parsedInfo = JSON.parse(opaqueHit.quickInfo);
 
   parsedInfo.texts && (parsedInfo.texts = parsedInfo.texts.split(textSeparator));
   parsedInfo.blogs && (parsedInfo.blogs = parsedInfo.blogs.split(','));
   parsedInfo.types && (parsedInfo.types = parsedInfo.types.split(','));
   parsedInfo.tags && (parsedInfo.tags = parsedInfo.tags.split(','));
 
-  return Object.assign(hit, { quickInfo: parsedInfo });
+  return Object.assign(opaqueHit, { quickInfo: parsedInfo });
 };
 
 const newSearchProgress = () => noact({
@@ -136,7 +143,7 @@ const keywordSearch = async (keywords, start = 0) => {
   keywords = keywords.filter(isDefined).map(v => v.toLowerCase());
   const tx = db.transaction('searchStore', 'readonly');
   const hits = [];
-  let cursor = await tx.store.openCursor(null, 'prev'), searchable, i = 0;
+  let i = 0, lowerBound = start, dumped = 0;
 
   cursorStatus.index = start;
   cursorStatus.hits = 0;
@@ -144,24 +151,29 @@ const keywordSearch = async (keywords, start = 0) => {
 
   resultSection.append(newSearchProgress());
 
-  if (start) await cursor.advance(start);
-
   const t0 = Date.now();
   cursorStatus.enableAutoSync();
 
-  while (cursor && i < maxResults) {
-    searchable = cursor.value;
-    if (keywords.every(keyword => {
-      if ((keyword[0] === '-' && !(searchable.quickInfo.toLowerCase().includes(keyword.substring(1))))
-        || searchable.quickInfo.includes(keyword)) return true;
-      else return false;
-    })) {
-      hits.push(searchable);
-      ++cursorStatus.hits;
-      ++i;
+  while (dumped < searchableIndices.size) {
+    const storeEntries = new Set(await promisifyIDBRequest(tx.objectStore('searchStore').getAll(IDBKeyRange.lowerBound(lowerBound, true), BATCH_SIZE)));
+
+    for (const searchable of storeEntries.values()) {
+      if (i >= maxResults) break;
+      if (keywords.every(keyword => {
+        const q = searchable.quickInfo.toLowerCase();
+        if ((keyword[0] === '-' && !(q.includes(keyword.substring(1))))
+          || q.includes(keyword)) return true;
+        else return false;
+      })) {
+        hits.push(searchable);
+        ++cursorStatus.hits;
+        ++i;
+      }
+      ++cursorStatus.index;
+      lowerBound = searchable.id;
     }
-    ++cursorStatus.index;
-    cursor = await cursor.continue();
+
+    dumped += BATCH_SIZE;
   }
 
   cursorStatus.disableAutoSync();
@@ -218,53 +230,53 @@ const quickInfo = ({ id, blog, content, trail, tags, date }) => {
   });
 };
 const indexPosts = async (force = false) => {
-  const tx = db.transaction('postStore', 'readonly');
-  let cursor = await tx.store.openCursor(), post, i = 0;
-  tx.store.getAllKeys().then(keys => indexProgress.total = keys.length);
+  if (force) indexProgress.progress = 0;
+  const tx = db.transaction(['postStore', 'searchStore'], 'readwrite', txOptions);
+  const postStore = tx.objectStore('postStore');
+  const searchStore = tx.objectStore('searchStore');
+  let i = 0, lowerBound = 0;
 
   const t0 = Date.now();
   indexProgress.enableAutoSync();
 
-  while (cursor) {
-    post = cursor.value;
-    if (!searchableIndices.has(post.id) || force) {
-      const searchable = { id: post.id, summary: post.summary, postUrl: post.postUrl, quickInfo: quickInfo(post), storedAt: Date.now() };
-      updateData({ searchStore: searchable }).then(() => {
-        if (!searchableIndices.has(post.id)) {
-          searchableIndices.add(post.id);
-          ++indexProgress.progress;
-        }
-      });
-      ++i;
-    }
+  while (indexProgress.progress < indexProgress.total) {
+    const storeEntries = new Set(await promisifyIDBRequest(postStore.getAll(IDBKeyRange.lowerBound(lowerBound, true), BATCH_SIZE))); // dumping the store into a set is VASTLY more performant than using a cursor
 
-    cursor = await cursor.continue();
+    storeEntries.forEach(post => {
+      if (!searchableIndices.has(post.id) || force) {
+        const searchable = { id: post.id, summary: post.summary, postUrl: post.postUrl, quickInfo: quickInfo(post), storedAt: Date.now() };
+        searchableIndices.add(post.id);
+        searchStore.put(searchable)
+        ++i;
+      }
+
+      lowerBound = post.id;
+    });
+
+    indexProgress.progress += storeEntries.size;
   }
 
   const dt = Date.now() - t0;
 
   indexProgress.disableAutoSync();
-  console.log(`indexed ${i} posts in ${dt}ms\ncursor seek speed: ${((indexProgress.progress * 1000) / dt).toFixed(3)} keys/s`);
+  console.log(`indexed ${i} posts in ${dt}ms\nstore seek speed: ${((indexProgress.progress * 1000) / dt).toFixed(3)} keys/s`);
 
-  cursorStatus.remaining = searchableIndices.length;
-  indexProgress.progress = cursorStatus.remaining;
+  tx.oncomplete = () => cursorStatus.remaining = searchableIndices.size;
 
   document.getElementById('postFinder-status-index')?.remove();
-  console.log(indexProgress);
 };
-const indexFromUpdate = async ({ detail: { targets } }) => { // take advantage of dispatched events to index new posts for free without opening extra cursors
-  if ('postStore' in targets) {
-    [targets.postStore].flat().map(post => {
-      if (postIndices.has(post.id)) postIndices.add(post.id);
-      if (!searchableIndices.has(post.id)) {
-        const searchable = { id: post.id, summary: post.summary, postUrl: post.postUrl, quickInfo: quickInfo(post) };
-        updateData({ searchStore: searchable }).then(() => {
-          if (searchableIndices.has(post.id)) searchableIndices.add(post.id);
-        });
-      }
-    });
 
-    cursorStatus.remaining = searchableIndices.size;
+const indexFromUpdate = async ({ detail: { targets } }) => { // take advantage of dispatched events to index new posts for free without opening extra transactions
+  if ('postStore' in targets) {
+    updateData({
+      searchStore: [targets.postStore].flat().map(post => {
+        if (postIndices.has(post.id)) postIndices.add(post.id);
+        if (!searchableIndices.has(post.id)) {
+          if (searchableIndices.has(post.id)) searchableIndices.add(post.id);
+          return { id: post.id, summary: post.summary, postUrl: post.postUrl, quickInfo: quickInfo(post) };
+        }
+      }).filter(s => !!s)
+    }).then(() => cursorStatus.remaining = searchableIndices.size);
   }
 };
 
@@ -323,7 +335,7 @@ const renderResult = (post, hit) => {
             },
             {
               className: 'postFinder-types',
-              children: hit.quickInfo.types.map(type => {
+              children: [hit.quickInfo.types].flat().map(type => {
                 type === 'image' && (type = 'photo');
                 return svgIcon(`posts-${type}`, 24, 24, '', `rgb(var(--${typeIconColour[type]}))`);
               })
@@ -662,9 +674,12 @@ const searchWindow = noact({
 
 export const main = async () => {
   ({ splitMode, maxResults } = await getOptions('postFinder'));
+  //await fillDb(0, 20000);
   db = await openDatabase();
-  postIndices = new Set(await db.getAllKeys('postStore'));
-  searchableIndices = new Set(await db.getAllKeys('searchStore'));
+  const tx = db.transaction(['postStore', 'searchStore'], 'readonly', txOptions);
+
+  postIndices = new Set(await promisifyIDBRequest(tx.objectStore('postStore').getAllKeys()));
+  searchableIndices = new Set(await promisifyIDBRequest(tx.objectStore('searchStore').getAllKeys()));
 
   document.body.append(button);
   document.body.append(searchWindow);
@@ -677,7 +692,7 @@ export const main = async () => {
   indexProgress.total = postIndices.size;
   indexProgress.sync();
 
-  if (indexProgress.progress === indexProgress.total) document.getElementById('postFinder-status-index').remove();
+  if (indexProgress.progress >= indexProgress.total) document.getElementById('postFinder-status-index').remove();
 
   indexPosts();
   window.addEventListener('dbplus-database-update', indexFromUpdate);

@@ -16,6 +16,7 @@
   "hideSidebarContent",
   "emptySidebar",
   "revertHeaders",
+  "betterFooters",
   "floatingAvatars",
   "squareAvatars",
   "hideInPosts",
@@ -36,5 +37,6 @@
   "customColors",
   "followingAsDefault",
   "postFinder",
-  "popoverNotifications"
+  "popoverNotifications",
+  "linkToTheme"
 ]

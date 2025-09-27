@@ -1,4 +1,3 @@
-
 .dbplus-customPopover-baseContainer {
   width: 100%;
   position: absolute;
@@ -7,14 +6,16 @@
   z-index: 100;
   transition: opacity 0.1s;
 }
+
 .dbplus-customPopover-popoverHolder {
   background: RGB(var(--white));
   color: RGB(var(--black));
   border-radius: 3px;
   max-height: calc(100vh - 88px);
-  box-shadow: 0 0 15px rgba(0,0,0,.5);
+  box-shadow: 0 0 15px rgba(0, 0, 0, .5);
   overflow-y: visible;
 }
+
 .dbplus-customPopover-blogCard {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -25,12 +26,14 @@
   display: flex;
   position: relative;
 }
+
 .dbplus-customPopover-blogHeader {
   flex-direction: column;
   flex: auto;
   min-height: 80px;
   display: flex;
 }
+
 .dbplus-customPopover-headerImage.dbplus-customPopover-small.dbplus-customPopover-stretched.dbplus-customPopover-blogLink {
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
@@ -40,6 +43,7 @@
   animation: .35s ease-in-out _op01;
   overflow: hidden;
 }
+
 @keyframes _op01 {
   0% {
     opacity: 0
@@ -49,6 +53,7 @@
     opacity: 1
   }
 }
+
 .dbplus-customPopover-headerImage .dbplus-customPopover-image {
   -o-object-fit: cover;
   object-fit: cover;
@@ -57,6 +62,7 @@
   left: -2.5%;
   height: 140px;
 }
+
 .dbplus-customPopover-bottomHalf.dbplus-customPopover-smallBottom {
   border-radius: 3px;
   padding-top: 21.3333px;
@@ -69,16 +75,19 @@
   align-items: center;
   width: 100%;
 }
+
 .dbplus-customPopover-empty {
   padding-top: 0;
   padding-bottom: 20px;
 }
-.dbplus-customPopover-bottomHalf > .dbplus-customPopover-headerBar {
+
+.dbplus-customPopover-bottomHalf>.dbplus-customPopover-headerBar {
   width: 100%;
   position: absolute;
   top: 0;
   left: 0;
 }
+
 .dbplus-customPopover-headerContainer.dbplus-customPopover-blogCardHeaderBar {
   --max-width: 500px;
   border-radius: 3px;
@@ -87,10 +96,11 @@
   display: flex;
   position: relative;
 }
+
 .dbplus-customPopover-headerContainer.dbplus-customPopover-withStretchedHeaderImage.dbplus-customPopover-blogCardHeaderBar:before {
   content: "";
   opacity: .3;
-  background: linear-gradient(#000 0%,#000 0%,#000 0%,transparent 100%);
+  background: linear-gradient(#000 0%, #000 0%, #000 0%, transparent 100%);
   width: 100%;
   height: 100%;
   display: block;
@@ -100,6 +110,7 @@
   left: 0;
   right: 0;
 }
+
 .dbplus-customPopover-headerBar.dbplus-customPopover-blogCardHeaderBar {
   box-sizing: border-box;
   flex-direction: row;
@@ -111,12 +122,14 @@
   position: absolute;
   top: 0;
 }
+
 .dbplus-customPopover-blogLinkRecommendationWrapper {
   max-width: var(--max-width);
   width: 100%;
   transition: max-width .3s;
   position: relative;
 }
+
 .dbplus-customPopover-blogLinkWrapper.dbplus-customPopover-blogCardBlogLink {
   max-width: var(--max-width);
   width: 100%;
@@ -125,7 +138,8 @@
   overflow: hidden;
   margin-left: 0;
 }
-.dbplus-customPopover-blogCardBlogLink > .dbplus-customPopover-blogLink {
+
+.dbplus-customPopover-blogCardBlogLink>.dbplus-customPopover-blogLink {
   font-family: var(--font-family);
   width: 100%;
   min-width: 0;
@@ -138,6 +152,7 @@
   position: relative;
   overflow: hidden;
 }
+
 .dbplus-customPopover-blogLinkShort {
   text-overflow: ellipsis;
   transition: opacity .15s;
@@ -146,15 +161,18 @@
   opacity: 1;
   position: relative;
 }
+
 .dbplus-customPopover-avatarBlock.dbplus-customPopover-blogLink {
   cursor: pointer;
   width: 100%;
 }
+
 .dbplus-customPopover-blogLink {
   cursor: pointer;
   word-break: break-word;
   text-decoration: none;
 }
+
 .dbplus-customPopover-avatarPositioner.dbplus-customPopover-smallAvatarPositioner.dbplus-customPopover-atopHeaderImage {
   margin-top: 0;
   padding-top: 0;
@@ -168,6 +186,7 @@
   width: 100%;
   display: flex;
 }
+
 .dbplus-customPopover-avatarWrapper.dbplus-customPopover-animateAvatar.dbplus-customPopover-smallAvatar {
   width: 74px;
   height: 74px;
@@ -178,6 +197,7 @@
   display: flex;
   animation: .4s ease-in-out _trnsf;
 }
+
 @keyframes _trnsf {
 
   0%,
@@ -189,28 +209,35 @@
     transform: none
   }
 }
+
 .dbplus-customPopover-square {
   border-radius: 4px;
 }
+
 .dbplus-customPopover-circle {
   border-radius: 50%;
 }
+
 .dbplus-customPopover-avatarWrapper {
   position: relative;
 }
+
 .dbplus-customPopover-avatar {
   position: relative;
 }
+
 .dbplus-customPopover-avatarWrapperInner {
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
+
 .dbplus-customPopover-placeholder {
   width: 100%;
   line-height: 0;
   position: relative;
 }
+
 .dbplus-customPopover-image.dbplus-customPopover-visible {
   position: absolute;
   top: 0;
@@ -219,6 +246,7 @@
   -o-object-fit: cover;
   object-fit: cover;
 }
+
 .dbplus-customPopover-textContainer {
   flex-direction: column;
   justify-content: center;
@@ -230,8 +258,10 @@
   box-sizing: border-box;
   padding: 0 15px;
 }
+
 .dbplus-customPopover-title {
   font-size: 18px;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   display: -webkit-box;
@@ -245,11 +275,13 @@
   word-wrap: break-word;
   text-align: center;
 }
-.dbplus-customPopover-textContainer > .dbplus-customPopover-description {
+
+.dbplus-customPopover-textContainer>.dbplus-customPopover-description {
   flex: 0 auto;
   max-width: 100%;
   position: relative;
 }
+
 .dbplus-customPopover-description.dbplus-customPopover-small.dbplus-customPopover-gradient {
   font-family: var(--font-family);
   max-height: 40px;
@@ -257,7 +289,7 @@
   font-weight: 400;
   line-height: 1.42857;
   position: static;
-  -webkit-mask-image: linear-gradient(0deg,rgba(255,255,255,0) 0,#000 50%);
+  -webkit-mask-image: linear-gradient(0deg, rgba(255, 255, 255, 0) 0, #000 50%);
   width: 100%;
   height: 100%;
   hyphens: auto;
@@ -266,8 +298,9 @@
   overflow-wrap: anywhere;
   transition: max-height 50ms;
   overflow: hidden;
-  mask-image: linear-gradient(0deg,rgba(255,255,255,0) 0,#000 50%);
+  mask-image: linear-gradient(0deg, rgba(255, 255, 255, 0) 0, #000 50%);
 }
+
 .dbplus-customPopover-posts {
   flex: none;
   justify-content: space-around;
@@ -278,6 +311,7 @@
   padding-right: 5px;
   display: flex;
 }
+
 .dbplus-customPopover-chicletHolder {
   border-radius: 3px;
   width: 100%;
@@ -287,6 +321,7 @@
   position: relative;
   overflow: hidden;
 }
+
 .dbplus-customPopover-chicletHolder .dbplus-customPopover-text {
   background: RGB(var(--white));
   box-sizing: border-box;
@@ -295,15 +330,17 @@
   font-size: 12px;
   position: relative;
 }
+
 .dbplus-customPopover-chicletHolder .dbplus-customPopover-text:after {
   content: "";
-  background: linear-gradient(to bottom,rgba(var(--white),0)0%,rgba(var(--white),.7)50%,rgba(var(--white),1)100%);
+  background: linear-gradient(to bottom, rgba(var(--white), 0)0%, rgba(var(--white), .7)50%, rgba(var(--white), 1)100%);
   width: 100%;
   height: 50px;
   position: absolute;
   bottom: 0;
   left: 0;
 }
+
 .dbplus-customPopover-chicletHolder .dbplus-customPopover-textBlock.dbplus-customPopover-textBlockMicro {
   white-space: normal;
   color: RGB(var(--black));
@@ -317,26 +354,31 @@
   line-height: 1.42857;
   font-family: var(--font-family);
 }
+
 .dbplus-customPopover-chicletHolder figure.dbplus-customPopover-image {
   box-sizing: border-box;
   height: 100%;
   overflow: hidden;
 }
+
 .dbplus-customPopover-blankBackground {
   background-color: RGB(var(--white));
 }
+
 .dbplus-customPopover-chicletHolder img {
   min-width: 100%;
   min-height: 100%;
   width: 100%;
   height: 100%;
 }
+
 .dbplus-customPopover-chicletHolder .dbplus-customPopover-video,
 .dbplus-customPopover-chicletHolder .dbplus-customPopover-audio {
   background: RGB(var(--pink));
   box-sizing: border-box;
   height: 100%;
 }
+
 .dbplus-customPopover-chicletHolder .dbplus-customPopover-playButton {
   justify-content: center;
   align-items: center;
@@ -347,6 +389,7 @@
   position: absolute;
   top: 0;
 }
+
 .dbplus-customPopover-chicletHolder .dbplus-customPopover-audioPlayButton {
   justify-content: center;
   align-items: center;
@@ -365,17 +408,23 @@
   line-height: 1;
   position: relative;
 }
+
 .dbplus-controlIconWrapper {
   width: inherit;
   vertical-align: middle;
   display: inline-block;
 }
+
 .dbplus-controlIconButton {
   display: flex;
   color: inherit;
   font: inherit;
 }
-.dbplus-controlIconButtonInner { display: flex; }
+
+.dbplus-controlIconButtonInner {
+  display: flex;
+}
+
 .dbplus-controlIcon.copied .dbplus-controlIconButtonInner::after {
   position: absolute;
   bottom: -2px;
@@ -392,7 +441,11 @@
   line-height: 1;
   color: rgb(var(--green));
 }
-.dbplus-controlIcon.copied use { --icon-color-primary: rgb(var(--green)); }
+
+.dbplus-controlIcon.copied use {
+  --icon-color-primary: rgb(var(--green));
+}
+
 .dbplus-tooltipHolder {
   display: none;
   position: absolute;
@@ -402,7 +455,11 @@
   height: 0;
   justify-content: center;
 }
-.dbplus-controlIconButton:hover + .dbplus-tooltipHolder { display: flex; }
+
+.dbplus-controlIconButton:hover+.dbplus-tooltipHolder {
+  display: flex;
+}
+
 .dbplus-tooltip {
   position: absolute;
   bottom: 10px;
@@ -417,8 +474,9 @@
   font-size: .875rem;
   font-weight: 500;
   line-height: 20px;
-  box-shadow: 0 0 4px rgba(0,0,0,.25);
+  box-shadow: 0 0 4px rgba(0, 0, 0, .25);
 }
+
 .dbplus-tooltipArrow {
   position: absolute;
   top: -10px;
@@ -426,6 +484,7 @@
   width: 16px;
   height: 16px;
 }
+
 .dbplus-tooltipArrow::after {
   content: "";
   pointer-events: none;
@@ -435,4 +494,13 @@
   width: 0;
   height: 0;
   position: absolute;
+}
+
+/* fixes for native tumblr bugs */
+[data-css~="baseContainer"][data-css~="isRenderedWithPortal"]:has([data-css~="meatballMenu"]) {
+  z-index: 102 !important;
+}
+
+[data-css~="conversationWindow"] [data-css~="icebreaker"] :is([data-css~="blogLink"], [data-css~="blogLink"][data-css~="descriptionContainer"]) {
+  width: 100%;
 }

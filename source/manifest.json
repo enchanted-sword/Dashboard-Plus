@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Dashboard Plus",
-  "version": "1.4.0",
+  "version": "1.7.3",
   "description": "Take control of your Tumblr dashboard!",
   "icons": {
     "48": "icons/icon.svg",
@@ -43,9 +43,7 @@
       "run_at": "document_start",
       "js": [
         "control/contentScript.js",
-        "libraries/jquery.min.js",
-        "libraries/umd.js",
-        "libraries/luxon.min.js"
+        "libraries/jquery.min.js"
       ],
       "css": [
         "scripts/utility/dashboardElements.css"

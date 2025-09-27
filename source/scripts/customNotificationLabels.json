@@ -6,17 +6,23 @@
   "preferences": {
     "enabled": false,
     "options": {
-      "followingYou": {
+      "labelFollowers": {
         "value": false,
         "type": "toggle",
         "title": "label blogs that follow you",
-        "tooltip": "adds a blue 'following' label to blogs that follow you"
+        "tooltip": "adds a blue 'following' label to blogs that follow you",
+        "inherit": {
+          "inheritFrom": "customNotificationLabels.followingYou"
+        }
       },
-      "potentialBot": {
+      "labelBots": {
         "value": false,
         "type": "toggle",
         "title": "label potential bots",
-        "tooltip": "adds a red 'potential bot' label to blogs that may be bots"
+        "tooltip": "adds a red 'potential bot' label to blogs that may be bots",
+        "inherit": {
+          "inheritFrom": "customNotificationLabels.potentialBot"
+        }
       }
     }
   },
