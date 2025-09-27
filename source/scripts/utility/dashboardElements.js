@@ -306,7 +306,7 @@ export const addUrlPopover = async anchor => {
   anchor.addEventListener('mouseleave', removePopover);
 }
 
-const controlTargetSelector = `[tabindex="-1"][data-id] article :is(${s('footerRow')}:has(${s('noteCount')}) ${s('controls')},${s('engagementControls')})`;
+const controlTargetSelector = `[tabindex="-1"][data-id] article :is(${s('footerRow')}:has(${s('noteCount')}) ${s('controls')},${s('footerContent')})`;
 const newControlIcon = (icon, func, tooltip) => elem('div', { class: 'dbplus-controlIcon' }, null, [
   elem('span', { class: 'dbplus-controlIconWrapper' }, null, [
     elem('button', { class: 'dbplus-controlIconButton', 'aria-label': tooltip }, { 'click': func }, `
@@ -359,11 +359,16 @@ export const controlIcons = Object.freeze({
 });
 const onNewControlElement = controlElements => {
   for (const controlElement of controlElements) {
+    const insert = controlElement.matches(s('footerContent'));
     for (const [func, { icon, tooltip }] of controlIcons.collection) {
-      if (!controlElement.querySelector(`[href="#managed-icon__${icon}"]`)) controlElement.prepend(newControlIcon(icon, func, tooltip));
+      if (!controlElement.querySelector(`[href="#managed-icon__${icon}"]`)) insert
+        ? controlElement.append(newControlIcon(icon, func, tooltip))
+        : controlElement.prepend(newControlIcon(icon, func, tooltip));
     }
     for (const [className, noactIcon] of controlIcons.advancedCollection) {
-      if (!controlElement.querySelector(className)) controlElement.prepend(noact(noactIcon));
+      if (!controlElement.querySelector(className)) insert
+        ? controlElement.append(noact(noactIcon))
+        : controlElement.prepend(noact(noactIcon));
     }
   }
 }
