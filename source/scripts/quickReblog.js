@@ -117,7 +117,7 @@ function onTouchMove(event) {
   document.querySelectorAll('.dbplus-quickReblog-bubble').forEach(e => e.dataset.state = '');
 
   if (target) target.dataset.state = 'hover';
-};
+}
 const touchEndFn = id => function (event) {
   const target = document.elementFromPoint(event.changedTouches[0].clientX, event.changedTouches[0].clientY)?.closest('.dbplus-quickReblog-bubble');
 
