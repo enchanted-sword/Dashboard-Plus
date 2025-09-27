@@ -1,19 +1,49 @@
 const longPressDelay = 500;
 
-export const onLongPress = (elem, func) => {
+let timeoutId;
+
+function preventScroll(event) {
+  event.preventDefault();
+  clearTimeout(timeoutId);
+}
+function onContextMenu(event) {
+  event.preventDefault();
+}
+
+export const onLongPress = (elem, func, moveFunc = null, endFunc = null, cancelFunc = null) => {
   if (elem.dataset.longpressEvent) return;
-  let timeoutId;
 
   elem.dataset.longpressEvent = true;
 
-  elem.addEventListener('touchstart', e => {
+  function onTouchStart(event) {
+    event.preventDefault();
+    event.stopPropagation();
     timeoutId = setTimeout(() => {
       timeoutId = null;
-      e.stopPropagation();
-      func(e);
+      func(event);
     }, longPressDelay);
-  });
-  elem.addEventListener('contextmenu', e => e.preventDefault());
-  elem.addEventListener('touchend', () => timeoutId && clearTimeout(timeoutId));
-  elem.addEventListener('touchmove', () => timeoutId && clearTimeout(timeoutId));
+  }
+  function onTouchEnd(event) {
+    endFunc && endFunc(event);
+    preventScroll(event);
+    elem.dataset.longpressEvent = '';
+  }
+  function onTouchMove(event) {
+    moveFunc && moveFunc(event);
+    preventScroll(event);
+  }
+
+  elem.addEventListener('touchstart', onTouchStart);
+  elem.addEventListener('contextmenu', onContextMenu);
+  elem.addEventListener('touchend', onTouchEnd);
+  elem.addEventListener('touchmove', onTouchMove, { passive: false });
+  cancelFunc && elem.addEventListener('touchcancel', cancelFunc);
+
+  return () => {
+    elem.removeEventListener('touchstart', onTouchStart);
+    elem.removeEventListener('contextmenu', onContextMenu);
+    elem.removeEventListener('touchend', onTouchEnd);
+    elem.removeEventListener('touchmove', onTouchMove, { passive: false });
+    elem.removeEventListener('touchcancel', cancelFunc);
+  };
 };

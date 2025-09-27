@@ -1,28 +1,35 @@
 {
   "name": "quickReblog",
-  "title": "quick reblog",
+  "title": "mobile quick reblog",
   "category": [
     "posts",
     "dashboard"
   ],
-  "description": "adds a popup menu that allows quick-resharing a post with tags and/or content. to display the menu, hover over the reshare button on a device with mouse input, or tap and hold it on a device with touch input.",
+  "description": "adds the tumblr mobile quick reblog popup menu. mobile-only.",
   "preferences": {
     "enabled": false,
     "options": {
-      "addTags": {
-        "value": true,
-        "type": "toggle",
-        "name": "show tags field",
-        "tooltip": "allows adding tags when quick-reblogging"
-      },
-      "addContent": {
-        "value": false,
-        "type": "toggle",
-        "name": "show content field",
-        "tooltip": "allows adding content when quick-reblogging"
+      "blogCount": {
+        "title": "blog count",
+        "type": "range",
+        "min": 1,
+        "max": 8,
+        "value": 3,
+        "step": 1,
+        "list": [
+          {
+            "value": 0,
+            "label": "0"
+          },
+          {
+            "value": 8,
+            "label": "8"
+          }
+        ]
       }
     }
   },
   "js": true,
-  "css": true
+  "css": true,
+  "mobileOnly": true
 }
