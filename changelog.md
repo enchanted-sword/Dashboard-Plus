@@ -1,3 +1,19 @@
+# v1.8.0
+
+## general
+
+- fixed preference export filename not accounting for zero-based month index
+- the extension is now available for firefox android!
+
+## horizontal navigation
+
+- added missing / in blog queue urls
+
+## new feature! mobile quick reblog
+
+- adds the tumblr mobile quick reblog popup menu to the mobile web interface
+- mobile-only (touch controls)
+
 # v1.7.1
 
 ## general
