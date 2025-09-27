@@ -306,7 +306,7 @@ export const addUrlPopover = async anchor => {
   anchor.addEventListener('mouseleave', removePopover);
 }
 
-const controlTargetSelector = `[tabindex="-1"][data-id] article :is(${s('footerRow')}:has(${s('noteCount')}) ${s('controls')},${s('footerContent')})`;
+const controlTargetSelector = `[tabindex="-1"][data-id] article :is(${s('footerRow')}:has(${s('noteCount')}) ${s('controls')},${s('engagementControls')})`;
 const newControlIcon = (icon, func, tooltip) => elem('div', { class: 'dbplus-controlIcon' }, null, [
   elem('span', { class: 'dbplus-controlIconWrapper' }, null, [
     elem('button', { class: 'dbplus-controlIconButton', 'aria-label': tooltip }, { 'click': func }, `
