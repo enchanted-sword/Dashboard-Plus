@@ -67,7 +67,7 @@
         const feature = installedFeatures[name];
 
         try {
-          if (feature.desktopOnly && !resizeListeners.includes(name)) resizeListeners.push(name);
+          if (feature.desktopOnly || feature.mobileOnly && !resizeListeners.includes(name)) resizeListeners.push(name);
           if (feature.css) {
             const link = Object.assign(document.createElement('link'), {
               id: `dbplus-styles-${name}`,
@@ -144,9 +144,15 @@
           resizeListeners.forEach(feature => {
             if (installedFeatures[feature]?.desktopOnly && enabledFeatures.includes(feature)) destroyFeature(feature)
               .then(() => resizeListeners.push(feature)); // destroying a feature removes its resize listener, so we re-add it here
+            else if (installedFeatures[feature]?.mobileOnly && !enabledFeatures.includes(feature)) {
+              enabledFeatures.push(feature);
+              executeFeature(feature);
+            }
           });
         } else resizeListeners.forEach(feature => {
-          if (!enabledFeatures.includes(feature)) {
+          if (installedFeatures[feature]?.mobileOnlyOnly && enabledFeatures.includes(feature)) destroyFeature(feature)
+            .then(() => resizeListeners.push(feature)); // destroying a feature removes its resize listener, so we re-add it here
+          else if (installedFeatures[feature]?.desktopOnly && !enabledFeatures.includes(feature)) {
             enabledFeatures.push(feature);
             executeFeature(feature);
           }
