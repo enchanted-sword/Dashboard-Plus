@@ -26,7 +26,6 @@ export const onLongPress = (elem, func, moveFunc = null, endFunc = null, cancelF
   function onTouchEnd(event) {
     endFunc && endFunc(event);
     preventScroll(event);
-    elem.dataset.longpressEvent = '';
   }
   function onTouchMove(event) {
     moveFunc && moveFunc(event);
@@ -40,6 +39,7 @@ export const onLongPress = (elem, func, moveFunc = null, endFunc = null, cancelF
   cancelFunc && elem.addEventListener('touchcancel', cancelFunc);
 
   return () => {
+    elem.dataset.longpressEvent = '';
     elem.removeEventListener('touchstart', onTouchStart);
     elem.removeEventListener('contextmenu', onContextMenu);
     elem.removeEventListener('touchend', onTouchEnd);
