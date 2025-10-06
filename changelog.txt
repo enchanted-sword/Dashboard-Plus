@@ -1,3 +1,14 @@
+v1.8.1
+
+mobile quick reblog
+
+- now enabled for all touch devices
+- fixed new tumblr reblog menu being supressed from opening
+
+better post footers
+
+- added option to remove the extra click to reblog
+
 v1.8.0
 
 general
