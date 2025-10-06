@@ -42,6 +42,7 @@
 
     const modifyObfuscatedFeatures = (obfuscatedFeatures, featureSet) => {
       const obf = JSON.parse(atob(obfuscatedFeatures));
+      console.info(obf);
       for (const x of featureSet) {
         obf[x.name] = x.value;
       }
