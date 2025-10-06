@@ -4,8 +4,10 @@ import { timelineObject } from './utility/reactProps.js';
 import { svgIcon } from './utility/dashboardElements.js';
 import { noact } from './utility/noact.js';
 import { cellSelector, postSelector } from './utility/document.js';
-import { numFormat } from './utility/jsTools.js';
+import { getOptions, numFormat } from './utility/jsTools.js';
 import { apiFetch, navigate, translate } from './utility/tumblr.js';
+
+let restoreReblog;
 
 const customClass = 'dbplus-betterFooters';
 
@@ -200,6 +202,16 @@ const fixFooters = footers => footers.forEach(async footer => {
         selectType('replies');
       });
 
+      if (restoreReblog) {
+        const rButton = footer.querySelector(`[aria-label="${translate('Reblog')}"][aria-controls]`);
+        const rMenu = document.getElementById(rButton?.getAttribute('aria-controls')).querySelector('[href^="/reblog"]');
+        rButton.addEventListener('click', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          rMenu.click();
+        });
+      }
+
       if (showTopRow) {
         const editUrl = `/edit/${blogName}/${id}`;
         const topRow = noact({
@@ -230,6 +242,8 @@ const fixFooters = footers => footers.forEach(async footer => {
 });
 
 export const main = async () => {
+  ({ restoreReblog } = await getOptions('betterFooters'));
+
   mutationManager.start(footerSelector, fixFooters);
 };
 export const clean = async () => {

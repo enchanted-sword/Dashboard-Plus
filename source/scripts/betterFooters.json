@@ -4,7 +4,15 @@
   "category": "posts",
   "description": "makes post footers less ugly and fixes the button order",
   "preferences": {
-    "enabled": false
+    "enabled": false,
+    "options": {
+      "restoreReblog": {
+        "value": false,
+        "type": "toggle",
+        "title": "remove extra reblog menu",
+        "tooltip": "removes the extra menu that you have to click through before reblogging a post"
+      }
+    }
   },
   "js": true,
   "css": true
