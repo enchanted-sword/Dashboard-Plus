@@ -142,7 +142,7 @@ const addMenus = async posts => {
     const endAction = touchEndFn(parent_post_id);
     const cancelAction = touchCancelFn(parent_post_id);
 
-    shareButton.addEventListener('mouseenter', action);
+    // shareButton.addEventListener('mouseenter', action);
     const cleanAction = onLongPress(shareButton, action, onTouchMove, endAction, cancelAction);
     cleanActions.add(cleanAction);
   }
