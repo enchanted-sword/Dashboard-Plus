@@ -48,6 +48,10 @@
   animation: 1s ease-in-out infinite wiggle;
 }
 
+:has(.dbplus-quickReblog-bubble:is(:hover, [data-state="hover"])) .dbplus-quickReblog-bubble:not(:hover, [data-state="hover"]) {
+  transform: scale(0.9);
+}
+
 /* .dbplus-quickReblog-bubble:last-child {
   display: flex;
   justify-content: center;

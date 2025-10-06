@@ -1,10 +1,11 @@
 const longPressDelay = 500;
 
-let timeoutId;
+let timeoutId = null;
 
 function preventScroll(event) {
   event.preventDefault();
   clearTimeout(timeoutId);
+  timeoutId = null;
 }
 function onContextMenu(event) {
   event.preventDefault();
@@ -16,8 +17,6 @@ export const onLongPress = (elem, func, moveFunc = null, endFunc = null, cancelF
   elem.dataset.longpressEvent = true;
 
   function onTouchStart(event) {
-    event.preventDefault();
-    event.stopPropagation();
     timeoutId = setTimeout(() => {
       timeoutId = null;
       func(event);
@@ -25,6 +24,7 @@ export const onLongPress = (elem, func, moveFunc = null, endFunc = null, cancelF
   }
   function onTouchEnd(event) {
     endFunc && endFunc(event);
+    if (timeoutId !== null) event.target.closest('button').click();
     preventScroll(event);
   }
   function onTouchMove(event) {

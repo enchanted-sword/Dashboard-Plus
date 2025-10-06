@@ -149,7 +149,6 @@ const addMenus = async posts => {
 };
 
 export const main = async () => {
-  if (window.innerWidth >= 990) return;
   ({ blogCount } = await getOptions('quickReblog'));
 
   postFunction.start(addMenus, ':not([data-quick-reblog="true"])');

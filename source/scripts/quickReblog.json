@@ -5,7 +5,7 @@
     "posts",
     "dashboard"
   ],
-  "description": "adds the tumblr mobile quick reblog popup menu. mobile-only.",
+  "description": "adds the tumblr mobile quick reblog popup menu. touchscreen-only.",
   "preferences": {
     "enabled": false,
     "options": {
@@ -30,6 +30,5 @@
     }
   },
   "js": true,
-  "css": true,
-  "mobileOnly": true
+  "css": true
 }
