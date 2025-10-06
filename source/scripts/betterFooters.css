@@ -198,7 +198,7 @@
 }
 
 [data-css~="engagementCount"] {
-  visibility: hidden;
+  display: none;
   width: 0;
   padding: 0 !important;
 }
