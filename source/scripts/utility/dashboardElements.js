@@ -367,7 +367,7 @@ const onNewControlElement = controlElements => {
     }
     for (const [className, noactIcon] of controlIcons.advancedCollection) {
       if (!controlElement.querySelector(className)) insert
-        ? controlElement.append(noact(noactIcon))
+        ? controlElement.insertBefore(noact(noactIcon), controlElement.querySelector('.bf-notesWrapper'))
         : controlElement.prepend(noact(noactIcon));
     }
   }
