@@ -66,6 +66,7 @@
     "gecko": {
       "id": "dashboardplus@starlight-symposium.neocities.org",
       "strict_min_version": "121.0"
-    }
+    },
+    "gecko_android": {}
   }
 }
