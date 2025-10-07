@@ -1,14 +1,15 @@
 import { noact } from './utility/noact.js';
-import { postFunction } from './utility/mutations.js';
+import { mutationManager } from './utility/mutations.js';
 import { timelineObject } from './utility/reactProps.js';
 import { s } from './utility/style.js';
 import { addUrlPopover, svgIcon } from './utility/dashboardElements.js';
 import { keyToClasses, navigate, translate } from './utility/tumblr.js';
+import { postSelector } from './utility/document.js';
 
 const NEWDASH = () => !!document.querySelector(s('userBlock')); // Quick 'n dirty check
 
 const customClass = 'dbplus-revertHeaders'
-const postSelector = `[data-timeline-id]:not([data-route="user/inbox"]) [data-id] article:not(.${customClass})`;
+const headerSelector = `[data-timeline-id]:not([data-route="user/inbox"]) [data-id] article header:not(.${customClass}):has(${s('attribution')},${s('headline')})`;
 
 function navigateWrapper(event) {
   event.preventDefault();
@@ -33,31 +34,29 @@ const newRebloggedFrom = parentPostUrl => noact({
   children: parentPostUrl.split('/')[3]
 });
 
-const revertHeaders = async posts => {
-  for (const post of posts) {
-    if (post.querySelector(`header ${s('attribution')}`)) legacyRevertHeader(post);
+const revertHeaders = headers => {
+  headers.forEach(async header => {
+    if (header.querySelector(s('attribution'))) legacyRevertHeader(post);
     else {
+      const post = header.closest(postSelector);
       const { parentPostUrl } = await timelineObject(post);
-      const header = post.querySelector('header');
 
-      if (parentPostUrl)
-
-        if (parentPostUrl) {
-          const rebloggedFrom = newRebloggedFrom(parentPostUrl);
-          addUrlPopover(rebloggedFrom);
-          const title = header.querySelector(`${s('headline')}>${s('title')}`);
-          title.insertAdjacentElement('afterend', rebloggedFrom);
-          rebloggedFrom.before(reblogIcon());
-        }
+      if (parentPostUrl) {
+        const rebloggedFrom = newRebloggedFrom(parentPostUrl);
+        addUrlPopover(rebloggedFrom);
+        const title = header.querySelector(`${s('headline')}>${s('title')}`);
+        title?.insertAdjacentElement('afterend', rebloggedFrom);
+        rebloggedFrom.before(reblogIcon());
+      }
 
       post.classList.add(customClass);
     }
-  }
+  })
 };
 
-const legacyRevertHeader = async post => {
+const legacyRevertHeader = async header => {
+  const post = header.closest(postSelector);
   const { parentPostUrl } = await timelineObject(post);
-  const header = post.querySelector('header');
   const attribution = header.querySelector(s('attribution'));
   let rebloggedFrom = attribution.querySelector(s('rebloggedFromName'));
   let addingNewRebloggedFrom = false;
@@ -89,11 +88,11 @@ const legacyRevertHeader = async post => {
 };
 
 export const main = async () => {
-  postFunction.start(revertHeaders, postSelector);
+  mutationManager.start(headerSelector, revertHeaders);
 }
 
 export const clean = async () => {
-  postFunction.stop(revertHeaders);
+  mutationManager.stop(revertHeaders);
 
   $('.dbplus-rebloggedFrom').remove();
   NEWDASH() ? $('.dbplus-reblogIcon').remove() : $('.dbplus-reblogIcon').replaceWith(`${translate('reblogged')}`);
