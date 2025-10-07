@@ -10,6 +10,8 @@ import { apiFetch, navigate, translate } from './utility/tumblr.js';
 let restoreReblog;
 
 const customClass = 'dbplus-betterFooters';
+const hiddenClass = 'bf-hidden';
+const changedBehaviourClass = 'bf-1click';
 
 const footerSelector = s('footerContent');
 const replySelector = s('button brandBlue');
@@ -79,6 +81,12 @@ const deletePostButton = (uuid, id) => ({
   children: svgIcon('delete', 21, 21, 'black')
 });
 
+function removeClickthrough(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  document.getElementById(this?.getAttribute('aria-controls')).querySelector('[href^="/reblog"]').click();
+}
+
 const fixFooters = footers => footers.forEach(async footer => {
   const post = footer.closest(postSelector);
   if (!post || post.querySelector(`:is(${s('footerRow')},.${customClass})`)) return;
@@ -91,16 +99,16 @@ const fixFooters = footers => footers.forEach(async footer => {
     let selected = 'replies';
 
     const replaceIcon = (icon, replacement) => {
-      const wrapper = footer.querySelector(`${s('truncate')}:has([href="#managed-icon__${icon}"])`);
-      if (wrapper) {
-        wrapper.firstElementChild.style.display = 'none';
+      const wrapper = footer.querySelector(`:is(${s('truncate')},${s('icon')}):has([href="#managed-icon__${icon}"])`);
+      if (wrapper && !wrapper.querySelector(`.${hiddenClass}`)) {
+        wrapper.firstElementChild.classList.add(hiddenClass);
         wrapper.append(replacement);
       }
     };
 
-    replaceIcon('ds-reply-outline-24', svgIcon('reply-empty', 21, 21, '', 'currentColor'));
-    replaceIcon('ds-reblog-24', svgIcon('reblog', 21, 21, '', 'currentColor'));
-    replaceIcon('ds-ui-upload-24', svgIcon('share-icon-proper', 24, 24, '', 'currentColor'));
+    replaceIcon('ds-reply-outline-24', svgIcon('reply-empty', 21, 21, customClass, 'currentColor'));
+    replaceIcon('ds-reblog-24', svgIcon('reblog', 21, 21, customClass, 'currentColor'));
+    replaceIcon('ds-ui-upload-24', svgIcon('share-icon-proper', 24, 24, customClass, 'currentColor'));
 
     timelineObject(post).then(({ blog, replyCount, likeCount, reblogCount, noteCount, blogName, id, canEdit, canDelete, state }) => {
       const canManage = canEdit || canDelete;
@@ -204,12 +212,8 @@ const fixFooters = footers => footers.forEach(async footer => {
 
       if (restoreReblog) {
         const rButton = footer.querySelector(`[aria-label="${translate('Reblog')}"][aria-controls]`);
-        const rMenu = document.getElementById(rButton?.getAttribute('aria-controls')).querySelector('[href^="/reblog"]');
-        rButton.addEventListener('click', function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-          rMenu.click();
-        });
+        rButton?.addEventListener('click', removeClickthrough);
+        rButton?.classList.add(changedBehaviourClass);
       }
 
       if (showTopRow) {
@@ -249,4 +253,9 @@ export const main = async () => {
 export const clean = async () => {
   mutationManager.stop(footerSelector, fixFooters);
   document.querySelectorAll(`.${customClass}`).forEach(s => s.remove());
+  document.querySelectorAll(`.${hiddenClass}`).forEach(s => s.classList.remove(hiddenClass));
+  document.querySelectorAll(`.${changedBehaviourClass}`).forEach(s => {
+    s.classList.remove(changedBehaviourClass);
+    s.removeEventListener('click', removeClickthrough);
+  });
 };

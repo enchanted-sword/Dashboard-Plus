@@ -175,14 +175,25 @@
 [data-css~="footerContent"] {
   flex-flow: row-reverse;
   padding-bottom: 8px;
-  gap: 4px;
+  gap: 1rem;
   justify-content: flex-start;
+}
+
+[data-css~="footerContent"]>div:not([class]) {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+[data-css~="footerContent"]>div:not([data-css~="engagementControls"]) [data-css~="button"][data-css~="action"] {
+  padding: 0;
 }
 
 [data-css~="engagementControls"] {
   justify-content: flex-end;
   width: fit-content;
   align-items: center;
+  gap: 1rem;
 }
 
 [data-css~="engagementCountWrapper"] {
@@ -191,30 +202,20 @@
 
 [data-css~="engagementAction"],
 [data-css~="footerControl"]>*>[data-css~="targetWrapper"] {
+  padding: 0;
   height: 1.5rem;
   line-height: 1;
   display: flex;
   align-items: center;
 }
 
-[data-css~="engagementCount"] {
-  display: none;
-  width: 0;
-  padding: 0 !important;
-}
-
 [data-css~="footerControl"] {
   background: transparent;
 }
 
-[data-css~="footerControl"][data-css~="blazeControl"] {
+[data-css~="blazeControl"] {
   position: static;
   height: fit-content
-}
-
-[data-css~="footerContent"]>div {
-  display: flex;
-  gap: 4px;
 }
 
 /* [data-css~="footerContent"] :is(
@@ -223,14 +224,16 @@
   svg:has([href="#managed-icon__ds-ui-upload-24"])
 ) */
 
-[data-css~="postActivity"] [data-css~="header2025"]>[data-css~="withIconOnly"] {
+[data-css~="postActivity"] [data-css~="header2025"]>[data-css~="withIconOnly"],
+[data-css~="engagementCount"],
+.bf-hidden {
   display: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
 
-  :is([data-css~="engagementAction"], [data-css~="footerControl"]):hover,
-  :is([data-css~="engagementAction"], [data-css~="footerControl"]) [data-css~="button"]:not([data-css~="ellipsis"]):hover {
+  [data-css~="footerContent"] :is([data-css~="engagementAction"], [data-css~="footerControl"], [data-css~="button"][data-css~="action"],
+    :is([data-css~="engagementAction"], [data-css~="footerControl"]) [data-css~="button"]:not([data-css~="ellipsis"])):hover {
     background: transparent !important;
   }
 }
