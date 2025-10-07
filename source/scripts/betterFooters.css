@@ -174,7 +174,7 @@
 
 [data-css~="footerContent"] {
   flex-flow: row-reverse;
-  padding-bottom: 8px;
+  padding: .75rem 1rem;
   gap: 1rem;
   justify-content: flex-start;
 }
@@ -226,6 +226,8 @@
 
 [data-css~="postActivity"] [data-css~="header2025"]>[data-css~="withIconOnly"],
 [data-css~="engagementCount"],
+[data-css~="notesCount2025Wrapper"],
+[data-css~="tabs2025"] [data-css~="scrollableContent"]>[data-css~="button"]:not([data-css~="tab"]),
 .bf-hidden {
   display: none;
 }

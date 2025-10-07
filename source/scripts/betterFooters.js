@@ -173,9 +173,10 @@ const fixFooters = footers => footers.forEach(async footer => {
         className: customClass + ` bf-notesSelector bf-${type}`,
         dataset: { selected: selected === type ? 'selected' : '' },
         onclick: function () {
+          console.log(type, action)
           if (selected !== type) {
             selectType(type);
-            action.click();
+            action?.click();
           }
         },
         children
@@ -239,7 +240,7 @@ const fixFooters = footers => footers.forEach(async footer => {
       }
 
       footer.append(notesButton);
-      footer.parentElement.insertBefore(notesFooterControl, footer.nextElementSibling);
+      // footer.parentElement.insertBefore(notesFooterControl, footer.nextElementSibling);
     });
   } catch (e) { console.error(e, post); }
 
