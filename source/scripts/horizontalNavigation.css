@@ -1,5 +1,5 @@
 @media (min-width: 990px) {
-  [data-css~="bluespaceLayout"]>[data-css~="newDesktopLayout"] {
+  [data-css~="bluespaceLayout"]>:is([data-css~="newDesktopLayout"], [data-css~="desktopLayout"]) {
     margin-top: 55px;
   }
 
@@ -222,7 +222,7 @@
 
   [data-css~="mainContentWrapper"] {
     flex-basis: 976px;
-    margin-top: 86px;
+    margin-top: 31px;
   }
 
   [data-css~="container"]:not(#glass-container div) {
