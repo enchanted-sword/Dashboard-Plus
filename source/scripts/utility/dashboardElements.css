@@ -497,9 +497,6 @@
 }
 
 /* fixes for native tumblr bugs */
-[data-css~="baseContainer"][data-css~="isRenderedWithPortal"]:has([data-css~="meatballMenu"]) {
-  z-index: 102 !important;
-}
 
 [data-css~="conversationWindow"] [data-css~="icebreaker"] :is([data-css~="blogLink"], [data-css~="blogLink"][data-css~="descriptionContainer"]) {
   width: 100%;
