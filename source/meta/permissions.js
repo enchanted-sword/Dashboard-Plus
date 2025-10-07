@@ -11,10 +11,10 @@
     if (granted) {
       if (document.getElementById('reloadTabs').checked) {
         await browser.tabs.query({ url: '*://*.tumblr.com/*' }).then(async tabs => {
-        tabs.forEach(tab => browser.tabs.reload(tab.id));
-      });
+          tabs.forEach(tab => browser.tabs.reload(tab.id));
+        });
       }
-      window.close();
     }
+    window.open('./menu.html', '_self');
   };
 }
