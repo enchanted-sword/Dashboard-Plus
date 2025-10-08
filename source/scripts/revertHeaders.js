@@ -36,7 +36,7 @@ const newRebloggedFrom = parentPostUrl => noact({
 
 const revertHeaders = headers => {
   headers.forEach(async header => {
-    if (header.querySelector(s('attribution'))) legacyRevertHeader(post);
+    if (header.querySelector(s('attribution'))) legacyRevertHeader(header);
     else {
       const post = header.closest(postSelector);
       const { parentPostUrl } = await timelineObject(post);
