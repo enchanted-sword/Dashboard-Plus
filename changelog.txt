@@ -1,3 +1,22 @@
+v1.8.2
+
+general
+
+- now opens config menu after install
+- fixed issues with z-layering of popovers
+- added the dragon
+
+revert post footer appearance
+
+- fixed repainting of the reblog icon after reblogging
+- fixed duplication of tab bars with the new notes tab bar
+- fixed absolute placement of blaze icons causing them to display over the reblog button
+- fixed clean() method not accounting for replacement icons
+
+revert post header appearance
+
+- fixed hydration timing issues
+
 v1.8.1
 
 mobile quick reblog
@@ -5,7 +24,7 @@ mobile quick reblog
 - now enabled for all touch devices
 - fixed new tumblr reblog menu being supressed from opening
 
-better post footers
+revert post footer appearance
 
 - added option to remove the extra click to reblog
 
@@ -72,7 +91,7 @@ post finder
 
 v1.6.0
 
-better post footers
+revert post footer appearance
 
 - much cleaner implementation
 - now re-adds edit and delete buttons
@@ -90,7 +109,7 @@ horizontal navigation
 
 v1.5.2
 
-better post footers
+revert post footer appearance
 
 - improved functionality somewhat
 - re-added share button for backup fix
@@ -109,7 +128,7 @@ general
 - made use of some nifty features that tumblr's "developers" still can't patch to serve as a bonus implementation of a feature 😎
 - added the dragon
 
-new feature! better post footers
+new feature! revert post footer appearance
 
 - makes post footers less ugly and fixes the button order
 - `postFooterSplitNotesCount` has gotta be a new all-time low for beta feature quality. if i was getting paid to develop this garbage i would be miserable
