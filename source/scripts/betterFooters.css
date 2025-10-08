@@ -224,6 +224,10 @@
   svg:has([href="#managed-icon__ds-ui-upload-24"])
 ) */
 
+[data-css~="engagementAction"] svg[style="--icon-color-primary: var(--brand-green);"]+svg {
+  --icon-color-primary: var(--brand-green) !important;
+}
+
 [data-css~="postActivity"] [data-css~="header2025"]>[data-css~="withIconOnly"],
 [data-css~="engagementCount"],
 [data-css~="notesCount2025Wrapper"],
