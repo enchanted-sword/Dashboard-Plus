@@ -106,15 +106,15 @@ const fixFooters = footers => footers.forEach(async footer => {
       }
     };
 
-    replaceIcon('ds-reply-outline-24', svgIcon('reply-empty', 21, 21, customClass, 'currentColor'));
-    replaceIcon('ds-reblog-24', svgIcon('reblog', 21, 21, customClass, 'currentColor'));
-    replaceIcon('ds-ui-upload-24', svgIcon('share-icon-proper', 24, 24, customClass, 'currentColor'));
-
-    timelineObject(post).then(({ blog, replyCount, likeCount, reblogCount, noteCount, blogName, id, canEdit, canDelete, state }) => {
-      const canManage = canEdit || canDelete;
+    timelineObject(post).then(({ blog, replyCount, likeCount, reblogCount, noteCount, canReply, canReblog }) => {
+      /* const canManage = canEdit || canDelete;
       const unpublished = ['draft', 'queued', 'submission'].includes(state);
-      const showTopRow = !unpublished && canManage; // && !isQueue && !isInbox
+      const showTopRow = !unpublished && canManage; // && !isQueue && !isInbox */
       let notesButton, notesFooterControl;
+
+      replaceIcon('ds-reply-outline-24', svgIcon('reply-empty', 21, 21, customClass, `rgba(var(--black), ${canReply? 0.65 : 0.4})`));
+      replaceIcon('ds-reblog-24', svgIcon('reblog', 21, 21, customClass, `rgba(var(--black), ${canReblog? 0.65 : 0.4})`));
+      replaceIcon('ds-ui-upload-24', svgIcon('share-icon-proper', 24, 24, customClass, 'rgba(var(--black),0.65)'));
 
       function toggleActivityState() {
         if (activityState) {
@@ -136,9 +136,22 @@ const fixFooters = footers => footers.forEach(async footer => {
           onclick: function () {
             toggleActivityState();
 
-            if (selected === 'replies') repliesActivityButton.click();
-            else if (selected === 'reblogs') reblogsActivityButton.click();
-            else likesActivityButton.click();
+            if (!notesButton.dataset.state) {
+              const closeButton = post.querySelector(`${s('postActivity')} ${s('tabs2025')} ${s('button')}:has([href="#managed-icon__ds-ui-x-20"])`);
+              closeButton?.click();
+            } else {
+              switch(selected) {
+                case 'replies':
+                  repliesActivityButton?.click();
+                  break;
+                case 'reblogs':
+                  reblogsActivityButton.click();
+                   break;
+                case 'likes':
+                  likesActivityButton.click();
+                  break;
+              }
+            }
           },
           children: [
             {
@@ -163,10 +176,11 @@ const fixFooters = footers => footers.forEach(async footer => {
       });
 
       const selectType = type => {
+        if (type === 'comments') type = 'replies';
         selected = type;
-        Array.from(notesFooterControl.children).forEach(s => s.dataset.selected = '');
+        /* Array.from(notesFooterControl.children).forEach(s => s.dataset.selected = '');
         notesFooterControl.querySelector(`.bf-${type}`).dataset.selected = 'selected';
-        notesFooterControl.dataset.selected = type;
+        notesFooterControl.dataset.selected = type; */
       };
 
       const notesSelector = (type, action, children) => ({
@@ -217,7 +231,7 @@ const fixFooters = footers => footers.forEach(async footer => {
         rButton?.classList.add(changedBehaviourClass);
       }
 
-      if (showTopRow) {
+      /* if (showTopRow) {
         const editUrl = `/edit/${blogName}/${id}`;
         const topRow = noact({
           className: customClass + ' bf-topRow',
@@ -237,10 +251,10 @@ const fixFooters = footers => footers.forEach(async footer => {
         });
 
         footer.parentElement.prepend(topRow);
-      }
+      } */
 
       footer.append(notesButton);
-      // footer.parentElement.insertBefore(notesFooterControl, footer.nextElementSibling);
+      //footer.parentElement.insertBefore(notesFooterControl, footer.nextElementSibling);
     });
   } catch (e) { console.error(e, post); }
 

@@ -196,10 +196,9 @@
   runContextScript();
 
   const sendCachedData = async () => {
-    ({ cssMap } = await browser.storage.local.get('cssMap') || '');
-    ({ languageData } = await browser.storage.local.get('languageData') || '');
-
-    window.postMessage({ text: 'db+sendCachedData', cssMap: cssMap, languageData: languageData }, 'https://www.tumblr.com');
+    let preferences;
+    ({ cssMap, languageData, preferences } = await browser.storage.local.get() || {});
+    window.postMessage({ text: 'db+sendCachedData', cssMap, languageData, preferences }, 'https://www.tumblr.com');
   };
 
   window.addEventListener('message', (event) => {

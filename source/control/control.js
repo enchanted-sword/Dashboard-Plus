@@ -52,21 +52,29 @@
       const initialStateScript = document.getElementById('___INITIAL_STATE___');
       ___INITIAL_STATE___ = JSON.parse(initialStateScript.textContent);
 
-      (async () => { // blast from the past
-        const featureSet = [{ name: 'postFooterSplitNotesCount', value: false }];
-        const modifiedState = Object.assign(___INITIAL_STATE___, {
-          obfuscatedFeatures: modifyObfuscatedFeatures(___INITIAL_STATE___.obfuscatedFeatures, featureSet)
-        });
+      const preferences = JSON.parse(window.localStorage.getItem('cachedPrefs') || '');
 
-        initialStateScript.textContent = JSON.stringify(modifiedState);
-      })(); // now that's a sneaky move
+      if (preferences?.betterFooters?.enabled) (async () => { // blast from the past
+          const featureSet = [
+            { name: 'postFooterSplitNotesCount', value: false },
+            { name: 'postFooterSplitNotesCountSingleAction', value: false },
+            { name: 'postFooterAdaptiveNoteCount', value: false },
+          ];
+          const modifiedState = Object.assign(___INITIAL_STATE___, {
+            obfuscatedFeatures: modifyObfuscatedFeatures(___INITIAL_STATE___.obfuscatedFeatures, featureSet)
+          });
+
+          initialStateScript.textContent = JSON.stringify(modifiedState);
+        })(); // now that's a sneaky move
     };
 
     window.addEventListener('message', (event) => {
       if (event.origin !== 'https://www.tumblr.com') return;
       if (event.data?.text === 'db+sendCachedData') {
-        console.info('data fetched!');
-        ({ cssMap, languageData } = event.data);
+        console.info('data fetched!',event.data);
+        let preferences;
+        ({ cssMap, languageData, preferences } = event.data);
+        window.localStorage.setItem('cachedPrefs', JSON.stringify(preferences));
 
         if (cssMap && languageData && !init) {
           const reverseCssMap = {};
