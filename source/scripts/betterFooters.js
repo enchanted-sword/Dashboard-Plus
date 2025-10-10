@@ -112,8 +112,8 @@ const fixFooters = footers => footers.forEach(async footer => {
       const showTopRow = !unpublished && canManage; // && !isQueue && !isInbox */
       let notesButton, notesFooterControl;
 
-      replaceIcon('ds-reply-outline-24', svgIcon('reply-empty', 21, 21, customClass, `rgba(var(--black), ${canReply? 0.65 : 0.4})`));
-      replaceIcon('ds-reblog-24', svgIcon('reblog', 21, 21, customClass, `rgba(var(--black), ${canReblog? 0.65 : 0.4})`));
+      replaceIcon('ds-reply-outline-24', svgIcon('reply-empty', 21, 21, customClass, `rgba(var(--black),0.65)`));
+      replaceIcon('ds-reblog-24', svgIcon('reblog', 21, 21, customClass, `rgba(var(--black), ${canReblog ? 0.65 : 0.4})`));
       replaceIcon('ds-ui-upload-24', svgIcon('share-icon-proper', 24, 24, customClass, 'rgba(var(--black),0.65)'));
 
       function toggleActivityState() {
@@ -140,13 +140,13 @@ const fixFooters = footers => footers.forEach(async footer => {
               const closeButton = post.querySelector(`${s('postActivity')} ${s('tabs2025')} ${s('button')}:has([href="#managed-icon__ds-ui-x-20"])`);
               closeButton?.click();
             } else {
-              switch(selected) {
+              switch (selected) {
                 case 'replies':
                   repliesActivityButton?.click();
                   break;
                 case 'reblogs':
                   reblogsActivityButton.click();
-                   break;
+                  break;
                 case 'likes':
                   likesActivityButton.click();
                   break;

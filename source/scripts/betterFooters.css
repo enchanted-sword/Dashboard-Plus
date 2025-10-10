@@ -174,8 +174,8 @@
 
 [data-css~="footerContent"] {
   flex-flow: row-reverse;
-  padding: .75rem 1rem;
-  gap: 1rem;
+  padding: .75rem 1rem !important;
+  gap: 1rem !important;
   justify-content: flex-start;
 }
 
@@ -193,11 +193,15 @@
   justify-content: flex-end;
   width: fit-content;
   align-items: center;
-  gap: 1rem;
+  gap: 1rem !important;
 }
 
 [data-css~="engagementCountWrapper"] {
   width: fit-content;
+}
+
+[data-css~="engagementAction"] svg:has([href^="#managed-icon__ds-like-outline"]):not(:hover) {
+  --icon-color-primary: rgba(var(--black), .65);
 }
 
 [data-css~="engagementAction"],
