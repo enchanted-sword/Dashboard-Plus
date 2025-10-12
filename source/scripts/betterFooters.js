@@ -221,13 +221,15 @@ const fixFooters = footers => footers.forEach(async footer => {
         selectType('replies');
       });
 
+      function cbfunction(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        navigate(`/reblog/${blogName}/${id}/${reblogKey}`);
+      }
+
       if (restoreReblog) {
         const rButton = footer.querySelector(`[aria-label="${translate('Reblog')}"][aria-haspopup]`);
-        function cbfunction(event) {
-          event.preventDefault();
-          event.stopPropagation();
-          navigate(`/reblog/${blogName}/${id}/${reblogKey}`);
-        }
+
         rButton?.addEventListener('click', cbfunction);
         rButton?.classList.add(changedBehaviourClass);
         CBFunctions.set(rButton, cbfunction);
