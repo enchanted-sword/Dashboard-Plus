@@ -13,7 +13,7 @@
     [data-css~="mainContentWrapper"]:not([data-css~="mainContentIsMasonry"]) {
       flex-basis: 982px;
 
-      [data-css~="main"]:not([data-css~="sidebar"] [data-css~="main"]) {
+      [data-css~="main"]:not([data-css~="sidebar"] [data-css~="main"], :has([data-css~="blogTimeline"])) {
         margin-left: 93px !important;
       }
 

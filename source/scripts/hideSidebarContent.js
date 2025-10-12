@@ -6,7 +6,7 @@ const blogRecSelectors = `${s('sidebarItem')}:has(${s('recommendedBlogs')}),${s(
 const emptyTagViewSelector = `${s('sidebar')} > aside > ${s('emptyTagView')}`;
 const relatedSelector = `${s('sidebarItem')}:has(${s('relatedPosts')})`;
 const radarSelector = `${s('sidebarItem')}:has(${s('radar')})`;
-const adSelector = `${s('sidebarContent')}:has(${s('adContainer')})`;
+const adSelector = `:is(${s('sidebarContent')},${s('mrecContainer')}):has(${s('adContainer')})`;
 
 const run = async ({ blogRecommendations, emptyTagView, relatedPosts, radar, ads }) => {
   const selectors = [];
