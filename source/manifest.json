@@ -62,6 +62,10 @@
     },
     "default_popup": "meta/menu.html?popup=true"
   },
+  "options_ui": {
+    "page": "meta/menu.html",
+    "open_in_tab": true
+  },
   "browser_specific_settings": {
     "gecko": {
       "id": "dashboardplus@starlight-symposium.neocities.org",
