@@ -5,6 +5,8 @@
     origins: ["*://*.tumblr.com/"],
   };
 
+  console.log(browser.permissions.getAll())
+
   const button = document.getElementById('grantPermissions');
   button.onclick = async function () {
     const granted = await browser.permissions.request(permissions);

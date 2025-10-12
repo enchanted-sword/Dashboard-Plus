@@ -535,7 +535,7 @@
       };
 
       const updateThemeColors = (themeColors, preferences) => {
-        if (preferences.customColors?.enabled && preferences.customColors?.options.menuTheme) {
+        if (preferences && preferences.customColors?.enabled && preferences.customColors?.options.menuTheme) {
           updateTheme(preferences?.customColors.options);
         } else {
           updateTheme(themeColors);
@@ -545,7 +545,7 @@
         let { themeColors, preferences } = changes;
         if (areaName !== 'local' || (typeof themeColors === 'undefined' && typeof preferences === 'undefined') || deepEquals(themeColors?.oldValue, themeColors?.newValue)) return;
 
-        updateThemeColors(themeColors?.newValue, preferences.newValue);
+        updateThemeColors(themeColors?.newValue, preferences?.newValue);
       };
 
       const changeWidgetState = widget => {
@@ -638,16 +638,19 @@
             const reader = new FileReader();
             reader.readAsText(this.files[0]);
             reader.addEventListener('load', () => {
+              const button = document.getElementById('ui-import');
+
               try {
                 parsePreferenceText(reader.result);
+                button.textContent = 'import successful!';
               } catch (e) {
-                const button = document.getElementById('ui-import');
                 console.error('failed to import preferences from file!', e);
                 button.textContent = 'import failed!';
                 button.style.backgroundColor = 'rgb(var(--red))';
+              } finally {
                 setTimeout(() => {
                   button.textContent = 'import from file';
-                  button.style.backgroundColor = 'rgb(var(--white))';
+                  button.style.backgroundColor = null;
                 }, 2000);
               }
             });

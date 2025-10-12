@@ -1,14 +1,17 @@
 {
   "manifest_version": 3,
   "name": "Dashboard Plus",
+  "short_name": "DB+",
   "version": "1.8.4",
   "description": "Take control of your Tumblr dashboard!",
   "icons": {
     "48": "icons/icon.svg",
     "96": "icons/icon.svg"
   },
-  "author": "April Lunarii",
-  "homepage_url": "https://github.com/enchanted-sword/Dashboard-Plus",
+  "developer": {
+    "name": "The Starlight System",
+    "url": "https://github.com/enchanted-sword/Dashboard-Plus"
+  },
   "permissions": [
     "storage",
     "declarativeNetRequestWithHostAccess"
@@ -16,6 +19,7 @@
   "host_permissions": [
     "*://*.tumblr.com/"
   ],
+  "incognito": "spanning",
   "web_accessible_resources": [
     {
       "resources": [
@@ -60,7 +64,8 @@
       "48": "icons/icon.svg",
       "96": "icons/icon.svg"
     },
-    "default_popup": "meta/menu.html?popup=true"
+    "default_popup": "meta/menu.html?popup=true",
+    "default_area": "navbar"
   },
   "options_ui": {
     "page": "meta/menu.html",
