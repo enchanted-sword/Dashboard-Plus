@@ -110,7 +110,7 @@ const newStats = blog => noact({
     {
       tag: 'li',
       children: {
-        href: `settings/blog/${blog.name}`,
+        href: `/settings/blog/${blog.name}`,
         children: [
           {
             tag: 'span',
