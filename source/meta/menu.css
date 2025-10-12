@@ -264,7 +264,7 @@ h3 {
   border: none;
   padding: 2px 4px;
   border-radius: var(--border-radius-sm);
-  color: rgb(var(--white));
+  color: rgb(var(--black) / 0.65);
   background-color: var(--white-primary-20);
 }
 
@@ -274,6 +274,7 @@ h3 {
 
 .ui-filterWidgets button[data-state="active"] {
   background-color: rgb(var(--accent));
+  color: rgb(var(--white))
 }
 
 .ui-filterWidgets button[data-state="active"] {
