@@ -81,11 +81,7 @@ const deletePostButton = (uuid, id) => ({
   children: svgIcon('delete', 21, 21, 'black')
 });
 
-function removeClickthrough(event) {
-  event.preventDefault();
-  event.stopPropagation();
-  document.getElementById(this?.getAttribute('aria-controls')).querySelector('[href^="/reblog"]').click();
-}
+const CBFunctions = new Map();
 
 const fixFooters = footers => footers.forEach(async footer => {
   const post = footer.closest(postSelector);
@@ -106,7 +102,7 @@ const fixFooters = footers => footers.forEach(async footer => {
       }
     };
 
-    timelineObject(post).then(({ blog, replyCount, likeCount, reblogCount, noteCount, canReply, canReblog }) => {
+    timelineObject(post).then(({ blogName, replyCount, likeCount, reblogCount, noteCount, id, reblogKey, canReblog }) => {
       /* const canManage = canEdit || canDelete;
       const unpublished = ['draft', 'queued', 'submission'].includes(state);
       const showTopRow = !unpublished && canManage; // && !isQueue && !isInbox */
@@ -226,9 +222,15 @@ const fixFooters = footers => footers.forEach(async footer => {
       });
 
       if (restoreReblog) {
-        const rButton = footer.querySelector(`[aria-label="${translate('Reblog')}"][aria-controls]`);
-        rButton?.addEventListener('click', removeClickthrough);
+        const rButton = footer.querySelector(`[aria-label="${translate('Reblog')}"][aria-haspopup]`);
+        function cbfunction(event) {
+          event.preventDefault();
+          event.stopPropagation();
+          navigate(`/reblog/${blogName}/${id}/${reblogKey}`);
+        }
+        rButton?.addEventListener('click', cbfunction);
         rButton?.classList.add(changedBehaviourClass);
+        CBFunctions.set(rButton, cbfunction);
       }
 
       /* if (showTopRow) {
@@ -271,6 +273,6 @@ export const clean = async () => {
   document.querySelectorAll(`.${hiddenClass}`).forEach(s => s.classList.remove(hiddenClass));
   document.querySelectorAll(`.${changedBehaviourClass}`).forEach(s => {
     s.classList.remove(changedBehaviourClass);
-    s.removeEventListener('click', removeClickthrough);
+    s.removeEventListener('click', CBFunctions.get(s));
   });
 };
