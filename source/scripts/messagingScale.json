@@ -4,7 +4,8 @@
   "description": "changes the scale of the messaging window",
   "category": [
     "messaging",
-    "appearance"
+    "appearance",
+    "activity"
   ],
   "preferences": {
     "enabled": false,
