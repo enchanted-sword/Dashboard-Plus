@@ -38,12 +38,12 @@
     color: RGB(var(--white-on-dark));
     height: 100%;
     position: absolute;
-    left: -85px;
+    left: -84px;
     padding: 0;
 
     >[data-css~="avatarContainer"] {
       position: sticky;
-      top: 69px;
+      top: calc(14px + var(--dbplus-header-height, 0px));
       transition: top 0.25s;
     }
 

@@ -1,4 +1,8 @@
 @media (min-width: 990px) {
+  :root {
+    --dbplus-header-height: 55px;
+  }
+
   [data-css~="bluespaceLayout"]>:is([data-css~="newDesktopLayout"], [data-css~="desktopLayout"]) {
     margin-top: 55px;
   }
