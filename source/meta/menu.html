@@ -55,56 +55,87 @@
       </svg>
     </aside>
     <main id="ui-menu">
-      <nav id="ui-tabs">
-        <button class="ui-tab" target="features" active="true">features</button>
-        <button class="ui-tab" target="manage">manage</button>
-        <button class="ui-tab" target="about">about</button>
+      <nav id="ui-tabs" aria-role="menu">
+        <button
+          class="ui-tab"
+          target="features"
+          active="true"
+          aria-role="menuitem"
+        >
+          features
+        </button>
+        <button class="ui-tab" target="manage" aria-role="menuitem">
+          manage
+        </button>
+        <button class="ui-tab" target="about" aria-role="menuitem">
+          about
+        </button>
       </nav>
       <section class="ui-section" id="ui-features" active="true">
-        <nav id="ui-featureTabs">
-          <div class="ui-row">
-            <button class="ui-featureTab" target="all" active="true">
-              all features
-            </button>
-            <button class="ui-featureTab" target="search" active="false">
-              <input id="ui-featureSearch" type="text" placeholder="search" />
-            </button>
-          </div>
-          <div class="ui-row">
-            <button class="ui-featureTab" target="dashboard">dashboard</button>
-            <button class="ui-featureTab" target="navigation">
-              navigation
-            </button>
-            <button class="ui-featureTab" target="activity">activity</button>
-            <button class="ui-featureTab" target="sidebar">sidebar</button>
-          </div>
-          <div class="ui-row">
-            <button class="ui-featureTab" target="posts">posts</button>
-            <button class="ui-featureTab" target="messaging">messaging</button>
-            <button class="ui-featureTab" target="appearance">
-              appearance
-            </button>
-            <button class="ui-featureTab" target="utility">utility</button>
-          </div>
+        <nav id="ui-featureTabs" aria-role="menu">
+          <button
+            class="ui-featureTab"
+            target="all"
+            active="true"
+            aria-role="menuitem"
+          >
+            all features
+          </button>
+          <button class="ui-featureTab" target="posts" aria-role="menuitem">
+            posts
+          </button>
+          <button class="ui-featureTab" target="dashboard" aria-role="menuitem">
+            dashboard
+          </button>
+          <button class="ui-featureTab" target="activity" aria-role="menuitem">
+            activity & messaging
+          </button>
+          <button class="ui-featureTab" target="utility" aria-role="menuitem">
+            utility
+          </button>
+          <button class="ui-featureTab" target="search" aria-role="menuitem">
+            <input
+              id="ui-featureSearch"
+              type="text"
+              placeholder="search"
+              aria-label="search"
+              aria-role="searchbox"
+            />
+          </button>
         </nav>
         <div class="ui-filterWidgets">
           <button
             id="ui-filterAlphabetical"
             title="sort features in alphabetical order"
             data-state="active"
+            aria-selected="true"
+            aria-label="sorts features in alphabetical order"
+            aria-role="radio"
           >
             ABC
           </button>
           <button
             id="ui-filterReverseAlphabetical"
             title="sort features in reverse alphabetical order"
+            aria-label="sorts features in reverse alphabetical order"
+            aria-role="radio"
           >
             ZXY
           </button>
-          <button id="ui-filterEnabled" title="sort features enabled-first">
+          <button
+            id="ui-filterEnabled"
+            title="sort features enabled-first"
+            aria-label="sorts features by enabled-first"
+            aria-role="radio"
+          >
             ✅
           </button>
-          <button id="ui-filterDisabled" title="sort features disabled-first">
+          <button
+            id="ui-filterDisabled"
+            title="sort features disabled-first"
+            aria-label="sort features by disabled-first"
+            aria-role="radio"
+          >
             ❎
           </button>
         </div>

@@ -54,7 +54,8 @@ export const noact = (obj = {}) => {
           if (typeof prop === 'function' && isArrow(prop)) {
             console.error(`noact: illegal arrow function on property ${key}`, el, prop);
             return;
-          } else el[key] = prop;
+          } else if (['for', 'tabindex'].includes(key) || key.includes('aria-')) el.setAttribute(key, prop);
+          else el[key] = prop;
         });
     }
 

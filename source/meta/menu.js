@@ -22,6 +22,10 @@
         connectionPort.postMessage({ action });
       };
 
+      function kbToggleAction({ key }) {
+        if (key === 'Enter') this.click();
+      }
+
       const onToggleFeature = async function () {
         const name = this.getAttribute('name');
         const checked = this.checked ? true : false;
@@ -156,7 +160,16 @@
                         className: 'ui-toggle',
                         id: `ui-feature-${name}`,
                         name: feature.name,
+                        'aria-hidden': true,
                         onchange: onToggleFeature
+                      },
+                      {
+                        tag: 'label',
+                        for: `ui-feature-${name}`,
+                        'aria-role': 'switch',
+                        tabindex: 0,
+                        onkeydown: kbToggleAction,
+                        children: `toggle ${feature.name}`,
                       }
                     ]
                   }
@@ -186,9 +199,12 @@
               }
             ]
           });
-          featureItem.querySelector('.ui-toggleWrapper').append($(`<label for="ui-feature-${name}">toggle ${feature.name}</label`)[0]); // for some reason, vanilla js is incapable of setting the for attribute on labels, so jquery is used
 
-          if (preference.enabled) featureItem.querySelector('input').setAttribute('checked', '');
+          if (preference.enabled) {
+            const input = featureItem.querySelector('input');
+            input.setAttribute('checked', '');
+            input.setAttribute('aria-checked', 'true');
+          }
 
           if ('options' in preference) {
             const optionsWrapper = $('<div class="ui-options"><h2>options</h2></div>');
@@ -209,10 +225,15 @@
                   wrapper.append(label);
                   wrapper.append(input);
 
-                  if (preference.options[key]) input.attr('checked', '');
+                  if (preference.options[key]) {
+                    input.attr('checked', '');
+                    input.attr('aria-checked', 'true');
+                  }
 
+                  input.on('keydown', kbToggleAction);
                   input.on('change', async function () {
                     const checked = this.checked ? true : false;
+                    this.setAttribute('aria-checked', checked);
                     let { preferences } = await browser.storage.local.get('preferences');
 
                     if (checked) preferences[name].options[key] = true;
@@ -231,7 +252,10 @@
 
                     selectInput.append(value);
 
-                    if (preference.options[key] === subOption.value) value.attr('selected', '');
+                    if (preference.options[key] === subOption.value) {
+                      value.attr('selected', '');
+                      value.attr('aria-selected', true);
+                    }
                   });
 
                   wrapper.append(selectInput);
@@ -239,6 +263,10 @@
                   selectInput.on('change', async function () {
                     const { value } = this;
                     let { preferences } = await browser.storage.local.get('preferences');
+
+                    [...this.children].forEach(o => {
+                      o.setAttribute('aria-selected', o.value === value);
+                    });
 
                     preferences[name].options[key] = value;
 
@@ -252,19 +280,23 @@
                   Object.keys(option.options).forEach(subKey => {
                     const subOption = option.options[subKey];
                     const multiSelectItem = $(`<div class="ui-checkboxWrapper"></div>`);
-                    const input = $('<input>', { class: 'ui-checkbox', type: 'checkbox', id: `ui-feature-${name}-${key}-${subKey}`, name: `${name}-${key}` });
-                    const label = $(`<label for="ui-feature-${name}-${key}-${subKey}" name="${name}-${key}">${subOption.name}</label>`);
+                    const input = $('<input>', { class: 'ui-checkbox', type: 'checkbox', id: `ui-feature-${name}-${key}-${subKey}`, name: `${name}-${key}`, ariaHidden: 'true' });
+                    const label = $(`<label for="ui-feature-${name}-${key}-${subKey}" name="${name}-${key}" aria-role="switch">${subOption.name}</label>`);
 
                     multiSelectItem.append(label);
                     multiSelectItem.append(input);
                     multiSelectWrapper.append(multiSelectItem);
 
-                    if (preference.options[key][subKey]) input.attr('checked', '');
+                    if (preference.options[key][subKey]) {
+                      input.attr('checked', '');
+                      input.attr('aria-checked', 'true');
+                    }
 
                     input.on('change', async function () {
                       const checked = !!this.checked;
                       let { preferences } = await browser.storage.local.get('preferences');
 
+                      this.setAttribute('aria-checked', checked);
                       if (checked) preferences[name].options[key][subKey] = true;
                       else preferences[name].options[key][subKey] = false;
 
@@ -305,15 +337,18 @@
                   wrapper = $(`<div class="ui-inputWrapper ui-numInputWrapper"></div>`);
                   const label = $(`<label for="ui-feature-${name}-${key}" name="${name}-${key}">${option.name}</label>`);
                   const numInput = $('<input>', {
+                    id: `ui-feature-${name}-${key}`,
                     type: 'number',
                     class: 'ui-numInput',
                     placeholder: option.value,
                     min: option.min,
+                    'aria-valuemin': option.min,
                     max: option.max,
+                    'aria-valuemax': option.max,
                     step: option.step,
                     style: `width: ${String(option.max).length}em;`,
                     value: preference.options[key],
-                    id: `ui-feature-${name}-${key}`,
+                    'aria-valuenow': preference.options[key],
                     name: `${name}-${key}`
                   });
 
@@ -322,6 +357,7 @@
 
                   numInput.on('change', async function () {
                     const value = this.value;
+                    this.setAttribute('aria-valuenow', value);
                     let { preferences } = await browser.storage.local.get('preferences');
                     preferences[name].options[key] = +value;
                     browser.storage.local.set({ preferences });
@@ -332,13 +368,17 @@
                   const label = $(`<label for="ui-feature-${name}-${key}" name="${name}-${key}" id="ui-feature-${name}-${key}-label">${option.name} (value: ${preference.options[key]}${option.unit || ''})</label>`);
                   const rangeInput = $('<input>', {
                     type: 'range',
+                    ariaRole: 'slider',
                     class: 'ui-rangeInput',
                     placeholder: option.value,
                     min: option.min,
+                    'aria-valuemin': option.min,
                     max: option.max,
+                    'aria-valuemax': option.max,
                     step: option.step,
                     list: 'list' in option ? `${name}-${key}-list` : '',
                     value: preference.options[key],
+                    'aria-valuenow': preference.options[key],
                     id: `ui-feature-${name}-${key}`,
                     name: `${name}-${key}`
                   });
@@ -353,6 +393,7 @@
 
                   rangeInput.on('change', async function () {
                     const value = this.value;
+                    this.setAttribute('aria-valuenow', value);
                     let { preferences } = await browser.storage.local.get('preferences');
                     preferences[name].options[key] = +value;
                     document.getElementById(`ui-feature-${name}-${key}-label`).innerText = `${option.name} (value: ${value}${option.unit || ''})`;
