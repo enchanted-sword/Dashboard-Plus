@@ -1,7 +1,10 @@
 {
   "name": "hideUnread",
   "title": "hide unread counts",
-  "category": "navigation",
+  "category": [
+    "navigation",
+    "activity"
+  ],
   "description": "hides the specified unread count types",
   "preferences": {
     "enabled": false,

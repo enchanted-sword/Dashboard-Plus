@@ -3,7 +3,10 @@
   "title": "hide navigation icons",
   "type": "multiSelect",
   "description": "hide specified icons in the navbar and account submenu",
-  "category": "navigation",
+  "category": [
+    "navigation",
+    "appearance"
+  ],
   "preferences": {
     "enabled": false,
     "options": {

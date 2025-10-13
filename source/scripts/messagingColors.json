@@ -3,7 +3,8 @@
   "title": "messaging colors",
   "category": [
     "messaging",
-    "appearance"
+    "appearance",
+    "activity"
   ],
   "description": "customizes the messaging window theme",
   "extend": true,
