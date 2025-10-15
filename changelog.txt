@@ -1,3 +1,15 @@
+v1.9.0
+
+general
+
+- slight preference menu redesign
+- accessibility improvements for preference menu
+- added preference menu to FF extension options page
+
+floating avatars
+
+- shrunk vertical navigation top margin
+
 v1.8.2
 
 general
